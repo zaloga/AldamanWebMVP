@@ -3,6 +3,7 @@ using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
+using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
@@ -22,17 +23,10 @@ public class Program
         // Add services to the container.
         builder.Services.AddPersistence(builder.Configuration);
 
-        // Add Identity
-        builder.Services.AddIdentity<AppUser, AppRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 8;
-                options.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+        // Add Identity and Authorization
+        builder.Services.AddApplicationIdentity();
+        builder.Services.ConfigureApplicationCookie();
+        builder.Services.AddApplicationAuthorization();
 
         builder.Services.AddControllersWithViews();
 
