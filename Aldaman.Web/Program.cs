@@ -1,15 +1,44 @@
+using Aldaman.Persistence;
+using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Seed;
+using Aldaman.Web.Middleware;
+using Microsoft.AspNetCore.Identity;
+using Serilog;
+
 namespace Aldaman.Web;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Configure Serilog
+        builder.Host.UseSerilog((context, loggerConfiguration) =>
+            loggerConfiguration.ReadFrom.Configuration(context.Configuration));
+
         // Add services to the container.
+        builder.Services.AddPersistence(builder.Configuration);
+
+        // Add Identity
+        builder.Services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
         builder.Services.AddControllersWithViews();
 
         var app = builder.Build();
+
+        // Database migrations and seeding
+        await DbSeeder.SeedAsync(app.Services);
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -19,9 +48,12 @@ public class Program
             app.UseHsts();
         }
 
+        app.UseMiddleware<GlobalExceptionMiddleware>();
+
         app.UseHttpsRedirection();
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapStaticAssets();
