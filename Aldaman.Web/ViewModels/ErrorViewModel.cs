@@ -1,4 +1,4 @@
-namespace Aldaman.Web.Models;
+namespace Aldaman.Web.ViewModels;
 
 public class ErrorViewModel
 {

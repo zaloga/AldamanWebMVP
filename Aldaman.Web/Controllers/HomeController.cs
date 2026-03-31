@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Aldaman.Web.Models;
+using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Controllers;
