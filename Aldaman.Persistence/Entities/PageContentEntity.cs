@@ -1,7 +1,7 @@
 namespace Aldaman.Persistence.Entities;
 
 /// <summary>
-/// Obsah konkrétní stránky pro konkrétní jazyk.
+/// Content of a specific page for a specific language.
 /// </summary>
 public class PageContentEntity
 {
@@ -10,9 +10,9 @@ public class PageContentEntity
     public Guid PageDefinitionId { get; set; }
 
     /// <summary>
-    /// Jazykový kód (např. cs, en).
+    /// Culture code (e.g. cs-CZ, en-US).
     /// </summary>
-    public string LanguageCode { get; set; } = string.Empty;
+    public string CultureCode { get; set; } = string.Empty;
 
     public string Title { get; set; } = string.Empty;
 
@@ -23,7 +23,7 @@ public class PageContentEntity
     public string? SeoDescription { get; set; }
 
     /// <summary>
-    /// Serializovaný payload sekcí stránky.
+    /// Serialized payload of page sections.
     /// </summary>
     public string SectionsJson { get; set; } = "[]";
 

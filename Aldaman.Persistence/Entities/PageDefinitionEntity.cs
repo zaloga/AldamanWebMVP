@@ -1,36 +1,34 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Aldaman.Persistence.Entities;
 
 /// <summary>
-/// Katalog systémových stránek.
+/// Catalog of system pages.
 /// </summary>
 public class PageDefinitionEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    /// Unikátní klíč stránky (např. home, about).
+    /// Unique page key (e.g. home, about).
     /// </summary>
     public string PageKey { get; set; } = string.Empty;
 
     /// <summary>
-    /// Část URL cesty.
+    /// URL route segment.
     /// </summary>
     public string RouteSegment { get; set; } = string.Empty;
 
     /// <summary>
-    /// Příznak, zda se jedná o úvodní stránku.
+    /// Indicates whether this is the home page.
     /// </summary>
     public bool IsHomePage { get; set; }
 
     /// <summary>
-    /// Příznak, zda je stránka aktivní.
+    /// Indicates whether the page is active.
     /// </summary>
     public bool IsActive { get; set; } = true;
 
     /// <summary>
-    /// Výchozí pořadí řazení.
+    /// Default sort order.
     /// </summary>
     public int DefaultSortOrder { get; set; }
 

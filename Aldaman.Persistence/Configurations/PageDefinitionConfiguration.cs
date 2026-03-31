@@ -40,6 +40,6 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
         builder.HasMany(x => x.Contents)
             .WithOne(x => x.PageDefinition)
             .HasForeignKey(x => x.PageDefinitionId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

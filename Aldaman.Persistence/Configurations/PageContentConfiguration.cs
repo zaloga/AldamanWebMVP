@@ -10,7 +10,7 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.LanguageCode)
+        builder.Property(x => x.CultureCode)
             .HasMaxLength(5)
             .IsRequired();
 
@@ -26,7 +26,7 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
             .HasMaxLength(256);
 
         builder.Property(x => x.SeoDescription)
-            .HasMaxLength(1000); // Sensible default for SEO description
+            .HasMaxLength(1024); // Sensible default for SEO description
 
         builder.Property(x => x.SectionsJson)
             .IsRequired();
@@ -39,13 +39,13 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
             .HasDefaultValue(false);
 
         // Unique constraint for Page + Language
-        builder.HasIndex(x => new { x.PageDefinitionId, x.LanguageCode })
+        builder.HasIndex(x => new { x.PageDefinitionId, x.CultureCode })
             .IsUnique();
-            
+
         // Navigation: Many PageContents -> One PageDefinition
         builder.HasOne(x => x.PageDefinition)
             .WithMany(x => x.Contents)
             .HasForeignKey(x => x.PageDefinitionId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
