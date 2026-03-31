@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<MediaAssetEntity> MediaAssets { get; set; } = null!;
     public DbSet<BlogPostEntity> BlogPosts { get; set; } = null!;
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;
+    public DbSet<ContactMessageEntity> ContactMessages { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
