@@ -6,6 +6,9 @@ namespace Aldaman.Persistence.Context;
 
 public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
+    public DbSet<PageDefinitionEntity> PageDefinitions { get; set; } = null!;
+    public DbSet<PageContentEntity> PageContents { get; set; } = null!;
+
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
