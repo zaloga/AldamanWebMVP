@@ -1,7 +1,6 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -48,7 +47,7 @@ public static class DbSeeder
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(superAdminUser, "superuser123456");
+                var result = await userManager.CreateAsync(superAdminUser, "SuperUser123456#");
 
                 if (result.Succeeded)
                 {
