@@ -1,11 +1,10 @@
 using Aldaman.Persistence;
-using Aldaman.Persistence.Context;
-using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
+using Aldaman.Services;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
-using Microsoft.AspNetCore.Identity;
+using FluentValidation;
 using Serilog;
 
 namespace Aldaman.Web;
@@ -27,6 +26,10 @@ public class Program
         builder.Services.AddApplicationIdentity();
         builder.Services.ConfigureApplicationCookie();
         builder.Services.AddApplicationAuthorization();
+
+        builder.Services.AddApplicationServices();
+
+        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
         builder.Services.AddControllersWithViews();
 

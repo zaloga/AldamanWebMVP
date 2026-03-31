@@ -1,0 +1,95 @@
+@model Aldaman.Web.Models.Account.LoginRequest
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Přihlášení";
+}
+
+<div class="min-h-[80vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+    <div class="sm:mx-auto sm:w-full sm:max-auto">
+        <h2 class="mt-6 text-center text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            Vítejte zpět
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Přihlaste se ke svému účtu pro správu systému
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white dark:bg-slate-800 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-gray-100 dark:border-slate-700 transition-all duration-300">
+            <form class="space-y-6" asp-controller="Account" asp-action="Login" method="post">
+                <input type="hidden" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+                
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="rounded-xl bg-red-50 dark:bg-red-900/30 p-4 border border-red-100 dark:border-red-900/50">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm text-red-800 dark:text-red-200 font-medium" asp-validation-summary="ModelOnly"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        E-mailová adresa
+                    </label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
+                            </svg>
+                        </div>
+                        <input asp-for="Email" class="block w-full pl-10 pr-3 py-3 border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 outline-none sm:text-sm" placeholder="vas@email.cz" />
+                    </div>
+                    <span asp-validation-for="Email" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Heslo
+                    </label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <input asp-for="Password" type="password" class="block w-full pl-10 pr-3 py-3 border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white rounded-xl focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 outline-none sm:text-sm" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="Password" class="mt-1 text-sm text-red-600 dark:text-red-400"></span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input asp-for="RememberMe" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-slate-600 dark:bg-slate-700 rounded transition duration-150 cursor-pointer" />
+                        <label asp-for="RememberMe" class="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                            Zapamatovat si mě
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                            Zapomněli jste heslo?
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-md">
+                        Přihlásit se
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <p class="mt-8 text-center text-xs text-gray-500 dark:text-gray-400">
+            &copy; @DateTime.Now.Year Aldaman Business Solutions. Všechna práva vyhrazena.
+        </p>
+    </div>
+</div>
