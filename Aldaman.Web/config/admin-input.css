@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+    --color-admin-primary: #1e293b;
+    --color-admin-secondary: #334155;
+    --color-admin-accent: #0f172a;
+}
+
+/* Custom styles for Admin area */
+@layer components {
+    .nav-link-admin {
+        @apply flex items-center px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors;
+    }
+    .nav-link-admin.active {
+        @apply bg-slate-900 text-white border-l-4 border-blue-500;
+    }
+}
