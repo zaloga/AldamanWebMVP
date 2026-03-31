@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Aldaman.Integrations.Email/Aldaman.Integrations.Email.csproj" />
+  <Project Path="Aldaman.Persistence/Aldaman.Persistence.csproj" />
+  <Project Path="Aldaman.Services/Aldaman.Services.csproj" />
+  <Project Path="Aldaman.Web/Aldaman.Web.csproj" />
+</Solution>
