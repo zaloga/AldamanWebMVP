@@ -19,11 +19,7 @@ public static class DbSeeder
 
         try
         {
-            // Run migrations
-            if ((await context.Database.GetPendingMigrationsAsync()).Any())
-            {
-                await context.Database.MigrateAsync();
-            }
+            // Seeding logic (migrations moved to DatabaseMigrator)
 
             // Seed Roles
             string[] roles = ["SuperAdmin", "Admin", "Editor"];

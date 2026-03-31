@@ -1,6 +1,7 @@
 using Aldaman.Persistence;
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Web.Middleware;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +39,7 @@ public class Program
         var app = builder.Build();
 
         // Database migrations and seeding
+        await DatabaseMigrator.MigrateAsync(app.Services);
         await DbSeeder.SeedAsync(app.Services);
 
         // Configure the HTTP request pipeline.
