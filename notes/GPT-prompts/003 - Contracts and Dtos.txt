@@ -1,0 +1,25 @@
+drž se instrukcí v 
+
+GEMINI.md
+a pokus se navrhnout Aplikační contracts a DTO vrstvu.
+
+Services interfaces
+Např.:
+•	IPageService 
+•	IBlogService 
+•	IMediaService 
+•	IContactService 
+•	ISiteConfigurationService 
+•	IAdminDashboardService 
+
+DTOs
+Např.:
+•	PageDetailDto 
+•	PageEditDto 
+•	PageSectionDto 
+•	BlogPostListItemDto 
+•	BlogPostDetailDto 
+•	MediaAssetDto 
+•	ContactMessageDto
+
+Ber v úvahu podobu již existujících entit

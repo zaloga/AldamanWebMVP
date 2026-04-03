@@ -1,0 +1,22 @@
+1.
+
+potřebuji přidat aspnetcode.identity a připravit:
+
+Identity entity
+AppUser : IdentityUser<Guid>
+Pole navíc jen pokud je opravdu potřebuješ:
+•	DisplayName 
+•	IsActive 
+•	CreatedAtUtc 
+AppRole : IdentityRole<Guid>
+Bez zbytečných rozšíření.
+Role:
+•	SuperAdmin 
+•	Admin 
+•	Editor 
+Veřejná registrace nebude. Uživatelé a role se seednou. 
+
+
+2.
+
+z DbSeeder.cs přesuň migrace do extra classy a uprav podle toho i zavolání těch migrací z program.cs

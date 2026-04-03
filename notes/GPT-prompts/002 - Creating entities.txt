@@ -1,0 +1,137 @@
+1.
+
+připrav entity pro obsahové stránky webu:
+
+PageDefinitionEntity
+Účel: katalog systémových stránek.
+Pole:
+•	Id 
+•	PageKey — unikátní, např. home, about 
+•	RouteSegment 
+•	IsHomePage 
+•	IsActive 
+•	DefaultSortOrder 
+•	CreatedAtUtc 
+•	UpdatedAtUtc 
+Poznámka: tohle není redakční obsah. Je to systémový registr stránek.
+PageContentEntity
+Účel: obsah konkrétní stránky pro konkrétní jazyk.
+Pole:
+•	Id 
+•	PageDefinitionId 
+•	LanguageCode — cs, en 
+•	Title 
+•	Slug 
+•	SeoTitle 
+•	SeoDescription 
+•	SectionsJson 
+•	IsPublished 
+•	PublishedAtUtc 
+•	CreatedAtUtc 
+•	UpdatedAtUtc 
+SectionsJson bude serializovaný payload sekcí stránky. Tím odpadne samostatná entita PageContentBlockEntity a výrazně klesne pracnost MVP. 
+Doporučený tvar SectionsJson
+Například pole objektů:
+[
+  {
+    "type": "Hero",
+    "heading": "Aldaman",
+    "subheading": "Text...",
+    "primaryButtonText": "Kontakt",
+    "primaryButtonUrl": "/cs/kontakt",
+    "backgroundMediaId": "..."
+  },
+  {
+    "type": "RichText",
+    "heading": "O mně",
+    "html": "<p>...</p>"
+  }
+]
+To je dostatečně flexibilní a stále levné.
+
+2.
+
+podle instrukcí v 
+
+GEMINI.md
+ připrav entity pro Média:
+
+MediaAssetEntity
+Pole:
+•	Id 
+•	OriginalFileName 
+•	StoredFileName 
+•	RelativePath 
+•	ContentType 
+•	FileSize 
+•	Width 
+•	Height 
+•	AltText 
+•	Title 
+•	UploadedAtUtc 
+•	UploadedByUserId 
+•	IsImage 
+•	IsVideo 
+•	IsActive 
+Pro MVP stačí diskové uložení + metadata v DB.
+
+3.
+
+podle instrukcí v 
+
+GEMINI.md
+
+ připrav entity pro Blog:
+
+BlogPostEntity
+Pole:
+•	Id 
+•	CoverMediaAssetId 
+•	PublishedAtUtc 
+•	IsPublished 
+•	CreatedAtUtc 
+•	UpdatedAtUtc 
+•	CreatedByUserId 
+•	UpdatedByUserId 
+BlogPostTranslationEntity
+Pole:
+•	Id 
+•	BlogPostId 
+•	LanguageCode 
+•	Title 
+•	Slug 
+•	Perex 
+•	BodyHtml 
+•	SearchText 
+•	SeoTitle 
+•	SeoDescription 
+Tento split je správný: publikační metadata jazykově nezávisle, obsah po jazycích. Přesně to odpovídá doporučenému blog modulu. 
+
+4.
+
+podle instrukcí v 
+
+
+GEMINI.md
+
+
+ připrav entitu pro Kontakt:
+
+ContactMessageEntity
+Pole:
+•	Id 
+•	LanguageCode 
+•	Name 
+•	Email 
+•	Phone 
+•	Subject 
+•	Message 
+•	ConsentToProcessing 
+•	State — Pending, Sent, Failed 
+•	SentAtUtc 
+•	FailureReason 
+•	CreatedAtUtc 
+•	ClientIp 
+•	UserAgent 
+
+Analýza doporučuje ukládání do DB a stavový průchod Pending → Sent/Failed. To je správně a auditovatelné. 

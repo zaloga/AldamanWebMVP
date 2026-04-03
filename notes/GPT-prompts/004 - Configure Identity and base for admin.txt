@@ -1,0 +1,44 @@
+1.
+
+drž se instrukcí v GEMINI.md
+a připrav Identity konfigurace. 
+
+Nastavit:
+•	cookie auth 
+•	lockout 
+•	password policy 
+•	secure cookies 
+•	login/logout 
+•	authorization policies podle rolí 
+
+2.
+
+drž se instrukcí v 
+
+GEMINI.md
+ a příprav "Admin area":
+
+V Aldaman.Web vytvořit Areas/Admin.
+Základ:
+•	Admin/HomeController 
+•	Admin/PagesController 
+•	Admin/BlogController 
+•	Admin/MediaController 
+•	Admin/ContactMessagesController 
+
+3.
+
+připrav základ Admin layoutu - Nejdřív jen jednoduchý shell:
+•	levé menu 
+•	dashboard 
+•	breadcrumbs 
+•	flash messages 
+•	shared validation summary 
+Nepřehánět UX v první vlně.
+
+4.
+
+potřebuji doimplementovat login a logout stránky pro přihlašování a odhlašování s využítím identity, co je v projektu
+
+5.
+
