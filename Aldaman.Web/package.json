@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css",
-    "watch:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css --watch"
+    "watch:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css --watch",
+    "build": "npm run build:admin"
   },
   "keywords": [],
   "author": "",
