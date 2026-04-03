@@ -3,10 +3,8 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Content of a specific page for a specific language.
 /// </summary>
-public class PageContentEntity
+public class PageContentEntity : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     public Guid PageDefinitionId { get; set; }
 
     /// <summary>
@@ -32,10 +30,6 @@ public class PageContentEntity
     public bool IsPublished { get; set; }
 
     public DateTime? PublishedAtUtc { get; set; }
-
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-
-    public DateTime? UpdatedAtUtc { get; set; }
 
     // Navigation properties
     public virtual PageDefinitionEntity PageDefinition { get; set; } = null!;

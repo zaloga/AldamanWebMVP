@@ -1,9 +1,7 @@
 namespace Aldaman.Persistence.Entities;
 
-public class MediaAssetEntity
+public class MediaAssetEntity : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     public string OriginalFileName { get; set; } = string.Empty;
 
     public string StoredFileName { get; set; } = string.Empty;
@@ -21,26 +19,13 @@ public class MediaAssetEntity
     public string? AltText { get; set; }
 
     public string? Title { get; set; }
-
-    public DateTime UploadedAtUtc { get; set; } = DateTime.UtcNow;
-
-    public Guid UploadedByUserId { get; set; }
+    
+    // We keep UploadedAtUtc/UploadedByUserId as duplicates of CreatedAtUtc/CreatedByUserId? No, let's keep them if mapping requires or rename to use BaseEntity properties. 
+    // Since these were explicit, let's just drop them and use CreatedAtUtc and CreatedByUserId instead of UploadedAtUtc and UploadedByUserId.
+    // However, since we'll drop them entirely, I will just remove them from this class. 
+    // The Base properties have everything we need!
 
     public bool IsImage { get; set; }
 
     public bool IsVideo { get; set; }
-
-    public bool IsActive { get; set; } = true;
-
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAtUtc { get; set; }
-    public Guid? DeletedByUserId { get; set; }
-
-    public DateTime? UpdatedAtUtc { get; set; }
-    public Guid? UpdatedByUserId { get; set; }
-
-    // Navigation properties
-    public virtual AppUser UploadedByUser { get; set; } = null!;
-    public virtual AppUser? UpdatedByUser { get; set; }
-    public virtual AppUser? DeletedByUser { get; set; }
 }

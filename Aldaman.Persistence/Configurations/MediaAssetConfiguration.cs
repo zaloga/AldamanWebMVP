@@ -35,7 +35,7 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
         builder.Property(x => x.Title)
             .HasMaxLength(512);
 
-        builder.Property(x => x.UploadedAtUtc)
+        builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
         builder.Property(x => x.IsActive)
@@ -51,13 +51,13 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
             .HasDefaultValue(false);
 
         // Relationships
-        builder.HasOne(x => x.UploadedByUser)
+        builder.HasOne(x => x.CreatedByUser)
             .WithMany() // Assuming we don't need a collection of MediaAssets on AppUser for now
-            .HasForeignKey(x => x.UploadedByUserId)
+            .HasForeignKey(x => x.CreatedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Indexes
-        builder.HasIndex(x => x.UploadedByUserId);
+        builder.HasIndex(x => x.CreatedByUserId);
         builder.HasIndex(x => x.StoredFileName).IsUnique();
     }
 }

@@ -3,10 +3,8 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Catalog of system pages.
 /// </summary>
-public class PageDefinitionEntity
+public class PageDefinitionEntity : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     /// <summary>
     /// Unique page key (e.g. home, about).
     /// </summary>
@@ -23,27 +21,10 @@ public class PageDefinitionEntity
     public bool IsHomePage { get; set; }
 
     /// <summary>
-    /// Indicates whether the page is active.
-    /// </summary>
-    public bool IsActive { get; set; } = true;
-
-    /// <summary>
     /// Default sort order.
     /// </summary>
     public int DefaultSortOrder { get; set; }
 
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-
-    public DateTime? UpdatedAtUtc { get; set; }
-
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAtUtc { get; set; }
-    public Guid? DeletedByUserId { get; set; }
-
-    public Guid? UpdatedByUserId { get; set; }
-
     // Navigation properties
-    public virtual AppUser? UpdatedByUser { get; set; }
-    public virtual AppUser? DeletedByUser { get; set; }
     public virtual ICollection<PageContentEntity> Contents { get; set; } = new List<PageContentEntity>();
 }

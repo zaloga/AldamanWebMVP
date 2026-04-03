@@ -2,10 +2,8 @@ using Aldaman.Persistence.Enums;
 
 namespace Aldaman.Persistence.Entities;
 
-public class ContactMessageEntity
+public class ContactMessageEntity : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     public string LanguageCode { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;
@@ -26,20 +24,7 @@ public class ContactMessageEntity
 
     public string? FailureReason { get; set; }
 
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-
     public string? ClientIp { get; set; }
 
     public string? UserAgent { get; set; }
-
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAtUtc { get; set; }
-    public Guid? DeletedByUserId { get; set; }
-
-    public DateTime? UpdatedAtUtc { get; set; }
-    public Guid? UpdatedByUserId { get; set; }
-
-    // Navigation properties
-    public virtual AppUser? DeletedByUser { get; set; }
-    public virtual AppUser? UpdatedByUser { get; set; }
 }

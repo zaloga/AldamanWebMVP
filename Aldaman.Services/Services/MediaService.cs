@@ -29,9 +29,9 @@ public sealed class MediaService : IMediaService
         dbQuery = query.SortBy switch
         {
             "FileName" => query.SortDescending ? dbQuery.OrderByDescending(p => p.OriginalFileName) : dbQuery.OrderBy(p => p.OriginalFileName),
-            "UploadedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.UploadedAtUtc) : dbQuery.OrderBy(p => p.UploadedAtUtc),
+            "UploadedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "Size" => query.SortDescending ? dbQuery.OrderByDescending(p => p.FileSize) : dbQuery.OrderBy(p => p.FileSize),
-            _ => dbQuery.OrderByDescending(p => p.UploadedAtUtc)
+            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -49,7 +49,7 @@ public sealed class MediaService : IMediaService
                 Height = p.Height,
                 AltText = p.AltText,
                 Title = p.Title,
-                UploadedAtUtc = p.UploadedAtUtc,
+                UploadedAtUtc = p.CreatedAtUtc,
                 IsImage = p.IsImage,
                 IsVideo = p.IsVideo,
                 IsActive = p.IsActive

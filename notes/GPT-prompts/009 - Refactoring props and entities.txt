@@ -1,0 +1,7 @@
+1.
+
+In classes, prefer get-only properties over readonly fields - adjust it in all classes.
+
+2.
+
+Do BaseEntity, which will be parent for all entities from Entitiesand will contain all common fields as created, updated, deleted, active...
