@@ -2,30 +2,46 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
     <!-- Stats Cards -->
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 ring-1 ring-gray-900/5 transition-transform hover:scale-105">
-        <dt class="truncate text-sm font-medium text-gray-500">Total Pages</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">12</dd>
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm stats-card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">Total Pages</h6>
+                <h2 class="card-title mb-0 fw-bold">12</h2>
+            </div>
+        </div>
     </div>
 
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 ring-1 ring-gray-900/5 transition-transform hover:scale-105">
-        <dt class="truncate text-sm font-medium text-gray-500">Blog Posts</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">48</dd>
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm stats-card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">Blog Posts</h6>
+                <h2 class="card-title mb-0 fw-bold">48</h2>
+            </div>
+        </div>
     </div>
 
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 ring-1 ring-gray-900/5 transition-transform hover:scale-105">
-        <dt class="truncate text-sm font-medium text-gray-500">Unread Messages</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">3</dd>
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm stats-card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">Unread Messages</h6>
+                <h2 class="card-title mb-0 fw-bold">3</h2>
+            </div>
+        </div>
     </div>
 
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 ring-1 ring-gray-900/5 transition-transform hover:scale-105">
-        <dt class="truncate text-sm font-medium text-gray-500">Media Assets</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">124</dd>
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm stats-card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">Media Assets</h6>
+                <h2 class="card-title mb-0 fw-bold">124</h2>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="mt-8">
-    <h2 class="text-base font-semibold leading-7 text-gray-900">Welcome to Aldaman Admin</h2>
-    <p class="mt-1 text-sm leading-6 text-gray-600">This is your administrative dashboard where you can manage your website content.</p>
+<div class="mt-5">
+    <h5 class="fw-bold text-dark">Welcome to Aldaman Admin</h5>
+    <p class="text-secondary">This is your administrative dashboard where you can manage your website content.</p>
 </div>
