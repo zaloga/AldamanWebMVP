@@ -1,5 +1,4 @@
 using Aldaman.Persistence.Context;
-using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;

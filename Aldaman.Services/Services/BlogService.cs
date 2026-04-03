@@ -1,5 +1,4 @@
 using Aldaman.Persistence.Context;
-using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
@@ -32,14 +31,14 @@ public sealed class BlogService : IBlogService
         // Sorting
         dbQuery = query.SortBy switch
         {
-            "Title" => query.SortDescending 
-                ? dbQuery.OrderByDescending(p => p.Translations.FirstOrDefault()!.Title) 
+            "Title" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.Translations.FirstOrDefault()!.Title)
                 : dbQuery.OrderBy(p => p.Translations.FirstOrDefault()!.Title),
-            "CreatedAt" => query.SortDescending 
-                ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) 
+            "CreatedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
                 : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "PublishedAt" => query.SortDescending 
-                ? dbQuery.OrderByDescending(p => p.PublishedAtUtc) 
+            "PublishedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.PublishedAtUtc)
                 : dbQuery.OrderBy(p => p.PublishedAtUtc),
             _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };

@@ -21,3 +21,7 @@ Examples:
 2.
 
 Projdi Dtos a uprav tam vše aby to respektovalo bod 9.12 z GEMINI.md
+
+3.
+
+Ruční opravy usingů ve views
