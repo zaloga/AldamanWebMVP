@@ -1,3 +1,5 @@
+using Aldaman.Persistence.Enums;
+
 namespace Aldaman.Services.Dtos.ContactMessage;
 
 /// <summary>

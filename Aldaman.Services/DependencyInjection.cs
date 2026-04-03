@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IPageService, PageService>();
         services.AddScoped<IMediaService, MediaService>();
         services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 
         // Register other services here as they are implemented
 

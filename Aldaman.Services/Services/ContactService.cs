@@ -48,7 +48,7 @@ public sealed class ContactService : IContactService
                 Message = p.Message,
                 CreatedAtUtc = p.CreatedAtUtc,
                 SentAtUtc = p.SentAtUtc,
-                State = (ContactMessageState)p.State
+                State = p.State
             })
             .ToListAsync();
 
