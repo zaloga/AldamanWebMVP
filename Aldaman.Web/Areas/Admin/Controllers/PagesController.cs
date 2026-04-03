@@ -6,16 +6,16 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class PagesController : BaseAdminController
 {
-    private readonly IPageService _pageService;
+    private IPageService PageService { get; }
 
     public PagesController(IPageService pageService)
     {
-        _pageService = pageService;
+        PageService = pageService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await _pageService.GetPagedPagesAsync(query);
+        var result = await PageService.GetPagedPagesAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class PagesController : BaseAdminController
     {
         try
         {
-            await _pageService.DeletePageAsync(id);
+            await PageService.DeletePageAsync(id);
             return Json(new { success = true, message = "Page deleted successfully." });
         }
         catch (Exception ex)

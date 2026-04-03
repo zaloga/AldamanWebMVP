@@ -5,24 +5,24 @@ namespace Aldaman.Web.Middleware;
 
 public class GlobalExceptionMiddleware
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<GlobalExceptionMiddleware> _logger;
+    private RequestDelegate Next { get; }
+    private ILogger<GlobalExceptionMiddleware> Logger { get; }
 
     public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
     {
-        _next = next;
-        _logger = logger;
+        Next = next;
+        Logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await Next(context);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred.");
+            Logger.LogError(ex, "An unhandled exception occurred.");
             await HandleExceptionAsync(context, ex);
         }
     }

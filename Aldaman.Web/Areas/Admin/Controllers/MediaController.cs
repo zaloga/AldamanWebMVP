@@ -6,16 +6,16 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class MediaController : BaseAdminController
 {
-    private readonly IMediaService _mediaService;
+    private IMediaService MediaService { get; }
 
     public MediaController(IMediaService mediaService)
     {
-        _mediaService = mediaService;
+        MediaService = mediaService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await _mediaService.ListAssetsAsync(query);
+        var result = await MediaService.ListAssetsAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class MediaController : BaseAdminController
     {
         try
         {
-            await _mediaService.DeleteAssetAsync(id);
+            await MediaService.DeleteAssetAsync(id);
             return Json(new { success = true, message = "Media asset deleted successfully." });
         }
         catch (Exception ex)

@@ -8,16 +8,16 @@ namespace Aldaman.Services.Services;
 
 public sealed class PageService : IPageService
 {
-    private readonly AppDbContext _context;
+    private AppDbContext Context { get; }
 
     public PageService(AppDbContext context)
     {
-        _context = context;
+        Context = context;
     }
 
     public async Task<PagedResultDto<PageListItemDto>> GetPagedPagesAsync(PaginationQuery query)
     {
-        var dbQuery = _context.PageDefinitions
+        var dbQuery = Context.PageDefinitions
             .Include(p => p.Contents)
             .AsQueryable();
 
@@ -63,7 +63,7 @@ public sealed class PageService : IPageService
 
     public async Task<PageDetailDto?> GetPageBySlugAsync(string slug, string culture)
     {
-        var page = await _context.PageDefinitions
+        var page = await Context.PageDefinitions
             .Include(p => p.Contents)
             .FirstOrDefaultAsync(p => p.RouteSegment == slug && p.IsActive);
 
@@ -87,7 +87,7 @@ public sealed class PageService : IPageService
 
     public async Task<PageDetailDto?> GetHomePageAsync(string culture)
     {
-        var page = await _context.PageDefinitions
+        var page = await Context.PageDefinitions
             .Include(p => p.Contents)
             .FirstOrDefaultAsync(p => p.IsHomePage && p.IsActive);
 
@@ -111,7 +111,7 @@ public sealed class PageService : IPageService
 
     public async Task<PageEditDto?> GetPageForEditAsync(Guid id, string culture)
     {
-        var page = await _context.PageDefinitions
+        var page = await Context.PageDefinitions
             .Include(p => p.Contents)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -142,12 +142,12 @@ public sealed class PageService : IPageService
 
     public async Task DeletePageAsync(Guid id)
     {
-        var page = await _context.PageDefinitions.FindAsync(id);
+        var page = await Context.PageDefinitions.FindAsync(id);
         if (page != null)
         {
             page.IsDeleted = true;
             page.DeletedAtUtc = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

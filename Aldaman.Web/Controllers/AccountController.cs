@@ -7,11 +7,11 @@ namespace Aldaman.Web.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly IAccountService _accountService;
+    private IAccountService AccountService { get; }
 
     public AccountController(IAccountService accountService)
     {
-        _accountService = accountService;
+        AccountService = accountService;
     }
 
     [HttpGet]
@@ -39,7 +39,7 @@ public class AccountController : Controller
             return View(request);
         }
 
-        var result = await _accountService.LoginAsync(request.Email, request.Password, request.RememberMe);
+        var result = await AccountService.LoginAsync(request.Email, request.Password, request.RememberMe);
 
         if (result.Succeeded)
         {
@@ -61,7 +61,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await _accountService.LogoutAsync();
+        await AccountService.LogoutAsync();
         return RedirectToAction("Index", "Home");
     }
 

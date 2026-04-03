@@ -6,16 +6,16 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class BlogController : BaseAdminController
 {
-    private readonly IBlogService _blogService;
+    private IBlogService BlogService { get; }
 
     public BlogController(IBlogService blogService)
     {
-        _blogService = blogService;
+        BlogService = blogService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await _blogService.GetPagedPostsAdminAsync(query);
+        var result = await BlogService.GetPagedPostsAdminAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class BlogController : BaseAdminController
     {
         try
         {
-            await _blogService.DeletePostAsync(id);
+            await BlogService.DeletePostAsync(id);
             return Json(new { success = true, message = "Post deleted successfully." });
         }
         catch (Exception ex)

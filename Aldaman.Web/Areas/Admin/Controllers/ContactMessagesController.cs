@@ -6,16 +6,16 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class ContactMessagesController : BaseAdminController
 {
-    private readonly IContactService _contactService;
+    private IContactService ContactService { get; }
 
     public ContactMessagesController(IContactService contactService)
     {
-        _contactService = contactService;
+        ContactService = contactService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await _contactService.GetPagedMessagesAsync(query);
+        var result = await ContactService.GetPagedMessagesAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class ContactMessagesController : BaseAdminController
     {
         try
         {
-            await _contactService.DeleteMessageAsync(id);
+            await ContactService.DeleteMessageAsync(id);
             return Json(new { success = true, message = "Message deleted successfully." });
         }
         catch (Exception ex)

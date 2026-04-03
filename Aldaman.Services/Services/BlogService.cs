@@ -8,16 +8,16 @@ namespace Aldaman.Services.Services;
 
 public sealed class BlogService : IBlogService
 {
-    private readonly AppDbContext _context;
+    private AppDbContext Context { get; }
 
     public BlogService(AppDbContext context)
     {
-        _context = context;
+        Context = context;
     }
 
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAdminAsync(PaginationQuery query, string? culture = null)
     {
-        var dbQuery = _context.BlogPosts
+        var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
             .Include(p => p.CreatedByUser)
             .AsQueryable();
@@ -70,7 +70,7 @@ public sealed class BlogService : IBlogService
 
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAsync(int page, int pageSize, string culture)
     {
-        var dbQuery = _context.BlogPosts
+        var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
             .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
             .OrderByDescending(p => p.PublishedAtUtc)
@@ -108,7 +108,7 @@ public sealed class BlogService : IBlogService
 
     public async Task<BlogPostDetailDto?> GetPostBySlugAsync(string slug, string culture)
     {
-        var post = await _context.BlogPosts
+        var post = await Context.BlogPosts
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
             .Include(p => p.CreatedByUser)
@@ -134,7 +134,7 @@ public sealed class BlogService : IBlogService
 
     public async Task<BlogPostEditDto?> GetPostForEditAsync(Guid id, string culture)
     {
-        var post = await _context.BlogPosts
+        var post = await Context.BlogPosts
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -163,12 +163,12 @@ public sealed class BlogService : IBlogService
 
     public async Task DeletePostAsync(Guid id)
     {
-        var post = await _context.BlogPosts.FindAsync(id);
+        var post = await Context.BlogPosts.FindAsync(id);
         if (post != null)
         {
             post.IsDeleted = true;
             post.DeletedAtUtc = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

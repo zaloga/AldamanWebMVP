@@ -8,16 +8,16 @@ namespace Aldaman.Services.Services;
 
 public sealed class MediaService : IMediaService
 {
-    private readonly AppDbContext _context;
+    private AppDbContext Context { get; }
 
     public MediaService(AppDbContext context)
     {
-        _context = context;
+        Context = context;
     }
 
     public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query)
     {
-        var dbQuery = _context.MediaAssets.AsQueryable();
+        var dbQuery = Context.MediaAssets.AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
@@ -70,12 +70,12 @@ public sealed class MediaService : IMediaService
 
     public async Task DeleteAssetAsync(Guid id)
     {
-        var asset = await _context.MediaAssets.FindAsync(id);
+        var asset = await Context.MediaAssets.FindAsync(id);
         if (asset != null)
         {
             asset.IsDeleted = true;
             asset.DeletedAtUtc = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

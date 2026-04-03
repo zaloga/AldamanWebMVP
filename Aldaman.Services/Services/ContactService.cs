@@ -8,16 +8,16 @@ namespace Aldaman.Services.Services;
 
 public sealed class ContactService : IContactService
 {
-    private readonly AppDbContext _context;
+    private AppDbContext Context { get; }
 
     public ContactService(AppDbContext context)
     {
-        _context = context;
+        Context = context;
     }
 
     public async Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query)
     {
-        var dbQuery = _context.ContactMessages.AsQueryable();
+        var dbQuery = Context.ContactMessages.AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
@@ -66,12 +66,12 @@ public sealed class ContactService : IContactService
 
     public async Task DeleteMessageAsync(Guid id)
     {
-        var message = await _context.ContactMessages.FindAsync(id);
+        var message = await Context.ContactMessages.FindAsync(id);
         if (message != null)
         {
             message.IsDeleted = true;
             message.DeletedAtUtc = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 

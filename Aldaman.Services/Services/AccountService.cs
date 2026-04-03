@@ -10,24 +10,24 @@ namespace Aldaman.Services.Services;
 /// </summary>
 public sealed class AccountService : IAccountService
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
+    private UserManager<AppUser> UserManager { get; }
+    private SignInManager<AppUser> SignInManager { get; }
 
     public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
+        UserManager = userManager;
+        SignInManager = signInManager;
     }
 
     public async Task<LoginResultDto> LoginAsync(string email, string password, bool rememberMe)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await UserManager.FindByEmailAsync(email);
         if (user == null)
         {
             return new LoginResultDto(false, false, false, false);
         }
 
-        var result = await _signInManager.PasswordSignInAsync(user, password, rememberMe, lockoutOnFailure: true);
+        var result = await SignInManager.PasswordSignInAsync(user, password, rememberMe, lockoutOnFailure: true);
 
         return new LoginResultDto(
             result.Succeeded,
@@ -38,6 +38,6 @@ public sealed class AccountService : IAccountService
 
     public async Task LogoutAsync()
     {
-        await _signInManager.SignOutAsync();
+        await SignInManager.SignOutAsync();
     }
 }
