@@ -34,9 +34,14 @@ public interface IBlogService
     Task<BlogPostEditDto?> GetPostForEditAsync(Guid id, string culture);
 
     /// <summary>
-    /// Saves a blog post (creates or updates).
+    /// Creates a new blog post.
     /// </summary>
-    Task SavePostAsync(BlogPostEditDto dto);
+    Task CreatePostAsync(Guid userId, BlogPostEditDto dto);
+
+    /// <summary>
+    /// Updates an existing blog post.
+    /// </summary>
+    Task UpdatePostAsync(Guid id, Guid userId, BlogPostEditDto dto);
 
     /// <summary>
     /// Deletes a blog post and all its translations.

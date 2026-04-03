@@ -1,0 +1,78 @@
+@model Aldaman.Services.Dtos.Blog.BlogPostEditDto
+
+@{
+    ViewData["Title"] = "Blog Post Details";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+        <div>
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit Post</a>
+            <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Content details</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">Slug</dt>
+                <dd class="col-sm-9">@Model.Slug</dd>
+
+                <dt class="col-sm-3">Culture Code</dt>
+                <dd class="col-sm-9">@Model.CultureCode</dd>
+
+                <dt class="col-sm-3">Is Published</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsPublished)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Published At (UTC)</dt>
+                <dd class="col-sm-9">@(Model.PublishedAtUtc?.ToString("g") ?? "N/A")</dd>
+            </dl>
+
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-3">Perex</dt>
+                <dd class="col-sm-9">@Model.Perex</dd>
+            </dl>
+            
+            <h6 class="font-weight-bold mt-4">Body HTML Content</h6>
+            <div class="p-3 border rounded bg-light mb-4" style="max-height: 400px; overflow-y: auto;">
+                @if (!string.IsNullOrEmpty(Model.BodyHtml))
+                {
+                    @Html.Raw(Model.BodyHtml)
+                }
+                else
+                {
+                    <em class="text-muted">No content provided.</em>
+                }
+            </div>
+
+            <hr />
+
+            <h6 class="font-weight-bold">SEO Information</h6>
+            <dl class="row">
+                <dt class="col-sm-3">SEO Title</dt>
+                <dd class="col-sm-9">@Model.SeoTitle</dd>
+
+                <dt class="col-sm-3">SEO Description</dt>
+                <dd class="col-sm-9">@Model.SeoDescription</dd>
+            </dl>
+        </div>
+    </div>
+</div>

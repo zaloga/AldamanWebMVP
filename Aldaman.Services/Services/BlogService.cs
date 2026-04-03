@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
@@ -140,11 +141,21 @@ public sealed class BlogService : IBlogService
 
         if (post == null) return null;
 
+        var translation = post.Translations.FirstOrDefault(t => t.CultureCode == culture)
+                       ?? post.Translations.FirstOrDefault();
+
         return new BlogPostEditDto
         {
             Id = post.Id,
             IsPublished = post.IsPublished,
             PublishedAtUtc = post.PublishedAtUtc,
+            CultureCode = translation?.CultureCode ?? culture,
+            Title = translation?.Title ?? string.Empty,
+            Slug = translation?.Slug ?? string.Empty,
+            Perex = translation?.Perex,
+            BodyHtml = translation?.BodyHtml,
+            SeoTitle = translation?.SeoTitle,
+            SeoDescription = translation?.SeoDescription,
             Translations = post.Translations.Select(t => new BlogPostTranslationDto
             {
                 CultureCode = t.CultureCode,
@@ -156,9 +167,78 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task SavePostAsync(BlogPostEditDto dto)
+    public async Task CreatePostAsync(Guid userId, BlogPostEditDto dto)
     {
-        throw new NotImplementedException();
+        var post = new BlogPostEntity
+        {
+            IsPublished = dto.IsPublished,
+            PublishedAtUtc = dto.IsPublished ? (dto.PublishedAtUtc ?? DateTime.UtcNow) : null,
+            CreatedByUserId = userId,
+            UpdatedByUserId = userId,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow
+        };
+
+        var translation = new BlogPostTranslationEntity
+        {
+            CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
+            Title = dto.Title,
+            Slug = dto.Slug,
+            Perex = dto.Perex,
+            BodyHtml = dto.BodyHtml,
+            SeoTitle = dto.SeoTitle,
+            SeoDescription = dto.SeoDescription
+        };
+
+        post.Translations.Add(translation);
+        Context.BlogPosts.Add(post);
+        await Context.SaveChangesAsync();
+    }
+
+    public async Task UpdatePostAsync(Guid id, Guid userId, BlogPostEditDto dto)
+    {
+        var post = await Context.BlogPosts
+            .Include(p => p.Translations)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post == null)
+        {
+            throw new KeyNotFoundException($"Blog post with ID {id} not found.");
+        }
+
+        post.IsPublished = dto.IsPublished;
+        if (dto.IsPublished && !post.PublishedAtUtc.HasValue)
+        {
+            post.PublishedAtUtc = dto.PublishedAtUtc ?? DateTime.UtcNow;
+        }
+        else if (!dto.IsPublished)
+        {
+            post.PublishedAtUtc = null;
+        }
+
+        post.UpdatedByUserId = userId;
+        post.UpdatedAtUtc = DateTime.UtcNow;
+
+        var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
+        var translation = post.Translations.FirstOrDefault(t => t.CultureCode == culture);
+
+        if (translation == null)
+        {
+            translation = new BlogPostTranslationEntity
+            {
+                CultureCode = culture
+            };
+            post.Translations.Add(translation);
+        }
+
+        translation.Title = dto.Title;
+        translation.Slug = dto.Slug;
+        translation.Perex = dto.Perex;
+        translation.BodyHtml = dto.BodyHtml;
+        translation.SeoTitle = dto.SeoTitle;
+        translation.SeoDescription = dto.SeoDescription;
+
+        await Context.SaveChangesAsync();
     }
 
     public async Task DeletePostAsync(Guid id)

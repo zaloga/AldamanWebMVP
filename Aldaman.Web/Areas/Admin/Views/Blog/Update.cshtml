@@ -1,0 +1,87 @@
+@model Aldaman.Services.Dtos.Blog.BlogPostEditDto
+
+@{
+    ViewData["Title"] = "Update Blog Post";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Blog Post Details</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Update" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Title" class="form-label">Title (Default Culture)</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Slug" class="form-label">Slug (Default Culture)</label>
+                        <input asp-for="Slug" class="form-control" />
+                        <span asp-validation-for="Slug" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CultureCode" class="form-label">Culture Code</label>
+                    <input asp-for="CultureCode" class="form-control" readonly />
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input asp-for="IsPublished" class="form-check-input" />
+                            <label asp-for="IsPublished" class="form-check-label">Is Published</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Perex" class="form-label">Perex (Summary)</label>
+                    <textarea asp-for="Perex" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Perex" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BodyHtml" class="form-label">Content (HTML)</label>
+                    <textarea asp-for="BodyHtml" class="form-control" rows="8"></textarea>
+                    <span asp-validation-for="BodyHtml" class="text-danger"></span>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="SeoTitle" class="form-label">SEO Title</label>
+                        <input asp-for="SeoTitle" class="form-control" />
+                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SeoDescription" class="form-label">SEO Description</label>
+                    <textarea asp-for="SeoDescription" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="SeoDescription" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
