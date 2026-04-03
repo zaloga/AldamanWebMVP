@@ -1,5 +1,5 @@
 @using System.Net
-@model Aldaman.Services.Dtos.PagedResultDto<object>
+@model Aldaman.Services.Dtos.PagedResultBase
 @{
     var query = ViewData["Query"] as Aldaman.Services.Dtos.PaginationQuery ?? new Aldaman.Services.Dtos.PaginationQuery();
     var currentUrl = Context.Request.Path + Context.Request.QueryString;

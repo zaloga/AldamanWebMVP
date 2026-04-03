@@ -5,3 +5,7 @@ Pro controllery v admin části Controllers mi připrav přílušné Index views
 2.
 
 V service ContactService co je v OtherServices.cs dodělej metodu DeleteMessageAsync(Guid id) a přidej ji i do jejího interface.
+
+3.
+
+The model item passed into the ViewDataDictionary is of type 'Aldaman.Services.Dtos.PagedResultDto [Aldaman.Services.Dtos.PageListItemDto]', but this ViewDataDictionary instance requires a model item of type 'Aldaman.Services.Dtos.PagedResultDto

@@ -13,11 +13,10 @@ public class PaginationQuery
 }
 
 /// <summary>
-/// Generic paged result wrapper.
+/// Non-generic base class for paged results, suitable for pagination views.
 /// </summary>
-public class PagedResultDto<T>
+public class PagedResultBase
 {
-    public IEnumerable<T> Items { get; set; } = new List<T>();
     public int TotalCount { get; set; }
     public int Page { get; set; }
     public int PageSize { get; set; }
@@ -26,3 +25,12 @@ public class PagedResultDto<T>
     public bool HasPreviousPage => Page > 1;
     public bool HasNextPage => Page < TotalPages;
 }
+
+/// <summary>
+/// Generic paged result wrapper.
+/// </summary>
+public class PagedResultDto<T> : PagedResultBase
+{
+    public IEnumerable<T> Items { get; set; } = new List<T>();
+}
+
