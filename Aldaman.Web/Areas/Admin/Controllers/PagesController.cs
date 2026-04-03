@@ -34,4 +34,87 @@ public class PagesController : BaseAdminController
             return Json(new { success = false, message = "Error deleting page: " + ex.Message });
         }
     }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View(new Aldaman.Services.Dtos.Page.PageEditDto { CultureCode = "cs" });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Page.PageEditDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            await PageService.CreatePageAsync(model);
+            TempData["SuccessMessage"] = "Page created successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error creating page: " + ex.Message);
+            return View(model);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var page = await PageService.GetPageForEditAsync(id, "cs");
+        if (page == null)
+        {
+            return NotFound();
+        }
+
+        return View(page);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var page = await PageService.GetPageForEditAsync(id, "cs");
+        if (page == null)
+        {
+            return NotFound();
+        }
+
+        return View(page);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Page.PageEditDto model)
+    {
+        if (id != model.Id)
+        {
+            return BadRequest();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            await PageService.UpdatePageAsync(id, model);
+            TempData["SuccessMessage"] = "Page updated successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error updating page: " + ex.Message);
+            return View(model);
+        }
+    }
 }

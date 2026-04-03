@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
@@ -117,6 +118,9 @@ public sealed class PageService : IPageService
 
         if (page == null) return null;
 
+        var defaultContent = page.Contents.FirstOrDefault(c => c.CultureCode == culture)
+                          ?? page.Contents.FirstOrDefault();
+
         return new PageEditDto
         {
             Id = page.Id,
@@ -125,6 +129,13 @@ public sealed class PageService : IPageService
             IsHomePage = page.IsHomePage,
             IsActive = page.IsActive,
             DefaultSortOrder = page.DefaultSortOrder,
+            CultureCode = defaultContent?.CultureCode ?? culture,
+            Title = defaultContent?.Title ?? string.Empty,
+            Slug = defaultContent?.Slug ?? string.Empty,
+            SeoTitle = defaultContent?.SeoTitle,
+            SeoDescription = defaultContent?.SeoDescription,
+            SeoKeywords = defaultContent?.SeoKeywords,
+            IsPublished = defaultContent?.IsPublished ?? false,
             Contents = page.Contents.Select(c => new PageContentDto
             {
                 LanguageCode = c.CultureCode,
@@ -137,8 +148,80 @@ public sealed class PageService : IPageService
         };
     }
 
-    public Task CreatePageAsync(PageEditDto dto) => throw new NotImplementedException();
-    public Task UpdatePageAsync(Guid id, PageEditDto dto) => throw new NotImplementedException();
+    public async Task CreatePageAsync(PageEditDto dto)
+    {
+        var page = new PageDefinitionEntity
+        {
+            PageKey = dto.PageKey,
+            RouteSegment = dto.RouteSegment,
+            IsHomePage = dto.IsHomePage,
+            IsActive = dto.IsActive,
+            DefaultSortOrder = dto.DefaultSortOrder
+        };
+
+        var content = new PageContentEntity
+        {
+            CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
+            Title = dto.Title ?? dto.PageKey,
+            Slug = string.IsNullOrWhiteSpace(dto.Slug) ? dto.RouteSegment : dto.Slug,
+            SeoTitle = dto.SeoTitle,
+            SeoDescription = dto.SeoDescription,
+            SeoKeywords = dto.SeoKeywords,
+            SectionsJson = "[]",
+            IsPublished = dto.IsPublished,
+            PublishedAtUtc = dto.IsPublished ? DateTime.UtcNow : null
+        };
+
+        page.Contents.Add(content);
+
+        Context.PageDefinitions.Add(page);
+        await Context.SaveChangesAsync();
+    }
+
+    public async Task UpdatePageAsync(Guid id, PageEditDto dto)
+    {
+        var page = await Context.PageDefinitions
+            .Include(p => p.Contents)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (page == null)
+        {
+            throw new KeyNotFoundException($"Page with ID {id} not found.");
+        }
+
+        page.PageKey = dto.PageKey;
+        page.RouteSegment = dto.RouteSegment;
+        page.IsHomePage = dto.IsHomePage;
+        page.IsActive = dto.IsActive;
+        page.DefaultSortOrder = dto.DefaultSortOrder;
+
+        var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
+        var content = page.Contents.FirstOrDefault(c => c.CultureCode == culture);
+
+        if (content == null)
+        {
+            content = new PageContentEntity
+            {
+                CultureCode = culture,
+                SectionsJson = "[]"
+            };
+            page.Contents.Add(content);
+        }
+
+        content.Title = dto.Title ?? dto.PageKey;
+        content.Slug = string.IsNullOrWhiteSpace(dto.Slug) ? dto.RouteSegment : dto.Slug;
+        content.SeoTitle = dto.SeoTitle;
+        content.SeoDescription = dto.SeoDescription;
+        content.SeoKeywords = dto.SeoKeywords;
+
+        if (!content.IsPublished && dto.IsPublished)
+        {
+            content.PublishedAtUtc = DateTime.UtcNow;
+        }
+        content.IsPublished = dto.IsPublished;
+
+        await Context.SaveChangesAsync();
+    }
 
     public async Task DeletePageAsync(Guid id)
     {

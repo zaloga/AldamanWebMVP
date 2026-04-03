@@ -1,0 +1,7 @@
+1.
+
+Implement Create, Detail and Update actions in PagesController and implement and use related methods in PageService and relaed views.
+
+2.
+
+Implement Create, Detail and Update actions in PagesController and implement and use related methods in PageService and relaed views.

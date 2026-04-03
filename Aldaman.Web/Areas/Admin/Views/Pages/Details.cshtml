@@ -1,0 +1,74 @@
+@model Aldaman.Services.Dtos.Page.PageEditDto
+
+@{
+    ViewData["Title"] = "Page Details";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]: @Model.PageKey</h1>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">General Information</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Page Key</dt>
+                <dd class="col-sm-9">@Model.PageKey</dd>
+
+                <dt class="col-sm-3">Route Segment</dt>
+                <dd class="col-sm-9">@Model.RouteSegment</dd>
+
+                <dt class="col-sm-3">Is Home Page</dt>
+                <dd class="col-sm-9">@(Model.IsHomePage ? "Yes" : "No")</dd>
+
+                <dt class="col-sm-3">Is Active</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Sort Order</dt>
+                <dd class="col-sm-9">@Model.DefaultSortOrder</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Primary Content (@Model.CultureCode)</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Title</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">Slug</dt>
+                <dd class="col-sm-9">@Model.Slug</dd>
+                
+                <dt class="col-sm-3">Published</dt>
+                <dd class="col-sm-9">@(Model.IsPublished ? "Yes" : "No")</dd>
+
+                <dt class="col-sm-3">SEO Title</dt>
+                <dd class="col-sm-9">@Model.SeoTitle</dd>
+
+                <dt class="col-sm-3">SEO Description</dt>
+                <dd class="col-sm-9">@Model.SeoDescription</dd>
+
+                <dt class="col-sm-3">SEO Keywords</dt>
+                <dd class="col-sm-9">@Model.SeoKeywords</dd>
+            </dl>
+        </div>
+    </div>
+</div>
