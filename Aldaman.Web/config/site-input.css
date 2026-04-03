@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@source "../Views/**/*.cshtml";
+@source "../wwwroot/js/**/*.js";
+
+@theme {
+  --color-brand-primary: #4f46e5; /* indigo-600 */
+  --color-brand-secondary: #0f172a; /* slate-900 */
+}
+
+/* Custom styles for the public site */
+@layer base {
+  body {
+    @apply font-sans text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center rounded-lg bg-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all;
+  }
+  
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}

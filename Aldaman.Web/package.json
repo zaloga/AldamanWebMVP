@@ -6,7 +6,9 @@
   "scripts": {
     "build:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css",
     "watch:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css --watch",
-    "build": "npm run build:admin"
+    "build:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css",
+    "watch:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css --watch",
+    "build": "npm run build:admin && npm run build:web"
   },
   "keywords": [],
   "author": "",

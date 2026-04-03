@@ -1,8 +1,17 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="py-20 text-center">
+    <h1 class="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-7xl">
+        Welcome to Aldaman
+    </h1>
+    <p class="mt-6 text-lg leading-8 text-slate-600 max-w-2xl mx-auto">
+        Your modern platform for content management and digital experiences. 
+        Learn about <a href="https://learn.microsoft.com/aspnet/core" class="font-semibold text-indigo-600 hover:text-indigo-500">building Web apps with ASP.NET Core</a>.
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+        <a asp-controller="Account" asp-action="Login" class="btn-primary">Get started</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-slate-900 transition-transform hover:translate-x-1 inline-flex items-center gap-1">Learn more <span aria-hidden="true">→</span></a>
+    </div>
 </div>

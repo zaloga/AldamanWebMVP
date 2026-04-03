@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@source "../Views/**/*.cshtml";
+@source "../Areas/Admin/Views/**/*.cshtml";
+@source "../wwwroot/js/**/*.js";
+
 
 @theme {
     --color-admin-primary: #1e293b;
@@ -14,4 +18,13 @@
     .nav-link-admin.active {
         @apply bg-slate-900 text-white border-l-4 border-blue-500;
     }
+}
+
+/* Fix for Bootstrap conflict with Tailwind utilities */
+.collapse:not(.show) {
+    display: none !important;
+}
+
+.navbar-collapse.collapse {
+    visibility: visible !important;
 }

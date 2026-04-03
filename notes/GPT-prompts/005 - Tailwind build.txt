@@ -1,1 +1,13 @@
+1.
+
 Rozchoď automatické buildování tailwind css během buldu SLN.
+
+2.
+
+proč stránka Login.cshtml
+stále vypadá, jak kdyby tam nebyly tailwind styly?
+
+3.
+
+je to mnohem lepší, ale zmizel mi link z horní lišty na přihlášení/odhlášení
+

@@ -1,0 +1,7 @@
+1.
+
+Nyní proveď vyčištění _Layout.cshtml - ponech zde pouze Tailwind CSS a co je přes Bootstrap, tak nahraď ekvivalentem v Tailwind. Stejně tak postupuj u věch views ve složce Views
+
+2.
+
+Nyní proveď vyčištění _AdminLayout.cshtml - ponech zde pouze Bootstrap a co je přes Tailwind, tak nahraď ekvivalentem v Bootstrap. Stejně tak postupuj u věch views ve složce Admin/Views
