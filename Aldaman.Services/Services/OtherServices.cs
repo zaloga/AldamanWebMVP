@@ -1,6 +1,10 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
-using Aldaman.Services.Dtos;
+using Aldaman.Services.Dtos.AdminDashboard;
+using Aldaman.Services.Dtos.ContactMessage;
+using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Dtos.Media;
+using Aldaman.Services.Dtos.SiteConfiguration;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -122,7 +126,7 @@ public sealed class ContactService : IContactService
                 Message = p.Message,
                 CreatedAtUtc = p.CreatedAtUtc,
                 SentAtUtc = p.SentAtUtc,
-                State = (Dtos.ContactMessageState)p.State
+                State = (ContactMessageState)p.State
             })
             .ToListAsync();
 

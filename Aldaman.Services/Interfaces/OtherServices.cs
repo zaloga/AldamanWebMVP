@@ -1,4 +1,8 @@
-using Aldaman.Services.Dtos;
+using Aldaman.Services.Dtos.AdminDashboard;
+using Aldaman.Services.Dtos.ContactMessage;
+using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Dtos.Media;
+using Aldaman.Services.Dtos.SiteConfiguration;
 
 namespace Aldaman.Services.Interfaces;
 

@@ -1,4 +1,4 @@
-namespace Aldaman.Services.Dtos;
+namespace Aldaman.Services.Dtos.ContactMessage;
 
 /// <summary>
 /// Data representing a contact message submission.
@@ -16,9 +16,3 @@ public class ContactMessageDto
     public ContactMessageState State { get; set; }
 }
 
-public enum ContactMessageState
-{
-    Pending,
-    Sent,
-    Failed
-}

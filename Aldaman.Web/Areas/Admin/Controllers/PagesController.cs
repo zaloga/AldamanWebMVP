@@ -1,4 +1,4 @@
-using Aldaman.Services.Dtos;
+using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,0 +1,23 @@
+1.
+
+look into all files with .sc extension and adjust them to respekcting this:
+
+- each class and each interface must be placed in its own separate `.cs` file
+- the file name must match the class or interface name exactly
+- the namespace must reflect the physical folder structure and file location within the project
+- do not place multiple unrelated classes or interfaces into a single file
+- keep the file structure aligned with the project structure so the location, namespace, and type name remain predictable and easy to navigate
+
+Examples:
+
+- file: `Services/Orders/OrderService.cs` -> type: `OrderService` -> namespace: `MyApp.Services.Orders`
+- file: `Services/Orders/IOrderService.cs` -> type: `IOrderService` -> namespace: `MyApp.Services.Orders`
+
+
+
+- tohle nedopadlo - chtělo to asi specifikovat kde přesně má koukat..
+
+
+2.
+
+Projdi Dtos a uprav tam vše aby to respektovalo bod 9.12 z GEMINI.md

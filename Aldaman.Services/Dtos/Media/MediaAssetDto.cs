@@ -1,4 +1,4 @@
-namespace Aldaman.Services.Dtos;
+namespace Aldaman.Services.Dtos.Media;
 
 /// <summary>
 /// Reference to a media file with its metadata.

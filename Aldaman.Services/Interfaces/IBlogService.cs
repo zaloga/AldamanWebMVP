@@ -1,4 +1,5 @@
-using Aldaman.Services.Dtos;
+using Aldaman.Services.Dtos.Blog;
+using Aldaman.Services.Dtos.General;
 
 namespace Aldaman.Services.Interfaces;
 
