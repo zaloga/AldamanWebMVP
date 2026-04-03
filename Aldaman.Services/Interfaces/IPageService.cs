@@ -18,9 +18,9 @@ public interface IPageService
     Task<PageDetailDto?> GetHomePageAsync(string culture);
 
     /// <summary>
-    /// Gets all pages for admin listing.
+    /// Gets all pages for admin listing with pagination, sorting and filtering.
     /// </summary>
-    Task<IEnumerable<PageListItemDto>> GetPagesAsync();
+    Task<PagedResultDto<PageListItemDto>> GetPagedPagesAsync(PaginationQuery query);
 
     /// <summary>
     /// Gets a page for editing in admin.

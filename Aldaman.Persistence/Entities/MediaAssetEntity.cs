@@ -32,6 +32,15 @@ public class MediaAssetEntity
 
     public bool IsActive { get; set; } = true;
 
-    // Navigation property
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public Guid? DeletedByUserId { get; set; }
+
+    public DateTime? UpdatedAtUtc { get; set; }
+    public Guid? UpdatedByUserId { get; set; }
+
+    // Navigation properties
     public virtual AppUser UploadedByUser { get; set; } = null!;
+    public virtual AppUser? UpdatedByUser { get; set; }
+    public virtual AppUser? DeletedByUser { get; set; }
 }

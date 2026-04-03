@@ -26,7 +26,10 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
             .HasMaxLength(256);
 
         builder.Property(x => x.SeoDescription)
-            .HasMaxLength(1024); // Sensible default for SEO description
+            .HasMaxLength(512);
+
+        builder.Property(x => x.SeoKeywords)
+            .HasMaxLength(512);
 
         builder.Property(x => x.SectionsJson)
             .IsRequired();

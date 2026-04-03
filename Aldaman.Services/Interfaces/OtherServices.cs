@@ -13,9 +13,9 @@ public interface IMediaService
     Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType);
 
     /// <summary>
-    /// Lists all media assets.
+    /// Lists all media assets with pagination and filtering.
     /// </summary>
-    Task<IEnumerable<MediaAssetDto>> ListAssetsAsync();
+    Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query);
 
     /// <summary>
     /// Gets a media asset's metadata by its ID.
@@ -39,14 +39,19 @@ public interface IContactService
     Task SubmitMessageAsync(ContactMessageDto dto, string clientIp, string userAgent);
 
     /// <summary>
-    /// Lists recent messages.
+    /// Lists messages with pagination, sorting and filtering.
     /// </summary>
-    Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync();
+    Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query);
 
     /// <summary>
     /// Marks a message as handled.
     /// </summary>
     Task MarkAsHandledAsync(Guid id);
+    
+    /// <summary>
+    /// Deletes a message from the system (soft delete).
+    /// </summary>
+    Task DeleteMessageAsync(Guid id);
 }
 
 /// <summary>

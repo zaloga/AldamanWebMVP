@@ -1,0 +1,7 @@
+1.
+
+Pro controllery v admin části Controllers mi připrav přílušné Index views, kde bude list pro výpis dat z DB pro souvisejí entity. Drž se při tom instrukcí v GEMINI.md.
+
+2.
+
+V service ContactService co je v OtherServices.cs dodělej metodu DeleteMessageAsync(Guid id) a přidej ji i do jejího interface.

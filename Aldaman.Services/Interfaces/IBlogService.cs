@@ -18,9 +18,14 @@ public interface IBlogService
     Task<BlogPostDetailDto?> GetPostBySlugAsync(string slug, string culture);
 
     /// <summary>
+    /// Gets a paged list of blog posts for administrative view.
+    /// </summary>
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAdminAsync(PaginationQuery query, string? culture = null);
+
+    /// <summary>
     /// Gets a paged list of blog posts.
     /// </summary>
-    Task<IEnumerable<BlogPostListItemDto>> GetPagedPostsAsync(int page, int pageSize, string culture);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAsync(int page, int pageSize, string culture);
 
     /// <summary>
     /// Gets a blog post for editing in admin.

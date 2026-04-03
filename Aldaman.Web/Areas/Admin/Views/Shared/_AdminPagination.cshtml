@@ -1,0 +1,51 @@
+@using System.Net
+@model Aldaman.Services.Dtos.PagedResultDto<object>
+@{
+    var query = ViewData["Query"] as Aldaman.Services.Dtos.PaginationQuery ?? new Aldaman.Services.Dtos.PaginationQuery();
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
+}
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted small">
+            Showing <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> to 
+            <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> of 
+            <span class="fw-semibold">@Model.TotalCount</span> results
+        </div>
+        
+        <ul class="pagination pagination-sm mb-0">
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link" href="@GetPageUrl(Model.Page - 1)" tabindex="-1">Previous</a>
+            </li>
+            
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                if (i == 1 || i == Model.TotalPages || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                {
+                    <li class="page-item @(i == Model.Page ? "active" : "")">
+                        <a class="page-link" href="@GetPageUrl(i)">@i</a>
+                    </li>
+                }
+                else if (i == 2 || i == Model.TotalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+            
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link" href="@GetPageUrl(Model.Page + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@functions {
+    string GetPageUrl(int page)
+    {
+        var queryParams = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
+        queryParams["page"] = page.ToString();
+        var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={WebUtility.UrlEncode(x.Value)}"));
+        return $"{Context.Request.Path}?{queryString}";
+    }
+}

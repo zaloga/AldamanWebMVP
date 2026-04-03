@@ -10,6 +10,7 @@ public class PageListItemDto
     public string RouteSegment { get; set; } = string.Empty;
     public bool IsHomePage { get; set; }
     public bool IsActive { get; set; }
+    public int DefaultSortOrder { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }
 
@@ -18,11 +19,14 @@ public class PageListItemDto
 /// </summary>
 public class PageDetailDto
 {
+    public Guid Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string? SeoTitle { get; set; }
     public string? SeoDescription { get; set; }
+    public string? SeoKeywords { get; set; }
+    public string? SectionsJson { get; set; }
     public List<PageSectionDto> Sections { get; set; } = new();
 }
 
@@ -53,6 +57,18 @@ public class PageEditDto
     public string Slug { get; set; } = string.Empty;
     public string? SeoTitle { get; set; }
     public string? SeoDescription { get; set; }
+    public string? SeoKeywords { get; set; }
     public List<PageSectionDto> Sections { get; set; } = new();
     public bool IsPublished { get; set; }
+    public List<PageContentDto> Contents { get; set; } = new();
+}
+
+public class PageContentDto
+{
+    public string LanguageCode { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string? Sections { get; set; }
+    public string? SeoTitle { get; set; }
+    public string? SeoDescription { get; set; }
+    public string? SeoKeywords { get; set; }
 }

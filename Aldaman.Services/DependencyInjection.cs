@@ -9,6 +9,10 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IBlogService, BlogService>();
+        services.AddScoped<IPageService, PageService>();
+        services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IContactService, ContactService>();
 
         // Register other services here as they are implemented
 

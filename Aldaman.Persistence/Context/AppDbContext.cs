@@ -24,5 +24,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
         // Apply all configurations from the current assembly
         builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        // Global query filters for soft delete
+        builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<PageDefinitionEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
     }
 }

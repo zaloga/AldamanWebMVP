@@ -18,9 +18,14 @@ public class BlogPostEntity
 
     public Guid UpdatedByUserId { get; set; }
 
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public Guid? DeletedByUserId { get; set; }
+
     // Navigation properties
     public virtual MediaAssetEntity? CoverMediaAsset { get; set; }
     public virtual AppUser CreatedByUser { get; set; } = null!;
     public virtual AppUser UpdatedByUser { get; set; } = null!;
+    public virtual AppUser? DeletedByUser { get; set; }
     public virtual ICollection<BlogPostTranslationEntity> Translations { get; set; } = new List<BlogPostTranslationEntity>();
 }

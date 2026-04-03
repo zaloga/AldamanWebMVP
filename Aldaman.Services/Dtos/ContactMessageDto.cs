@@ -12,5 +12,13 @@ public class ContactMessageDto
     public string? Subject { get; set; }
     public string Message { get; set; } = string.Empty;
     public DateTime CreatedAtUtc { get; set; }
-    public string State { get; set; } = string.Empty; // Mapped from ContactMessageState (Pending, Handled, Spam, Failure)
+    public DateTime? SentAtUtc { get; set; }
+    public ContactMessageState State { get; set; }
+}
+
+public enum ContactMessageState
+{
+    Pending,
+    Sent,
+    Failed
 }

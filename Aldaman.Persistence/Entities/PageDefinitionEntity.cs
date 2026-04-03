@@ -36,6 +36,14 @@ public class PageDefinitionEntity
 
     public DateTime? UpdatedAtUtc { get; set; }
 
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public Guid? DeletedByUserId { get; set; }
+
+    public Guid? UpdatedByUserId { get; set; }
+
     // Navigation properties
+    public virtual AppUser? UpdatedByUser { get; set; }
+    public virtual AppUser? DeletedByUser { get; set; }
     public virtual ICollection<PageContentEntity> Contents { get; set; } = new List<PageContentEntity>();
 }

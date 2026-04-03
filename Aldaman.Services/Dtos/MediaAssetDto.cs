@@ -14,4 +14,10 @@ public class MediaAssetDto
     public long FileSize { get; set; }
     public int? Width { get; set; }
     public int? Height { get; set; }
+    
+    // Admin specific
+    public DateTime UploadedAtUtc { get; set; }
+    public bool IsImage { get; set; }
+    public bool IsVideo { get; set; }
+    public bool IsActive { get; set; }
 }
