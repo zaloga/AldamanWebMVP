@@ -8,54 +8,22 @@
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
 </head>
 <body class="h-100 admin-layout">
-    <div class="d-flex min-vh-100">
-        <!-- Sidebar -->
-        <div class="admin-sidebar shadow">
-            <div class="admin-sidebar-header">
-                <span class="h5 mb-0 fw-bold tracking-tight">Aldaman Admin</span>
-            </div>
-            
-            <nav class="admin-sidebar-nav nav-pills flex-column flex-1">
-                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link-admin @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
-                    <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    Dashboard
-                </a>
-                
-                <a asp-area="Admin" asp-controller="Pages" asp-action="Index" class="nav-link-admin @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pages" ? "active" : "")">
-                    <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Pages
-                </a>
-                
-                <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="nav-link-admin @(ViewContext.RouteData.Values["controller"]?.ToString() == "Blog" ? "active" : "")">
-                    <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"></path></svg>
-                    Blog
-                </a>
-                
-                <a asp-area="Admin" asp-controller="Media" asp-action="Index" class="nav-link-admin @(ViewContext.RouteData.Values["controller"]?.ToString() == "Media" ? "active" : "")">
-                    <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    Media
-                </a>
-                
-                <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index" class="nav-link-admin @(ViewContext.RouteData.Values["controller"]?.ToString() == "ContactMessages" ? "active" : "")">
-                    <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Messages
-                </a>
-                
-                <div class="mt-auto pt-3 border-top border-secondary">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link-admin">
-                        <svg width="20" height="20" class="me-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                        Back to Site
-                    </a>
-                </div>
-            </nav>
-        </div>
-
+    <div class="min-vh-100">
         <!-- Main Content Wrapper -->
         <div class="admin-content-wrapper shadow-none">
             <!-- Header -->
             <header class="admin-header shadow-sm mt-0 border-bottom">
-                <h1 class="h6 mb-0 fw-semibold text-dark">@ViewData["Title"]</h1>
+                <div class="d-flex align-items-center">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-decoration-none text-dark d-flex align-items-center me-4">
+                        <span class="h5 mb-0 fw-bold tracking-tight">Aldaman Admin</span>
+                    </a>
+                    <h1 class="h6 mb-0 fw-semibold text-muted border-start ps-4">@ViewData["Title"]</h1>
+                </div>
                 <div class="d-flex align-items-center gap-3">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-link btn-sm text-secondary p-0 text-decoration-none d-flex align-items-center">
+                        <svg width="16" height="16" class="me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        Back to Site
+                    </a>
                     <span class="small fw-medium text-muted">Admin User</span>
                     <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
                         <button type="submit" class="btn btn-link btn-sm text-primary p-0 text-decoration-none">Sign out</button>
