@@ -1,9 +1,15 @@
 1. 
 
-potřebuji doimplementovat akci controlletu pro /Admin/Media/Upload v 
+potřebuji doimplementovat akci controlletu pro /Admin/Media/Upload v MediaController.cs, stejně tak potřebuji doimplementovat i příslušnou metodu v MediaService.cs, která se bude z controlleru volat
 
-MediaController.cs
-, stejně tak potřebuji doimplementovat i příslušnou metodu v 
+2.
 
-MediaService.cs
-, která se bude z controlleru volat
+v MediaService.cs mám teď chybu "The type or namespace name 'IWebHostEnvironment' could not be found (are you missing a using directive or an assembly reference?)". Chci řešení bez injektování IWebHostEnvironment, ale injctnout přímo jen tu cestu k WebRootPath.
+
+3.
+
+ještě mám chybu v Upload.cshtml: "The name 'keyframes' does not exist in the current context". To potřebuji vyřešit
+
+4.
+
+Ještě doimplementuj akci pro Update v MediaController.cs a související metodu v MediaService.cs
