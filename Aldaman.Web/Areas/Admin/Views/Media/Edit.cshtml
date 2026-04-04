@@ -1,0 +1,69 @@
+@using Aldaman.Services.Dtos.Media
+@model UpdateMediaAssetDto
+@{
+    ViewData["Title"] = "Edit Media Metadata";
+    var relativePath = ViewData["RelativePath"] as string;
+    var isImage = (bool)ViewData["IsImage"];
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h4 mb-0">Edit Media Metadata</h2>
+        <p class="text-muted small mb-0">Update the alternative text and title for this asset.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Back to Library
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="bg-white shadow-sm border p-4 rounded-3 text-center mb-4">
+            <h3 class="h6 fw-bold mb-3">Asset Preview</h3>
+            <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
+                @if (isImage)
+                {
+                    <img src="@relativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="Asset Preview">
+                }
+                else
+                {
+                    <svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="text-muted"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                }
+            </div>
+            <div class="mt-3 text-break small font-monospace text-muted">@relativePath</div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="bg-white shadow-sm border p-4 rounded-3">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label asp-for="Title" class="form-label fw-bold">Title</label>
+                    <input asp-for="Title" class="form-control py-2" placeholder="Descriptive title..." />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="AltText" class="form-label fw-bold">Alt Text (Alternative Text)</label>
+                    <textarea asp-for="AltText" class="form-control py-2" rows="3" placeholder="Alt text for accessibility..."></textarea>
+                    <span asp-validation-for="AltText" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox">
+                        <label asp-for="IsActive" class="form-check-label fw-bold ms-2">Asset is Active</label>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                    <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

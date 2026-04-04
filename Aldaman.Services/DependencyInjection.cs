@@ -6,12 +6,12 @@ namespace Aldaman.Services;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, string webRootPath)
     {
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IBlogService, BlogService>();
         services.AddScoped<IPageService, PageService>();
-        services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IMediaService>(sp => new MediaService(sp.GetRequiredService<Aldaman.Persistence.Context.AppDbContext>(), webRootPath));
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 

@@ -24,6 +24,11 @@ public interface IMediaService
     Task<MediaAssetDto?> GetAssetAsync(Guid id);
 
     /// <summary>
+    /// Updates a media asset's metadata.
+    /// </summary>
+    Task UpdateAssetAsync(UpdateMediaAssetDto dto);
+
+    /// <summary>
     /// Deletes a media asset from the system.
     /// </summary>
     Task DeleteAssetAsync(Guid id);

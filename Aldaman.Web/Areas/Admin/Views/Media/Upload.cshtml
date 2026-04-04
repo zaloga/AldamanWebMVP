@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Upload Media";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h4 mb-0">Upload New Media</h2>
+        <p class="text-muted small mb-0">Upload images or videos to your media library.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Back to Library
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="bg-white shadow-sm border p-5 text-center rounded-3 overflow-hidden">
+            <form asp-action="Upload" method="post" enctype="multipart/form-data" id="uploadForm">
+                @Html.AntiForgeryToken()
+                
+                <div id="dropZone" class="py-5 border border-2 border-dashed rounded-4 bg-light cursor-pointer hover-bg-light transition-all d-flex flex-column align-items-center justify-content-center mb-4" style="min-height: 300px; border-color: #cbd5e1; transition: all 0.2s ease-in-out;">
+                    <div class="mb-4 text-primary bg-primary bg-opacity-10 p-3 rounded-circle" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Click to upload or drag and drop</h3>
+                    <p class="text-muted small mb-0">Files up to 50MB (Images, Videos, Documents)</p>
+                    <input type="file" name="file" id="fileInput" class="d-none" onchange="handleFileChange(this)">
+                </div>
+
+                <div id="filePreview" class="d-none mb-4 p-3 bg-light rounded border border-primary border-opacity-25 text-start animate-fade-in">
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="fileIcon" class="p-2 bg-primary text-white rounded">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div id="fileName" class="fw-bold text-dark text-truncate">file-name.jpg</div>
+                            <div id="fileSize" class="small text-muted">0 KB</div>
+                        </div>
+                        <button type="button" class="btn btn-link text-danger p-0" onclick="resetFile()">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" id="submitBtn" class="btn btn-primary py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" disabled>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Upload to Library
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    #dropZone:hover {
+        background-color: #f1f5f9 !important;
+        border-color: #3b82f6 !important;
+    }
+    #dropZone.drag-over {
+        background-color: #eff6ff !important;
+        border-color: #2563eb !important;
+        transform: scale(0.99);
+    }
+    .cursor-pointer { cursor: pointer; }
+    .transition-all { transition: all 0.2s ease-in-out; }
+    @@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+</style>
+
+@section Scripts {
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const fileNameDisp = document.getElementById('fileName');
+        const fileSizeDisp = document.getElementById('fileSize');
+        const submitBtn = document.getElementById('submitBtn');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        ['dragleave', 'dragend'].forEach(type => {
+            dropZone.addEventListener(type, () => {
+                dropZone.classList.remove('drag-over');
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileChange(fileInput);
+            }
+        });
+
+        function handleFileChange(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                fileNameDisp.textContent = file.name;
+                fileSizeDisp.textContent = (file.size / 1024).toFixed(1) + ' KB';
+                filePreview.classList.remove('d-none');
+                submitBtn.disabled = false;
+                dropZone.classList.add('d-none');
+            }
+        }
+
+        function resetFile() {
+            fileInput.value = '';
+            filePreview.classList.add('d-none');
+            submitBtn.disabled = true;
+            dropZone.classList.remove('d-none');
+        }
+    </script>
+}

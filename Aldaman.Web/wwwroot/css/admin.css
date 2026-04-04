@@ -675,9 +675,6 @@
   .max-w-md {
     max-width: var(--container-md);
   }
-  .flex-1 {
-    flex: 1;
-  }
   .flex-shrink {
     flex-shrink: 1;
   }
@@ -901,6 +898,10 @@
   .border-l {
     border-left-style: var(--tw-border-style);
     border-left-width: 1px;
+  }
+  .border-dashed {
+    --tw-border-style: dashed;
+    border-style: dashed;
   }
   .border-black {
     border-color: var(--color-black);
@@ -1620,22 +1621,6 @@
     padding: 1.5rem;
     background-color: #f8fafc;
     min-width: 0;
-  }
-
-  .stats-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    height: 100%;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-
-  .stats-card-link:hover {
-    transform: translateY(-4px);
-  }
-
-  .stats-card-link:hover .stats-card {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
   }
 }
 .collapse:not(.show) {

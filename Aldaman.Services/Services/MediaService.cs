@@ -1,4 +1,6 @@
+using System.Drawing;
 using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
@@ -9,15 +11,19 @@ namespace Aldaman.Services.Services;
 public sealed class MediaService : IMediaService
 {
     private AppDbContext Context { get; }
+    private string WebRootPath { get; }
 
-    public MediaService(AppDbContext context)
+    public MediaService(AppDbContext context, string webRootPath)
     {
         Context = context;
+        WebRootPath = webRootPath;
     }
 
     public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query)
     {
-        var dbQuery = Context.MediaAssets.AsQueryable();
+        var dbQuery = Context.MediaAssets
+            .Where(p => !p.IsDeleted)
+            .AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
@@ -38,22 +44,7 @@ public sealed class MediaService : IMediaService
         var items = await dbQuery
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
-            .Select(p => new MediaAssetDto
-            {
-                Id = p.Id,
-                OriginalFileName = p.OriginalFileName,
-                RelativePath = p.RelativePath,
-                ContentType = p.ContentType,
-                FileSize = p.FileSize,
-                Width = p.Width,
-                Height = p.Height,
-                AltText = p.AltText,
-                Title = p.Title,
-                UploadedAtUtc = p.CreatedAtUtc,
-                IsImage = p.IsImage,
-                IsVideo = p.IsVideo,
-                IsActive = p.IsActive
-            })
+            .Select(p => Map(p))
             .ToListAsync();
 
         return new PagedResultDto<MediaAssetDto>
@@ -65,8 +56,84 @@ public sealed class MediaService : IMediaService
         };
     }
 
-    public Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType) => throw new NotImplementedException();
-    public Task<MediaAssetDto?> GetAssetAsync(Guid id) => throw new NotImplementedException();
+    public async Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType)
+    {
+        var uploadsFolder = Path.Combine(WebRootPath, "uploads");
+        if (!Directory.Exists(uploadsFolder))
+        {
+            Directory.CreateDirectory(uploadsFolder);
+        }
+
+        var extension = Path.GetExtension(fileName);
+        var storedFileName = $"{Guid.NewGuid()}{extension}";
+        var physicalPath = Path.Combine(uploadsFolder, storedFileName);
+        var relativePath = $"/uploads/{storedFileName}";
+
+        using (var fs = new FileStream(physicalPath, FileMode.Create))
+        {
+            await fileStream.CopyToAsync(fs);
+        }
+
+        var isImage = contentType.StartsWith("image/");
+        int? width = null;
+        int? height = null;
+
+        if (isImage)
+        {
+            try
+            {
+                using (var image = Image.FromFile(physicalPath))
+                {
+                    width = image.Width;
+                    height = image.Height;
+                }
+            }
+            catch
+            {
+                // Silently fail if not a valid image
+                isImage = false;
+            }
+        }
+
+        var asset = new MediaAssetEntity
+        {
+            OriginalFileName = fileName,
+            StoredFileName = storedFileName,
+            RelativePath = relativePath,
+            ContentType = contentType,
+            FileSize = fileStream.Length,
+            IsImage = isImage,
+            IsVideo = contentType.StartsWith("video/"),
+            Width = width,
+            Height = height,
+            IsActive = true
+        };
+
+        Context.MediaAssets.Add(asset);
+        await Context.SaveChangesAsync();
+
+        return Map(asset);
+    }
+
+    public async Task<MediaAssetDto?> GetAssetAsync(Guid id)
+    {
+        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        return asset != null ? Map(asset) : null;
+    }
+
+    public async Task UpdateAssetAsync(UpdateMediaAssetDto dto)
+    {
+        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id && !p.IsDeleted);
+        if (asset != null)
+        {
+            asset.AltText = dto.AltText;
+            asset.Title = dto.Title;
+            asset.IsActive = dto.IsActive;
+            asset.UpdatedAtUtc = DateTime.UtcNow;
+
+            await Context.SaveChangesAsync();
+        }
+    }
 
     public async Task DeleteAssetAsync(Guid id)
     {
@@ -77,5 +144,25 @@ public sealed class MediaService : IMediaService
             asset.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
+    }
+
+    private static MediaAssetDto Map(MediaAssetEntity p)
+    {
+        return new MediaAssetDto
+        {
+            Id = p.Id,
+            OriginalFileName = p.OriginalFileName,
+            RelativePath = p.RelativePath,
+            ContentType = p.ContentType,
+            FileSize = p.FileSize,
+            Width = p.Width,
+            Height = p.Height,
+            AltText = p.AltText,
+            Title = p.Title,
+            UploadedAtUtc = p.CreatedAtUtc,
+            IsImage = p.IsImage,
+            IsVideo = p.IsVideo,
+            IsActive = p.IsActive
+        };
     }
 }

@@ -1,0 +1,9 @@
+1. 
+
+potřebuji doimplementovat akci controlletu pro /Admin/Media/Upload v 
+
+MediaController.cs
+, stejně tak potřebuji doimplementovat i příslušnou metodu v 
+
+MediaService.cs
+, která se bude z controlleru volat

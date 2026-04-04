@@ -27,7 +27,7 @@ public class Program
         builder.Services.ConfigureApplicationCookie();
         builder.Services.AddApplicationAuthorization();
 
-        builder.Services.AddApplicationServices();
+        builder.Services.AddApplicationServices(builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
