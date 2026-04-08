@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Controllers;
 
-[Route("kontakt")]  // TODO for more languages
-public class ContactController : Controller
+public sealed class ContactController : Controller
 {
+    private const string UnknownClientIp = "unknown";
+    private const string UnknownUserAgent = "unknown";
+
     private IContactService ContactService { get; }
 
     public ContactController(IContactService contactService)
@@ -18,13 +20,14 @@ public class ContactController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        ContactFormViewModel viewModel = new();
-        return View(viewModel);
+        return View(new ContactFormViewModel());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(ContactFormViewModel viewModel)
+    public async Task<IActionResult> Submit(
+        ContactFormViewModel viewModel,
+        CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
@@ -39,15 +42,21 @@ public class ContactController : Controller
             Message = viewModel.Message
         };
 
-        string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown"; // TODO global constant
-        string userAgent = HttpContext.Request.Headers.UserAgent.ToString() ?? "unknown";
+        string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? UnknownClientIp;
+        string userAgent = string.IsNullOrWhiteSpace(HttpContext.Request.Headers.UserAgent.ToString())
+            ? UnknownUserAgent
+            : HttpContext.Request.Headers.UserAgent.ToString();
 
-        await ContactService.SubmitMessageAsync(dto, clientIp, userAgent);
+        await ContactService.SubmitMessageAsync(
+            dto,
+            clientIp,
+            userAgent
+            /*cancellationToken*/);
 
         return RedirectToAction(nameof(Success));
     }
 
-    [HttpGet("uspech")]
+    [HttpGet]
     public IActionResult Success()
     {
         return View();

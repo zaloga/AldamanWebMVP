@@ -1,0 +1,1 @@
+V ContactFormViewModelValidator.csjsou "WithMessage" zprávy natvrdo v kódu - pro vícejazyčný web bude fungovat, pokud se přesunou do resx. Připrav příslušné resx a  použij IStringLocalizer, Tento způsob je nejvíce "propojený" se standardní lokalizací v ASP.NET Core. Do konstruktoru validatoru si necháte přes DI (Dependency Injection) předat IStringLocalizer.

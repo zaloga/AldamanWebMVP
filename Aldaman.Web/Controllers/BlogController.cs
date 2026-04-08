@@ -1,3 +1,4 @@
+using System.Globalization;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
@@ -6,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Controllers;
 
-[Route("clanky")] // TODO for more languages
-public class BlogController : Controller
+public sealed class BlogController : Controller
 {
-    private const string CultureCode = "cs-CZ"; // TODO for more languages
+    private const int DefaultPageSize = 10;
+
     private IBlogService BlogService { get; }
 
     public BlogController(IBlogService blogService)
@@ -18,12 +19,17 @@ public class BlogController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] int p = 1)
+    public async Task<IActionResult> Index([FromQuery] int p = 1, CancellationToken cancellationToken = default)
     {
-        int pageSize = 10;
-        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedPostsAsync(p, pageSize, CultureCode);
+        string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        BlogListViewModel viewModel = new()
+        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedPostsAsync(
+            p,
+            DefaultPageSize,
+            cultureCode
+            /*cancellationToken*/);
+
+        var viewModel = new BlogListViewModel
         {
             Posts = pagedPosts
         };
@@ -31,21 +37,24 @@ public class BlogController : Controller
         return View(viewModel);
     }
 
-    [HttpGet("{slug}")]
-    public async Task<IActionResult> Detail(string slug)
+    [HttpGet]
+    public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken)
     {
-        BlogPostDetailDto? postDetail = await BlogService.GetPostBySlugAsync(slug, CultureCode);
+        string cultureCode = CultureInfo.CurrentUICulture.Name;
+
+        BlogPostDetailDto? postDetail = await BlogService.GetPostBySlugAsync(
+            slug,
+            cultureCode
+            /*cancellationToken*/);
 
         if (postDetail is null)
         {
             return NotFound();
         }
 
-        BlogPostViewModel viewModel = new()
+        return View(new BlogPostViewModel
         {
             Post = postDetail
-        };
-
-        return View(viewModel);
+        });
     }
 }
