@@ -12,7 +12,7 @@
     @if (Model.Post.CoverImage != null)
     {
         <div class="mb-8">
-            <img src="@Model.Post.CoverImage.Url" alt="@Model.Post.Title" class="w-full h-auto rounded-lg shadow-md" />
+            <img src="@Model.Post.CoverImage.RelativePath" alt="@Model.Post.Title" class="w-full h-auto rounded-lg shadow-md" />
         </div>
     }
 
