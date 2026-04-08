@@ -34,7 +34,11 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();
 
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+        builder.Services.AddControllersWithViews()
+            .AddViewLocalization()
+            .AddDataAnnotationsLocalization();
 
         var app = builder.Build();
 
@@ -51,6 +55,14 @@ public class Program
         }
 
         app.UseMiddleware<GlobalExceptionMiddleware>();
+
+        var supportedCultures = new[] { "cs", "en" }; // TODO for more languages
+        var localizationOptions = new RequestLocalizationOptions()
+            .SetDefaultCulture(supportedCultures[0])
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
+
+        app.UseRequestLocalization(localizationOptions);
 
         app.UseHttpsRedirection();
         app.UseRouting();

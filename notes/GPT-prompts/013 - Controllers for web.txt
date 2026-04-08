@@ -1,0 +1,11 @@
+ve složce 
+
+Controllers
+ přidej controllery: 
+•	PageController 
+•	BlogController 
+•	ContactController 
+
+Tyto controllery budou sloužit pro z venku viditelné stránky.
+
+Připrav i související views a services pro load a zobrazení dat, co jsou v souvisejících entitách.

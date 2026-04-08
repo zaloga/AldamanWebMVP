@@ -1,0 +1,22 @@
+@model Aldaman.Web.ViewModels.BlogPostViewModel
+@{
+    ViewData["Title"] = Model.Post.SeoTitle ?? Model.Post.Title;
+}
+
+<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="text-center border-b border-gray-200 pb-8 mb-8">
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
+        <p class="text-xl text-gray-500">@Model.Post.Perex</p>
+    </div>
+    
+    @if (Model.Post.CoverImage != null)
+    {
+        <div class="mb-8">
+            <img src="@Model.Post.CoverImage.Url" alt="@Model.Post.Title" class="w-full h-auto rounded-lg shadow-md" />
+        </div>
+    }
+
+    <div class="prose prose-lg prose-indigo text-gray-700 mx-auto">
+        @Html.Raw(Model.Post.BodyHtml)
+    </div>
+</div>
