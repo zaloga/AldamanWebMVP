@@ -1,0 +1,1 @@
+u entit v rámci složky Entities potřebuji unifikovat chování created/update/deleted při práci s entitami - ID usera brát podle toho, kdo přihlášený dělal tu danou úpravu.
