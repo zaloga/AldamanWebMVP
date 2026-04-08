@@ -41,5 +41,21 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
             .WithOne(x => x.PageDefinition)
             .HasForeignKey(x => x.PageDefinitionId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Audit Relationships
+        builder.HasOne(x => x.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.UpdatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.UpdatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.DeletedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.DeletedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

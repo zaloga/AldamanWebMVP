@@ -31,6 +31,31 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
         builder.Property(x => x.SeoDescription)
             .HasMaxLength(512);
 
+        builder.Property(x => x.CreatedAtUtc)
+            .IsRequired();
+
+        builder.Property(x => x.UpdatedAtUtc);
+
+        builder.Property(x => x.CreatedByUserId);
+
+        builder.Property(x => x.UpdatedByUserId);
+
+        // Audit Relationships
+        builder.HasOne(x => x.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.UpdatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.UpdatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.DeletedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.DeletedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         // Relationships
         builder.HasOne(x => x.BlogPost)
             .WithMany(x => x.Translations)

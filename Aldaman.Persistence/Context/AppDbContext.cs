@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;
     public DbSet<ContactMessageEntity> ContactMessages { get; set; } = null!;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    private IUserContext UserContext { get; }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserContext userContext)
         : base(options)
     {
+        UserContext = userContext;
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -27,8 +31,55 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
         // Global query filters for soft delete
         builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<BlogPostTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<PageDefinitionEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<PageContentEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateAuditFields();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        UpdateAuditFields();
+        return base.SaveChanges();
+    }
+
+    private void UpdateAuditFields()
+    {
+        var entries = ChangeTracker.Entries<BaseEntity>();
+        var currentUserId = UserContext.CurrentUserId;
+        var now = DateTime.UtcNow;
+
+        foreach (var entry in entries)
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAtUtc = now;
+                    entry.Entity.CreatedByUserId = currentUserId;
+                    entry.Entity.IsDeleted = false;
+                    entry.Entity.IsActive = true;
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.UpdatedAtUtc = now;
+                    entry.Entity.UpdatedByUserId = currentUserId;
+                    break;
+
+                case EntityState.Deleted:
+                    // Soft delete logic
+                    entry.State = EntityState.Modified;
+                    entry.Entity.IsDeleted = true;
+                    entry.Entity.DeletedAtUtc = now;
+                    entry.Entity.DeletedByUserId = currentUserId;
+                    break;
+            }
+        }
     }
 }

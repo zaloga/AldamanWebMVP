@@ -17,14 +17,13 @@ public class BlogPostConfiguration : IEntityTypeConfiguration<BlogPostEntity>
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        builder.Property(x => x.UpdatedAtUtc)
-            .IsRequired();
+        builder.Property(x => x.UpdatedAtUtc);
 
-        builder.Property(x => x.CreatedByUserId)
-            .IsRequired();
+        builder.Property(x => x.CreatedByUserId);
 
-        builder.Property(x => x.UpdatedByUserId)
-            .IsRequired();
+        builder.Property(x => x.UpdatedByUserId);
+
+        builder.Property(x => x.DeletedByUserId);
 
         // Relationships
         builder.HasOne(x => x.CoverMediaAsset)
@@ -40,6 +39,11 @@ public class BlogPostConfiguration : IEntityTypeConfiguration<BlogPostEntity>
         builder.HasOne(x => x.UpdatedByUser)
             .WithMany()
             .HasForeignKey(x => x.UpdatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.DeletedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.DeletedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Indexes

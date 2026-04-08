@@ -31,6 +31,9 @@ public class Program
 
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();
+
         builder.Services.AddControllersWithViews();
 
         var app = builder.Build();

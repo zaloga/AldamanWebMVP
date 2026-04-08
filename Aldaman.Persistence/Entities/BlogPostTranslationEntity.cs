@@ -1,8 +1,7 @@
 namespace Aldaman.Persistence.Entities;
 
-public class BlogPostTranslationEntity
+public class BlogPostTranslationEntity : BaseEntity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid BlogPostId { get; set; }
 

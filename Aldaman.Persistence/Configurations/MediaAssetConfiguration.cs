@@ -52,8 +52,18 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
 
         // Relationships
         builder.HasOne(x => x.CreatedByUser)
-            .WithMany() // Assuming we don't need a collection of MediaAssets on AppUser for now
+            .WithMany()
             .HasForeignKey(x => x.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.UpdatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.UpdatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.DeletedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.DeletedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Indexes
