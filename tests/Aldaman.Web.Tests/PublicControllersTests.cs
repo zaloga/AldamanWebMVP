@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Aldaman.Web.Tests;
 
-public class PublicControllersTests : IClassFixture<WebApplicationFactory<Program>> // TODO...
+public class PublicControllersTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
 
@@ -13,8 +13,10 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
     }
 
     [Theory]
-    [InlineData("/clanky")]
-    [InlineData("/kontakt")]
+    [InlineData("/cs")]
+    [InlineData("/cs/Home/Privacy")]
+    [InlineData("/cs/blog")]
+    [InlineData("/cs/contact")]
     public async Task Get_EndpointsReturnSuccessAndHtmlContentType(string url)
     {
         // Arrange
@@ -29,8 +31,8 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
     }
 
     [Theory]
-    [InlineData("/stranka/neexistujici-stranka")]
-    [InlineData("/clanky/neexistujici-clanek")]
+    [InlineData("/cs/page/neexistujici-stranka")]
+    [InlineData("/cs/blog/neexistujici-clanek")]
     public async Task Get_DetailEndpoints_ReturnNotFoundForMissingItems(string url)
     {
         // Arrange

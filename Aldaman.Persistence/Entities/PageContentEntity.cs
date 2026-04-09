@@ -5,6 +5,13 @@ namespace Aldaman.Persistence.Entities;
 /// </summary>
 public class PageContentEntity : BaseEntity
 {
+    public const int CultureCodeMaxLength = 5;
+    public const int TitleMaxLength = 256;
+    public const int SlugMaxLength = 256;
+    public const int SeoTitleMaxLength = 256;
+    public const int SeoDescriptionMaxLength = 512;
+    public const int SeoKeywordsMaxLength = 512;
+
     public Guid PageDefinitionId { get; set; }
 
     /// <summary>

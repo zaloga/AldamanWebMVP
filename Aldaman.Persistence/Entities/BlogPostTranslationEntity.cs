@@ -2,6 +2,13 @@ namespace Aldaman.Persistence.Entities;
 
 public class BlogPostTranslationEntity : BaseEntity
 {
+    public const int CultureCodeMaxLength = 5;
+    public const int TitleMaxLength = 256;
+    public const int SlugMaxLength = 256;
+    public const int PerexMaxLength = 1024;
+    public const int SeoTitleMaxLength = 256;
+    public const int SeoDescriptionMaxLength = 512;
+
 
     public Guid BlogPostId { get; set; }
 

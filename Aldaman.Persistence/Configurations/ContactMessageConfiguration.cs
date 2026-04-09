@@ -11,38 +11,38 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.LanguageCode)
-            .HasMaxLength(16)
+            .HasMaxLength(ContactMessageEntity.LanguageCodeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Name)
-            .HasMaxLength(128)
+            .HasMaxLength(ContactMessageEntity.NameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Email)
-            .HasMaxLength(256)
+            .HasMaxLength(ContactMessageEntity.EmailMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Phone)
-            .HasMaxLength(32);
+            .HasMaxLength(ContactMessageEntity.PhoneMaxLength);
 
         builder.Property(x => x.Subject)
-            .HasMaxLength(256);
+            .HasMaxLength(ContactMessageEntity.SubjectMaxLength);
 
         builder.Property(x => x.Message)
             .IsRequired();
 
         builder.Property(x => x.FailureReason)
-            .HasMaxLength(1024);
+            .HasMaxLength(ContactMessageEntity.FailureReasonMaxLength);
 
         builder.Property(x => x.ClientIp)
-            .HasMaxLength(64);
+            .HasMaxLength(ContactMessageEntity.ClientIpMaxLength);
 
         builder.Property(x => x.UserAgent)
-            .HasMaxLength(1024);
+            .HasMaxLength(ContactMessageEntity.UserAgentMaxLength);
 
         builder.Property(x => x.State)
             .HasConversion<string>()
-            .HasMaxLength(16);
+            .HasMaxLength(ContactMessageEntity.StateMaxLength);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();

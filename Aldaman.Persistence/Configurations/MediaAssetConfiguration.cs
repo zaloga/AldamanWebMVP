@@ -11,29 +11,29 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.OriginalFileName)
-            .HasMaxLength(256)
+            .HasMaxLength(MediaAssetEntity.OriginalFileNameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.StoredFileName)
-            .HasMaxLength(256)
+            .HasMaxLength(MediaAssetEntity.StoredFileNameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.RelativePath)
-            .HasMaxLength(512)
+            .HasMaxLength(MediaAssetEntity.RelativePathMaxLength)
             .IsRequired();
 
         builder.Property(x => x.ContentType)
-            .HasMaxLength(128)
+            .HasMaxLength(MediaAssetEntity.ContentTypeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.FileSize)
             .IsRequired();
 
         builder.Property(x => x.AltText)
-            .HasMaxLength(512);
+            .HasMaxLength(MediaAssetEntity.AltTextMaxLength);
 
         builder.Property(x => x.Title)
-            .HasMaxLength(512);
+            .HasMaxLength(MediaAssetEntity.TitleMaxLength);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();

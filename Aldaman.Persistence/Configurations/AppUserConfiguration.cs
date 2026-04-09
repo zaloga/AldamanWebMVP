@@ -9,7 +9,7 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
         builder.Property(u => u.DisplayName)
-            .HasMaxLength(256)
+            .HasMaxLength(AppUser.DisplayNameMaxLength)
             .IsRequired();
 
         builder.Property(u => u.CreatedAtUtc)

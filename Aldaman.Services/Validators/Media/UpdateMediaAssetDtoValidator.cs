@@ -1,3 +1,4 @@
+using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.Media;
 using FluentValidation;
 
@@ -5,12 +6,14 @@ namespace Aldaman.Services.Validators.Media;
 
 public class UpdateMediaAssetDtoValidator : AbstractValidator<UpdateMediaAssetDto>
 {
-    public UpdateMediaAssetDtoValidator() // TODO min length for alt text and title from constants from entity config
+    public UpdateMediaAssetDtoValidator()
     {
         RuleFor(x => x.Title)
-            .MaximumLength(200).WithMessage("Title cannot exceed 200 characters.");
+            .MinimumLength(MediaAssetEntity.TitleMinLength).WithMessage($"Title must be at least {MediaAssetEntity.TitleMinLength} characters.")
+            .MaximumLength(MediaAssetEntity.TitleMaxLength).WithMessage($"Title cannot exceed {MediaAssetEntity.TitleMaxLength} characters.");
 
         RuleFor(x => x.AltText)
-            .MaximumLength(500).WithMessage("Alt text cannot exceed 500 characters.");
+            .MinimumLength(MediaAssetEntity.AltTextMinLength).WithMessage($"Alt text must be at least {MediaAssetEntity.AltTextMinLength} characters.")
+            .MaximumLength(MediaAssetEntity.AltTextMaxLength).WithMessage($"Alt text cannot exceed {MediaAssetEntity.AltTextMaxLength} characters.");
     }
 }

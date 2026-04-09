@@ -11,14 +11,14 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.PageKey)
-            .HasMaxLength(256)
+            .HasMaxLength(PageDefinitionEntity.PageKeyMaxLength)
             .IsRequired();
 
         builder.HasIndex(x => x.PageKey)
             .IsUnique();
 
         builder.Property(x => x.RouteSegment)
-            .HasMaxLength(256)
+            .HasMaxLength(PageDefinitionEntity.RouteSegmentMaxLength)
             .IsRequired();
 
         builder.Property(x => x.IsHomePage)

@@ -4,6 +4,16 @@ namespace Aldaman.Persistence.Entities;
 
 public class ContactMessageEntity : BaseEntity
 {
+    public const int LanguageCodeMaxLength = 16;
+    public const int NameMaxLength = 128;
+    public const int EmailMaxLength = 256;
+    public const int PhoneMaxLength = 32;
+    public const int SubjectMaxLength = 256;
+    public const int FailureReasonMaxLength = 1024;
+    public const int ClientIpMaxLength = 64;
+    public const int UserAgentMaxLength = 1024;
+    public const int StateMaxLength = 16;
+
     public string LanguageCode { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;

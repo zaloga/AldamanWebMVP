@@ -11,25 +11,25 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CultureCode)
-            .HasMaxLength(5)
+            .HasMaxLength(BlogPostTranslationEntity.CultureCodeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Title)
-            .HasMaxLength(256)
+            .HasMaxLength(BlogPostTranslationEntity.TitleMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Slug)
-            .HasMaxLength(256)
+            .HasMaxLength(BlogPostTranslationEntity.SlugMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Perex)
-            .HasMaxLength(1024);
+            .HasMaxLength(BlogPostTranslationEntity.PerexMaxLength);
 
         builder.Property(x => x.SeoTitle)
-            .HasMaxLength(256);
+            .HasMaxLength(BlogPostTranslationEntity.SeoTitleMaxLength);
 
         builder.Property(x => x.SeoDescription)
-            .HasMaxLength(512);
+            .HasMaxLength(BlogPostTranslationEntity.SeoDescriptionMaxLength);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();

@@ -11,25 +11,25 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CultureCode)
-            .HasMaxLength(5)
+            .HasMaxLength(PageContentEntity.CultureCodeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Title)
-            .HasMaxLength(256)
+            .HasMaxLength(PageContentEntity.TitleMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Slug)
-            .HasMaxLength(256)
+            .HasMaxLength(PageContentEntity.SlugMaxLength)
             .IsRequired();
 
         builder.Property(x => x.SeoTitle)
-            .HasMaxLength(256);
+            .HasMaxLength(PageContentEntity.SeoTitleMaxLength);
 
         builder.Property(x => x.SeoDescription)
-            .HasMaxLength(512);
+            .HasMaxLength(PageContentEntity.SeoDescriptionMaxLength);
 
         builder.Property(x => x.SeoKeywords)
-            .HasMaxLength(512);
+            .HasMaxLength(PageContentEntity.SeoKeywordsMaxLength);
 
         builder.Property(x => x.SectionsJson)
             .IsRequired();
