@@ -1,19 +1,20 @@
 using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.Media;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Services.Validators.Media;
 
 public class UpdateMediaAssetDtoValidator : AbstractValidator<UpdateMediaAssetDto>
 {
-    public UpdateMediaAssetDtoValidator()
+    public UpdateMediaAssetDtoValidator(IStringLocalizer<UpdateMediaAssetDtoValidator> localizer)
     {
         RuleFor(x => x.Title)
-            .MinimumLength(MediaAssetEntity.TitleMinLength).WithMessage($"Title must be at least {MediaAssetEntity.TitleMinLength} characters.")
-            .MaximumLength(MediaAssetEntity.TitleMaxLength).WithMessage($"Title cannot exceed {MediaAssetEntity.TitleMaxLength} characters.");
+            .MinimumLength(MediaAssetEntity.TitleMinLength).WithMessage(localizer["TitleMinLength", MediaAssetEntity.TitleMinLength])
+            .MaximumLength(MediaAssetEntity.TitleMaxLength).WithMessage(localizer["TitleMaxLength", MediaAssetEntity.TitleMaxLength]);
 
         RuleFor(x => x.AltText)
-            .MinimumLength(MediaAssetEntity.AltTextMinLength).WithMessage($"Alt text must be at least {MediaAssetEntity.AltTextMinLength} characters.")
-            .MaximumLength(MediaAssetEntity.AltTextMaxLength).WithMessage($"Alt text cannot exceed {MediaAssetEntity.AltTextMaxLength} characters.");
+            .MinimumLength(MediaAssetEntity.AltTextMinLength).WithMessage(localizer["AltTextMinLength", MediaAssetEntity.AltTextMinLength])
+            .MaximumLength(MediaAssetEntity.AltTextMaxLength).WithMessage(localizer["AltTextMaxLength", MediaAssetEntity.AltTextMaxLength]);
     }
 }

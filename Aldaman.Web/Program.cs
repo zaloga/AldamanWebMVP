@@ -34,6 +34,7 @@ public class Program
             builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+        builder.Services.AddValidatorsFromAssemblyContaining<Aldaman.Services.Validators.Media.UpdateMediaAssetDtoValidator>();
 
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();

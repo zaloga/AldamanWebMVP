@@ -1,17 +1,18 @@
 using Aldaman.Web.Models.Account;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Validators.Account;
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
-    public LoginRequestValidator() // TODO localizations
+    public LoginRequestValidator(IStringLocalizer<LoginRequestValidator> localizer)
     {
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("E-mailová adresa je povinná.")
-            .EmailAddress().WithMessage("Zadejte platnou e-mailovou adresu.");
+            .NotEmpty().WithMessage(localizer["EmailRequired"])
+            .EmailAddress().WithMessage(localizer["EmailInvalid"]);
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Heslo je povinné.");
+            .NotEmpty().WithMessage(localizer["PasswordRequired"]);
     }
 }
