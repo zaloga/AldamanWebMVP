@@ -9,6 +9,7 @@ public class ContactMessageEntity : BaseEntity
     public const int EmailMaxLength = 256;
     public const int PhoneMaxLength = 32;
     public const int SubjectMaxLength = 256;
+    public const int MessageMaxLength = 2048;
     public const int FailureReasonMaxLength = 1024;
     public const int ClientIpMaxLength = 64;
     public const int UserAgentMaxLength = 1024;

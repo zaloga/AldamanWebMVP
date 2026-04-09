@@ -29,6 +29,7 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
             .HasMaxLength(ContactMessageEntity.SubjectMaxLength);
 
         builder.Property(x => x.Message)
+            .HasMaxLength(ContactMessageEntity.MessageMaxLength)
             .IsRequired();
 
         builder.Property(x => x.FailureReason)
