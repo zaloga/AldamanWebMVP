@@ -22,7 +22,6 @@ public sealed class MediaService : IMediaService
     public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query)
     {
         var dbQuery = Context.MediaAssets
-            .Where(p => !p.IsDeleted)
             .AsQueryable();
 
         // Filtering
@@ -117,13 +116,13 @@ public sealed class MediaService : IMediaService
 
     public async Task<MediaAssetDto?> GetAssetAsync(Guid id)
     {
-        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == id);
         return asset != null ? Map(asset) : null;
     }
 
     public async Task UpdateAssetAsync(UpdateMediaAssetDto dto)
     {
-        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id && !p.IsDeleted);
+        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id);
         if (asset != null)
         {
             asset.AltText = dto.AltText;
