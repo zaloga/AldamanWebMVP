@@ -40,7 +40,7 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();
 
-        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+        builder.Services.AddLocalization();
 
         LocalizationSettings localizationSettings = builder.Configuration
             .GetSection(LocalizationSettings.SectionName)
