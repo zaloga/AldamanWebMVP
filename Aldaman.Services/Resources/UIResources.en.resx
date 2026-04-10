@@ -187,4 +187,40 @@
   <data name="RequestId" xml:space="preserve">
     <value>Request ID:</value>
   </data>
+  <data name="Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="EventsSlug" xml:space="preserve">
+    <value>events</value>
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value>Shop</value>
+  </data>
+  <data name="ShopSlug" xml:space="preserve">
+    <value>shop</value>
+  </data>
+  <data name="Gallery" xml:space="preserve">
+    <value>Gallery</value>
+  </data>
+  <data name="GallerySlug" xml:space="preserve">
+    <value>gallery</value>
+  </data>
+  <data name="Offer" xml:space="preserve">
+    <value>Offer</value>
+  </data>
+  <data name="OfferSlug" xml:space="preserve">
+    <value>offer</value>
+  </data>
+  <data name="Promo" xml:space="preserve">
+    <value>Promo</value>
+  </data>
+  <data name="PromoSlug" xml:space="preserve">
+    <value>promo</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="LinksSlug" xml:space="preserve">
+    <value>links</value>
+  </data>
 </root>
