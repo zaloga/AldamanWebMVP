@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Aldaman.Persistence\Aldaman.Persistence.csproj" />
     <ProjectReference Include="..\Aldaman.Services\Aldaman.Services.csproj" />
+    <ProjectReference Include="..\Aldaman.Integrations.Email\Aldaman.Integrations.Email.csproj" />
   </ItemGroup>
 
   <Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules\.install-stamp">

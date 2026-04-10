@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aldaman.Persistence\Aldaman.Persistence.csproj" />
+    <ProjectReference Include="..\Aldaman.Integrations.Email\Aldaman.Integrations.Email.csproj" />
   </ItemGroup>
 
 </Project>

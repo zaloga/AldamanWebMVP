@@ -27,4 +27,9 @@ public interface IContactService
     /// Deletes a message from the system (soft delete).
     /// </summary>
     Task DeleteMessageAsync(Guid id);
+
+    /// <summary>
+    /// Gets the most recent contact messages.
+    /// </summary>
+    Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5);
 }

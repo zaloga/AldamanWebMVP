@@ -1,0 +1,9 @@
+1.
+
+v @contextScopeItemMentionpotřebuji doimplementovat SubmitMessageAsync a MarkAsHandledAsync a GetRecentMessagesAsync. Navrhni podobu těchto metod s ohledem na existující entitu @contextScopeItemMentiona dto @contextScopeItemMention. Zároveň v SubmitMessageAsync doplň potřebnou logiku pro skutečné odeslání mailu přes SMTP, potřebné credencials apod dej do konfigurace do appsettings.json.
+
+2.
+
+Use System.Net.Mail.. and all logic around the working with System.Net.Mail move to the 
+Aldaman.Integrations.Email
+project to the prepared folders...

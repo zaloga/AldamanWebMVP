@@ -3,6 +3,7 @@ using Aldaman.Persistence;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Services;
+using Aldaman.Integrations.Email;
 using Aldaman.Web.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
@@ -25,6 +26,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddPersistence(builder.Configuration);
+        builder.Services.AddEmailIntegration(builder.Configuration);
 
         // Add Identity and Authorization
         builder.Services.AddApplicationIdentity();

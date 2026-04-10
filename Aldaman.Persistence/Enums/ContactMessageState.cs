@@ -4,5 +4,6 @@ public enum ContactMessageState
 {
     Pending,
     Sent,
-    Failed
+    Failed,
+    Handled
 }
