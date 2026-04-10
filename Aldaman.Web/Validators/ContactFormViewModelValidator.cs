@@ -1,5 +1,6 @@
-using Aldaman.Web.ViewModels;
 using Aldaman.Persistence.Entities;
+using Aldaman.Services.Resources;
+using Aldaman.Web.ViewModels;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 
@@ -7,23 +8,22 @@ namespace Aldaman.Web.Validators;
 
 public class ContactFormViewModelValidator : AbstractValidator<ContactFormViewModel>
 {
-    public ContactFormViewModelValidator(IStringLocalizer<ContactFormViewModelValidator> localizer)
+    public ContactFormViewModelValidator(IStringLocalizer<ValidationResources> localizer)
     {
-        // TODO resx translates via some constants ot proxy class to avoid hardcoding the type name in the resx file
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(localizer["NameRequired"])
-            .MaximumLength(ContactMessageEntity.NameMaxLength).WithMessage(localizer["NameMaxLength", ContactMessageEntity.NameMaxLength]);
+            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.NameRequired])
+            .MaximumLength(ContactMessageEntity.NameMaxLength).WithMessage(localizer[ValidationResourceKeys.NameMaxLength, ContactMessageEntity.NameMaxLength]);
 
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage(localizer["EmailRequired"])
-            .EmailAddress().WithMessage(localizer["EmailInvalid"])
-            .MaximumLength(ContactMessageEntity.EmailMaxLength).WithMessage(localizer["EmailMaxLength", ContactMessageEntity.EmailMaxLength]);
+            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.EmailRequired])
+            .EmailAddress().WithMessage(localizer[ValidationResourceKeys.EmailInvalid])
+            .MaximumLength(ContactMessageEntity.EmailMaxLength).WithMessage(localizer[ValidationResourceKeys.EmailMaxLength, ContactMessageEntity.EmailMaxLength]);
 
         RuleFor(x => x.Subject)
-            .MaximumLength(ContactMessageEntity.SubjectMaxLength).WithMessage(localizer["SubjectMaxLength", ContactMessageEntity.SubjectMaxLength]);
+            .MaximumLength(ContactMessageEntity.SubjectMaxLength).WithMessage(localizer[ValidationResourceKeys.SubjectMaxLength, ContactMessageEntity.SubjectMaxLength]);
 
         RuleFor(x => x.Message)
-            .NotEmpty().WithMessage(localizer["MessageRequired"])
-            .MaximumLength(ContactMessageEntity.MessageMaxLength).WithMessage(localizer["MessageMaxLength", ContactMessageEntity.MessageMaxLength]);
+            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.MessageRequired])
+            .MaximumLength(ContactMessageEntity.MessageMaxLength).WithMessage(localizer[ValidationResourceKeys.MessageMaxLength, ContactMessageEntity.MessageMaxLength]);
     }
 }

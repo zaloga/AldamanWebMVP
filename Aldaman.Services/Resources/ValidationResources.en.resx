@@ -59,27 +59,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NameRequired" xml:space="preserve">
-    <value>Jméno je povinné.</value>
+    <value>Name is required.</value>
   </data>
   <data name="NameMaxLength" xml:space="preserve">
-    <value>Jméno může mít maximálně {0} znaků.</value>
+    <value>Name can have a maximum of {0} characters.</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
-    <value>E-mail je povinný.</value>
+    <value>E-mail is required.</value>
   </data>
   <data name="EmailInvalid" xml:space="preserve">
-    <value>Neplatný formát e-mailu.</value>
+    <value>Invalid e-mail format.</value>
   </data>
   <data name="EmailMaxLength" xml:space="preserve">
-    <value>E-mail může mít maximálně {0} znaků.</value>
+    <value>E-mail can have a maximum of {0} characters.</value>
   </data>
   <data name="SubjectMaxLength" xml:space="preserve">
-    <value>Předmět může mít maximálně {0} znaků.</value>
+    <value>Subject can have a maximum of {0} characters.</value>
   </data>
   <data name="MessageRequired" xml:space="preserve">
-    <value>Zpráva je povinná.</value>
+    <value>Message is required.</value>
   </data>
   <data name="MessageMaxLength" xml:space="preserve">
-    <value>Zpráva může mít maximálně {0} znaků.</value>
+    <value>Message can have a maximum of {0} characters.</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Password is required.</value>
+  </data>
+  <data name="TitleMinLength" xml:space="preserve">
+    <value>Title must be at least {0} characters.</value>
+  </data>
+  <data name="TitleMaxLength" xml:space="preserve">
+    <value>Title cannot exceed {0} characters.</value>
+  </data>
+  <data name="AltTextMinLength" xml:space="preserve">
+    <value>Alt text must be at least {0} characters.</value>
+  </data>
+  <data name="AltTextMaxLength" xml:space="preserve">
+    <value>Alt text cannot exceed {0} characters.</value>
   </data>
 </root>

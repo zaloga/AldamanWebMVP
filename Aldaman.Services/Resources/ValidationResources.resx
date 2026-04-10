@@ -59,27 +59,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NameRequired" xml:space="preserve">
-    <value>Name is required.</value>
+    <value>Jméno je povinné.</value>
   </data>
   <data name="NameMaxLength" xml:space="preserve">
-    <value>Name can have a maximum of {0} characters.</value>
+    <value>Jméno může mít maximálně {0} znaků.</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
-    <value>E-mail is required.</value>
+    <value>E-mail je povinný.</value>
   </data>
   <data name="EmailInvalid" xml:space="preserve">
-    <value>Invalid e-mail format.</value>
+    <value>Neplatný formát e-mailu.</value>
   </data>
   <data name="EmailMaxLength" xml:space="preserve">
-    <value>E-mail can have a maximum of {0} characters.</value>
+    <value>E-mail může mít maximálně {0} znaků.</value>
   </data>
   <data name="SubjectMaxLength" xml:space="preserve">
-    <value>Subject can have a maximum of {0} characters.</value>
+    <value>Předmět může mít maximálně {0} znaků.</value>
   </data>
   <data name="MessageRequired" xml:space="preserve">
-    <value>Message is required.</value>
+    <value>Zpráva je povinná.</value>
   </data>
   <data name="MessageMaxLength" xml:space="preserve">
-    <value>Message can have a maximum of {0} characters.</value>
+    <value>Zpráva může mít maximálně {0} znaků.</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Heslo je povinné.</value>
+  </data>
+  <data name="TitleMinLength" xml:space="preserve">
+    <value>Titulek musí mít alespoň {0} znaků.</value>
+  </data>
+  <data name="TitleMaxLength" xml:space="preserve">
+    <value>Titulek může mít maximálně {0} znaků.</value>
+  </data>
+  <data name="AltTextMinLength" xml:space="preserve">
+    <value>Alternativní text musí mít alespoň {0} znaků.</value>
+  </data>
+  <data name="AltTextMaxLength" xml:space="preserve">
+    <value>Alternativní text může mít maximálně {0} znaků.</value>
   </data>
 </root>
