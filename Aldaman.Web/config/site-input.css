@@ -4,22 +4,37 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-primary: #4f46e5; /* indigo-600 */
-  --color-brand-secondary: #0f172a; /* slate-900 */
+  --color-brand-primary: #a83f23; /* Terracotta Orange */
+  --color-brand-secondary: #4a332a; /* Earthy dark brown */
+  --color-brand-accent: #ffb100; /* Amber Yellow */
+  --color-brand-bg-light: #fdfaf6; /* Warm off-white / cream */
+  --color-brand-bg-dark: #1b1816; /* Very dark warm slate/brown */
+
+  /* Minimal dependencies: Use built-in system fonts */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* Custom styles for the public site */
 @layer base {
   body {
-    @apply font-sans text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
+    @apply font-sans h-full text-slate-800 bg-brand-bg-light dark:bg-brand-bg-dark dark:text-slate-200 transition-colors duration-300 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight text-slate-900 dark:text-white;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center rounded-lg bg-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all;
+    @apply inline-flex items-center rounded-sm bg-brand-primary px-6 py-2.5 text-sm font-semibold tracking-wide text-white shadow-sm hover:bg-brand-accent hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent transition-all duration-300 uppercase;
   }
   
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-sm dark:bg-slate-900/60 dark:border-white/10;
+  }
+
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }

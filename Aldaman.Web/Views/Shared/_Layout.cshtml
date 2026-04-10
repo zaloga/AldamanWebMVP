@@ -14,23 +14,23 @@
         }
     </script>
 </head>
-<body class="flex flex-col min-h-full bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-    <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800">
+<body class="flex flex-col min-h-full bg-brand-bg-light dark:bg-brand-bg-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <header class="glass sticky top-0 z-50 transition-colors duration-300">
         <nav class="container flex items-center justify-between h-16">
             <div class="flex items-center gap-8">
                 <a class="text-xl font-bold tracking-tight text-slate-900 dark:text-white" asp-area="" asp-controller="Home" asp-action="Index">Aldaman</a>
                 
                 <div class="hidden md:flex items-center gap-6">
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Home" asp-action="Index">@Localizer[UIResourceKeys.Home]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.EventsSlug].Value">@Localizer[UIResourceKeys.Events]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.ShopSlug].Value">@Localizer[UIResourceKeys.Shop]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.GallerySlug].Value">@Localizer[UIResourceKeys.Gallery]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.OfferSlug].Value">@Localizer[UIResourceKeys.Offer]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.PromoSlug].Value">@Localizer[UIResourceKeys.Promo]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.LinksSlug].Value">@Localizer[UIResourceKeys.Links]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer[UIResourceKeys.Privacy]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Home" asp-action="Index">@Localizer[UIResourceKeys.Home]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.EventsSlug].Value">@Localizer[UIResourceKeys.Events]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.ShopSlug].Value">@Localizer[UIResourceKeys.Shop]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.GallerySlug].Value">@Localizer[UIResourceKeys.Gallery]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.OfferSlug].Value">@Localizer[UIResourceKeys.Offer]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.PromoSlug].Value">@Localizer[UIResourceKeys.Promo]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.LinksSlug].Value">@Localizer[UIResourceKeys.Links]</a>
+                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer[UIResourceKeys.Privacy]</a>
                 </div>
             </div>
 
@@ -44,9 +44,9 @@
                 {
                     <div class="flex items-center gap-4">
                         <span class="hidden sm:inline text-xs text-slate-500 dark:text-slate-400">@User.Identity.Name</span>
-                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">@Localizer[UIResourceKeys.Admin]</a>
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-sm font-semibold text-brand-primary dark:text-brand-accent hover:text-slate-900 dark:hover:text-white">@Localizer[UIResourceKeys.Admin]</a>
                         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="inline">
-                            <button type="submit" class="text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border-l border-slate-200 dark:border-slate-800 pl-4">@Localizer[UIResourceKeys.Logout]</button>
+                            <button type="submit" class="text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent border-l border-slate-200 dark:border-white/10 pl-4">@Localizer[UIResourceKeys.Logout]</button>
                         </form>
                     </div>
                 }
@@ -58,13 +58,20 @@
         </nav>
     </header>
 
-    <main role="main" class="flex-grow py-12">
-        <div class="container">
+    <main role="main" class="flex-grow bg-brand-bg-light dark:bg-brand-bg-dark">
+        @if (ViewData["FullWidth"] as bool? == true)
+        {
             @RenderBody()
-        </div>
+        }
+        else
+        {
+            <div class="container py-12">
+                @RenderBody()
+            </div>
+        }
     </main>
 
-    <footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10">
+    <footer class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/10 py-10">
         <div class="container flex flex-col md:flex-row justify-between items-center gap-6">
             <p class="text-sm text-slate-500 dark:text-slate-400">
                 &copy; 2026 - @Localizer[UIResourceKeys.AldamanWebEssentials]
