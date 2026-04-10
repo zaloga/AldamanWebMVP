@@ -1,6 +1,6 @@
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Přístup odepřen";
+    ViewData["Title"] = Localizer[UIResourceKeys.AccessDenied];
 }
 
 <div class="min-h-[60vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -12,15 +12,15 @@
                 </svg>
             </div>
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
-                Přístup odepřen
+                @Localizer[UIResourceKeys.AccessDenied]
             </h2>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Nemáte dostatečná oprávnění pro přístup k této stránce.
+                @Localizer[UIResourceKeys.AccessDeniedMessage]
             </p>
         </div>
         <div class="pt-6">
             <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
-                Zpět na hlavní stránku
+                @Localizer[UIResourceKeys.BackToHome]
             </a>
         </div>
     </div>

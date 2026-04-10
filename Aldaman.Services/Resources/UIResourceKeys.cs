@@ -22,4 +22,43 @@ public static class UIResourceKeys
     public const string BuildingWebAppsWithAspNet = nameof(BuildingWebAppsWithAspNet);
     public const string GetStarted = nameof(GetStarted);
     public const string LearnMore = nameof(LearnMore);
+
+    // Privacy Page
+    public const string PrivacySubtitle = nameof(PrivacySubtitle);
+    public const string InformationCollection = nameof(InformationCollection);
+    public const string InformationCollectionDescription = nameof(InformationCollectionDescription);
+
+    // Account & Auth
+    public const string AccessDenied = nameof(AccessDenied);
+    public const string AccessDeniedMessage = nameof(AccessDeniedMessage);
+    public const string BackToHome = nameof(BackToHome);
+    public const string WelcomeToAdmin = nameof(WelcomeToAdmin);
+    public const string Email = nameof(Email);
+    public const string Password = nameof(Password);
+    public const string RememberMe = nameof(RememberMe);
+    public const string ForgotPassword = nameof(ForgotPassword);
+    public const string SignInButton = nameof(SignInButton);
+
+    // Blog
+    public const string Blog = nameof(Blog);
+    public const string BlogSubtitle = nameof(BlogSubtitle);
+    public const string Article = nameof(Article);
+    public const string Administrator = nameof(Administrator);
+
+    // Contact
+    public const string Contact = nameof(Contact);
+    public const string ContactUs = nameof(ContactUs);
+    public const string ContactSubtitle = nameof(ContactSubtitle);
+    public const string FullName = nameof(FullName);
+    public const string Subject = nameof(Subject);
+    public const string Message = nameof(Message);
+    public const string SendMessage = nameof(SendMessage);
+    public const string MessageSent = nameof(MessageSent);
+    public const string ThankYouForMessage = nameof(ThankYouForMessage);
+    public const string MessageSentConfirmation = nameof(MessageSentConfirmation);
+
+    // Common & Errors
+    public const string Error = nameof(Error);
+    public const string ErrorOccurred = nameof(ErrorOccurred);
+    public const string RequestId = nameof(RequestId);
 }

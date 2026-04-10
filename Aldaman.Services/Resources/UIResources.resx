@@ -100,4 +100,91 @@
   <data name="LearnMore" xml:space="preserve">
     <value>Zjistit více</value>
   </data>
+  <data name="PrivacySubtitle" xml:space="preserve">
+    <value>Tuto stránku použijte k upřesnění zásad ochrany osobních údajů vašeho webu. Aldaman se zavázal k ochraně vašich osobních údajů a zajištění bezpečného prohlížení.</value>
+  </data>
+  <data name="InformationCollection" xml:space="preserve">
+    <value>Sběr informací</value>
+  </data>
+  <data name="InformationCollectionDescription" xml:space="preserve">
+    <value>Shromažďujeme pouze základní informace potřebné k poskytování našich služeb a zlepšování uživatelské zkušenosti. Se všemi údaji nakládáme podle moderních bezpečnostních standardů.</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Přístup odepřen</value>
+  </data>
+  <data name="AccessDeniedMessage" xml:space="preserve">
+    <value>Nemáte dostatečná oprávnění pro přístup k této stránce.</value>
+  </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Zpět na hlavní stránku</value>
+  </data>
+  <data name="WelcomeToAdmin" xml:space="preserve">
+    <value>Vítejte v administraci systému</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Heslo</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Zapamatovat</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Zapomenuté heslo?</value>
+  </data>
+  <data name="SignInButton" xml:space="preserve">
+    <value>Vstoupit do systému</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="BlogSubtitle" xml:space="preserve">
+    <value>Nejnovější články z našeho webu.</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Článek</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrátor</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Kontaktujte nás</value>
+  </data>
+  <data name="ContactSubtitle" xml:space="preserve">
+    <value>Máte dotaz nebo zájem o naše služby? Vyplňte formulář níže a my se vám ozveme zpět.</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Jméno a příjmení</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Předmět</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Zpráva</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>Odeslat zprávu</value>
+  </data>
+  <data name="MessageSent" xml:space="preserve">
+    <value>Zpráva odeslána</value>
+  </data>
+  <data name="ThankYouForMessage" xml:space="preserve">
+    <value>Děkujeme za zprávu!</value>
+  </data>
+  <data name="MessageSentConfirmation" xml:space="preserve">
+    <value>Vaše zpráva byla úspěšně odeslána. Brzy se vám ozveme.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Chyba</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>Při zpracování vašeho požadavku došlo k chybě.</value>
+  </data>
+  <data name="RequestId" xml:space="preserve">
+    <value>ID požadavku:</value>
+  </data>
 </root>

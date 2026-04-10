@@ -100,4 +100,91 @@
   <data name="LearnMore" xml:space="preserve">
     <value>Learn more</value>
   </data>
+  <data name="PrivacySubtitle" xml:space="preserve">
+    <value>Use this page to detail your site's privacy policy. Aldaman is committed to protecting your personal data and ensuring a safe browsing experience.</value>
+  </data>
+  <data name="InformationCollection" xml:space="preserve">
+    <value>Information Collection</value>
+  </data>
+  <data name="InformationCollectionDescription" xml:space="preserve">
+    <value>We collect only essential information required to provide our services and improve user experience. All data is handled according to modern security standards.</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Access Denied</value>
+  </data>
+  <data name="AccessDeniedMessage" xml:space="preserve">
+    <value>You don't have sufficient permissions to access this page.</value>
+  </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Back to home page</value>
+  </data>
+  <data name="WelcomeToAdmin" xml:space="preserve">
+    <value>Welcome to the system administration</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="SignInButton" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="BlogSubtitle" xml:space="preserve">
+    <value>Latest articles from our site.</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="ContactSubtitle" xml:space="preserve">
+    <value>Have a question or interested in our services? Fill out the form below and we'll get back to you.</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="SendMessage" xml:space="preserve">
+    <value>Send Message</value>
+  </data>
+  <data name="MessageSent" xml:space="preserve">
+    <value>Message Sent</value>
+  </data>
+  <data name="ThankYouForMessage" xml:space="preserve">
+    <value>Thank you for your message!</value>
+  </data>
+  <data name="MessageSentConfirmation" xml:space="preserve">
+    <value>Your message has been successfully sent. We will get back to you soon.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>An error occurred while processing your request.</value>
+  </data>
+  <data name="RequestId" xml:space="preserve">
+    <value>Request ID:</value>
+  </data>
 </root>

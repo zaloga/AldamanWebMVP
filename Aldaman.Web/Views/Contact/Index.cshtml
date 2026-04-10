@@ -1,18 +1,18 @@
 @model Aldaman.Web.ViewModels.ContactFormViewModel
 @{
-    ViewData["Title"] = "Kontakt";
+    ViewData["Title"] = Localizer[UIResourceKeys.Contact];
 }
 
 <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8">
     <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-extrabold text-gray-900">Kontaktujte nás</h2>
+        <h2 class="text-3xl font-extrabold text-gray-900">@Localizer[UIResourceKeys.ContactUs]</h2>
         <p class="mt-4 text-lg text-gray-500">
-            Máte dotaz nebo zájem o naše služby? Vyplňte formulář níže a my se vám ozveme zpět.
+            @Localizer[UIResourceKeys.ContactSubtitle]
         </p>
 
         <form asp-controller="Contact" asp-action="Submit" method="post" class="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
             <div class="sm:col-span-2">
-                <label asp-for="Name" class="block text-sm font-medium text-gray-700">Jméno a příjmení</label>
+                <label asp-for="Name" class="block text-sm font-medium text-gray-700">@Localizer[UIResourceKeys.FullName]</label>
                 <div class="mt-1">
                     <input asp-for="Name" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
                     <span asp-validation-for="Name" class="text-sm text-red-600"></span>
@@ -20,7 +20,7 @@
             </div>
 
             <div class="sm:col-span-2">
-                <label asp-for="Email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                <label asp-for="Email" class="block text-sm font-medium text-gray-700">@Localizer[UIResourceKeys.Email]</label>
                 <div class="mt-1">
                     <input asp-for="Email" type="email" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
                     <span asp-validation-for="Email" class="text-sm text-red-600"></span>
@@ -28,7 +28,7 @@
             </div>
             
             <div class="sm:col-span-2">
-                <label asp-for="Subject" class="block text-sm font-medium text-gray-700">Předmět</label>
+                <label asp-for="Subject" class="block text-sm font-medium text-gray-700">@Localizer[UIResourceKeys.Subject]</label>
                 <div class="mt-1">
                     <input asp-for="Subject" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
                     <span asp-validation-for="Subject" class="text-sm text-red-600"></span>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="sm:col-span-2">
-                <label asp-for="Message" class="block text-sm font-medium text-gray-700">Zpráva</label>
+                <label asp-for="Message" class="block text-sm font-medium text-gray-700">@Localizer[UIResourceKeys.Message]</label>
                 <div class="mt-1">
                     <textarea asp-for="Message" rows="4" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"></textarea>
                     <span asp-validation-for="Message" class="text-sm text-red-600"></span>
@@ -45,7 +45,7 @@
 
             <div class="sm:col-span-2">
                 <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Odeslat zprávu
+                    @Localizer[UIResourceKeys.SendMessage]
                 </button>
             </div>
         </form>
