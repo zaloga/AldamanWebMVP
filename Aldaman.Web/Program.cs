@@ -1,9 +1,9 @@
 using System.Globalization;
-using Aldaman.Web.Configuration;
 using Aldaman.Persistence;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Services;
+using Aldaman.Web.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using FluentValidation;
