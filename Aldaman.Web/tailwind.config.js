@@ -5,6 +5,7 @@ module.exports = {
     "./Areas/Admin/Views/**/*.cshtml",
     "./wwwroot/js/**/*.js"
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {

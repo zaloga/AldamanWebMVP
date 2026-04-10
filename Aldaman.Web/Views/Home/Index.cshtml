@@ -3,15 +3,15 @@
 }
 
 <div class="py-20 text-center">
-    <h1 class="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-7xl">
+    <h1 class="text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-7xl">
         @Localizer[UIResourceKeys.WelcomeToAldaman]
     </h1>
-    <p class="mt-6 text-lg leading-8 text-slate-600 max-w-2xl mx-auto">
+    <p class="mt-6 text-lg leading-8 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
         @Localizer[UIResourceKeys.WelcomeSubtitle] 
-        @Localizer[UIResourceKeys.LearnMore] <a href="https://learn.microsoft.com/aspnet/core" class="font-semibold text-indigo-600 hover:text-indigo-500">@Localizer[UIResourceKeys.BuildingWebAppsWithAspNet]</a>.
+        @Localizer[UIResourceKeys.LearnMore] <a href="https://learn.microsoft.com/aspnet/core" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">@Localizer[UIResourceKeys.BuildingWebAppsWithAspNet]</a>.
     </p>
     <div class="mt-10 flex items-center justify-center gap-x-6">
         <a asp-controller="Account" asp-action="Login" class="btn-primary">@Localizer[UIResourceKeys.GetStarted]</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-slate-900 transition-transform hover:translate-x-1 inline-flex items-center gap-1">@Localizer[UIResourceKeys.LearnMore] <span aria-hidden="true">→</span></a>
+        <a href="#" class="text-sm font-semibold leading-6 text-slate-900 dark:text-slate-200 transition-transform hover:translate-x-1 inline-flex items-center gap-1">@Localizer[UIResourceKeys.LearnMore] <span aria-hidden="true">→</span></a>
     </div>
 </div>

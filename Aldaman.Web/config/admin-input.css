@@ -2,6 +2,7 @@
 @source "../Views/**/*.cshtml";
 @source "../Areas/Admin/Views/**/*.cshtml";
 @source "../wwwroot/js/**/*.js";
+@variant dark (&:where(.dark, .dark *));
 
 
 @theme {
