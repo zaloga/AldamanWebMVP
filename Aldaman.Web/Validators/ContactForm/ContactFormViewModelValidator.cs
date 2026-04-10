@@ -4,7 +4,7 @@ using Aldaman.Web.ViewModels;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 
-namespace Aldaman.Web.Validators;
+namespace Aldaman.Web.Validators.ContactForm;
 
 public class ContactFormViewModelValidator : AbstractValidator<ContactFormViewModel>
 {
