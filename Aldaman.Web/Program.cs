@@ -1,4 +1,5 @@
 using System.Globalization;
+using Aldaman.Web.Configuration;
 using Aldaman.Persistence;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
@@ -41,15 +42,17 @@ public class Program
 
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-        CultureInfo[] supportedCultures =
-        [
-            new("cs"), // TODO : Move culture codes to configuration
-            new("en")
-        ];
+        LocalizationSettings localizationSettings = builder.Configuration
+            .GetSection(LocalizationSettings.SectionName)
+            .Get<LocalizationSettings>() ?? new();
+
+        CultureInfo[] supportedCultures = localizationSettings.SupportedCultures
+            .Select(c => new CultureInfo(c))
+            .ToArray();
 
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
-            options.DefaultRequestCulture = new RequestCulture("cs"); // TODO : Move default culture code to configuration
+            options.DefaultRequestCulture = new RequestCulture(localizationSettings.DefaultCulture);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
             options.ApplyCurrentCultureToResponseHeaders = true;
@@ -92,9 +95,11 @@ public class Program
 
         app.MapStaticAssets();
 
-        app.MapControllerRoute( // TODO ^cs|en$ generate regex from supported cultures configuration
+        string cultureRegex = $"^({string.Join("|", localizationSettings.SupportedCultures)})$";
+
+        app.MapControllerRoute(
             name: "areas_localized",
-            pattern: "{culture:regex(^cs|en$)}/{area:exists}/{controller=Home}/{action=Index}/{id?}")
+            pattern: "{culture:regex(" + cultureRegex + ")}/{area:exists}/{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
         app.MapControllerRoute(
@@ -104,43 +109,43 @@ public class Program
 
         app.MapControllerRoute(
             name: "page_detail_localized",
-            pattern: "{culture:regex(^cs|en$)}/page/{slug}",
+            pattern: "{culture:regex(" + cultureRegex + ")}/page/{slug}",
             defaults: new { controller = "Page", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "blog_index_localized",
-            pattern: "{culture:regex(^cs|en$)}/blog",
+            pattern: "{culture:regex(" + cultureRegex + ")}/blog",
             defaults: new { controller = "Blog", action = "Index" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "blog_detail_localized",
-            pattern: "{culture:regex(^cs|en$)}/blog/{slug}",
+            pattern: "{culture:regex(" + cultureRegex + ")}/blog/{slug}",
             defaults: new { controller = "Blog", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "contact_index_localized",
-            pattern: "{culture:regex(^cs|en$)}/contact",
+            pattern: "{culture:regex(" + cultureRegex + ")}/contact",
             defaults: new { controller = "Contact", action = "Index" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "contact_submit_localized",
-            pattern: "{culture:regex(^cs|en$)}/contact/send",
+            pattern: "{culture:regex(" + cultureRegex + ")}/contact/send",
             defaults: new { controller = "Contact", action = "Submit" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "contact_success_localized",
-            pattern: "{culture:regex(^cs|en$)}/contact/success",
+            pattern: "{culture:regex(" + cultureRegex + ")}/contact/success",
             defaults: new { controller = "Contact", action = "Success" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "default_localized",
-            pattern: "{culture:regex(^cs|en$)}/{controller=Home}/{action=Index}/{id?}")
+            pattern: "{culture:regex(" + cultureRegex + ")}/{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
         app.MapControllerRoute(
