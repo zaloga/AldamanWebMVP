@@ -7,7 +7,7 @@ public sealed class LocalizationSettings
 {
     public const string SectionName = "Localization";
 
-    public string DefaultCulture { get; set; } = "cs";
+    public required string DefaultCulture { get; set; }
 
-    public string[] SupportedCultures { get; set; } = ["cs", "en"];
+    public required string[] SupportedCultures { get; set; }
 }
