@@ -9,7 +9,6 @@ public class PageListItemDto
 {
     public Guid Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
-    public string RouteSegment { get; set; } = string.Empty;
     public bool IsHomePage { get; set; }
     public bool IsActive { get; set; }
     public int DefaultSortOrder { get; set; }

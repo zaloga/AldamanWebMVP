@@ -25,7 +25,7 @@ public sealed class PageService : IPageService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.PageKey.Contains(query.SearchTerm) || p.RouteSegment.Contains(query.SearchTerm));
+            dbQuery = dbQuery.Where(p => p.PageKey.Contains(query.SearchTerm) || p.Contents.Any(c => c.Slug.Contains(query.SearchTerm)));
         }
 
         // Sorting
@@ -45,7 +45,6 @@ public sealed class PageService : IPageService
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
-                RouteSegment = p.RouteSegment,
                 IsHomePage = p.IsHomePage,
                 IsActive = p.IsActive,
                 DefaultSortOrder = p.DefaultSortOrder,
@@ -66,7 +65,7 @@ public sealed class PageService : IPageService
     {
         var page = await Context.PageDefinitions
             .Include(p => p.Contents)
-            .FirstOrDefaultAsync(p => p.RouteSegment == slug && p.IsActive);
+            .FirstOrDefaultAsync(p => p.IsActive && p.Contents.Any(c => c.Slug == slug && c.CultureCode == culture));
 
         if (page == null) return null;
 
@@ -125,7 +124,6 @@ public sealed class PageService : IPageService
         {
             Id = page.Id,
             PageKey = page.PageKey,
-            RouteSegment = page.RouteSegment,
             IsHomePage = page.IsHomePage,
             IsActive = page.IsActive,
             DefaultSortOrder = page.DefaultSortOrder,
@@ -153,7 +151,6 @@ public sealed class PageService : IPageService
         var page = new PageDefinitionEntity
         {
             PageKey = dto.PageKey,
-            RouteSegment = dto.RouteSegment,
             IsHomePage = dto.IsHomePage,
             IsActive = dto.IsActive,
             DefaultSortOrder = dto.DefaultSortOrder
@@ -163,7 +160,7 @@ public sealed class PageService : IPageService
         {
             CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
             Title = dto.Title ?? dto.PageKey,
-            Slug = string.IsNullOrWhiteSpace(dto.Slug) ? dto.RouteSegment : dto.Slug,
+            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-"),
             SeoTitle = dto.SeoTitle,
             SeoDescription = dto.SeoDescription,
             SeoKeywords = dto.SeoKeywords,
@@ -190,7 +187,6 @@ public sealed class PageService : IPageService
         }
 
         page.PageKey = dto.PageKey;
-        page.RouteSegment = dto.RouteSegment;
         page.IsHomePage = dto.IsHomePage;
         page.IsActive = dto.IsActive;
         page.DefaultSortOrder = dto.DefaultSortOrder;
@@ -209,7 +205,7 @@ public sealed class PageService : IPageService
         }
 
         content.Title = dto.Title ?? dto.PageKey;
-        content.Slug = string.IsNullOrWhiteSpace(dto.Slug) ? dto.RouteSegment : dto.Slug;
+        content.Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : content.Slug;
         content.SeoTitle = dto.SeoTitle;
         content.SeoDescription = dto.SeoDescription;
         content.SeoKeywords = dto.SeoKeywords;

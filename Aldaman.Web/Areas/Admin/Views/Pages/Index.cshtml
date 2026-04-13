@@ -49,8 +49,7 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 30%">Page Key</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">Route</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">Page Key</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Home</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Order</th>
@@ -70,9 +69,6 @@
                         <td class="ps-4 py-3">
                             <div class="fw-semibold text-dark">@item.PageKey</div>
                             <div class="small text-muted">Created @item.CreatedAtUtc.ToString("MMM dd, yyyy")</div>
-                        </td>
-                        <td class="py-3">
-                            <code class="px-2 py-1 bg-light rounded text-primary small">/@item.RouteSegment</code>
                         </td>
                         <td class="py-3 text-center">
                             @if (item.IsHomePage)

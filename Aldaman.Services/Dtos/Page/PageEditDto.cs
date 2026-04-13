@@ -7,8 +7,7 @@ public class PageEditDto
 {
     public Guid? Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
-    public string RouteSegment { get; set; } = string.Empty;
-    public bool IsHomePage { get; set; }
+    public bool IsHomePage { get; set; } = false;
     public bool IsActive { get; set; } = true;
     public int DefaultSortOrder { get; set; }
 

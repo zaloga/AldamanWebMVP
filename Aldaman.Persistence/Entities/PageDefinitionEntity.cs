@@ -6,17 +6,11 @@ namespace Aldaman.Persistence.Entities;
 public class PageDefinitionEntity : BaseEntity
 {
     public const int PageKeyMaxLength = 256;
-    public const int RouteSegmentMaxLength = 256;
 
     /// <summary>
     /// Unique page key (e.g. home, about).
     /// </summary>
     public string PageKey { get; set; } = string.Empty;
-
-    /// <summary>
-    /// URL route segment.
-    /// </summary>
-    public string RouteSegment { get; set; } = string.Empty;
 
     /// <summary>
     /// Indicates whether this is the home page.

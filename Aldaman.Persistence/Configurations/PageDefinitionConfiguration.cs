@@ -17,10 +17,6 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
         builder.HasIndex(x => x.PageKey)
             .IsUnique();
 
-        builder.Property(x => x.RouteSegment)
-            .HasMaxLength(PageDefinitionEntity.RouteSegmentMaxLength)
-            .IsRequired();
-
         builder.Property(x => x.IsHomePage)
             .IsRequired()
             .HasDefaultValue(false);
