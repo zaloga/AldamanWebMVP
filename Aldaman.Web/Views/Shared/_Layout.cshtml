@@ -29,7 +29,6 @@
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.OfferSlug].Value">@Localizer[UIResourceKeys.Offer]</a>
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.PromoSlug].Value">@Localizer[UIResourceKeys.Promo]</a>
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.LinksSlug].Value">@Localizer[UIResourceKeys.Links]</a>
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer[UIResourceKeys.Privacy]</a>
                 </div>
             </div>
@@ -77,8 +76,8 @@
                 &copy; 2026 - @Localizer[UIResourceKeys.AldamanWebEssentials]
             </p>
             <div class="flex items-center gap-6">
+                <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" asp-area="" asp-controller="Page" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.LinksSlug].Value">@Localizer[UIResourceKeys.Links]</a>
                 <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer[UIResourceKeys.PrivacyPolicy]</a>
-                <a href="#" class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">@Localizer[UIResourceKeys.TermsOfService]</a>
             </div>
         </div>
     </footer>
