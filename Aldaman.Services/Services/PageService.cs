@@ -78,11 +78,7 @@ public sealed class PageService : IPageService
             Id = page.Id,
             PageKey = page.PageKey,
             Title = content.Title,
-            Slug = content.Slug,
-            SeoTitle = content.SeoTitle,
-            SeoDescription = content.SeoDescription,
-            SeoKeywords = content.SeoKeywords,
-            SectionsJson = content.SectionsJson
+            Slug = content.Slug
         };
     }
 
@@ -104,11 +100,7 @@ public sealed class PageService : IPageService
                 Id = page.Id,
                 PageKey = page.PageKey,
                 Title = content?.Title ?? string.Empty,
-                Slug = content?.Slug ?? string.Empty,
-                SeoTitle = content?.SeoTitle,
-                SeoDescription = content?.SeoDescription,
-                SeoKeywords = content?.SeoKeywords,
-                SectionsJson = content?.SectionsJson ?? "[]"
+                Slug = content?.Slug ?? string.Empty
             };
         }).ToList();
     }
@@ -135,18 +127,11 @@ public sealed class PageService : IPageService
             CultureCode = defaultContent?.CultureCode ?? culture,
             Title = defaultContent?.Title ?? string.Empty,
             Slug = defaultContent?.Slug ?? string.Empty,
-            SeoTitle = defaultContent?.SeoTitle,
-            SeoDescription = defaultContent?.SeoDescription,
-            SeoKeywords = defaultContent?.SeoKeywords,
             IsPublished = defaultContent?.IsPublished ?? false,
             Contents = page.Contents.Select(c => new PageContentDto
             {
                 LanguageCode = c.CultureCode,
-                Title = c.Title,
-                Sections = c.SectionsJson,
-                SeoTitle = c.SeoTitle,
-                SeoDescription = c.SeoDescription,
-                SeoKeywords = c.SeoKeywords
+                Title = c.Title
             }).ToList()
         };
     }
@@ -167,10 +152,6 @@ public sealed class PageService : IPageService
             CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
             Title = dto.Title ?? dto.PageKey,
             Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-"),
-            SeoTitle = dto.SeoTitle,
-            SeoDescription = dto.SeoDescription,
-            SeoKeywords = dto.SeoKeywords,
-            SectionsJson = "[]",
             IsPublished = dto.IsPublished,
             PublishedAtUtc = dto.IsPublished ? DateTime.UtcNow : null
         };
@@ -205,17 +186,13 @@ public sealed class PageService : IPageService
         {
             content = new PageContentEntity
             {
-                CultureCode = culture,
-                SectionsJson = "[]"
+                CultureCode = culture
             };
             page.Contents.Add(content);
         }
 
         content.Title = dto.Title ?? dto.PageKey;
         content.Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : content.Slug;
-        content.SeoTitle = dto.SeoTitle;
-        content.SeoDescription = dto.SeoDescription;
-        content.SeoKeywords = dto.SeoKeywords;
 
         if (!content.IsPublished && dto.IsPublished)
         {

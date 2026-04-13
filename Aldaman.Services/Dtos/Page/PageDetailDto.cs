@@ -12,9 +12,4 @@ public class PageDetailDto
     public string PageKey { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
-    public string? SeoTitle { get; set; }
-    public string? SeoDescription { get; set; }
-    public string? SeoKeywords { get; set; }
-    public string? SectionsJson { get; set; }
-    public List<PageSectionDto> Sections { get; set; } = new();
 }

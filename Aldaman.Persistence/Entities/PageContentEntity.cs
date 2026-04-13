@@ -8,9 +8,6 @@ public class PageContentEntity : BaseEntity
     public const int CultureCodeMaxLength = 5;
     public const int TitleMaxLength = 256;
     public const int SlugMaxLength = 256;
-    public const int SeoTitleMaxLength = 256;
-    public const int SeoDescriptionMaxLength = 512;
-    public const int SeoKeywordsMaxLength = 512;
 
     public Guid PageDefinitionId { get; set; }
 
@@ -22,17 +19,6 @@ public class PageContentEntity : BaseEntity
     public string Title { get; set; } = string.Empty;
 
     public string Slug { get; set; } = string.Empty;
-
-    public string? SeoTitle { get; set; }
-
-    public string? SeoDescription { get; set; }
-    
-    public string? SeoKeywords { get; set; }
-
-    /// <summary>
-    /// Serialized payload of page sections.
-    /// </summary>
-    public string SectionsJson { get; set; } = "[]";
 
     public bool IsPublished { get; set; }
 

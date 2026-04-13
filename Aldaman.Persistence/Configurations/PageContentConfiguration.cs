@@ -22,17 +22,6 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
             .HasMaxLength(PageContentEntity.SlugMaxLength)
             .IsRequired();
 
-        builder.Property(x => x.SeoTitle)
-            .HasMaxLength(PageContentEntity.SeoTitleMaxLength);
-
-        builder.Property(x => x.SeoDescription)
-            .HasMaxLength(PageContentEntity.SeoDescriptionMaxLength);
-
-        builder.Property(x => x.SeoKeywords)
-            .HasMaxLength(PageContentEntity.SeoKeywordsMaxLength);
-
-        builder.Property(x => x.SectionsJson)
-            .IsRequired();
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();

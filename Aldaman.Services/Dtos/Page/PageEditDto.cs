@@ -16,10 +16,6 @@ public class PageEditDto
     public string CultureCode { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
-    public string? SeoTitle { get; set; }
-    public string? SeoDescription { get; set; }
-    public string? SeoKeywords { get; set; }
-    public List<PageSectionDto> Sections { get; set; } = new();
     public bool IsPublished { get; set; }
     public List<PageContentDto> Contents { get; set; } = new();
 }

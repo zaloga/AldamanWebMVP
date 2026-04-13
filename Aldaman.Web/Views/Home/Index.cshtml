@@ -43,9 +43,8 @@
         {
             <section id="page-@homePage.Slug" class="page-container first:pt-0">
                 <div class="max-w-7xl mx-auto">
-                    @if (!string.IsNullOrEmpty(homePage.SectionsJson) && homePage.SectionsJson != "[]")
+                    @* @if (!string.IsNullOrEmpty(homePage.SectionsJson) && homePage.SectionsJson != "[]")
                     {
-                        @* Render sections here. For now, we'll just output the Title and a placeholder if no section renderer exists *@
                         <div class="py-12 px-4 sm:px-6 lg:px-8">
                              <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">@homePage.Title</h2>
                              <div class="prose prose-lg dark:prose-invert max-w-none">
@@ -60,7 +59,7 @@
                             <h2 class="text-3xl font-bold text-slate-900 dark:text-white">@homePage.Title</h2>
                             <p class="mt-4 text-slate-500">Táto sekcia zatiaľ nemá žiadny obsah.</p>
                         </div>
-                    }
+                    } *@
                 </div>
             </section>
         }
