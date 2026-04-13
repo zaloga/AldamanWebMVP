@@ -104,8 +104,7 @@ public sealed class MediaService : IMediaService
             IsImage = isImage,
             IsVideo = contentType.StartsWith("video/"),
             Width = width,
-            Height = height,
-            IsActive = true
+            Height = height
         };
 
         Context.MediaAssets.Add(asset);
@@ -127,7 +126,6 @@ public sealed class MediaService : IMediaService
         {
             asset.AltText = dto.AltText;
             asset.Title = dto.Title;
-            asset.IsActive = dto.IsActive;
             asset.UpdatedAtUtc = DateTime.UtcNow;
 
             await Context.SaveChangesAsync();
@@ -160,8 +158,7 @@ public sealed class MediaService : IMediaService
             Title = p.Title,
             UploadedAtUtc = p.CreatedAtUtc,
             IsImage = p.IsImage,
-            IsVideo = p.IsVideo,
-            IsActive = p.IsActive
+            IsVideo = p.IsVideo
         };
     }
 }

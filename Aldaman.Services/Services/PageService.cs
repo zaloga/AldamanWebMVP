@@ -47,7 +47,6 @@ public sealed class PageService : IPageService
                 PageKey = p.PageKey,
                 ShowOnHomePage = p.ShowOnHomePage,
                 PageOrder = p.PageOrder,
-                IsActive = p.IsActive,
                 DefaultSortOrder = p.DefaultSortOrder,
                 CreatedAtUtc = p.CreatedAtUtc
             })
@@ -66,7 +65,7 @@ public sealed class PageService : IPageService
     {
         var page = await Context.PageDefinitions
             .Include(p => p.Contents)
-            .FirstOrDefaultAsync(p => p.IsActive && p.Contents.Any(c => c.Slug == slug && c.CultureCode == culture));
+            .FirstOrDefaultAsync(p => p.Contents.Any(c => c.Slug == slug && c.CultureCode == culture));
 
         if (page == null) return null;
 
@@ -86,7 +85,7 @@ public sealed class PageService : IPageService
     {
         var pages = await Context.PageDefinitions
             .Include(p => p.Contents)
-            .Where(p => p.ShowOnHomePage && p.IsActive)
+            .Where(p => p.ShowOnHomePage)
             .OrderBy(p => p.PageOrder)
             .ToListAsync();
 
@@ -122,12 +121,10 @@ public sealed class PageService : IPageService
             PageKey = page.PageKey,
             ShowOnHomePage = page.ShowOnHomePage,
             PageOrder = page.PageOrder,
-            IsActive = page.IsActive,
             DefaultSortOrder = page.DefaultSortOrder,
             CultureCode = defaultContent?.CultureCode ?? culture,
             Title = defaultContent?.Title ?? string.Empty,
             Slug = defaultContent?.Slug ?? string.Empty,
-            IsPublished = defaultContent?.IsPublished ?? false,
             Contents = page.Contents.Select(c => new PageContentDto
             {
                 LanguageCode = c.CultureCode,
@@ -143,7 +140,6 @@ public sealed class PageService : IPageService
             PageKey = dto.PageKey,
             ShowOnHomePage = dto.ShowOnHomePage,
             PageOrder = dto.PageOrder,
-            IsActive = dto.IsActive,
             DefaultSortOrder = dto.DefaultSortOrder
         };
 
@@ -151,9 +147,7 @@ public sealed class PageService : IPageService
         {
             CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
             Title = dto.Title ?? dto.PageKey,
-            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-"),
-            IsPublished = dto.IsPublished,
-            PublishedAtUtc = dto.IsPublished ? DateTime.UtcNow : null
+            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-")
         };
 
         page.Contents.Add(content);
@@ -176,7 +170,6 @@ public sealed class PageService : IPageService
         page.PageKey = dto.PageKey;
         page.ShowOnHomePage = dto.ShowOnHomePage;
         page.PageOrder = dto.PageOrder;
-        page.IsActive = dto.IsActive;
         page.DefaultSortOrder = dto.DefaultSortOrder;
 
         var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
@@ -193,12 +186,6 @@ public sealed class PageService : IPageService
 
         content.Title = dto.Title ?? dto.PageKey;
         content.Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : content.Slug;
-
-        if (!content.IsPublished && dto.IsPublished)
-        {
-            content.PublishedAtUtc = DateTime.UtcNow;
-        }
-        content.IsPublished = dto.IsPublished;
 
         await Context.SaveChangesAsync();
     }

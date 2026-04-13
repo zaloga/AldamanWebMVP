@@ -64,7 +64,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                     entry.Entity.CreatedAtUtc = now;
                     entry.Entity.CreatedByUserId = currentUserId;
                     entry.Entity.IsDeleted = false;
-                    entry.Entity.IsActive = true;
                     break;
 
                 case EntityState.Modified:

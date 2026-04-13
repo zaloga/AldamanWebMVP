@@ -19,5 +19,4 @@ public class MediaAssetDto
     public DateTime UploadedAtUtc { get; set; }
     public bool IsImage { get; set; }
     public bool IsVideo { get; set; }
-    public bool IsActive { get; set; }
 }

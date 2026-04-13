@@ -27,17 +27,6 @@
                 <dt class="col-sm-3">Home Page Order</dt>
                 <dd class="col-sm-9">@Model.PageOrder</dd>
 
-                <dt class="col-sm-3">Is Active</dt>
-                <dd class="col-sm-9">
-                    @if (Model.IsActive)
-                    {
-                        <span class="badge bg-success">Active</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Inactive</span>
-                    }
-                </dd>
 
                 <dt class="col-sm-3">Sort Order</dt>
                 <dd class="col-sm-9">@Model.DefaultSortOrder</dd>
@@ -57,8 +46,6 @@
                 <dt class="col-sm-3">Slug</dt>
                 <dd class="col-sm-9">@Model.Slug</dd>
                 
-                <dt class="col-sm-3">Published</dt>
-                <dd class="col-sm-9">@(Model.IsPublished ? "Yes" : "No")</dd>
 
             </dl>
         </div>

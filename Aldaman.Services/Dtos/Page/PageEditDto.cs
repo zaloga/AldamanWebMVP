@@ -9,13 +9,11 @@ public class PageEditDto
     public string PageKey { get; set; } = string.Empty;
     public bool ShowOnHomePage { get; set; } = true;
     public int PageOrder { get; set; } = 0;
-    public bool IsActive { get; set; } = true;
     public int DefaultSortOrder { get; set; }
 
     // Content specific properties for a single culture
     public string CultureCode { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
-    public bool IsPublished { get; set; }
     public List<PageContentDto> Contents { get; set; } = new();
 }

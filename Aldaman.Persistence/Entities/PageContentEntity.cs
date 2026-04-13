@@ -20,10 +20,6 @@ public class PageContentEntity : BaseEntity
 
     public string Slug { get; set; } = string.Empty;
 
-    public bool IsPublished { get; set; }
-
-    public DateTime? PublishedAtUtc { get; set; }
-
     // Navigation properties
     public virtual PageDefinitionEntity PageDefinition { get; set; } = null!;
 }

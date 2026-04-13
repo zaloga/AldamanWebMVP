@@ -15,8 +15,5 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
         builder.Property(u => u.CreatedAtUtc)
             .IsRequired();
 
-        builder.Property(u => u.IsActive)
-            .IsRequired()
-            .HasDefaultValue(true);
     }
 }

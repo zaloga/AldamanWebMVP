@@ -38,9 +38,6 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        builder.Property(x => x.IsActive)
-            .IsRequired()
-            .HasDefaultValue(true);
 
         builder.Property(x => x.IsImage)
             .IsRequired()

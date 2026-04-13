@@ -25,9 +25,6 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
             .IsRequired()
             .HasDefaultValue(0);
 
-        builder.Property(x => x.IsActive)
-            .IsRequired()
-            .HasDefaultValue(true);
 
         builder.Property(x => x.DefaultSortOrder)
             .IsRequired()

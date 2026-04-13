@@ -11,7 +11,6 @@ public class PageListItemDto
     public string PageKey { get; set; } = string.Empty;
     public bool ShowOnHomePage { get; set; }
     public int PageOrder { get; set; }
-    public bool IsActive { get; set; }
     public int DefaultSortOrder { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }

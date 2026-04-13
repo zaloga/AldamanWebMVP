@@ -26,9 +26,6 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        builder.Property(x => x.IsPublished)
-            .IsRequired()
-            .HasDefaultValue(false);
 
         // Unique constraint for Page + Language
         builder.HasIndex(x => new { x.PageDefinitionId, x.CultureCode })

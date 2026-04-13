@@ -14,7 +14,6 @@ public abstract class BaseEntity
     public DateTime? DeletedAtUtc { get; set; }
     public Guid? DeletedByUserId { get; set; }
 
-    public bool IsActive { get; set; } = true;
 
     // Navigation properties
     public virtual AppUser? CreatedByUser { get; set; }

@@ -64,8 +64,7 @@ public class MediaController : BaseAdminController
         {
             Id = asset.Id,
             AltText = asset.AltText,
-            Title = asset.Title,
-            IsActive = asset.IsActive
+            Title = asset.Title
         };
 
         ViewData["RelativePath"] = asset.RelativePath;
