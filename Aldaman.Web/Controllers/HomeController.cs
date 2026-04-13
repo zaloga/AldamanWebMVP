@@ -8,17 +8,17 @@ namespace Aldaman.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private IPageService PageService { get; }
+    private IContentPageService ContentPageService { get; }
 
-    public HomeController(IPageService pageService)
+    public HomeController(IContentPageService contentPageService)
     {
-        PageService = pageService;
+        ContentPageService = contentPageService;
     }
 
     public async Task<IActionResult> Index()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var homePages = await PageService.GetHomePageAsync(cultureCode);
+        var homePages = await ContentPageService.GetHomePageAsync(cultureCode);
 
         return View(homePages);
     }

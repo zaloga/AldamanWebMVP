@@ -113,13 +113,13 @@ public class Program
         app.MapControllerRoute(
             name: "page_detail_localized",
             pattern: "{culture:regex(" + cultureRegex + ")}/page/{slug}",
-            defaults: new { controller = "Page", action = "Detail" })
+            defaults: new { controller = "ContentPage", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "page_detail",
             pattern: "page/{slug}",
-            defaults: new { controller = "Page", action = "Detail", culture = localizationSettings.DefaultCulture })
+            defaults: new { controller = "ContentPage", action = "Detail", culture = localizationSettings.DefaultCulture })
             .WithStaticAssets();
 
         app.MapControllerRoute(

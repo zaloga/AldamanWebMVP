@@ -10,7 +10,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IBlogService, BlogService>();
-        services.AddScoped<IPageService, PageService>();
+        services.AddScoped<IContentPageService, ContentPageService>();
         services.AddScoped<IMediaService>(sp => new MediaService(sp.GetRequiredService<Aldaman.Persistence.Context.AppDbContext>(), webRootPath));
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();

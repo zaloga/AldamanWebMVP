@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefinitionEntity>
+public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEntity>
 {
-    public void Configure(EntityTypeBuilder<PageDefinitionEntity> builder)
+    public void Configure(EntityTypeBuilder<ContentPageEntity> builder)
     {
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.PageKey)
-            .HasMaxLength(PageDefinitionEntity.PageKeyMaxLength)
+            .HasMaxLength(ContentPageEntity.PageKeyMaxLength)
             .IsRequired();
 
         builder.HasIndex(x => x.PageKey)
@@ -33,10 +33,10 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        // Relationship: One PageDefinition -> Many PageContents
-        builder.HasMany(x => x.Contents)
-            .WithOne(x => x.PageDefinition)
-            .HasForeignKey(x => x.PageDefinitionId)
+        // Relationship: One ContentPage -> Many ContentPageTranslations
+        builder.HasMany(x => x.Translations)
+            .WithOne(x => x.ContentPage)
+            .HasForeignKey(x => x.ContentPageId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Audit Relationships

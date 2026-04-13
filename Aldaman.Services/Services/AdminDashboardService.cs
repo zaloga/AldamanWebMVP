@@ -17,7 +17,7 @@ internal sealed class AdminDashboardService : IAdminDashboardService
 
     public async Task<AdminDashboardStatsDto> GetStatsAsync()
     {
-        var totalPages = await _context.PageDefinitions.CountAsync();
+        var totalPages = await _context.ContentPages.CountAsync();
         var publishedPosts = await _context.BlogPosts.CountAsync(x => x.IsPublished);
         var pendingMessages = await _context.ContactMessages.CountAsync(x => x.State == Persistence.Enums.ContactMessageState.Pending);
         var totalMediaSize = await _context.MediaAssets.SumAsync(x => x.FileSize);

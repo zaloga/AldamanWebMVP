@@ -7,8 +7,8 @@ namespace Aldaman.Persistence.Context;
 
 public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
-    public DbSet<PageDefinitionEntity> PageDefinitions { get; set; } = null!;
-    public DbSet<PageContentEntity> PageContents { get; set; } = null!;
+    public DbSet<ContentPageEntity> ContentPages { get; set; } = null!;
+    public DbSet<ContentPageTranslationEntity> ContentPageTranslations { get; set; } = null!;
     public DbSet<MediaAssetEntity> MediaAssets { get; set; } = null!;
     public DbSet<BlogPostEntity> BlogPosts { get; set; } = null!;
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;
@@ -32,8 +32,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         // Global query filters for soft delete
         builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<BlogPostTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
-        builder.Entity<PageDefinitionEntity>().HasQueryFilter(e => !e.IsDeleted);
-        builder.Entity<PageContentEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<ContentPageTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
     }

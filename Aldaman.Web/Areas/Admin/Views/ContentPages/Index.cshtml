@@ -1,5 +1,5 @@
 @using Aldaman.Services.Dtos.Page
-@model PagedResultDto<PageListItemDto>
+@model PagedResultDto<ContentPageListItemDto>
 @{
     ViewData["Title"] = "Pages";
     var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();

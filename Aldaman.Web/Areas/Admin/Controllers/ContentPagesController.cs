@@ -4,18 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
-public class PagesController : BaseAdminController
+public class ContentPagesController : BaseAdminController
 {
-    private IPageService PageService { get; }
+    private IContentPageService ContentPageService { get; }
 
-    public PagesController(IPageService pageService)
+    public ContentPagesController(IContentPageService contentPageService)
     {
-        PageService = pageService;
+        ContentPageService = contentPageService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await PageService.GetPagedPagesAsync(query);
+        var result = await ContentPageService.GetPagedPagesAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class PagesController : BaseAdminController
     {
         try
         {
-            await PageService.DeletePageAsync(id);
+            await ContentPageService.DeletePageAsync(id);
             return Json(new { success = true, message = "Page deleted successfully." });
         }
         catch (Exception ex)
@@ -38,12 +38,12 @@ public class PagesController : BaseAdminController
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Aldaman.Services.Dtos.Page.PageEditDto { CultureCode = "cs" });
+        return View(new Aldaman.Services.Dtos.Page.ContentPageEditDto { CultureCode = "cs" });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Page.PageEditDto model)
+    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Page.ContentPageEditDto model)
     {
         if (!ModelState.IsValid)
         {
@@ -52,7 +52,7 @@ public class PagesController : BaseAdminController
 
         try
         {
-            await PageService.CreatePageAsync(model);
+            await ContentPageService.CreatePageAsync(model);
             TempData["SuccessMessage"] = "Page created successfully.";
             return RedirectToAction(nameof(Index));
         }
@@ -66,7 +66,7 @@ public class PagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var page = await PageService.GetPageForEditAsync(id, "cs");
+        var page = await ContentPageService.GetPageForEditAsync(id, "cs");
         if (page == null)
         {
             return NotFound();
@@ -78,7 +78,7 @@ public class PagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        var page = await PageService.GetPageForEditAsync(id, "cs");
+        var page = await ContentPageService.GetPageForEditAsync(id, "cs");
         if (page == null)
         {
             return NotFound();
@@ -89,7 +89,7 @@ public class PagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Page.PageEditDto model)
+    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Page.ContentPageEditDto model)
     {
         if (id != model.Id)
         {
@@ -103,7 +103,7 @@ public class PagesController : BaseAdminController
 
         try
         {
-            await PageService.UpdatePageAsync(id, model);
+            await ContentPageService.UpdatePageAsync(id, model);
             TempData["SuccessMessage"] = "Page updated successfully.";
             return RedirectToAction(nameof(Index));
         }

@@ -5,7 +5,7 @@ namespace Aldaman.Services.Dtos.Page;
 /// <summary>
 /// Minimal page data for admin management lists.
 /// </summary>
-public class PageListItemDto
+public class ContentPageListItemDto
 {
     public Guid Id { get; set; }
     public string PageKey { get; set; } = string.Empty;

@@ -3,7 +3,7 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Catalog of system pages.
 /// </summary>
-public class PageDefinitionEntity : BaseEntity
+public class ContentPageEntity : BaseEntity
 {
     public const int PageKeyMaxLength = 256;
 
@@ -28,5 +28,5 @@ public class PageDefinitionEntity : BaseEntity
     public int DefaultSortOrder { get; set; }
 
     // Navigation properties
-    public virtual ICollection<PageContentEntity> Contents { get; set; } = new List<PageContentEntity>();
+    public virtual ICollection<ContentPageTranslationEntity> Translations { get; set; } = new List<ContentPageTranslationEntity>();
 }

@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEntity>
+public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<ContentPageTranslationEntity>
 {
-    public void Configure(EntityTypeBuilder<PageContentEntity> builder)
+    public void Configure(EntityTypeBuilder<ContentPageTranslationEntity> builder)
     {
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CultureCode)
-            .HasMaxLength(PageContentEntity.CultureCodeMaxLength)
+            .HasMaxLength(ContentPageTranslationEntity.CultureCodeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Title)
-            .HasMaxLength(PageContentEntity.TitleMaxLength)
+            .HasMaxLength(ContentPageTranslationEntity.TitleMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Slug)
-            .HasMaxLength(PageContentEntity.SlugMaxLength)
+            .HasMaxLength(ContentPageTranslationEntity.SlugMaxLength)
             .IsRequired();
 
 
@@ -28,13 +28,13 @@ public class PageContentConfiguration : IEntityTypeConfiguration<PageContentEnti
 
 
         // Unique constraint for Page + Language
-        builder.HasIndex(x => new { x.PageDefinitionId, x.CultureCode })
+        builder.HasIndex(x => new { x.ContentPageId, x.CultureCode })
             .IsUnique();
 
-        // Navigation: Many PageContents -> One PageDefinition
-        builder.HasOne(x => x.PageDefinition)
-            .WithMany(x => x.Contents)
-            .HasForeignKey(x => x.PageDefinitionId)
+        // Navigation: Many ContentPageTranslations -> One ContentPage
+        builder.HasOne(x => x.ContentPage)
+            .WithMany(x => x.Translations)
+            .HasForeignKey(x => x.ContentPageId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Audit Relationships

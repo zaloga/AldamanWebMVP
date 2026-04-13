@@ -6,7 +6,7 @@ namespace Aldaman.Services.Dtos.Page;
 /// <summary>
 /// Detailed data for public page rendering.
 /// </summary>
-public class PageDetailDto
+public class ContentPageDetailDto
 {
     public Guid Id { get; set; }
     public string PageKey { get; set; } = string.Empty;

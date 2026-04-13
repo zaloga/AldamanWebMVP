@@ -3,7 +3,7 @@ namespace Aldaman.Services.Dtos.Page;
 /// <summary>
 /// DTO for creating or updating a page with its localized content.
 /// </summary>
-public class PageEditDto
+public class ContentPageEditDto
 {
     public Guid? Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
@@ -15,5 +15,5 @@ public class PageEditDto
     public string CultureCode { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
-    public List<PageContentDto> Contents { get; set; } = new();
+    public List<ContentPageTranslationDto> Translations { get; set; } = new();
 }

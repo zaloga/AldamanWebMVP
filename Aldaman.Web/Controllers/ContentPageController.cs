@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Controllers;
 
-public sealed class PageController : Controller
+public sealed class ContentPageController : Controller
 {
-    private IPageService PageService { get; }
+    private IContentPageService ContentPageService { get; }
 
-    public PageController(IPageService pageService)
+    public ContentPageController(IContentPageService contentPageService)
     {
-        PageService = pageService;
+        ContentPageService = contentPageService;
     }
 
     [HttpGet]
@@ -20,17 +20,16 @@ public sealed class PageController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        PageDetailDto? pageDetail = await PageService.GetPageBySlugAsync(
+        ContentPageDetailDto? pageDetail = await ContentPageService.GetPageBySlugAsync(
             slug,
-            cultureCode
-            /*cancellationToken*/);
+            cultureCode);
 
         if (pageDetail is null)
         {
             return NotFound();
         }
 
-        PageViewModel viewModel = new()
+        ContentPageViewModel viewModel = new()
         {
             Page = pageDetail
         };

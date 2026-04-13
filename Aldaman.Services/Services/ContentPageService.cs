@@ -7,25 +7,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aldaman.Services.Services;
 
-public sealed class PageService : IPageService
+public sealed class ContentPageService : IContentPageService
 {
     private AppDbContext Context { get; }
 
-    public PageService(AppDbContext context)
+    public ContentPageService(AppDbContext context)
     {
         Context = context;
     }
 
-    public async Task<PagedResultDto<PageListItemDto>> GetPagedPagesAsync(PaginationQuery query)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedPagesAsync(PaginationQuery query)
     {
-        var dbQuery = Context.PageDefinitions
-            .Include(p => p.Contents)
+        var dbQuery = Context.ContentPages
+            .Include(p => p.Translations)
             .AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.PageKey.Contains(query.SearchTerm) || p.Contents.Any(c => c.Slug.Contains(query.SearchTerm)));
+            dbQuery = dbQuery.Where(p => p.PageKey.Contains(query.SearchTerm) || p.Translations.Any(c => c.Slug.Contains(query.SearchTerm)));
         }
 
         // Sorting
@@ -41,7 +41,7 @@ public sealed class PageService : IPageService
         var items = await dbQuery
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
-            .Select(p => new PageListItemDto
+            .Select(p => new ContentPageListItemDto
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
@@ -52,7 +52,7 @@ public sealed class PageService : IPageService
             })
             .ToListAsync();
 
-        return new PagedResultDto<PageListItemDto>
+        return new PagedResultDto<ContentPageListItemDto>
         {
             Items = items,
             TotalCount = totalCount,
@@ -61,18 +61,18 @@ public sealed class PageService : IPageService
         };
     }
 
-    public async Task<PageDetailDto?> GetPageBySlugAsync(string slug, string culture)
+    public async Task<ContentPageDetailDto?> GetPageBySlugAsync(string slug, string culture)
     {
-        var page = await Context.PageDefinitions
-            .Include(p => p.Contents)
-            .FirstOrDefaultAsync(p => p.Contents.Any(c => c.Slug == slug && c.CultureCode == culture));
+        var page = await Context.ContentPages
+            .Include(p => p.Translations)
+            .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture));
 
         if (page == null) return null;
 
-        var content = page.Contents.FirstOrDefault(t => t.CultureCode == culture);
+        var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture);
         if (content == null) return null;
 
-        return new PageDetailDto
+        return new ContentPageDetailDto
         {
             Id = page.Id,
             PageKey = page.PageKey,
@@ -81,20 +81,20 @@ public sealed class PageService : IPageService
         };
     }
 
-    public async Task<IEnumerable<PageDetailDto>> GetHomePageAsync(string culture)
+    public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture)
     {
-        var pages = await Context.PageDefinitions
-            .Include(p => p.Contents)
+        var pages = await Context.ContentPages
+            .Include(p => p.Translations)
             .Where(p => p.ShowOnHomePage)
             .OrderBy(p => p.PageOrder)
             .ToListAsync();
 
         return pages.Select(page => 
         {
-            var content = page.Contents.FirstOrDefault(t => t.CultureCode == culture) 
-                         ?? page.Contents.FirstOrDefault();
+            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture) 
+                         ?? page.Translations.FirstOrDefault();
                          
-            return new PageDetailDto
+            return new ContentPageDetailDto
             {
                 Id = page.Id,
                 PageKey = page.PageKey,
@@ -104,18 +104,18 @@ public sealed class PageService : IPageService
         }).ToList();
     }
 
-    public async Task<PageEditDto?> GetPageForEditAsync(Guid id, string culture)
+    public async Task<ContentPageEditDto?> GetPageForEditAsync(Guid id, string culture)
     {
-        var page = await Context.PageDefinitions
-            .Include(p => p.Contents)
+        var page = await Context.ContentPages
+            .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (page == null) return null;
 
-        var defaultContent = page.Contents.FirstOrDefault(c => c.CultureCode == culture)
-                          ?? page.Contents.FirstOrDefault();
+        var defaultContent = page.Translations.FirstOrDefault(c => c.CultureCode == culture)
+                          ?? page.Translations.FirstOrDefault();
 
-        return new PageEditDto
+        return new ContentPageEditDto
         {
             Id = page.Id,
             PageKey = page.PageKey,
@@ -125,7 +125,7 @@ public sealed class PageService : IPageService
             CultureCode = defaultContent?.CultureCode ?? culture,
             Title = defaultContent?.Title ?? string.Empty,
             Slug = defaultContent?.Slug ?? string.Empty,
-            Contents = page.Contents.Select(c => new PageContentDto
+            Translations = page.Translations.Select(c => new ContentPageTranslationDto
             {
                 LanguageCode = c.CultureCode,
                 Title = c.Title
@@ -133,9 +133,9 @@ public sealed class PageService : IPageService
         };
     }
 
-    public async Task CreatePageAsync(PageEditDto dto)
+    public async Task CreatePageAsync(ContentPageEditDto dto)
     {
-        var page = new PageDefinitionEntity
+        var page = new ContentPageEntity
         {
             PageKey = dto.PageKey,
             ShowOnHomePage = dto.ShowOnHomePage,
@@ -143,23 +143,23 @@ public sealed class PageService : IPageService
             DefaultSortOrder = dto.DefaultSortOrder
         };
 
-        var content = new PageContentEntity
+        var content = new ContentPageTranslationEntity
         {
             CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
             Title = dto.Title ?? dto.PageKey,
             Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-")
         };
 
-        page.Contents.Add(content);
+        page.Translations.Add(content);
 
-        Context.PageDefinitions.Add(page);
+        Context.ContentPages.Add(page);
         await Context.SaveChangesAsync();
     }
 
-    public async Task UpdatePageAsync(Guid id, PageEditDto dto)
+    public async Task UpdatePageAsync(Guid id, ContentPageEditDto dto)
     {
-        var page = await Context.PageDefinitions
-            .Include(p => p.Contents)
+        var page = await Context.ContentPages
+            .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (page == null)
@@ -173,15 +173,15 @@ public sealed class PageService : IPageService
         page.DefaultSortOrder = dto.DefaultSortOrder;
 
         var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
-        var content = page.Contents.FirstOrDefault(c => c.CultureCode == culture);
+        var content = page.Translations.FirstOrDefault(c => c.CultureCode == culture);
 
         if (content == null)
         {
-            content = new PageContentEntity
+            content = new ContentPageTranslationEntity
             {
                 CultureCode = culture
             };
-            page.Contents.Add(content);
+            page.Translations.Add(content);
         }
 
         content.Title = dto.Title ?? dto.PageKey;
@@ -192,7 +192,7 @@ public sealed class PageService : IPageService
 
     public async Task DeletePageAsync(Guid id)
     {
-        var page = await Context.PageDefinitions.FindAsync(id);
+        var page = await Context.ContentPages.FindAsync(id);
         if (page != null)
         {
             page.IsDeleted = true;

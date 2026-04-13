@@ -3,13 +3,13 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Content of a specific page for a specific language.
 /// </summary>
-public class PageContentEntity : BaseEntity
+public class ContentPageTranslationEntity : BaseEntity
 {
     public const int CultureCodeMaxLength = 5;
     public const int TitleMaxLength = 256;
     public const int SlugMaxLength = 256;
 
-    public Guid PageDefinitionId { get; set; }
+    public Guid ContentPageId { get; set; }
 
     /// <summary>
     /// Culture code (e.g. cs-CZ, en-US).
@@ -21,5 +21,5 @@ public class PageContentEntity : BaseEntity
     public string Slug { get; set; } = string.Empty;
 
     // Navigation properties
-    public virtual PageDefinitionEntity PageDefinition { get; set; } = null!;
+    public virtual ContentPageEntity ContentPage { get; set; } = null!;
 }
