@@ -1,41 +1,68 @@
+@using Aldaman.Services.Dtos.Page
+@model IEnumerable<PageDetailDto>
 @{
     ViewData["Title"] = Localizer[UIResourceKeys.HomeTitle];
     ViewData["FullWidth"] = true;
 }
 
-<div class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-    <!-- Placeholder Background Image -->
-    <div class="absolute inset-0 w-full h-full">
-        <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=2000&auto=format&fit=crop" alt="Hero background" class="absolute inset-0 w-full h-full object-cover" />
-        <!-- Overlay to ensure text readability -->
-        <div class="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/60 mix-blend-multiply"></div>
-    </div>
+<div class="space-y-12">
+    @if (!Model.Any())
+    {
+        <div class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+            <!-- Placeholder Background Image -->
+            <div class="absolute inset-0 w-full h-full">
+                <img src="https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=2000&auto=format&fit=crop" alt="Hero background" class="absolute inset-0 w-full h-full object-cover" />
+                <!-- Overlay to ensure text readability -->
+                <div class="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/60 mix-blend-multiply"></div>
+            </div>
 
-    <!-- Hero Content in Glass Card -->
-    <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 lg:px-8 mt-16 sm:mt-0">
-        <div class="glass rounded-2xl p-8 sm:p-12 md:p-16 text-center transform transition-all">
-            
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
-                @Localizer[UIResourceKeys.WelcomeToAldaman]
-            </h1>
-            
-            <p class="mt-6 text-lg sm:text-xl leading-relaxed text-slate-800 dark:text-slate-200 max-w-2xl mx-auto">
-                @Localizer[UIResourceKeys.WelcomeSubtitle] 
-                @Localizer[UIResourceKeys.LearnMore] <a href="https://learn.microsoft.com/aspnet/core" class="font-semibold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all">@Localizer[UIResourceKeys.BuildingWebAppsWithAspNet]</a>.
-            </p>
-            
-            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-8">
-                <a asp-controller="Account" asp-action="Login" class="btn-primary shadow-lg shadow-brand-primary/30">
-                    @Localizer[UIResourceKeys.GetStarted]
-                </a>
-                
-                <a href="#" class="group text-sm sm:text-base font-semibold leading-6 text-slate-900 dark:text-white inline-flex items-center gap-2 hover:text-brand-primary dark:hover:text-brand-accent transition-colors">
-                    <span class="bg-white/50 dark:bg-slate-800/50 p-2 rounded-full backdrop-blur-sm group-hover:bg-brand-primary group-hover:text-white dark:group-hover:text-slate-900 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </span>
-                    @Localizer[UIResourceKeys.LearnMore]
-                </a>
+            <!-- Hero Content in Glass Card -->
+            <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 lg:px-8 mt-16 sm:mt-0">
+                <div class="glass rounded-2xl p-8 sm:p-12 md:p-16 text-center transform transition-all">
+                    
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
+                        @Localizer[UIResourceKeys.WelcomeToAldaman]
+                    </h1>
+                    
+                    <p class="mt-6 text-lg sm:text-xl leading-relaxed text-slate-800 dark:text-slate-200 max-w-2xl mx-auto">
+                        @Localizer[UIResourceKeys.WelcomeSubtitle] 
+                    </p>
+                    
+                    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-8">
+                        <a asp-controller="Account" asp-action="Login" class="btn-primary shadow-lg shadow-brand-primary/30">
+                            @Localizer[UIResourceKeys.GetStarted]
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        @foreach (var homePage in Model)
+        {
+            <section id="page-@homePage.Slug" class="page-container first:pt-0">
+                <div class="max-w-7xl mx-auto">
+                    @if (!string.IsNullOrEmpty(homePage.SectionsJson) && homePage.SectionsJson != "[]")
+                    {
+                        @* Render sections here. For now, we'll just output the Title and a placeholder if no section renderer exists *@
+                        <div class="py-12 px-4 sm:px-6 lg:px-8">
+                             <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">@homePage.Title</h2>
+                             <div class="prose prose-lg dark:prose-invert max-w-none">
+                                 <p class="text-slate-500 italic mb-4 small">Render JSON content here:</p>
+                                 <pre class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg overflow-auto text-xs"><code>@homePage.SectionsJson</code></pre>
+                             </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="py-20 px-4 text-center">
+                            <h2 class="text-3xl font-bold text-slate-900 dark:text-white">@homePage.Title</h2>
+                            <p class="mt-4 text-slate-500">Táto sekcia zatiaľ nemá žiadny obsah.</p>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    }
 </div>

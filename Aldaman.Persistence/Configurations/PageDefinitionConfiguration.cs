@@ -17,9 +17,13 @@ public class PageDefinitionConfiguration : IEntityTypeConfiguration<PageDefiniti
         builder.HasIndex(x => x.PageKey)
             .IsUnique();
 
-        builder.Property(x => x.IsHomePage)
+        builder.Property(x => x.ShowOnHomePage)
             .IsRequired()
-            .HasDefaultValue(false);
+            .HasDefaultValue(true);
+
+        builder.Property(x => x.PageOrder)
+            .IsRequired()
+            .HasDefaultValue(0);
 
         builder.Property(x => x.IsActive)
             .IsRequired()

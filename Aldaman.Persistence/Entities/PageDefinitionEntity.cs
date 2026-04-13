@@ -13,9 +13,14 @@ public class PageDefinitionEntity : BaseEntity
     public string PageKey { get; set; } = string.Empty;
 
     /// <summary>
-    /// Indicates whether this is the home page.
+    /// Indicates whether this page should be displayed on the home page.
     /// </summary>
-    public bool IsHomePage { get; set; }
+    public bool ShowOnHomePage { get; set; }
+
+    /// <summary>
+    /// Order of the page on the home page.
+    /// </summary>
+    public int PageOrder { get; set; }
 
     /// <summary>
     /// Default sort order.

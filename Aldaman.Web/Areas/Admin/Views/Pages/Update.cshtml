@@ -51,8 +51,8 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input asp-for="IsHomePage" class="form-check-input" />
-                            <label asp-for="IsHomePage" class="form-check-label">Is Home Page</label>
+                            <input asp-for="ShowOnHomePage" class="form-check-input" />
+                            <label asp-for="ShowOnHomePage" class="form-check-label">Show On Home Page</label>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -70,6 +70,11 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PageOrder" class="form-label">Home Page Order</label>
+                        <input asp-for="PageOrder" class="form-control" type="number" />
+                        <span asp-validation-for="PageOrder" class="text-danger"></span>
+                    </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="DefaultSortOrder" class="form-label">Default Sort Order</label>
                         <input asp-for="DefaultSortOrder" class="form-control" type="number" />

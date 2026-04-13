@@ -51,8 +51,9 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">Page Key</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Home</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">HP Order</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Status</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Order</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Default Order</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                 </tr>
             </thead>
@@ -71,10 +72,17 @@
                             <div class="small text-muted">Created @item.CreatedAtUtc.ToString("MMM dd, yyyy")</div>
                         </td>
                         <td class="py-3 text-center">
-                            @if (item.IsHomePage)
+                            @if (item.ShowOnHomePage)
                             {
-                                <span class="badge bg-primary text-white">HOME</span>
+                                <span class="badge bg-primary text-white">YES</span>
                             }
+                            else
+                            {
+                                <span class="text-muted small">no</span>
+                            }
+                        </td>
+                        <td class="py-3 text-center">
+                            <span class="fw-medium text-primary">@item.PageOrder</span>
                         </td>
                         <td class="py-3 text-center">
                             @if (item.IsActive)

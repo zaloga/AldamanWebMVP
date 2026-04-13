@@ -7,7 +7,8 @@ public class PageEditDto
 {
     public Guid? Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
-    public bool IsHomePage { get; set; } = false;
+    public bool ShowOnHomePage { get; set; } = true;
+    public int PageOrder { get; set; } = 0;
     public bool IsActive { get; set; } = true;
     public int DefaultSortOrder { get; set; }
 

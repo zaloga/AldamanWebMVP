@@ -14,9 +14,9 @@ public interface IPageService
     Task<PageDetailDto?> GetPageBySlugAsync(string slug, string culture);
 
     /// <summary>
-    /// Gets the home page content.
+    /// Gets the home page contents.
     /// </summary>
-    Task<PageDetailDto?> GetHomePageAsync(string culture);
+    Task<IEnumerable<PageDetailDto>> GetHomePageAsync(string culture);
 
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.

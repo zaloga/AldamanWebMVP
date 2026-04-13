@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Globalization;
+using Aldaman.Services.Interfaces;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +8,19 @@ namespace Aldaman.Web.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private IPageService PageService { get; }
+
+    public HomeController(IPageService pageService)
     {
-        return View();
+        PageService = pageService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        string cultureCode = CultureInfo.CurrentUICulture.Name;
+        var homePages = await PageService.GetHomePageAsync(cultureCode);
+
+        return View(homePages);
     }
 
     public IActionResult Privacy()

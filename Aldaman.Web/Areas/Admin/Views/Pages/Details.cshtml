@@ -21,8 +21,11 @@
                 <dt class="col-sm-3">Page Key</dt>
                 <dd class="col-sm-9">@Model.PageKey</dd>
 
-                <dt class="col-sm-3">Is Home Page</dt>
-                <dd class="col-sm-9">@(Model.IsHomePage ? "Yes" : "No")</dd>
+                <dt class="col-sm-3">Show On Home Page</dt>
+                <dd class="col-sm-9">@(Model.ShowOnHomePage ? "Yes" : "No")</dd>
+
+                <dt class="col-sm-3">Home Page Order</dt>
+                <dd class="col-sm-9">@Model.PageOrder</dd>
 
                 <dt class="col-sm-3">Is Active</dt>
                 <dd class="col-sm-9">

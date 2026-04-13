@@ -45,7 +45,8 @@ public sealed class PageService : IPageService
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
-                IsHomePage = p.IsHomePage,
+                ShowOnHomePage = p.ShowOnHomePage,
+                PageOrder = p.PageOrder,
                 IsActive = p.IsActive,
                 DefaultSortOrder = p.DefaultSortOrder,
                 CreatedAtUtc = p.CreatedAtUtc
@@ -85,28 +86,31 @@ public sealed class PageService : IPageService
         };
     }
 
-    public async Task<PageDetailDto?> GetHomePageAsync(string culture)
+    public async Task<IEnumerable<PageDetailDto>> GetHomePageAsync(string culture)
     {
-        var page = await Context.PageDefinitions
+        var pages = await Context.PageDefinitions
             .Include(p => p.Contents)
-            .FirstOrDefaultAsync(p => p.IsHomePage && p.IsActive);
+            .Where(p => p.ShowOnHomePage && p.IsActive)
+            .OrderBy(p => p.PageOrder)
+            .ToListAsync();
 
-        if (page == null) return null;
-
-        var content = page.Contents.FirstOrDefault(t => t.CultureCode == culture);
-        if (content == null) return null;
-
-        return new PageDetailDto
+        return pages.Select(page => 
         {
-            Id = page.Id,
-            PageKey = page.PageKey,
-            Title = content.Title,
-            Slug = content.Slug,
-            SeoTitle = content.SeoTitle,
-            SeoDescription = content.SeoDescription,
-            SeoKeywords = content.SeoKeywords,
-            SectionsJson = content.SectionsJson
-        };
+            var content = page.Contents.FirstOrDefault(t => t.CultureCode == culture) 
+                         ?? page.Contents.FirstOrDefault();
+                         
+            return new PageDetailDto
+            {
+                Id = page.Id,
+                PageKey = page.PageKey,
+                Title = content?.Title ?? string.Empty,
+                Slug = content?.Slug ?? string.Empty,
+                SeoTitle = content?.SeoTitle,
+                SeoDescription = content?.SeoDescription,
+                SeoKeywords = content?.SeoKeywords,
+                SectionsJson = content?.SectionsJson ?? "[]"
+            };
+        }).ToList();
     }
 
     public async Task<PageEditDto?> GetPageForEditAsync(Guid id, string culture)
@@ -124,7 +128,8 @@ public sealed class PageService : IPageService
         {
             Id = page.Id,
             PageKey = page.PageKey,
-            IsHomePage = page.IsHomePage,
+            ShowOnHomePage = page.ShowOnHomePage,
+            PageOrder = page.PageOrder,
             IsActive = page.IsActive,
             DefaultSortOrder = page.DefaultSortOrder,
             CultureCode = defaultContent?.CultureCode ?? culture,
@@ -151,7 +156,8 @@ public sealed class PageService : IPageService
         var page = new PageDefinitionEntity
         {
             PageKey = dto.PageKey,
-            IsHomePage = dto.IsHomePage,
+            ShowOnHomePage = dto.ShowOnHomePage,
+            PageOrder = dto.PageOrder,
             IsActive = dto.IsActive,
             DefaultSortOrder = dto.DefaultSortOrder
         };
@@ -187,7 +193,8 @@ public sealed class PageService : IPageService
         }
 
         page.PageKey = dto.PageKey;
-        page.IsHomePage = dto.IsHomePage;
+        page.ShowOnHomePage = dto.ShowOnHomePage;
+        page.PageOrder = dto.PageOrder;
         page.IsActive = dto.IsActive;
         page.DefaultSortOrder = dto.DefaultSortOrder;
 
