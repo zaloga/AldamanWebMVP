@@ -63,6 +63,18 @@
                 }
             </div>
 
+            <h6 class="font-weight-bold mt-4">Plain Text (Search Content)</h6>
+            <div class="p-3 border rounded bg-light mb-4" style="max-height: 200px; overflow-y: auto;">
+                @if (!string.IsNullOrEmpty(Model.PlainText))
+                {
+                    <pre style="white-space: pre-wrap; font-family: inherit;">@Model.PlainText</pre>
+                }
+                else
+                {
+                    <em class="text-muted">No plain text generated.</em>
+                }
+            </div>
+
             <hr />
 
             <h6 class="font-weight-bold">SEO Information</h6>

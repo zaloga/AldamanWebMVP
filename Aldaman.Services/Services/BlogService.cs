@@ -125,6 +125,7 @@ public sealed class BlogService : IBlogService
             Title = translation.Title,
             Perex = translation.Perex,
             BodyHtml = translation.BodyHtml,
+            PlainText = translation.PlainText,
             PublishedAtUtc = post.PublishedAtUtc,
             AuthorName = post.CreatedByUser?.DisplayName,
             CoverImageUrl = post.CoverMediaAsset?.RelativePath,
@@ -154,6 +155,7 @@ public sealed class BlogService : IBlogService
             Slug = translation?.Slug ?? string.Empty,
             Perex = translation?.Perex,
             BodyHtml = translation?.BodyHtml,
+            PlainText = translation?.PlainText,
             SeoTitle = translation?.SeoTitle,
             SeoDescription = translation?.SeoDescription,
             Translations = post.Translations.Select(t => new BlogPostTranslationDto
@@ -162,7 +164,8 @@ public sealed class BlogService : IBlogService
                 Title = t.Title,
                 Slug = t.Slug,
                 Perex = t.Perex,
-                BodyHtml = t.BodyHtml
+                BodyHtml = t.BodyHtml,
+                PlainText = t.PlainText
             }).ToList()
         };
     }
@@ -186,6 +189,7 @@ public sealed class BlogService : IBlogService
             Slug = dto.Slug,
             Perex = dto.Perex,
             BodyHtml = dto.BodyHtml,
+            PlainText = StripHtml(dto.BodyHtml),
             SeoTitle = dto.SeoTitle,
             SeoDescription = dto.SeoDescription
         };
@@ -235,10 +239,32 @@ public sealed class BlogService : IBlogService
         translation.Slug = dto.Slug;
         translation.Perex = dto.Perex;
         translation.BodyHtml = dto.BodyHtml;
+        translation.PlainText = StripHtml(dto.BodyHtml);
         translation.SeoTitle = dto.SeoTitle;
         translation.SeoDescription = dto.SeoDescription;
 
         await Context.SaveChangesAsync();
+    }
+
+    private static string? StripHtml(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html))
+        {
+            return html;
+        }
+
+        // Basic HTML stripping using Regex
+        var plainText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]*>", string.Empty);
+        
+        // Decode HTML entities
+        plainText = System.Net.WebUtility.HtmlDecode(plainText);
+
+        if (plainText.Length > BlogPostTranslationEntity.PlainTextMaxLength)
+        {
+            plainText = plainText.Substring(0, BlogPostTranslationEntity.PlainTextMaxLength);
+        }
+
+        return plainText;
     }
 
     public async Task DeletePostAsync(Guid id)

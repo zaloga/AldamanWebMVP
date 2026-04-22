@@ -8,6 +8,7 @@ public class BlogPostTranslationEntity : BaseEntity
     public const int PerexMaxLength = 1024;
     public const int SeoTitleMaxLength = 256;
     public const int SeoDescriptionMaxLength = 512;
+    public const int PlainTextMaxLength = 2048;
 
 
     public Guid BlogPostId { get; set; }
@@ -22,7 +23,7 @@ public class BlogPostTranslationEntity : BaseEntity
 
     public string? BodyHtml { get; set; }
 
-    public string? SearchText { get; set; }
+    public string? PlainText { get; set; }
 
     public string? SeoTitle { get; set; }
 

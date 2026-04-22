@@ -27,8 +27,6 @@ public class ContactMessageEntity : BaseEntity
 
     public string Message { get; set; } = string.Empty;
 
-    public bool ConsentToProcessing { get; set; }
-
     public ContactMessageState State { get; set; } = ContactMessageState.Pending;
 
     public DateTime? SentAtUtc { get; set; }

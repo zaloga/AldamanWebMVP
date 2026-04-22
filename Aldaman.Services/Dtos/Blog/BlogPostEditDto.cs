@@ -19,7 +19,7 @@ public class BlogPostEditDto
     public string Slug { get; set; } = string.Empty;
     public string? Perex { get; set; }
     public string? BodyHtml { get; set; }
-    public string? SearchText { get; set; }
+    public string? PlainText { get; set; }
     public string? SeoTitle { get; set; }
     public string? SeoDescription { get; set; }
     
