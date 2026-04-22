@@ -8,6 +8,7 @@ public class ContentPageTranslationEntity : BaseEntity
     public const int CultureCodeMaxLength = 5;
     public const int TitleMaxLength = 256;
     public const int SlugMaxLength = 256;
+    public const int PlainTextMaxLength = 2048;
 
     public Guid ContentPageId { get; set; }
 
@@ -19,6 +20,12 @@ public class ContentPageTranslationEntity : BaseEntity
     public string Title { get; set; } = string.Empty;
 
     public string Slug { get; set; } = string.Empty;
+
+    public string? BodyHtml { get; set; }
+
+    public string? BodyDeltaJson { get; set; }
+
+    public string? PlainText { get; set; }
 
     // Navigation properties
     public virtual ContentPageEntity ContentPage { get; set; } = null!;

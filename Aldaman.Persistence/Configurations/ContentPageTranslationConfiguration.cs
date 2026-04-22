@@ -21,6 +21,11 @@ public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<Cont
         builder.Property(x => x.Slug)
             .HasMaxLength(ContentPageTranslationEntity.SlugMaxLength)
             .IsRequired();
+            
+        builder.Property(x => x.BodyHtml);
+        builder.Property(x => x.BodyDeltaJson);
+        builder.Property(x => x.PlainText)
+            .HasMaxLength(ContentPageTranslationEntity.PlainTextMaxLength);
 
 
         builder.Property(x => x.CreatedAtUtc)

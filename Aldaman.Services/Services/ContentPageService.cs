@@ -78,7 +78,10 @@ public sealed class ContentPageService : IContentPageService
             Id = page.Id,
             PageKey = page.PageKey,
             Title = content.Title,
-            Slug = content.Slug
+            Slug = content.Slug,
+            BodyHtml = content.BodyHtml,
+            BodyDeltaJson = content.BodyDeltaJson,
+            PlainText = content.PlainText
         };
     }
 
@@ -100,7 +103,10 @@ public sealed class ContentPageService : IContentPageService
                 Id = page.Id,
                 PageKey = page.PageKey,
                 Title = content?.Title ?? string.Empty,
-                Slug = content?.Slug ?? string.Empty
+                Slug = content?.Slug ?? string.Empty,
+                BodyHtml = content?.BodyHtml,
+                BodyDeltaJson = content?.BodyDeltaJson,
+                PlainText = content?.PlainText
             };
         }).ToList();
     }
@@ -126,10 +132,17 @@ public sealed class ContentPageService : IContentPageService
             CultureCode = defaultContent?.CultureCode ?? culture,
             Title = defaultContent?.Title ?? string.Empty,
             Slug = defaultContent?.Slug ?? string.Empty,
+            BodyHtml = defaultContent?.BodyHtml,
+            BodyDeltaJson = defaultContent?.BodyDeltaJson,
+            PlainText = defaultContent?.PlainText,
             Translations = page.Translations.Select(c => new ContentPageTranslationDto
             {
-                LanguageCode = c.CultureCode,
-                Title = c.Title
+                CultureCode = c.CultureCode,
+                Title = c.Title,
+                Slug = c.Slug,
+                BodyHtml = c.BodyHtml,
+                BodyDeltaJson = c.BodyDeltaJson,
+                PlainText = c.PlainText
             }).ToList()
         };
     }
@@ -148,7 +161,10 @@ public sealed class ContentPageService : IContentPageService
         {
             CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
             Title = dto.Title ?? dto.PageKey,
-            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-")
+            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-"),
+            BodyHtml = dto.BodyHtml,
+            BodyDeltaJson = dto.BodyDeltaJson,
+            PlainText = StripHtml(dto.BodyHtml)
         };
 
         page.Translations.Add(content);
@@ -187,6 +203,9 @@ public sealed class ContentPageService : IContentPageService
 
         content.Title = dto.Title ?? dto.PageKey;
         content.Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : content.Slug;
+        content.BodyHtml = dto.BodyHtml;
+        content.BodyDeltaJson = dto.BodyDeltaJson;
+        content.PlainText = StripHtml(dto.BodyHtml);
 
         await Context.SaveChangesAsync();
     }
@@ -200,5 +219,26 @@ public sealed class ContentPageService : IContentPageService
             page.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
+    }
+
+    private static string? StripHtml(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html))
+        {
+            return html;
+        }
+
+        // Basic HTML stripping using Regex
+        var plainText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]*>", string.Empty);
+
+        // Decode HTML entities
+        plainText = System.Net.WebUtility.HtmlDecode(plainText);
+
+        if (plainText.Length > ContentPageTranslationEntity.PlainTextMaxLength)
+        {
+            plainText = plainText.Substring(0, ContentPageTranslationEntity.PlainTextMaxLength);
+        }
+
+        return plainText;
     }
 }
