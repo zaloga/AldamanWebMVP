@@ -129,8 +129,6 @@ public sealed class BlogService : IBlogService
             PublishedAtUtc = post.PublishedAtUtc,
             AuthorName = post.CreatedByUser?.DisplayName,
             CoverImageUrl = post.CoverMediaAsset?.RelativePath,
-            SeoTitle = translation.SeoTitle,
-            SeoDescription = translation.SeoDescription
         };
     }
 
@@ -156,8 +154,6 @@ public sealed class BlogService : IBlogService
             Perex = translation?.Perex,
             BodyHtml = translation?.BodyHtml,
             PlainText = translation?.PlainText,
-            SeoTitle = translation?.SeoTitle,
-            SeoDescription = translation?.SeoDescription,
             Translations = post.Translations.Select(t => new BlogPostTranslationDto
             {
                 CultureCode = t.CultureCode,
@@ -190,8 +186,6 @@ public sealed class BlogService : IBlogService
             Perex = dto.Perex,
             BodyHtml = dto.BodyHtml,
             PlainText = StripHtml(dto.BodyHtml),
-            SeoTitle = dto.SeoTitle,
-            SeoDescription = dto.SeoDescription
         };
 
         post.Translations.Add(translation);
@@ -240,8 +234,6 @@ public sealed class BlogService : IBlogService
         translation.Perex = dto.Perex;
         translation.BodyHtml = dto.BodyHtml;
         translation.PlainText = StripHtml(dto.BodyHtml);
-        translation.SeoTitle = dto.SeoTitle;
-        translation.SeoDescription = dto.SeoDescription;
 
         await Context.SaveChangesAsync();
     }
@@ -255,7 +247,7 @@ public sealed class BlogService : IBlogService
 
         // Basic HTML stripping using Regex
         var plainText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]*>", string.Empty);
-        
+
         // Decode HTML entities
         plainText = System.Net.WebUtility.HtmlDecode(plainText);
 

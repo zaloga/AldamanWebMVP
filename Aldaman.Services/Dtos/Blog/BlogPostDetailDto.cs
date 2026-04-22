@@ -17,6 +17,5 @@ public class BlogPostDetailDto
     public DateTime? PublishedAtUtc { get; set; }
     public string? AuthorName { get; set; }
     public string? CoverImageUrl { get; set; }
-    public string? SeoTitle { get; set; }
-    public string? SeoDescription { get; set; }
+
 }

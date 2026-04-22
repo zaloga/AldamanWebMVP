@@ -20,8 +20,7 @@ public class BlogPostEditDto
     public string? Perex { get; set; }
     public string? BodyHtml { get; set; }
     public string? PlainText { get; set; }
-    public string? SeoTitle { get; set; }
-    public string? SeoDescription { get; set; }
+
     
     // Support for multiple translations in admin
     public List<BlogPostTranslationDto> Translations { get; set; } = new();

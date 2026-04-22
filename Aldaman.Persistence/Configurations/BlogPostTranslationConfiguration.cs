@@ -25,11 +25,7 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
         builder.Property(x => x.Perex)
             .HasMaxLength(BlogPostTranslationEntity.PerexMaxLength);
 
-        builder.Property(x => x.SeoTitle)
-            .HasMaxLength(BlogPostTranslationEntity.SeoTitleMaxLength);
 
-        builder.Property(x => x.SeoDescription)
-            .HasMaxLength(BlogPostTranslationEntity.SeoDescriptionMaxLength);
 
         builder.Property(x => x.PlainText)
             .HasMaxLength(BlogPostTranslationEntity.PlainTextMaxLength);

@@ -60,22 +60,6 @@
                     <span asp-validation-for="BodyHtml" class="text-danger"></span>
                 </div>
 
-                <hr />
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="SeoTitle" class="form-label">SEO Title</label>
-                        <input asp-for="SeoTitle" class="form-control" />
-                        <span asp-validation-for="SeoTitle" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="SeoDescription" class="form-label">SEO Description</label>
-                    <textarea asp-for="SeoDescription" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="SeoDescription" class="text-danger"></span>
-                </div>
-
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary">Create Post</button>
                     <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>

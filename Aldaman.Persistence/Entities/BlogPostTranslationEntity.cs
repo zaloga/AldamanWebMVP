@@ -6,8 +6,7 @@ public class BlogPostTranslationEntity : BaseEntity
     public const int TitleMaxLength = 256;
     public const int SlugMaxLength = 256;
     public const int PerexMaxLength = 1024;
-    public const int SeoTitleMaxLength = 256;
-    public const int SeoDescriptionMaxLength = 512;
+
     public const int PlainTextMaxLength = 2048;
 
 
@@ -25,9 +24,7 @@ public class BlogPostTranslationEntity : BaseEntity
 
     public string? PlainText { get; set; }
 
-    public string? SeoTitle { get; set; }
 
-    public string? SeoDescription { get; set; }
 
     // Navigation property
     public virtual BlogPostEntity BlogPost { get; set; } = null!;
