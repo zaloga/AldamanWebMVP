@@ -48,6 +48,7 @@ public static class UIResourceKeys
     public const string BackToHome = nameof(BackToHome);
     public const string WelcomeToAdmin = nameof(WelcomeToAdmin);
     public const string Email = nameof(Email);
+    public const string EmailOrPhone = nameof(EmailOrPhone);
     public const string Password = nameof(Password);
     public const string RememberMe = nameof(RememberMe);
     public const string ForgotPassword = nameof(ForgotPassword);

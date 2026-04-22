@@ -97,4 +97,10 @@
   <data name="AltTextMaxLength" xml:space="preserve">
     <value>Alternativní text může mít maximálně {0} znaků.</value>
   </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>E-mail nebo telefon je povinný.</value>
+  </data>
+  <data name="EmailOrPhoneMaxLength" xml:space="preserve">
+    <value>E-mail nebo telefon může mít maximálně {0} znaků.</value>
+  </data>
 </root>

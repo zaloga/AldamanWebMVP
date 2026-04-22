@@ -31,7 +31,7 @@ internal sealed class AdminDashboardService : IAdminDashboardService
         {
             Id = x.Id,
             Name = x.Name,
-            Email = x.Email,
+            EmailOrPhone = x.EmailOrPhone,
             Phone = x.Phone,
             Subject = x.Subject,
             Message = x.Message,

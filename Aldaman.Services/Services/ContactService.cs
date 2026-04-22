@@ -34,7 +34,7 @@ public sealed class ContactService : IContactService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.Name.Contains(query.SearchTerm) || p.Email.Contains(query.SearchTerm) || (p.Subject != null && p.Subject.Contains(query.SearchTerm)));
+            dbQuery = dbQuery.Where(p => p.Name.Contains(query.SearchTerm) || p.EmailOrPhone.Contains(query.SearchTerm) || (p.Subject != null && p.Subject.Contains(query.SearchTerm)));
         }
 
         // Sorting
@@ -54,7 +54,7 @@ public sealed class ContactService : IContactService
             {
                 Id = p.Id,
                 Name = p.Name,
-                Email = p.Email,
+                EmailOrPhone = p.EmailOrPhone,
                 Phone = p.Phone,
                 Subject = p.Subject,
                 Message = p.Message,
@@ -78,7 +78,7 @@ public sealed class ContactService : IContactService
         var entity = new ContactMessageEntity
         {
             Name = dto.Name,
-            Email = dto.Email,
+            EmailOrPhone = dto.EmailOrPhone,
             Phone = dto.Phone,
             Subject = dto.Subject,
             Message = dto.Message,
@@ -92,11 +92,11 @@ public sealed class ContactService : IContactService
         await Context.SaveChangesAsync();
 
         try
-        {
+        { // TODO...
             string body = $"""
                 <h3>New Contact Message</h3>
                 <p><strong>Name:</strong> {entity.Name}</p>
-                <p><strong>Email:</strong> {entity.Email}</p>
+                <p><strong>Email/Phone:</strong> {entity.EmailOrPhone}</p>
                 <p><strong>Phone:</strong> {entity.Phone ?? "N/A"}</p>
                 <p><strong>Subject:</strong> {entity.Subject ?? "N/A"}</p>
                 <p><strong>Message:</strong></p>
@@ -151,7 +151,7 @@ public sealed class ContactService : IContactService
             {
                 Id = p.Id,
                 Name = p.Name,
-                Email = p.Email,
+                EmailOrPhone = p.EmailOrPhone,
                 Phone = p.Phone,
                 Subject = p.Subject,
                 Message = p.Message,

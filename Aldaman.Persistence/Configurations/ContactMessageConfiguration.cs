@@ -18,8 +18,8 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
             .HasMaxLength(ContactMessageEntity.NameMaxLength)
             .IsRequired();
 
-        builder.Property(x => x.Email)
-            .HasMaxLength(ContactMessageEntity.EmailMaxLength)
+        builder.Property(x => x.EmailOrPhone)
+            .HasMaxLength(ContactMessageEntity.EmailOrPhoneMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Phone)

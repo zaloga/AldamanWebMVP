@@ -8,8 +8,10 @@ public static class ValidationResourceKeys
     public const string NameRequired = nameof(NameRequired);
     public const string NameMaxLength = nameof(NameMaxLength);
     public const string EmailRequired = nameof(EmailRequired);
+    public const string EmailOrPhoneRequired = nameof(EmailOrPhoneRequired);
     public const string EmailInvalid = nameof(EmailInvalid);
     public const string EmailMaxLength = nameof(EmailMaxLength);
+    public const string EmailOrPhoneMaxLength = nameof(EmailOrPhoneMaxLength);
     public const string SubjectMaxLength = nameof(SubjectMaxLength);
     public const string MessageRequired = nameof(MessageRequired);
     public const string MessageMaxLength = nameof(MessageMaxLength);

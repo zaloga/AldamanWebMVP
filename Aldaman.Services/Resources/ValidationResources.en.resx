@@ -97,4 +97,10 @@
   <data name="AltTextMaxLength" xml:space="preserve">
     <value>Alt text cannot exceed {0} characters.</value>
   </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>Email or phone is required.</value>
+  </data>
+  <data name="EmailOrPhoneMaxLength" xml:space="preserve">
+    <value>Email or phone can have at most {0} characters.</value>
+  </data>
 </root>

@@ -6,7 +6,7 @@ public class ContactMessageEntity : BaseEntity
 {
     public const int LanguageCodeMaxLength = 16;
     public const int NameMaxLength = 128;
-    public const int EmailMaxLength = 256;
+    public const int EmailOrPhoneMaxLength = 256;
     public const int PhoneMaxLength = 32;
     public const int SubjectMaxLength = 256;
     public const int MessageMaxLength = 2048;
@@ -19,7 +19,7 @@ public class ContactMessageEntity : BaseEntity
 
     public string Name { get; set; } = string.Empty;
 
-    public string Email { get; set; } = string.Empty;
+    public string EmailOrPhone { get; set; } = string.Empty;
 
     public string? Phone { get; set; }
 

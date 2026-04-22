@@ -6,7 +6,6 @@ public class BlogPostTranslationEntity : BaseEntity
     public const int TitleMaxLength = 256;
     public const int SlugMaxLength = 256;
     public const int PerexMaxLength = 1024;
-
     public const int PlainTextMaxLength = 2048;
 
 

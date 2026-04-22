@@ -223,4 +223,7 @@
   <data name="LinksSlug" xml:space="preserve">
     <value>odkazy</value>
   </data>
+  <data name="EmailOrPhone" xml:space="preserve">
+    <value>E-mail nebo telefon</value>
+  </data>
 </root>
