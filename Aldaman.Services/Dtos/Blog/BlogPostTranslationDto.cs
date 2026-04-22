@@ -7,5 +7,6 @@ public class BlogPostTranslationDto
     public string Slug { get; set; } = string.Empty;
     public string? Perex { get; set; }
     public string? BodyHtml { get; set; }
+    public string? BodyDeltaJson { get; set; }
     public string? PlainText { get; set; }
 }

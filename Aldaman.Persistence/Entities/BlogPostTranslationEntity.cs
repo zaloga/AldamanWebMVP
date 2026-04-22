@@ -22,6 +22,8 @@ public class BlogPostTranslationEntity : BaseEntity
 
     public string? BodyHtml { get; set; }
 
+    public string? BodyDeltaJson { get; set; }
+
     public string? PlainText { get; set; }
 
 

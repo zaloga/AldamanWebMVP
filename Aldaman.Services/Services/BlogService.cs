@@ -26,7 +26,10 @@ public sealed class BlogService : IBlogService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.Translations.Any(t => t.Title.Contains(query.SearchTerm) || (t.Perex != null && t.Perex.Contains(query.SearchTerm))));
+            dbQuery = dbQuery.Where(p => p.Translations.Any(
+                t => t.Title.Contains(query.SearchTerm)
+                || (t.Perex != null && t.Perex.Contains(query.SearchTerm))
+                || (t.PlainText != null && t.PlainText.Contains(query.SearchTerm))));
         }
 
         // Sorting
@@ -125,6 +128,7 @@ public sealed class BlogService : IBlogService
             Title = translation.Title,
             Perex = translation.Perex,
             BodyHtml = translation.BodyHtml,
+            BodyDeltaJson = translation.BodyDeltaJson,
             PlainText = translation.PlainText,
             PublishedAtUtc = post.PublishedAtUtc,
             AuthorName = post.CreatedByUser?.DisplayName,
@@ -153,6 +157,7 @@ public sealed class BlogService : IBlogService
             Slug = translation?.Slug ?? string.Empty,
             Perex = translation?.Perex,
             BodyHtml = translation?.BodyHtml,
+            BodyDeltaJson = translation?.BodyDeltaJson,
             PlainText = translation?.PlainText,
             Translations = post.Translations.Select(t => new BlogPostTranslationDto
             {
@@ -161,6 +166,7 @@ public sealed class BlogService : IBlogService
                 Slug = t.Slug,
                 Perex = t.Perex,
                 BodyHtml = t.BodyHtml,
+                BodyDeltaJson = t.BodyDeltaJson,
                 PlainText = t.PlainText
             }).ToList()
         };
@@ -185,6 +191,7 @@ public sealed class BlogService : IBlogService
             Slug = dto.Slug,
             Perex = dto.Perex,
             BodyHtml = dto.BodyHtml,
+            BodyDeltaJson = dto.BodyDeltaJson,
             PlainText = StripHtml(dto.BodyHtml),
         };
 
@@ -233,6 +240,7 @@ public sealed class BlogService : IBlogService
         translation.Slug = dto.Slug;
         translation.Perex = dto.Perex;
         translation.BodyHtml = dto.BodyHtml;
+        translation.BodyDeltaJson = dto.BodyDeltaJson;
         translation.PlainText = StripHtml(dto.BodyHtml);
 
         await Context.SaveChangesAsync();
