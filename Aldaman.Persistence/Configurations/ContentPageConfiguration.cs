@@ -21,12 +21,12 @@ public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEnti
             .IsRequired()
             .HasDefaultValue(true);
 
-        builder.Property(x => x.PageOrder)
+        builder.Property(x => x.OrderOnHomePage)
             .IsRequired()
             .HasDefaultValue(0);
 
 
-        builder.Property(x => x.DefaultSortOrder)
+        builder.Property(x => x.OrderInNavigation)
             .IsRequired()
             .HasDefaultValue(0);
 

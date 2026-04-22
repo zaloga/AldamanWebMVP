@@ -8,8 +8,8 @@ public class ContentPageEditDto
     public Guid? Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
     public bool ShowOnHomePage { get; set; } = true;
-    public int PageOrder { get; set; } = 0;
-    public int DefaultSortOrder { get; set; }
+    public int OrderOnHomePage { get; set; } = 0;
+    public int OrderInNavigation { get; set; } = 0;
 
     // Content specific properties for a single culture
     public string CultureCode { get; set; } = string.Empty;

@@ -33,8 +33,9 @@ public sealed class ContentPageService : IContentPageService
         {
             "PageKey" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageKey) : dbQuery.OrderBy(p => p.PageKey),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "SortOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DefaultSortOrder) : dbQuery.OrderBy(p => p.DefaultSortOrder),
-            _ => dbQuery.OrderBy(p => p.DefaultSortOrder)
+            "SortOrderInNavigation" => query.SortDescending ? dbQuery.OrderByDescending(p => p.OrderInNavigation) : dbQuery.OrderBy(p => p.OrderInNavigation),
+            "SortOrderOnHomePage" => query.SortDescending ? dbQuery.OrderByDescending(p => p.OrderOnHomePage) : dbQuery.OrderBy(p => p.OrderOnHomePage),
+            _ => dbQuery.OrderBy(p => p.OrderInNavigation)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -46,8 +47,8 @@ public sealed class ContentPageService : IContentPageService
                 Id = p.Id,
                 PageKey = p.PageKey,
                 ShowOnHomePage = p.ShowOnHomePage,
-                PageOrder = p.PageOrder,
-                DefaultSortOrder = p.DefaultSortOrder,
+                OrderOnHomePage = p.OrderOnHomePage,
+                OrderInNavigation = p.OrderInNavigation,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -86,7 +87,7 @@ public sealed class ContentPageService : IContentPageService
         var pages = await Context.ContentPages
             .Include(p => p.Translations)
             .Where(p => p.ShowOnHomePage)
-            .OrderBy(p => p.PageOrder)
+            .OrderBy(p => p.OrderOnHomePage)
             .ToListAsync();
 
         return pages.Select(page => 
@@ -120,8 +121,8 @@ public sealed class ContentPageService : IContentPageService
             Id = page.Id,
             PageKey = page.PageKey,
             ShowOnHomePage = page.ShowOnHomePage,
-            PageOrder = page.PageOrder,
-            DefaultSortOrder = page.DefaultSortOrder,
+            OrderOnHomePage = page.OrderOnHomePage,
+            OrderInNavigation = page.OrderInNavigation,
             CultureCode = defaultContent?.CultureCode ?? culture,
             Title = defaultContent?.Title ?? string.Empty,
             Slug = defaultContent?.Slug ?? string.Empty,
@@ -139,8 +140,8 @@ public sealed class ContentPageService : IContentPageService
         {
             PageKey = dto.PageKey,
             ShowOnHomePage = dto.ShowOnHomePage,
-            PageOrder = dto.PageOrder,
-            DefaultSortOrder = dto.DefaultSortOrder
+            OrderOnHomePage = dto.OrderOnHomePage,
+            OrderInNavigation = dto.OrderInNavigation
         };
 
         var content = new ContentPageTranslationEntity
@@ -169,8 +170,8 @@ public sealed class ContentPageService : IContentPageService
 
         page.PageKey = dto.PageKey;
         page.ShowOnHomePage = dto.ShowOnHomePage;
-        page.PageOrder = dto.PageOrder;
-        page.DefaultSortOrder = dto.DefaultSortOrder;
+        page.OrderOnHomePage = dto.OrderOnHomePage;
+        page.OrderInNavigation = dto.OrderInNavigation;
 
         var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
         var content = page.Translations.FirstOrDefault(c => c.CultureCode == culture);

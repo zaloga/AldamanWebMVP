@@ -20,12 +20,12 @@ public class ContentPageEntity : BaseEntity
     /// <summary>
     /// Order of the page on the home page.
     /// </summary>
-    public int PageOrder { get; set; }
+    public int OrderOnHomePage { get; set; }
 
     /// <summary>
-    /// Default sort order.
+    /// Order in navigation.
     /// </summary>
-    public int DefaultSortOrder { get; set; }
+    public int OrderInNavigation { get; set; }
 
     // Navigation properties
     public virtual ICollection<ContentPageTranslationEntity> Translations { get; set; } = new List<ContentPageTranslationEntity>();
