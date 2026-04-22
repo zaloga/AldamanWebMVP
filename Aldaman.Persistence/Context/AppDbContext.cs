@@ -35,7 +35,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContentPageTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
-        builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

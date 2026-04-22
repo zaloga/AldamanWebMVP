@@ -34,13 +34,12 @@ public sealed class ContactService : IContactService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.Name.Contains(query.SearchTerm) || p.EmailOrPhone.Contains(query.SearchTerm) || (p.Subject != null && p.Subject.Contains(query.SearchTerm)));
+            dbQuery = dbQuery.Where(p => p.EmailOrPhone.Contains(query.SearchTerm) || p.Message.Contains(query.SearchTerm));
         }
 
         // Sorting
         dbQuery = query.SortBy switch
         {
-            "Name" => query.SortDescending ? dbQuery.OrderByDescending(p => p.Name) : dbQuery.OrderBy(p => p.Name),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "State" => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
             _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
@@ -53,9 +52,7 @@ public sealed class ContactService : IContactService
             .Select(p => new ContactMessageDto
             {
                 Id = p.Id,
-                Name = p.Name,
                 EmailOrPhone = p.EmailOrPhone,
-                Phone = p.Phone,
                 Subject = p.Subject,
                 Message = p.Message,
                 CreatedAtUtc = p.CreatedAtUtc,
@@ -77,10 +74,8 @@ public sealed class ContactService : IContactService
     {
         var entity = new ContactMessageEntity
         {
-            Name = dto.Name,
             EmailOrPhone = dto.EmailOrPhone,
-            Phone = dto.Phone,
-            Subject = dto.Subject,
+            Subject = string.IsNullOrWhiteSpace(dto.Subject) ? "Kontakt z webu Aldaman" : dto.Subject,
             Message = dto.Message,
             ClientIp = clientIp,
             UserAgent = userAgent,
@@ -95,17 +90,15 @@ public sealed class ContactService : IContactService
         { // TODO...
             string body = $"""
                 <h3>New Contact Message</h3>
-                <p><strong>Name:</strong> {entity.Name}</p>
                 <p><strong>Email/Phone:</strong> {entity.EmailOrPhone}</p>
-                <p><strong>Phone:</strong> {entity.Phone ?? "N/A"}</p>
-                <p><strong>Subject:</strong> {entity.Subject ?? "N/A"}</p>
+                <p><strong>Subject:</strong> {entity.Subject}</p>
                 <p><strong>Message:</strong></p>
                 <p>{entity.Message.Replace("\n", "<br/>")}</p>
             """;
 
             await EmailService.SendEmailAsync(
                 EmailOptions.AdminEmail,
-                $"Contact Form: {entity.Subject ?? "New Message"}",
+                $"Contact Form: {entity.Subject}",
                 body,
                 isHtml: true);
 
@@ -136,8 +129,7 @@ public sealed class ContactService : IContactService
         var message = await Context.ContactMessages.FindAsync(id);
         if (message != null)
         {
-            message.IsDeleted = true;
-            message.DeletedAtUtc = DateTime.UtcNow;
+            Context.ContactMessages.Remove(message);
             await Context.SaveChangesAsync();
         }
     }
@@ -150,9 +142,7 @@ public sealed class ContactService : IContactService
             .Select(p => new ContactMessageDto
             {
                 Id = p.Id,
-                Name = p.Name,
                 EmailOrPhone = p.EmailOrPhone,
-                Phone = p.Phone,
                 Subject = p.Subject,
                 Message = p.Message,
                 CreatedAtUtc = p.CreatedAtUtc,

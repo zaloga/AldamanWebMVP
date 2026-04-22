@@ -36,9 +36,8 @@ public sealed class ContactController : Controller
 
         ContactMessageDto dto = new()
         {
-            Name = viewModel.Name,
             EmailOrPhone = viewModel.EmailOrPhone,
-            Subject = viewModel.Subject,
+
             Message = viewModel.Message
         };
 

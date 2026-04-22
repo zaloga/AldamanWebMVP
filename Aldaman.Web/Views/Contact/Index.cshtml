@@ -12,29 +12,13 @@
 
         <form asp-controller="Contact" asp-action="Submit" method="post" class="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
             <div class="sm:col-span-2">
-                <label asp-for="Name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.FullName]</label>
-                <div class="mt-1">
-                    <input asp-for="Name" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-md">
-                    <span asp-validation-for="Name" class="text-sm text-red-600"></span>
-                </div>
-            </div>
-
-            <div class="sm:col-span-2">
                 <label asp-for="EmailOrPhone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.EmailOrPhone]</label>
                 <div class="mt-1">
                     <input asp-for="EmailOrPhone" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-md">
                     <span asp-validation-for="EmailOrPhone" class="text-sm text-red-600"></span>
                 </div>
             </div>
-            
-            <div class="sm:col-span-2">
-                <label asp-for="Subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.Subject]</label>
-                <div class="mt-1">
-                    <input asp-for="Subject" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-md">
-                    <span asp-validation-for="Subject" class="text-sm text-red-600"></span>
-                </div>
-            </div>
-
+         
             <div class="sm:col-span-2">
                 <label asp-for="Message" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.Message]</label>
                 <div class="mt-1">

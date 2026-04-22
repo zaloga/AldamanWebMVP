@@ -8,13 +8,10 @@ namespace Aldaman.Services.Dtos.ContactMessage;
 public class ContactMessageDto
 {
     public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
     public string EmailOrPhone { get; set; } = string.Empty;
-    public string? Phone { get; set; }
-    public string? Subject { get; set; }
+    public string Subject { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
     public DateTime CreatedAtUtc { get; set; }
     public DateTime? SentAtUtc { get; set; }
     public ContactMessageState State { get; set; }
 }
-

@@ -30,9 +30,7 @@ internal sealed class AdminDashboardService : IAdminDashboardService
         var latestMessages = latestMessagesEntities.Select(x => new ContactMessageDto
         {
             Id = x.Id,
-            Name = x.Name,
             EmailOrPhone = x.EmailOrPhone,
-            Phone = x.Phone,
             Subject = x.Subject,
             Message = x.Message,
             CreatedAtUtc = x.CreatedAtUtc,

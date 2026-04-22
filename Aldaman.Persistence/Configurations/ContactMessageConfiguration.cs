@@ -10,23 +10,13 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.LanguageCode)
-            .HasMaxLength(ContactMessageEntity.LanguageCodeMaxLength)
-            .IsRequired();
-
-        builder.Property(x => x.Name)
-            .HasMaxLength(ContactMessageEntity.NameMaxLength)
-            .IsRequired();
-
         builder.Property(x => x.EmailOrPhone)
             .HasMaxLength(ContactMessageEntity.EmailOrPhoneMaxLength)
             .IsRequired();
 
-        builder.Property(x => x.Phone)
-            .HasMaxLength(ContactMessageEntity.PhoneMaxLength);
-
         builder.Property(x => x.Subject)
-            .HasMaxLength(ContactMessageEntity.SubjectMaxLength);
+            .HasMaxLength(ContactMessageEntity.SubjectMaxLength)
+            .IsRequired();
 
         builder.Property(x => x.Message)
             .HasMaxLength(ContactMessageEntity.MessageMaxLength)
@@ -47,21 +37,5 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
-
-        // Audit Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.UpdatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.DeletedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.DeletedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -10,16 +10,9 @@ public class ContactFormViewModelValidator : AbstractValidator<ContactFormViewMo
 {
     public ContactFormViewModelValidator(IStringLocalizer<ValidationResources> localizer)
     {
-        RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.NameRequired])
-            .MaximumLength(ContactMessageEntity.NameMaxLength).WithMessage(localizer[ValidationResourceKeys.NameMaxLength, ContactMessageEntity.NameMaxLength]);
-
         RuleFor(x => x.EmailOrPhone)
             .NotEmpty().WithMessage(localizer[ValidationResourceKeys.EmailOrPhoneRequired])
             .MaximumLength(ContactMessageEntity.EmailOrPhoneMaxLength).WithMessage(localizer[ValidationResourceKeys.EmailOrPhoneMaxLength, ContactMessageEntity.EmailOrPhoneMaxLength]);
-
-        RuleFor(x => x.Subject)
-            .MaximumLength(ContactMessageEntity.SubjectMaxLength).WithMessage(localizer[ValidationResourceKeys.SubjectMaxLength, ContactMessageEntity.SubjectMaxLength]);
 
         RuleFor(x => x.Message)
             .NotEmpty().WithMessage(localizer[ValidationResourceKeys.MessageRequired])
