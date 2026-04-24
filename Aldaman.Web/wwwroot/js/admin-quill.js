@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{ 'header': [1, 2, 3, 4, false] }],
+                    [{ 'font': [] }, { 'size': [] }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    ['blockquote', 'code-block'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
                     [{ 'script': 'sub' }, { 'script': 'super' }],
-                    ['link', 'image'],
+                    [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }, { 'align': [] }],
+                    ['link', 'image', 'video', 'formula'],
                     ['clean']
                 ]
             }
