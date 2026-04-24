@@ -16,7 +16,7 @@ public class NavigationViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var navigationPages = await ContentPageService.GetNavigationPagesAsync(cultureCode);
+        var navigationPages = await ContentPageService.GetTopNavigationAsync(cultureCode);
         
         return View(navigationPages);
     }

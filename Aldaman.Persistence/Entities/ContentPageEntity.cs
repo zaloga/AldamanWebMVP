@@ -1,3 +1,5 @@
+using Aldaman.Persistence.Enums;
+
 namespace Aldaman.Persistence.Entities;
 
 /// <summary>
@@ -13,9 +15,9 @@ public class ContentPageEntity : BaseEntity
     public string PageKey { get; set; } = string.Empty;
 
     /// <summary>
-    /// Indicates whether this page should be displayed on the home page.
+    /// Indicates where this page should be displayed.
     /// </summary>
-    public bool ShowOnHomePage { get; set; }
+    public PlaceToShowEnum PlaceToShow { get; set; }
 
     /// <summary>
     /// Order of the page on the home page.

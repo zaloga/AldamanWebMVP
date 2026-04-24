@@ -1,3 +1,4 @@
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.Page.ContentPageEditDto
 
 @{
@@ -80,9 +81,19 @@
                             <small class="text-muted">Unique internal identifier (e.g. 'about', 'services').</small>
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input asp-for="ShowOnHomePage" class="form-check-input" />
-                            <label asp-for="ShowOnHomePage" class="form-check-label">Show On Home Page</label>
+                        <div class="mb-3">
+                            <label class="form-label d-block text-primary fw-bold">Display Locations</label>
+                            @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
+                            {
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
+                                    <label class="form-check-label" for="loc-@value">
+                                        @if (value == PlaceToShowEnum.HomePage) { <text>Home Page</text> }
+                                        else if (value == PlaceToShowEnum.TopNavigation) { <text>Top Navigation</text> }
+                                        else { @value }
+                                    </label>
+                                </div>
+                            }
                         </div>
 
                         <div class="mb-3">

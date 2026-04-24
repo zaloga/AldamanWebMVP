@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,9 +18,9 @@ public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEnti
         builder.HasIndex(x => x.PageKey)
             .IsUnique();
 
-        builder.Property(x => x.ShowOnHomePage)
+        builder.Property(x => x.PlaceToShow)
             .IsRequired()
-            .HasDefaultValue(true);
+            .HasDefaultValue(PlaceToShowEnum.None);
 
         builder.Property(x => x.OrderOnHomePage)
             .IsRequired()

@@ -1,4 +1,5 @@
 @using Aldaman.Services.Dtos.Page
+@using Aldaman.Persistence.Enums
 @model PagedResultDto<ContentPageListItemDto>
 @{
     ViewData["Title"] = "Pages";
@@ -51,7 +52,7 @@
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">Page Key</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Home</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Locations</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">HP Order</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Default Order</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
@@ -72,14 +73,24 @@
                             <div class="small text-muted">Created @item.CreatedAtUtc.ToString("MMM dd, yyyy")</div>
                         </td>
                         <td class="py-3 text-center">
-                            @if (item.ShowOnHomePage)
-                            {
-                                <span class="badge bg-primary text-white">YES</span>
-                            }
-                            else
-                            {
-                                <span class="text-muted small">no</span>
-                            }
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+                                {
+                                    <span class="badge bg-primary text-white">Home</span>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
+                                {
+                                    <span class="badge bg-info text-white">Nav</span>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
+                                {
+                                    <span class="badge bg-secondary text-white">Footer</span>
+                                }
+                                @if (item.PlaceToShow == PlaceToShowEnum.None)
+                                {
+                                    <span class="text-muted small">none</span>
+                                }
+                            </div>
                         </td>
                         <td class="py-3 text-center">
                             <span class="fw-medium text-primary">@item.OrderOnHomePage</span>

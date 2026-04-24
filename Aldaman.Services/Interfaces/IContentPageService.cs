@@ -21,7 +21,12 @@ public interface IContentPageService
     /// <summary>
     /// Gets pages marked for display in navigation.
     /// </summary>
-    Task<IEnumerable<ContentPageNavigationDto>> GetNavigationPagesAsync(string culture);
+    Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture);
+
+    /// <summary>
+    /// Gets pages marked for display in footer.
+    /// </summary>
+    Task<IEnumerable<ContentPageNavigationDto>> GetFooternavigationAsync(string culture);
 
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.

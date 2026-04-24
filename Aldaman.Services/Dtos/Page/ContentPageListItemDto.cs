@@ -1,4 +1,5 @@
 using System;
+using Aldaman.Persistence.Enums;
 
 namespace Aldaman.Services.Dtos.Page;
 
@@ -9,7 +10,7 @@ public class ContentPageListItemDto
 {
     public Guid Id { get; set; }
     public string PageKey { get; set; } = string.Empty;
-    public bool ShowOnHomePage { get; set; }
+    public PlaceToShowEnum PlaceToShow { get; set; }
     public int OrderOnHomePage { get; set; }
     public int OrderInNavigation { get; set; }
     public DateTime CreatedAtUtc { get; set; }

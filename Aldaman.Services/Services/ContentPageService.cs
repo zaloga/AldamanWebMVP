@@ -1,5 +1,6 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
@@ -50,7 +51,7 @@ public sealed class ContentPageService : IContentPageService
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
-                ShowOnHomePage = p.ShowOnHomePage,
+                PlaceToShow = p.PlaceToShow,
                 OrderOnHomePage = p.OrderOnHomePage,
                 OrderInNavigation = p.OrderInNavigation,
                 CreatedAtUtc = p.CreatedAtUtc
@@ -93,7 +94,7 @@ public sealed class ContentPageService : IContentPageService
     {
         var pages = await Context.ContentPages
             .Include(p => p.Translations)
-            .Where(p => p.ShowOnHomePage)
+            .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
             .OrderBy(p => p.OrderOnHomePage)
             .ToListAsync();
 
@@ -115,13 +116,23 @@ public sealed class ContentPageService : IContentPageService
         }).ToList();
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationPagesAsync(string culture)
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture)
+    {
+        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.TopNavigation);
+    }
+
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooternavigationAsync(string culture)
+    {
+        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.Footer);
+    }
+
+    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalAsync(string culture, PlaceToShowEnum placeToShow)
     {
         var pages = await Context.ContentPages
-            .Include(p => p.Translations)
-            .Where(p => !p.ShowOnHomePage) // Assuming we don't want to show home page items in navigation
-            .OrderBy(p => p.OrderInNavigation)
-            .ToListAsync();
+                    .Include(p => p.Translations)
+                    .Where(p => p.PlaceToShow.HasFlag(placeToShow))
+                    .OrderBy(p => p.OrderInNavigation)
+                    .ToListAsync();
 
         return pages.Select(page =>
         {
@@ -148,7 +159,7 @@ public sealed class ContentPageService : IContentPageService
         {
             Id = page.Id,
             PageKey = page.PageKey,
-            ShowOnHomePage = page.ShowOnHomePage,
+            PlaceToShow = page.PlaceToShow,
             OrderOnHomePage = page.OrderOnHomePage,
             OrderInNavigation = page.OrderInNavigation,
             Translations = Localization.SupportedCultures.Select(culture =>
@@ -183,7 +194,7 @@ public sealed class ContentPageService : IContentPageService
         var page = new ContentPageEntity
         {
             PageKey = dto.PageKey,
-            ShowOnHomePage = dto.ShowOnHomePage,
+            PlaceToShow = dto.PlaceToShow,
             OrderOnHomePage = dto.OrderOnHomePage,
             OrderInNavigation = dto.OrderInNavigation
         };
@@ -225,7 +236,7 @@ public sealed class ContentPageService : IContentPageService
         }
 
         page.PageKey = dto.PageKey;
-        page.ShowOnHomePage = dto.ShowOnHomePage;
+        page.PlaceToShow = dto.PlaceToShow;
         page.OrderOnHomePage = dto.OrderOnHomePage;
         page.OrderInNavigation = dto.OrderInNavigation;
 

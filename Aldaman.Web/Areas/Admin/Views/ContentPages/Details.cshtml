@@ -1,3 +1,4 @@
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.Page.ContentPageEditDto
 
 @{
@@ -24,8 +25,27 @@
                         <dt class="col-sm-5">Page Key</dt>
                         <dd class="col-sm-7">@Model.PageKey</dd>
 
-                        <dt class="col-sm-5">Show On Home Page</dt>
-                        <dd class="col-sm-7">@(Model.ShowOnHomePage ? "Yes" : "No")</dd>
+                        <dt class="col-sm-5">Display Locations</dt>
+                        <dd class="col-sm-7">
+                            <div class="d-flex flex-wrap gap-1">
+                                @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+                                {
+                                    <span class="badge bg-primary">Home</span>
+                                }
+                                @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
+                                {
+                                    <span class="badge bg-info">Navigation</span>
+                                }
+                                @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
+                                {
+                                    <span class="badge bg-secondary">Footer</span>
+                                }
+                                @if (Model.PlaceToShow == PlaceToShowEnum.None)
+                                {
+                                    <span class="text-muted">None</span>
+                                }
+                            </div>
+                        </dd>
 
                         <dt class="col-sm-5">Home Page Order</dt>
                         <dd class="col-sm-7">@Model.OrderOnHomePage</dd>
