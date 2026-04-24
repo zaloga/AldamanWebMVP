@@ -5,6 +5,10 @@
     ViewData["Title"] = "Page Details";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]: @Model.PageKey</h1>
@@ -88,8 +92,10 @@
                                     <dd class="col-sm-12 mt-2">
                                         @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
                                         {
-                                            <div class="p-3 border rounded bg-light" style="max-height: 400px; overflow-y: auto;">
-                                                @Html.Raw(translation.BodyHtml)
+                                            <div class="p-3 border rounded bg-light ql-snow" style="max-height: 400px; overflow-y: auto;">
+                                                <div class="ql-editor p-0">
+                                                    @Html.Raw(translation.BodyHtml)
+                                                </div>
                                             </div>
                                         }
                                         else

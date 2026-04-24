@@ -749,9 +749,6 @@
   .max-w-md {
     max-width: var(--container-md);
   }
-  .max-w-none {
-    max-width: none;
-  }
   .flex-1 {
     flex: 1;
   }
@@ -1044,9 +1041,6 @@
   }
   .bg-brand-primary {
     background-color: var(--color-brand-primary);
-  }
-  .bg-gray-100 {
-    background-color: var(--color-gray-100);
   }
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
