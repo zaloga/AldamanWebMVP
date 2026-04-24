@@ -187,36 +187,7 @@
   <data name="RequestId" xml:space="preserve">
     <value>ID požadavku:</value>
   </data>
-  <data name="Events" xml:space="preserve">
-    <value>Akce</value>
-  </data>
-  <data name="EventsSlug" xml:space="preserve">
-    <value>akce</value>
-  </data>
-  <data name="Shop" xml:space="preserve">
-    <value>Shop</value>
-  </data>
-  <data name="ShopSlug" xml:space="preserve">
-    <value>shop</value>
-  </data>
-  <data name="Gallery" xml:space="preserve">
-    <value>Galerie</value>
-  </data>
-  <data name="GallerySlug" xml:space="preserve">
-    <value>galerie</value>
-  </data>
-  <data name="Offer" xml:space="preserve">
-    <value>Nabídka</value>
-  </data>
-  <data name="OfferSlug" xml:space="preserve">
-    <value>nabidka</value>
-  </data>
-  <data name="Promo" xml:space="preserve">
-    <value>Promo</value>
-  </data>
-  <data name="PromoSlug" xml:space="preserve">
-    <value>promo</value>
-  </data>
+
   <data name="Links" xml:space="preserve">
     <value>Odkazy</value>
   </data>

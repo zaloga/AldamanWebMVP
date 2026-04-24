@@ -16,16 +16,6 @@ public static class UIResourceKeys
     public const string AldamanWebEssentials = nameof(AldamanWebEssentials);
 
     // Dynamic Pages Navigation
-    public const string Events = nameof(Events);
-    public const string EventsSlug = nameof(EventsSlug);
-    public const string Shop = nameof(Shop);
-    public const string ShopSlug = nameof(ShopSlug);
-    public const string Gallery = nameof(Gallery);
-    public const string GallerySlug = nameof(GallerySlug);
-    public const string Offer = nameof(Offer);
-    public const string OfferSlug = nameof(OfferSlug);
-    public const string Promo = nameof(Promo);
-    public const string PromoSlug = nameof(PromoSlug);
     public const string Links = nameof(Links);
     public const string LinksSlug = nameof(LinksSlug);
 
