@@ -8,7 +8,8 @@
     "watch:admin": "tailwindcss -i ./config/admin-input.css -o ./wwwroot/css/admin.css --watch",
     "build:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css",
     "watch:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css --watch",
-    "build": "npm run build:admin && npm run build:web"
+    "copy:quill": "npx shx mkdir -p wwwroot/lib/quill && npx shx cp node_modules/quill/dist/quill.js wwwroot/lib/quill/ && npx shx cp node_modules/quill/dist/quill.snow.css wwwroot/lib/quill/",
+    "build": "npm run copy:quill && npm run build:admin && npm run build:web"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +20,8 @@
     "autoprefixer": "^10.4.27",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2"
+  },
+  "dependencies": {
+    "quill": "^2.0.3"
   }
 }

@@ -5,6 +5,10 @@
     ViewData["Title"] = "Edit Page";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
@@ -56,11 +60,13 @@
 
                                     <div class="mb-3">
                                         <label asp-for="Translations[i].BodyHtml" class="form-label">Content (@culture.ToUpper())</label>
-                                        <textarea asp-for="Translations[i].BodyHtml" class="form-control" rows="10"></textarea>
+                                        <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
+                                        <input type="hidden" asp-for="Translations[i].BodyHtml" />
                                         <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
                                     </div>
                                     
                                     <input type="hidden" asp-for="Translations[i].BodyDeltaJson" />
+                                    <input type="hidden" asp-for="Translations[i].PlainText" />
                                 </div>
                             }
                         </div>
@@ -114,3 +120,8 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script src="~/lib/quill/quill.js"></script>
+    <script src="~/js/admin-quill.js" asp-append-version="true"></script>
+}

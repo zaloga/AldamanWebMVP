@@ -322,6 +322,9 @@
   .bottom-100 {
     bottom: calc(var(--spacing) * 100);
   }
+  .isolate {
+    isolation: isolate;
+  }
   .z-0 {
     z-index: 0;
   }
@@ -633,6 +636,9 @@
   }
   .table {
     display: table;
+  }
+  .table\! {
+    display: table !important;
   }
   .table-caption {
     display: table-caption;
