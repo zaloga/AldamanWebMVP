@@ -24,7 +24,7 @@
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Home" asp-action="Index">@Localizer[UIResourceKeys.Home]</a>
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
                     
-                    @await Component.InvokeAsync("Navigation")
+                    @await Component.InvokeAsync("TopNavigation")
 
                     <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
                 </div>
@@ -73,7 +73,8 @@
                 &copy; 2026 - @Localizer[UIResourceKeys.AldamanWebEssentials]
             </p>
             <div class="flex items-center gap-6">
-                <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" asp-area="" asp-controller="ContentPage" asp-action="Detail" asp-route-slug="@Localizer[UIResourceKeys.LinksSlug].Value">@Localizer[UIResourceKeys.Links]</a>
+                @await Component.InvokeAsync("FooterNavigation")
+            
                 <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer[UIResourceKeys.PrivacyPolicy]</a>
             </div>
         </div>

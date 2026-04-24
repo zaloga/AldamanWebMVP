@@ -188,12 +188,6 @@
     <value>Request ID:</value>
   </data>
 
-  <data name="Links" xml:space="preserve">
-    <value>Links</value>
-  </data>
-  <data name="LinksSlug" xml:space="preserve">
-    <value>links</value>
-  </data>
   <data name="EmailOrPhone" xml:space="preserve">
     <value>Email or Phone</value>
   </data>

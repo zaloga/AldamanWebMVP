@@ -188,12 +188,6 @@
     <value>ID požadavku:</value>
   </data>
 
-  <data name="Links" xml:space="preserve">
-    <value>Odkazy</value>
-  </data>
-  <data name="LinksSlug" xml:space="preserve">
-    <value>odkazy</value>
-  </data>
   <data name="EmailOrPhone" xml:space="preserve">
     <value>E-mail nebo telefon</value>
   </data>

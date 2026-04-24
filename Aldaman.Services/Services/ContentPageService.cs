@@ -119,7 +119,7 @@ public sealed class ContentPageService : IContentPageService
         return await GetNavigationInternalAsync(culture, PlaceToShowEnum.TopNavigation);
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooternavigationAsync(string culture)
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture)
     {
         return await GetNavigationInternalAsync(culture, PlaceToShowEnum.Footer);
     }

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Infrastructure.ViewComponents;
 
-public class NavigationViewComponent : ViewComponent
+public class FooterNavigationViewComponent : ViewComponent
 {
     private IContentPageService ContentPageService { get; }
 
-    public NavigationViewComponent(IContentPageService contentPageService)
+    public FooterNavigationViewComponent(IContentPageService contentPageService)
     {
         ContentPageService = contentPageService;
     }
@@ -16,8 +16,8 @@ public class NavigationViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var navigationPages = await ContentPageService.GetTopNavigationAsync(cultureCode);
+        var footerPages = await ContentPageService.GetFooterNavigationAsync(cultureCode);
         
-        return View(navigationPages);
+        return View(footerPages);
     }
 }

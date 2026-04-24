@@ -15,10 +15,6 @@ public static class UIResourceKeys
     public const string TermsOfService = nameof(TermsOfService);
     public const string AldamanWebEssentials = nameof(AldamanWebEssentials);
 
-    // Dynamic Pages Navigation
-    public const string Links = nameof(Links);
-    public const string LinksSlug = nameof(LinksSlug);
-
     // Home Page
     public const string HomeTitle = nameof(HomeTitle);
     public const string WelcomeToAldaman = nameof(WelcomeToAldaman);

@@ -1,0 +1,13 @@
+@using Aldaman.Services.Dtos.Page
+@model IEnumerable<ContentPageNavigationDto>
+
+@foreach (var navigation in Model)
+{
+    <a class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" 
+       asp-area="" 
+       asp-controller="ContentPage" 
+       asp-action="Detail" 
+       asp-route-slug="@navigation.Slug">
+        @navigation.Title
+    </a>
+}
