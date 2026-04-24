@@ -57,6 +57,11 @@ public sealed class MediaService : IMediaService
 
     public async Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType)
     {
+        if (fileStream.Length > 1 * 1024 * 1024)
+        {
+            throw new InvalidOperationException("File size exceeds the 1 MB limit.");
+        }
+
         var uploadsFolder = Path.Combine(WebRootPath, "uploads");
         if (!Directory.Exists(uploadsFolder))
         {

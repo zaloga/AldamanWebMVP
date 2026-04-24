@@ -54,6 +54,29 @@ public class MediaController : BaseAdminController
         }
     }
 
+    [HttpPost]
+    [IgnoreAntiforgeryToken] // TODO chech if it is save... and do auth check as well
+    public async Task<IActionResult> UploadQuill(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return Json(new { success = false, message = "Please select a file to upload." });
+        }
+
+        try
+        {
+            using (var stream = file.OpenReadStream())
+            {
+                var asset = await MediaService.UploadAsync(stream, file.FileName, file.ContentType);
+                return Json(new { success = true, url = asset.RelativePath });
+            }
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = ex.Message });
+        }
+    }
+
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
