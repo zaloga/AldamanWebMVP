@@ -226,4 +226,7 @@
   <data name="EmailOrPhone" xml:space="preserve">
     <value>Email or Phone</value>
   </data>
+  <data name="SectionNoContent" xml:space="preserve">
+    <value>This section does not have any content yet.</value>
+  </data>
 </root>

@@ -226,4 +226,7 @@
   <data name="EmailOrPhone" xml:space="preserve">
     <value>E-mail nebo telefon</value>
   </data>
+  <data name="SectionNoContent" xml:space="preserve">
+    <value>Tato sekce zatím nemá žádný obsah.</value>
+  </data>
 </root>
