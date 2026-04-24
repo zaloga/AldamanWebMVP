@@ -4,7 +4,7 @@ using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Services;
 using Aldaman.Integrations.Email;
-using Aldaman.Web.Configuration;
+using Aldaman.Services.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using FluentValidation;
@@ -42,13 +42,14 @@ public class Program
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();
 
+        // Localization configuration
         builder.Services.AddLocalization();
 
-        LocalizationSettings localizationSettings = builder.Configuration
-            .GetSection(LocalizationSettings.SectionName)
-            .Get<LocalizationSettings>()!;
+        var localizationSection = builder.Configuration.GetSection(LocalizationSettings.SectionName);
+        builder.Services.Configure<LocalizationSettings>(localizationSection);
 
-        CultureInfo[] supportedCultures = localizationSettings.SupportedCultures
+        var localizationSettings = localizationSection.Get<LocalizationSettings>()!;
+        var supportedCultures = localizationSettings.SupportedCultures
             .Select(c => new CultureInfo(c))
             .ToArray();
 

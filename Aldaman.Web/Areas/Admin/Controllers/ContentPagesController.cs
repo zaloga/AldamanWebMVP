@@ -38,7 +38,8 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Aldaman.Services.Dtos.Page.ContentPageEditDto { CultureCode = "cs" });
+        Services.Dtos.Page.ContentPageEditDto model = ContentPageService.GetPageForCreate();
+        return View(model);
     }
 
     [HttpPost]
@@ -66,7 +67,7 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var page = await ContentPageService.GetPageForEditAsync(id, "cs");
+        var page = await ContentPageService.GetPageForEditAsync(id);
         if (page == null)
         {
             return NotFound();
@@ -78,7 +79,7 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        var page = await ContentPageService.GetPageForEditAsync(id, "cs");
+        var page = await ContentPageService.GetPageForEditAsync(id);
         if (page == null)
         {
             return NotFound();

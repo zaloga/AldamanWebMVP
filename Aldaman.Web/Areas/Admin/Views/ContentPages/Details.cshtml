@@ -8,46 +8,84 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]: @Model.PageKey</h1>
         <div>
-            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit Page</a>
+            <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
         </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">General Information</h6>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">General Information</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">Page Key</dt>
+                        <dd class="col-sm-7">@Model.PageKey</dd>
+
+                        <dt class="col-sm-5">Show On Home Page</dt>
+                        <dd class="col-sm-7">@(Model.ShowOnHomePage ? "Yes" : "No")</dd>
+
+                        <dt class="col-sm-5">Home Page Order</dt>
+                        <dd class="col-sm-7">@Model.OrderOnHomePage</dd>
+
+                        <dt class="col-sm-5">Navigation Order</dt>
+                        <dd class="col-sm-7">@Model.OrderInNavigation</dd>
+                    </dl>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">Page Key</dt>
-                <dd class="col-sm-9">@Model.PageKey</dd>
 
-                <dt class="col-sm-3">Show On Home Page</dt>
-                <dd class="col-sm-9">@(Model.ShowOnHomePage ? "Yes" : "No")</dd>
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Translations</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-3" id="detailsTabs" role="tablist">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var culture = Model.Translations[i].CultureCode;
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link @(i == 0 ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(i == 0 ? "true" : "false")">
+                                    @culture.ToUpper()
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <div class="tab-content" id="detailsTabsContent">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var translation = Model.Translations[i];
+                            var culture = translation.CultureCode;
+                            <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
+                                <dl class="row">
+                                    <dt class="col-sm-2">Title</dt>
+                                    <dd class="col-sm-10">@(string.IsNullOrWhiteSpace(translation.Title) ? "---" : translation.Title)</dd>
 
-                <dt class="col-sm-3">Home Page Order</dt>
-                <dd class="col-sm-9">@Model.OrderOnHomePage</dd>
+                                    <dt class="col-sm-2">Slug</dt>
+                                    <dd class="col-sm-10">@(string.IsNullOrWhiteSpace(translation.Slug) ? "---" : translation.Slug)</dd>
 
-
-                <dt class="col-sm-3">Navigation Sort Order</dt>
-                <dd class="col-sm-9">@Model.OrderInNavigation</dd>
-            </dl>
-        </div>
-    </div>
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Primary Content (@Model.CultureCode)</h6>
-        </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">Title</dt>
-                <dd class="col-sm-9">@Model.Title</dd>
-
-                <dt class="col-sm-3">Slug</dt>
-                <dd class="col-sm-9">@Model.Slug</dd>
-                
-
-            </dl>
+                                    <dt class="col-sm-12">Content</dt>
+                                    <dd class="col-sm-12 mt-2">
+                                        @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
+                                        {
+                                            <div class="p-3 border rounded bg-light" style="max-height: 400px; overflow-y: auto;">
+                                                @Html.Raw(translation.BodyHtml)
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted italic">No content available for this language.</span>
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

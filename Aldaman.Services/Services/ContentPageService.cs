@@ -1,19 +1,23 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Services.Services;
 
 public sealed class ContentPageService : IContentPageService
 {
     private AppDbContext Context { get; }
+    private LocalizationSettings Localization { get; }
 
-    public ContentPageService(AppDbContext context)
+    public ContentPageService(AppDbContext context, IOptions<LocalizationSettings> localizationOptions)
     {
         Context = context;
+        Localization = localizationOptions.Value;
     }
 
     public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedPagesAsync(PaginationQuery query)
@@ -93,11 +97,11 @@ public sealed class ContentPageService : IContentPageService
             .OrderBy(p => p.OrderOnHomePage)
             .ToListAsync();
 
-        return pages.Select(page => 
+        return pages.Select(page =>
         {
-            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture) 
+            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture)
                          ?? page.Translations.FirstOrDefault();
-                         
+
             return new ContentPageDetailDto
             {
                 Id = page.Id,
@@ -111,16 +115,13 @@ public sealed class ContentPageService : IContentPageService
         }).ToList();
     }
 
-    public async Task<ContentPageEditDto?> GetPageForEditAsync(Guid id, string culture)
+    public async Task<ContentPageEditDto?> GetPageForEditAsync(Guid id)
     {
         var page = await Context.ContentPages
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (page == null) return null;
-
-        var defaultContent = page.Translations.FirstOrDefault(c => c.CultureCode == culture)
-                          ?? page.Translations.FirstOrDefault();
 
         return new ContentPageEditDto
         {
@@ -129,20 +130,29 @@ public sealed class ContentPageService : IContentPageService
             ShowOnHomePage = page.ShowOnHomePage,
             OrderOnHomePage = page.OrderOnHomePage,
             OrderInNavigation = page.OrderInNavigation,
-            CultureCode = defaultContent?.CultureCode ?? culture,
-            Title = defaultContent?.Title ?? string.Empty,
-            Slug = defaultContent?.Slug ?? string.Empty,
-            BodyHtml = defaultContent?.BodyHtml,
-            BodyDeltaJson = defaultContent?.BodyDeltaJson,
-            PlainText = defaultContent?.PlainText,
-            Translations = page.Translations.Select(c => new ContentPageTranslationDto
+            Translations = Localization.SupportedCultures.Select(culture =>
             {
-                CultureCode = c.CultureCode,
-                Title = c.Title,
-                Slug = c.Slug,
-                BodyHtml = c.BodyHtml,
-                BodyDeltaJson = c.BodyDeltaJson,
-                PlainText = c.PlainText
+                var translation = page.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                return new ContentPageTranslationDto
+                {
+                    CultureCode = culture,
+                    Title = translation?.Title ?? string.Empty,
+                    Slug = translation?.Slug ?? string.Empty,
+                    BodyHtml = translation?.BodyHtml,
+                    BodyDeltaJson = translation?.BodyDeltaJson,
+                    PlainText = translation?.PlainText
+                };
+            }).ToList()
+        };
+    }
+
+    public ContentPageEditDto GetPageForCreate()
+    {
+        return new ContentPageEditDto
+        {
+            Translations = Localization.SupportedCultures.Select(c => new ContentPageTranslationDto
+            {
+                CultureCode = c
             }).ToList()
         };
     }
@@ -157,17 +167,26 @@ public sealed class ContentPageService : IContentPageService
             OrderInNavigation = dto.OrderInNavigation
         };
 
-        var content = new ContentPageTranslationEntity
+        foreach (var translationDto in dto.Translations)
         {
-            CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
-            Title = dto.Title ?? dto.PageKey,
-            Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : dto.PageKey.ToLower().Replace(" ", "-"),
-            BodyHtml = dto.BodyHtml,
-            BodyDeltaJson = dto.BodyDeltaJson,
-            PlainText = StripHtml(dto.BodyHtml)
-        };
+            // Only add translation if it has some content or is a supported culture we want to ensure exists
+            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+                continue;
 
-        page.Translations.Add(content);
+            var translation = new ContentPageTranslationEntity
+            {
+                CultureCode = translationDto.CultureCode,
+                Title = translationDto.Title,
+                Slug = !string.IsNullOrWhiteSpace(translationDto.Slug)
+                    ? translationDto.Slug
+                    : translationDto.Title.ToLower().Replace(" ", "-"),
+                BodyHtml = translationDto.BodyHtml,
+                BodyDeltaJson = translationDto.BodyDeltaJson,
+                PlainText = StripHtml(translationDto.BodyHtml)
+            };
+
+            page.Translations.Add(translation);
+        }
 
         Context.ContentPages.Add(page);
         await Context.SaveChangesAsync();
@@ -189,23 +208,35 @@ public sealed class ContentPageService : IContentPageService
         page.OrderOnHomePage = dto.OrderOnHomePage;
         page.OrderInNavigation = dto.OrderInNavigation;
 
-        var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
-        var content = page.Translations.FirstOrDefault(c => c.CultureCode == culture);
-
-        if (content == null)
+        foreach (var translationDto in dto.Translations)
         {
-            content = new ContentPageTranslationEntity
-            {
-                CultureCode = culture
-            };
-            page.Translations.Add(content);
-        }
+            var existingTranslation = page.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
 
-        content.Title = dto.Title ?? dto.PageKey;
-        content.Slug = !string.IsNullOrWhiteSpace(dto.Slug) ? dto.Slug : content.Slug;
-        content.BodyHtml = dto.BodyHtml;
-        content.BodyDeltaJson = dto.BodyDeltaJson;
-        content.PlainText = StripHtml(dto.BodyHtml);
+            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+            {
+                if (existingTranslation != null)
+                {
+                    // Optionally remove empty translation? For now, let's just keep it or skip update.
+                    // page.Translations.Remove(existingTranslation);
+                }
+                continue;
+            }
+
+            if (existingTranslation == null)
+            {
+                existingTranslation = new ContentPageTranslationEntity
+                {
+                    CultureCode = translationDto.CultureCode
+                };
+                page.Translations.Add(existingTranslation);
+            }
+
+            existingTranslation.Title = translationDto.Title;
+            existingTranslation.Slug = translationDto.Slug;
+            existingTranslation.BodyHtml = translationDto.BodyHtml;
+            existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
+            existingTranslation.PlainText = StripHtml(translationDto.BodyHtml);
+        }
 
         await Context.SaveChangesAsync();
     }

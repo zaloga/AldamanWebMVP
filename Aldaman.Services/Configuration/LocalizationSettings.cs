@@ -1,4 +1,4 @@
-namespace Aldaman.Web.Configuration;
+namespace Aldaman.Services.Configuration;
 
 /// <summary>
 /// Settings for application localization.

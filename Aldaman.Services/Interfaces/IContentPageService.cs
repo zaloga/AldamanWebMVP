@@ -26,7 +26,13 @@ public interface IContentPageService
     /// <summary>
     /// Gets a page for editing in admin.
     /// </summary>
-    Task<ContentPageEditDto?> GetPageForEditAsync(Guid id, string culture);
+    Task<ContentPageEditDto?> GetPageForEditAsync(Guid id);
+
+    /// <summary>
+    /// Gets a new page template for creation in admin.
+    /// </summary>
+    /// <returns>A new page template</returns>
+    ContentPageEditDto GetPageForCreate();
 
     /// <summary>
     /// Creates a new page.
