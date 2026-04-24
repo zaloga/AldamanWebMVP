@@ -16,7 +16,6 @@ public static class UIResourceKeys
     public const string AldamanWebEssentials = nameof(AldamanWebEssentials);
 
     // Home Page
-    public const string HomeTitle = nameof(HomeTitle);
     public const string WelcomeToAldaman = nameof(WelcomeToAldaman);
     public const string WelcomeSubtitle = nameof(WelcomeSubtitle);
     public const string BuildingWebAppsWithAspNet = nameof(BuildingWebAppsWithAspNet);
