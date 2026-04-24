@@ -19,6 +19,11 @@ public interface IContentPageService
     Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture);
 
     /// <summary>
+    /// Gets pages marked for display in navigation.
+    /// </summary>
+    Task<IEnumerable<ContentPageNavigationDto>> GetNavigationPagesAsync(string culture);
+
+    /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.
     /// </summary>
     Task<PagedResultDto<ContentPageListItemDto>> GetPagedPagesAsync(PaginationQuery query);

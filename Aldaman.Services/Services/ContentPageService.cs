@@ -115,6 +115,27 @@ public sealed class ContentPageService : IContentPageService
         }).ToList();
     }
 
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationPagesAsync(string culture)
+    {
+        var pages = await Context.ContentPages
+            .Include(p => p.Translations)
+            .Where(p => !p.ShowOnHomePage) // Assuming we don't want to show home page items in navigation
+            .OrderBy(p => p.OrderInNavigation)
+            .ToListAsync();
+
+        return pages.Select(page =>
+        {
+            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture)
+                         ?? page.Translations.FirstOrDefault();
+
+            return new ContentPageNavigationDto
+            {
+                Title = content?.Title ?? string.Empty,
+                Slug = content?.Slug ?? string.Empty
+            };
+        }).ToList();
+    }
+
     public async Task<ContentPageEditDto?> GetPageForEditAsync(Guid id)
     {
         var page = await Context.ContentPages
