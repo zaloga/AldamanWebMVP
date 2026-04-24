@@ -4,6 +4,10 @@
     ViewData["Title"] = "Blog Post Details";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
@@ -13,66 +17,107 @@
         </div>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Content details</h6>
-        </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">Title</dt>
-                <dd class="col-sm-9">@Model.Title</dd>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Post Settings</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-6">Is Published</dt>
+                        <dd class="col-sm-6">
+                            @if (Model.IsPublished)
+                            {
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </dd>
 
-                <dt class="col-sm-3">Slug</dt>
-                <dd class="col-sm-9">@Model.Slug</dd>
+                        <dt class="col-sm-6">Published At</dt>
+                        <dd class="col-sm-6">@(Model.PublishedAtUtc?.ToString("g") ?? "N/A")</dd>
 
-                <dt class="col-sm-3">Culture Code</dt>
-                <dd class="col-sm-9">@Model.CultureCode</dd>
-
-                <dt class="col-sm-3">Is Published</dt>
-                <dd class="col-sm-9">
-                    @if (Model.IsPublished)
-                    {
-                        <span class="badge bg-success">Yes</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No</span>
-                    }
-                </dd>
-
-                <dt class="col-sm-3">Published At (UTC)</dt>
-                <dd class="col-sm-9">@(Model.PublishedAtUtc?.ToString("g") ?? "N/A")</dd>
-            </dl>
-
-            <hr />
-
-            <dl class="row">
-                <dt class="col-sm-3">Perex</dt>
-                <dd class="col-sm-9">@Model.Perex</dd>
-            </dl>
-            
-            <h6 class="font-weight-bold mt-4">Body HTML Content</h6>
-            <div class="p-3 border rounded bg-light mb-4" style="max-height: 400px; overflow-y: auto;">
-                @if (!string.IsNullOrEmpty(Model.BodyHtml))
-                {
-                    @Html.Raw(Model.BodyHtml)
-                }
-                else
-                {
-                    <em class="text-muted">No content provided.</em>
-                }
+                        <dt class="col-sm-6">Cover Image ID</dt>
+                        <dd class="col-sm-6 text-truncate">@(Model.CoverMediaAssetId?.ToString() ?? "None")</dd>
+                    </dl>
+                </div>
             </div>
+        </div>
 
-            <h6 class="font-weight-bold mt-4">Plain Text (Search Content)</h6>
-            <div class="p-3 border rounded bg-light mb-4" style="max-height: 200px; overflow-y: auto;">
-                @if (!string.IsNullOrEmpty(Model.PlainText))
-                {
-                    <pre style="white-space: pre-wrap; font-family: inherit;">@Model.PlainText</pre>
-                }
-                else
-                {
-                    <em class="text-muted">No plain text generated.</em>
-                }
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Translations</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-3" id="detailsTabs" role="tablist">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var culture = Model.Translations[i].CultureCode;
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link @(i == 0 ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(i == 0 ? "true" : "false")">
+                                    @culture.ToUpper()
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <div class="tab-content" id="detailsTabsContent">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var translation = Model.Translations[i];
+                            var culture = translation.CultureCode;
+                            <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
+                                <dl class="row">
+                                    <dt class="col-sm-2">Title</dt>
+                                    <dd class="col-sm-10">@(string.IsNullOrWhiteSpace(translation.Title) ? "---" : translation.Title)</dd>
+
+                                    <dt class="col-sm-2">Slug</dt>
+                                    <dd class="col-sm-10">@(string.IsNullOrWhiteSpace(translation.Slug) ? "---" : translation.Slug)</dd>
+
+                                    <dt class="col-sm-2">Perex</dt>
+                                    <dd class="col-sm-10">@(string.IsNullOrWhiteSpace(translation.Perex) ? "---" : translation.Perex)</dd>
+
+                                    <dt class="col-sm-12">Content</dt>
+                                    <dd class="col-sm-12 mt-2">
+                                        @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
+                                        {
+                                            <div class="p-3 border rounded bg-light ql-snow mb-3" style="max-height: 400px; overflow-y: auto;">
+                                                <div class="ql-editor p-0">
+                                                    @Html.Raw(translation.BodyHtml)
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-3 border rounded bg-light mb-3 italic text-muted">
+                                                No HTML content available for this language.
+                                            </div>
+                                        }
+                                    </dd>
+
+                                    <dt class="col-sm-12">Plain Text (Search Content)</dt>
+                                    <dd class="col-sm-12 mt-2">
+                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
+                                        {
+                                            <div class="p-3 border rounded bg-light" style="max-height: 200px; overflow-y: auto;">
+                                                <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit; font-size: 0.875rem;">@translation.PlainText</pre>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-3 border rounded bg-light italic text-muted">
+                                                No plain text generated.
+                                            </div>
+                                        }
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -3,6 +3,10 @@
     ViewData["Title"] = Model.Post.Title;
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
 <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
     <div class="text-center border-b border-gray-200 pb-8 mb-8">
         <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
@@ -17,6 +21,17 @@
     }
 
     <div class="prose prose-lg prose-indigo text-gray-700 mx-auto">
-        @Html.Raw(Model.Post.BodyHtml)
+        <div class="ql-snow">
+            <div class="ql-editor p-0">
+                @if (!string.IsNullOrEmpty(Model.Post.BodyHtml))
+                {
+                    @Html.Raw(Model.Post.BodyHtml)
+                }
+                else
+                {
+                    <p class="text-slate-400 italic">No content available.</p>
+                }
+            </div>
+        </div>
     </div>
 </div>

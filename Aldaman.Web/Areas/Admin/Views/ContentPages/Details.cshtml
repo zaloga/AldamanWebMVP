@@ -92,7 +92,7 @@
                                     <dd class="col-sm-12 mt-2">
                                         @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
                                         {
-                                            <div class="p-3 border rounded bg-light ql-snow" style="max-height: 400px; overflow-y: auto;">
+                                            <div class="p-3 border rounded bg-light ql-snow mb-3" style="max-height: 400px; overflow-y: auto;">
                                                 <div class="ql-editor p-0">
                                                     @Html.Raw(translation.BodyHtml)
                                                 </div>
@@ -100,7 +100,25 @@
                                         }
                                         else
                                         {
-                                            <span class="text-muted italic">No content available for this language.</span>
+                                            <div class="p-3 border rounded bg-light mb-3 italic text-muted">
+                                                No HTML content available for this language.
+                                            </div>
+                                        }
+                                    </dd>
+
+                                    <dt class="col-sm-12">Plain Text (Search Content)</dt>
+                                    <dd class="col-sm-12 mt-2">
+                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
+                                        {
+                                            <div class="p-3 border rounded bg-light" style="max-height: 200px; overflow-y: auto;">
+                                                <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit; font-size: 0.875rem;">@translation.PlainText</pre>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-3 border rounded bg-light italic text-muted">
+                                                No plain text generated.
+                                            </div>
                                         }
                                     </dd>
                                 </dl>

@@ -4,6 +4,10 @@
     ViewData["Title"] = "Update Blog Post";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
@@ -12,60 +16,110 @@
         </a>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Blog Post Details</h6>
-        </div>
-        <div class="card-body">
-            <form asp-action="Update" method="post">
-                <input type="hidden" asp-for="Id" />
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <form asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Title" class="form-label">Title (Default Culture)</label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Content Translations</h6>
                     </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="translationTabs" role="tablist">
+                            @for (int i = 0; i < Model.Translations.Count; i++)
+                            {
+                                var culture = Model.Translations[i].CultureCode;
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link @(i == 0 ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(i == 0 ? "true" : "false")">
+                                        @culture.ToUpper()
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                        <div class="tab-content" id="translationTabsContent">
+                            @for (int i = 0; i < Model.Translations.Count; i++)
+                            {
+                                var culture = Model.Translations[i].CultureCode;
+                                <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
+                                    <input type="hidden" asp-for="Translations[i].CultureCode" />
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="Translations[i].Title" class="form-label">Title (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Title" class="form-control" />
+                                        <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
+                                    </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Slug" class="form-label">Slug (Default Culture)</label>
-                        <input asp-for="Slug" class="form-control" />
-                        <span asp-validation-for="Slug" class="text-danger"></span>
-                    </div>
-                </div>
+                                    <div class="mb-3">
+                                        <label asp-for="Translations[i].Slug" class="form-label">Slug (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Slug" class="form-control" />
+                                        <span asp-validation-for="Translations[i].Slug" class="text-danger"></span>
+                                    </div>
 
-                <div class="mb-3">
-                    <label asp-for="CultureCode" class="form-label">Culture Code</label>
-                    <input asp-for="CultureCode" class="form-control" readonly />
-                </div>
+                                    <div class="mb-3">
+                                        <label asp-for="Translations[i].Perex" class="form-label">Perex / Summary (@culture.ToUpper())</label>
+                                        <textarea asp-for="Translations[i].Perex" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Translations[i].Perex" class="text-danger"></span>
+                                    </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="form-check">
-                            <input asp-for="IsPublished" class="form-check-input" />
-                            <label asp-for="IsPublished" class="form-check-label">Is Published</label>
+                                    <div class="mb-3">
+                                        <label asp-for="Translations[i].BodyHtml" class="form-label">Content (@culture.ToUpper())</label>
+                                        <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
+                                        <input type="hidden" asp-for="Translations[i].BodyHtml" />
+                                        <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <input type="hidden" asp-for="Translations[i].BodyDeltaJson" />
+                                    <input type="hidden" asp-for="Translations[i].PlainText" />
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Perex" class="form-label">Perex (Summary)</label>
-                    <textarea asp-for="Perex" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Perex" class="text-danger"></span>
-                </div>
+            <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Post Settings</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsPublished" class="form-check-input" type="checkbox" role="switch">
+                                <label asp-for="IsPublished" class="form-check-label">Is Published</label>
+                            </div>
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="BodyHtml" class="form-label">Content (HTML)</label>
-                    <textarea asp-for="BodyHtml" class="form-control" rows="8"></textarea>
-                    <span asp-validation-for="BodyHtml" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="PublishedAtUtc" class="form-label">Publication Date (UTC)</label>
+                            <input asp-for="PublishedAtUtc" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="PublishedAtUtc" class="text-danger"></span>
+                            <small class="text-muted">If published, this date will be shown. Leave empty for "Now".</small>
+                        </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+                        <div class="mb-3">
+                            <label asp-for="CoverMediaAssetId" class="form-label">Cover Image ID</label>
+                            <input asp-for="CoverMediaAssetId" class="form-control" />
+                            <span asp-validation-for="CoverMediaAssetId" class="text-danger"></span>
+                            <small class="text-muted">Currently a GUID input. Media picker coming soon.</small>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+                            <a asp-action="Index" class="btn btn-secondary btn-block">Cancel</a>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
+
+@section Scripts {
+    <script src="~/lib/quill/quill.js"></script>
+    <script src="~/js/admin-quill.js" asp-append-version="true"></script>
+}

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Aldaman.Services.Dtos.Blog;
 
 /// <summary>
@@ -13,16 +10,6 @@ public class BlogPostEditDto
     public bool IsPublished { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
 
-    // Content specific properties for a single culture
-    public string CultureCode { get; set; } = string.Empty;
-    public string Title { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
-    public string? Perex { get; set; }
-    public string? BodyHtml { get; set; }
-    public string? BodyDeltaJson { get; set; }
-    public string? PlainText { get; set; }
-
-    
     // Support for multiple translations in admin
     public List<BlogPostTranslationDto> Translations { get; set; } = new();
 }

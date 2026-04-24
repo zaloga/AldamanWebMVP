@@ -31,7 +31,12 @@ public interface IBlogService
     /// <summary>
     /// Gets a blog post for editing in admin.
     /// </summary>
-    Task<BlogPostEditDto?> GetPostForEditAsync(Guid id, string culture);
+    Task<BlogPostEditDto?> GetPostForEditAsync(Guid id);
+
+    /// <summary>
+    /// Gets an empty blog post for creation in admin.
+    /// </summary>
+    BlogPostEditDto GetPostForCreate();
 
     /// <summary>
     /// Creates a new blog post.

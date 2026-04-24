@@ -1,19 +1,23 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Services.Services;
 
 public sealed class BlogService : IBlogService
 {
     private AppDbContext Context { get; }
+    private LocalizationSettings Localization { get; }
 
-    public BlogService(AppDbContext context)
+    public BlogService(AppDbContext context, IOptions<LocalizationSettings> localizationOptions)
     {
         Context = context;
+        Localization = localizationOptions.Value;
     }
 
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAdminAsync(PaginationQuery query, string? culture = null)
@@ -136,7 +140,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task<BlogPostEditDto?> GetPostForEditAsync(Guid id, string culture)
+    public async Task<BlogPostEditDto?> GetPostForEditAsync(Guid id)
     {
         var post = await Context.BlogPosts
             .Include(p => p.Translations)
@@ -144,30 +148,35 @@ public sealed class BlogService : IBlogService
 
         if (post == null) return null;
 
-        var translation = post.Translations.FirstOrDefault(t => t.CultureCode == culture)
-                       ?? post.Translations.FirstOrDefault();
-
         return new BlogPostEditDto
         {
             Id = post.Id,
             IsPublished = post.IsPublished,
             PublishedAtUtc = post.PublishedAtUtc,
-            CultureCode = translation?.CultureCode ?? culture,
-            Title = translation?.Title ?? string.Empty,
-            Slug = translation?.Slug ?? string.Empty,
-            Perex = translation?.Perex,
-            BodyHtml = translation?.BodyHtml,
-            BodyDeltaJson = translation?.BodyDeltaJson,
-            PlainText = translation?.PlainText,
-            Translations = post.Translations.Select(t => new BlogPostTranslationDto
+            Translations = Localization.SupportedCultures.Select(culture =>
             {
-                CultureCode = t.CultureCode,
-                Title = t.Title,
-                Slug = t.Slug,
-                Perex = t.Perex,
-                BodyHtml = t.BodyHtml,
-                BodyDeltaJson = t.BodyDeltaJson,
-                PlainText = t.PlainText
+                var translation = post.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                return new BlogPostTranslationDto
+                {
+                    CultureCode = culture,
+                    Title = translation?.Title ?? string.Empty,
+                    Slug = translation?.Slug ?? string.Empty,
+                    Perex = translation?.Perex,
+                    BodyHtml = translation?.BodyHtml,
+                    BodyDeltaJson = translation?.BodyDeltaJson,
+                    PlainText = translation?.PlainText
+                };
+            }).ToList()
+        };
+    }
+
+    public BlogPostEditDto GetPostForCreate()
+    {
+        return new BlogPostEditDto
+        {
+            Translations = Localization.SupportedCultures.Select(c => new BlogPostTranslationDto
+            {
+                CultureCode = c
             }).ToList()
         };
     }
@@ -184,18 +193,27 @@ public sealed class BlogService : IBlogService
             UpdatedAtUtc = DateTime.UtcNow
         };
 
-        var translation = new BlogPostTranslationEntity
+        foreach (var translationDto in dto.Translations)
         {
-            CultureCode = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode,
-            Title = dto.Title,
-            Slug = dto.Slug,
-            Perex = dto.Perex,
-            BodyHtml = dto.BodyHtml,
-            BodyDeltaJson = dto.BodyDeltaJson,
-            PlainText = StripHtml(dto.BodyHtml),
-        };
+            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+                continue;
 
-        post.Translations.Add(translation);
+            var translation = new BlogPostTranslationEntity
+            {
+                CultureCode = translationDto.CultureCode,
+                Title = translationDto.Title,
+                Slug = !string.IsNullOrWhiteSpace(translationDto.Slug)
+                    ? translationDto.Slug
+                    : translationDto.Title.ToLower().Replace(" ", "-"),
+                Perex = translationDto.Perex,
+                BodyHtml = translationDto.BodyHtml,
+                BodyDeltaJson = translationDto.BodyDeltaJson,
+                PlainText = StripHtml(translationDto.BodyHtml)
+            };
+
+            post.Translations.Add(translation);
+        }
+
         Context.BlogPosts.Add(post);
         await Context.SaveChangesAsync();
     }
@@ -224,24 +242,31 @@ public sealed class BlogService : IBlogService
         post.UpdatedByUserId = userId;
         post.UpdatedAtUtc = DateTime.UtcNow;
 
-        var culture = string.IsNullOrWhiteSpace(dto.CultureCode) ? "cs" : dto.CultureCode;
-        var translation = post.Translations.FirstOrDefault(t => t.CultureCode == culture);
-
-        if (translation == null)
+        foreach (var translationDto in dto.Translations)
         {
-            translation = new BlogPostTranslationEntity
-            {
-                CultureCode = culture
-            };
-            post.Translations.Add(translation);
-        }
+            var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
 
-        translation.Title = dto.Title;
-        translation.Slug = dto.Slug;
-        translation.Perex = dto.Perex;
-        translation.BodyHtml = dto.BodyHtml;
-        translation.BodyDeltaJson = dto.BodyDeltaJson;
-        translation.PlainText = StripHtml(dto.BodyHtml);
+            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+            {
+                continue;
+            }
+
+            if (existingTranslation == null)
+            {
+                existingTranslation = new BlogPostTranslationEntity
+                {
+                    CultureCode = translationDto.CultureCode
+                };
+                post.Translations.Add(existingTranslation);
+            }
+
+            existingTranslation.Title = translationDto.Title;
+            existingTranslation.Slug = translationDto.Slug;
+            existingTranslation.Perex = translationDto.Perex;
+            existingTranslation.BodyHtml = translationDto.BodyHtml;
+            existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
+            existingTranslation.PlainText = StripHtml(translationDto.BodyHtml);
+        }
 
         await Context.SaveChangesAsync();
     }

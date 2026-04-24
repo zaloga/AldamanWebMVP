@@ -1,7 +1,7 @@
+using System.Security.Claims;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
@@ -24,7 +24,8 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Aldaman.Services.Dtos.Blog.BlogPostEditDto { CultureCode = "cs" });
+        var model = BlogService.GetPostForCreate();
+        return View(model);
     }
 
     [HttpPost]
@@ -53,7 +54,7 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var post = await BlogService.GetPostForEditAsync(id, "cs");
+        var post = await BlogService.GetPostForEditAsync(id);
         if (post == null)
         {
             return NotFound();
@@ -65,7 +66,7 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        var post = await BlogService.GetPostForEditAsync(id, "cs");
+        var post = await BlogService.GetPostForEditAsync(id);
         if (post == null)
         {
             return NotFound();
