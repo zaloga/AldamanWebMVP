@@ -38,9 +38,8 @@ public sealed class ContentPageService : IContentPageService
         {
             "PageKey" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageKey) : dbQuery.OrderBy(p => p.PageKey),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "SortOrderInNavigation" => query.SortDescending ? dbQuery.OrderByDescending(p => p.OrderInNavigation) : dbQuery.OrderBy(p => p.OrderInNavigation),
-            "SortOrderOnHomePage" => query.SortDescending ? dbQuery.OrderByDescending(p => p.OrderOnHomePage) : dbQuery.OrderBy(p => p.OrderOnHomePage),
-            _ => dbQuery.OrderBy(p => p.OrderInNavigation)
+            "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
+            _ => dbQuery.OrderBy(p => p.PageOrder)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -52,8 +51,7 @@ public sealed class ContentPageService : IContentPageService
                 Id = p.Id,
                 PageKey = p.PageKey,
                 PlaceToShow = p.PlaceToShow,
-                OrderOnHomePage = p.OrderOnHomePage,
-                OrderInNavigation = p.OrderInNavigation,
+                PageOrder = p.PageOrder,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -95,7 +93,7 @@ public sealed class ContentPageService : IContentPageService
         var pages = await Context.ContentPages
             .Include(p => p.Translations)
             .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
-            .OrderBy(p => p.OrderOnHomePage)
+            .OrderBy(p => p.PageOrder)
             .ToListAsync();
 
         return pages.Select(page =>
@@ -131,7 +129,7 @@ public sealed class ContentPageService : IContentPageService
         var pages = await Context.ContentPages
                     .Include(p => p.Translations)
                     .Where(p => p.PlaceToShow.HasFlag(placeToShow))
-                    .OrderBy(p => p.OrderInNavigation)
+                    .OrderBy(p => p.PageOrder)
                     .ToListAsync();
 
         return pages.Select(page =>
@@ -160,8 +158,7 @@ public sealed class ContentPageService : IContentPageService
             Id = page.Id,
             PageKey = page.PageKey,
             PlaceToShow = page.PlaceToShow,
-            OrderOnHomePage = page.OrderOnHomePage,
-            OrderInNavigation = page.OrderInNavigation,
+            PageOrder = page.PageOrder,
             Translations = Localization.SupportedCultures.Select(culture =>
             {
                 var translation = page.Translations.FirstOrDefault(t => t.CultureCode == culture);
@@ -195,8 +192,7 @@ public sealed class ContentPageService : IContentPageService
         {
             PageKey = dto.PageKey,
             PlaceToShow = dto.PlaceToShow,
-            OrderOnHomePage = dto.OrderOnHomePage,
-            OrderInNavigation = dto.OrderInNavigation
+            PageOrder = dto.PageOrder
         };
 
         foreach (var translationDto in dto.Translations)
@@ -237,8 +233,7 @@ public sealed class ContentPageService : IContentPageService
 
         page.PageKey = dto.PageKey;
         page.PlaceToShow = dto.PlaceToShow;
-        page.OrderOnHomePage = dto.OrderOnHomePage;
-        page.OrderInNavigation = dto.OrderInNavigation;
+        page.PageOrder = dto.PageOrder;
 
         foreach (var translationDto in dto.Translations)
         {

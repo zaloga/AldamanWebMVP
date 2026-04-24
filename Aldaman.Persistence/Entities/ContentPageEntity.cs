@@ -20,14 +20,9 @@ public class ContentPageEntity : BaseEntity
     public PlaceToShowEnum PlaceToShow { get; set; }
 
     /// <summary>
-    /// Order of the page on the home page.
+    /// Sorting order of the page.
     /// </summary>
-    public int OrderOnHomePage { get; set; }
-
-    /// <summary>
-    /// Order in navigation.
-    /// </summary>
-    public int OrderInNavigation { get; set; }
+    public int PageOrder { get; set; }
 
     // Navigation properties
     public virtual ICollection<ContentPageTranslationEntity> Translations { get; set; } = new List<ContentPageTranslationEntity>();

@@ -22,12 +22,7 @@ public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEnti
             .IsRequired()
             .HasDefaultValue(PlaceToShowEnum.None);
 
-        builder.Property(x => x.OrderOnHomePage)
-            .IsRequired()
-            .HasDefaultValue(0);
-
-
-        builder.Property(x => x.OrderInNavigation)
+        builder.Property(x => x.PageOrder)
             .IsRequired()
             .HasDefaultValue(0);
 

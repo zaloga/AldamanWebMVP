@@ -28,8 +28,7 @@
         </div>
         <div class="col-md-3">
             <select name="SortBy" class="form-select">
-                <option value="SortOrderInNavigation" selected="@(query.SortBy == "SortOrderInNavigation")">Sort by Nav Order</option>
-                <option value="SortOrderOnHomePage" selected="@(query.SortBy == "SortOrderOnHomePage")">Sort by HP Order</option>
+                <option value="PageOrder" selected="@(query.SortBy == "PageOrder")">Sort by Order</option>
                 <option value="PageKey" selected="@(query.SortBy == "PageKey")">Sort by Key</option>
                 <option value="CreatedAt" selected="@(query.SortBy == "CreatedAt")">Sort by Created Date</option>
             </select>
@@ -53,8 +52,7 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">Page Key</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">Locations</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">HP Order</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Default Order</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">Order</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                 </tr>
             </thead>
@@ -93,10 +91,7 @@
                             </div>
                         </td>
                         <td class="py-3 text-center">
-                            <span class="fw-medium text-primary">@item.OrderOnHomePage</span>
-                        </td>
-                        <td class="py-3 text-center">
-                            <span class="fw-medium">@item.OrderInNavigation</span>
+                            <span class="fw-medium text-primary">@item.PageOrder</span>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="dropdown">
