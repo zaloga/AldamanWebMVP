@@ -1,3 +1,23 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    var isIndex = action?.Equals("Index", StringComparison.OrdinalIgnoreCase) ?? false;
+    var isHome = controller?.Equals("Home", StringComparison.OrdinalIgnoreCase) ?? false;
+
+    string listTitle = ViewData["ListTitle"]?.ToString();
+    if (string.IsNullOrEmpty(listTitle))
+    {
+        listTitle = controller switch
+        {
+            "Blog" => "Blog Posts",
+            "ContentPages" => "Pages",
+            "ContactMessages" => "Contact Messages",
+            "Media" => "Media Library",
+            _ => controller
+        };
+    }
+}
+
 <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb admin-breadcrumb p-2 bg-light rounded border">
         <li class="breadcrumb-item">
@@ -6,7 +26,15 @@
                 Dashboard
             </a>
         </li>
-        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard")
+        @if (!isHome && !isIndex)
+        {
+            <li class="breadcrumb-item">
+                <a asp-action="Index" asp-controller="@controller" class="text-decoration-none">
+                    @listTitle
+                </a>
+            </li>
+        }
+        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && (!isHome || !isIndex))
         {
             <li class="breadcrumb-item active" aria-current="page">
                 @ViewData["Title"]
