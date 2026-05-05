@@ -31,7 +31,7 @@ public static class UIResourceKeys
 
     // Contact
     public const string Contact = nameof(Contact);
-    public const string ContactUs = nameof(ContactUs);
+    public const string ContactMe = nameof(ContactMe);
     public const string ContactSubtitle = nameof(ContactSubtitle);
     public const string FullName = nameof(FullName);
     public const string Subject = nameof(Subject);

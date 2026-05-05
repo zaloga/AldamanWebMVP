@@ -165,8 +165,8 @@
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
-    <value>Contact us</value>
+  <data name="ContactMe" xml:space="preserve">
+    <value>Contact me</value>
   </data>
   <data name="ContactSubtitle" xml:space="preserve">
     <value>Have a question or interested in my services? Fill out the form below and I'll get back to you.</value>

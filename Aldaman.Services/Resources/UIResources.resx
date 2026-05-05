@@ -165,8 +165,8 @@
   <data name="Contact" xml:space="preserve">
     <value>Kontakt</value>
   </data>
-  <data name="ContactUs" xml:space="preserve">
-    <value>Kontaktujte nás</value>
+  <data name="ContactMe" xml:space="preserve">
+    <value>Kontaktujte mě</value>
   </data>
   <data name="ContactSubtitle" xml:space="preserve">
     <value>Máte dotaz nebo zájem o mé služby? Vyplňte formulář níže a ozvu se zpět.</value>
