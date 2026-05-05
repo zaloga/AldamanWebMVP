@@ -72,6 +72,11 @@ public class Program
             .AddViewLocalization()
             .AddDataAnnotationsLocalization();
 
+        builder.Services.AddAntiforgery(options =>
+        {
+            options.HeaderName = "RequestVerificationToken";
+        });
+
         WebApplication app = builder.Build();
 
         // Database migrations and seeding

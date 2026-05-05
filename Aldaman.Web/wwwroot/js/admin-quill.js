@@ -36,11 +36,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 const formData = new FormData();
                 formData.append('file', file);
 
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
                 try {
                     const response = await fetch('/Admin/Media/UploadQuill', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        headers: {
+                            'RequestVerificationToken': token
+                        }
                     });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
                     
                     const result = await response.json();
                     

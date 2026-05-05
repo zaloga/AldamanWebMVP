@@ -55,7 +55,7 @@ public class MediaController : BaseAdminController
     }
 
     [HttpPost]
-    [IgnoreAntiforgeryToken] // TODO check if it is safe... and do auth check as well
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadQuill(IFormFile file)
     {
         if (file == null || file.Length == 0)
