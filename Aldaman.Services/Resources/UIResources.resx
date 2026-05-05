@@ -117,53 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Privacy" xml:space="preserve">
-    <value>Soukromí</value>
-  </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Odhlásit</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Přihlásit</value>
-  </data>
   <data name="Admin" xml:space="preserve">
     <value>Administrace</value>
   </data>
-  <data name="PrivacyPolicy" xml:space="preserve">
-    <value>Zásady ochrany osobních údajů</value>
-  </data>
-  <data name="TermsOfService" xml:space="preserve">
-    <value>Podmínky služby</value>
-  </data>
-  <data name="AldamanWebEssentials" xml:space="preserve">
-    <value>Aldaman Web Essentials</value>
-  </data>
   <data name="Home" xml:space="preserve">
     <value>Domovská stránka</value>
-  </data>
-  <data name="WelcomeToAldaman" xml:space="preserve">
-    <value>Vítejte v Aldamanu</value>
-  </data>
-  <data name="WelcomeSubtitle" xml:space="preserve">
-    <value>Vaše moderní platforma pro správu obsahu a digitální zážitky.</value>
-  </data>
-  <data name="BuildingWebAppsWithAspNet" xml:space="preserve">
-    <value>vývoji webových aplikací pomocí ASP.NET Core</value>
-  </data>
-  <data name="GetStarted" xml:space="preserve">
-    <value>Začít</value>
-  </data>
-  <data name="LearnMore" xml:space="preserve">
-    <value>Zjistit více</value>
-  </data>
-  <data name="PrivacySubtitle" xml:space="preserve">
-    <value>Tuto stránku použijte k upřesnění zásad ochrany osobních údajů vašeho webu. Aldaman se zavázal k ochraně vašich osobních údajů a zajištění bezpečného prohlížení.</value>
-  </data>
-  <data name="InformationCollection" xml:space="preserve">
-    <value>Sběr informací</value>
-  </data>
-  <data name="InformationCollectionDescription" xml:space="preserve">
-    <value>Shromažďujeme pouze základní informace potřebné k poskytování našich služeb a zlepšování uživatelské zkušenosti. Se všemi údaji nakládáme podle moderních bezpečnostních standardů.</value>
   </data>
   <data name="AccessDenied" xml:space="preserve">
     <value>Přístup odepřen</value>
@@ -211,7 +169,7 @@
     <value>Kontaktujte nás</value>
   </data>
   <data name="ContactSubtitle" xml:space="preserve">
-    <value>Máte dotaz nebo zájem o naše služby? Vyplňte formulář níže a my se vám ozveme zpět.</value>
+    <value>Máte dotaz nebo zájem o mé služby? Vyplňte formulář níže a ozvu se zpět.</value>
   </data>
   <data name="FullName" xml:space="preserve">
     <value>Jméno a příjmení</value>
@@ -248,5 +206,11 @@
   </data>
   <data name="SectionNoContent" xml:space="preserve">
     <value>Tato sekce zatím nemá žádný obsah.</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Odhlásit</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Přihlásit</value>
   </data>
 </root>

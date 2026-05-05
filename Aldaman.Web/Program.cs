@@ -1,9 +1,9 @@
 using System.Globalization;
+using Aldaman.Integrations.Email;
 using Aldaman.Persistence;
 using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Services;
-using Aldaman.Integrations.Email;
 using Aldaman.Services.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
@@ -94,6 +94,9 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        // Ensure culture is in URL - redirect if missing
+        app.UseMiddleware<LocalizationRedirectMiddleware>();
+
         app.UseRouting();
 
         app.UseRequestLocalization();
@@ -104,99 +107,57 @@ public class Program
         app.MapStaticAssets();
 
         string cultureRegex = $"^({string.Join("|", localizationSettings.SupportedCultures)})$";
+        string culturePattern = "{culture:regex(" + cultureRegex + ")}";
 
+        // Admin and Areas
         app.MapControllerRoute(
             name: "areas_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/{area:exists}/{controller=Home}/{action=Index}/{id?}")
+            pattern: $"{culturePattern}/{{area:exists}}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 
+        // Content Pages
         app.MapControllerRoute(
-            name: "areas",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}",
-            defaults: new { culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "page_detail_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/page/{slug}",
+            name: "page_detail",
+            pattern: $"{culturePattern}/page/{{slug}}",
             defaults: new { controller = "ContentPage", action = "Detail" })
             .WithStaticAssets();
 
+        // Blog
         app.MapControllerRoute(
-            name: "page_detail",
-            pattern: "page/{slug}",
-            defaults: new { controller = "ContentPage", action = "Detail", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "blog_index_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/blog",
+            name: "blog_index",
+            pattern: $"{culturePattern}/blog",
             defaults: new { controller = "Blog", action = "Index" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "blog_index",
-            pattern: "blog",
-            defaults: new { controller = "Blog", action = "Index", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "blog_detail_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/blog/{slug}",
+            name: "blog_detail",
+            pattern: $"{culturePattern}/blog/{{slug}}",
             defaults: new { controller = "Blog", action = "Detail" })
             .WithStaticAssets();
 
+        // Contact
         app.MapControllerRoute(
-            name: "blog_detail",
-            pattern: "blog/{slug}",
-            defaults: new { controller = "Blog", action = "Detail", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "contact_index_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/contact",
+            name: "contact_index",
+            pattern: $"{culturePattern}/contact",
             defaults: new { controller = "Contact", action = "Index" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "contact_index",
-            pattern: "contact",
-            defaults: new { controller = "Contact", action = "Index", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "contact_submit_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/contact/send",
+            name: "contact_submit",
+            pattern: $"{culturePattern}/contact/send",
             defaults: new { controller = "Contact", action = "Submit" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "contact_submit",
-            pattern: "contact/send",
-            defaults: new { controller = "Contact", action = "Submit", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "contact_success_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/contact/success",
+            name: "contact_success",
+            pattern: $"{culturePattern}/contact/success",
             defaults: new { controller = "Contact", action = "Success" })
             .WithStaticAssets();
 
-        app.MapControllerRoute(
-            name: "contact_success",
-            pattern: "contact/success",
-            defaults: new { controller = "Contact", action = "Success", culture = localizationSettings.DefaultCulture })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "default_localized",
-            pattern: "{culture:regex(" + cultureRegex + ")}/{controller=Home}/{action=Index}/{id?}")
-            .WithStaticAssets();
-
+        // Default Route
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}",
-            defaults: new { culture = localizationSettings.DefaultCulture })
+            pattern: $"{culturePattern}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 
         app.Run();
