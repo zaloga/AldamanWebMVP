@@ -224,6 +224,7 @@ public sealed class ContentPageService : IContentPageService
     public async Task UpdatePageAsync(Guid id, ContentPageEditDto dto)
     {
         var page = await Context.ContentPages
+            .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -240,12 +241,15 @@ public sealed class ContentPageService : IContentPageService
         {
             var existingTranslation = page.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
 
-            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+            var title = translationDto.Title?.Trim() ?? string.Empty;
+            var slug = translationDto.Slug?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(slug))
             {
                 if (existingTranslation != null)
                 {
-                    // Optionally remove empty translation? For now, let's just keep it or skip update.
-                    // page.Translations.Remove(existingTranslation);
+                    existingTranslation.IsDeleted = true;
+                    existingTranslation.DeletedAtUtc = DateTime.UtcNow;
                 }
                 continue;
             }
@@ -259,8 +263,13 @@ public sealed class ContentPageService : IContentPageService
                 page.Translations.Add(existingTranslation);
             }
 
-            existingTranslation.Title = translationDto.Title;
-            existingTranslation.Slug = translationDto.Slug;
+            existingTranslation.IsDeleted = false;
+            existingTranslation.DeletedAtUtc = null;
+            existingTranslation.DeletedByUserId = null;
+            existingTranslation.Title = title;
+            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
+                ? slug
+                : title.ToLower().Replace(" ", "-");
             existingTranslation.BodyHtml = translationDto.BodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
             existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);

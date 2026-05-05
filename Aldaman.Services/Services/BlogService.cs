@@ -230,6 +230,7 @@ public sealed class BlogService : IBlogService
     public async Task UpdatePostAsync(Guid id, Guid userId, BlogPostEditDto dto)
     {
         var post = await Context.BlogPosts
+            .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -256,8 +257,17 @@ public sealed class BlogService : IBlogService
         {
             var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
 
-            if (string.IsNullOrWhiteSpace(translationDto.Title) && string.IsNullOrWhiteSpace(translationDto.Slug))
+            var title = translationDto.Title?.Trim() ?? string.Empty;
+            var slug = translationDto.Slug?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(slug))
             {
+                if (existingTranslation != null)
+                {
+                    existingTranslation.IsDeleted = true;
+                    existingTranslation.DeletedAtUtc = DateTime.UtcNow;
+                    existingTranslation.DeletedByUserId = userId;
+                }
                 continue;
             }
 
@@ -270,8 +280,13 @@ public sealed class BlogService : IBlogService
                 post.Translations.Add(existingTranslation);
             }
 
-            existingTranslation.Title = translationDto.Title;
-            existingTranslation.Slug = translationDto.Slug;
+            existingTranslation.IsDeleted = false;
+            existingTranslation.DeletedAtUtc = null;
+            existingTranslation.DeletedByUserId = null;
+            existingTranslation.Title = title;
+            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
+                ? slug
+                : title.ToLower().Replace(" ", "-");
             existingTranslation.Perex = translationDto.Perex;
             existingTranslation.BodyHtml = translationDto.BodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;

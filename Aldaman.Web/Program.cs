@@ -8,6 +8,7 @@ using Aldaman.Services.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Serilog;
@@ -38,6 +39,8 @@ public class Program
 
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         builder.Services.AddValidatorsFromAssemblyContaining<Aldaman.Services.Validators.Media.UpdateMediaAssetDtoValidator>();
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddFluentValidationClientsideAdapters();
 
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<Aldaman.Persistence.Interfaces.IUserContext, Aldaman.Web.Infrastructure.WebUserContext>();

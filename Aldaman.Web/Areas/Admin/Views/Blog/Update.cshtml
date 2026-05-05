@@ -18,7 +18,7 @@
 
     <form asp-action="Update" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
         <div class="row">
             <div class="col-lg-8">
@@ -127,6 +127,7 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/quill/quill.js"></script>
     <script src="~/js/admin-quill.js" asp-append-version="true"></script>
 }
