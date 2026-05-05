@@ -21,7 +21,7 @@ public sealed class BlogService : IBlogService
         Localization = localizationOptions.Value;
     }
 
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAdminAsync(PaginationQuery query, string? culture = null)
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null)
     {
         var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
@@ -79,7 +79,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAsync(int page, int pageSize, string culture)
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture)
     {
         var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
@@ -114,12 +114,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task<IEnumerable<BlogPostListItemDto>> GetLatestPostsAsync(int count, string culture)
-    {
-        return (await GetPagedPostsAsync(1, count, culture)).Items;
-    }
-
-    public async Task<BlogPostDetailDto?> GetPostBySlugAsync(string slug, string culture)
+    public async Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture)
     {
         var post = await Context.BlogPosts
             .Include(p => p.Translations)
@@ -145,7 +140,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task<BlogPostEditDto?> GetPostForEditAsync(Guid id)
+    public async Task<BlogPostEditDto?> GetBlogPostForEditAsync(Guid id)
     {
         var post = await Context.BlogPosts
             .Include(p => p.Translations)
@@ -178,7 +173,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public BlogPostEditDto GetPostForCreate()
+    public BlogPostEditDto GetBlogPostForCreate()
     {
         return new BlogPostEditDto
         {
@@ -189,7 +184,7 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task CreatePostAsync(Guid userId, BlogPostEditDto dto)
+    public async Task CreateBlogPostAsync(Guid userId, BlogPostEditDto dto)
     {
         var post = new BlogPostEntity
         {
@@ -227,7 +222,7 @@ public sealed class BlogService : IBlogService
         await Context.SaveChangesAsync();
     }
 
-    public async Task UpdatePostAsync(Guid id, Guid userId, BlogPostEditDto dto)
+    public async Task UpdateBlogPostAsync(Guid id, Guid userId, BlogPostEditDto dto)
     {
         var post = await Context.BlogPosts
             .IgnoreQueryFilters()
@@ -297,7 +292,7 @@ public sealed class BlogService : IBlogService
     }
 
 
-    public async Task DeletePostAsync(Guid id)
+    public async Task SoftDeleteBlogPostAsync(Guid id)
     {
         var post = await Context.BlogPosts.FindAsync(id);
         if (post != null)

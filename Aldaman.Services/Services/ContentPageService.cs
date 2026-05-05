@@ -22,7 +22,7 @@ public sealed class ContentPageService : IContentPageService
         Localization = localizationOptions.Value;
     }
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedPagesAsync(PaginationQuery query)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query)
     {
         var dbQuery = Context.ContentPages
             .Include(p => p.Translations)
@@ -66,7 +66,7 @@ public sealed class ContentPageService : IContentPageService
         };
     }
 
-    public async Task<ContentPageDetailDto?> GetPageBySlugAsync(string slug, string culture)
+    public async Task<ContentPageDetailDto?> GetContentPageBySlugAsync(string slug, string culture)
     {
         var page = await Context.ContentPages
             .Include(p => p.Translations)
@@ -146,7 +146,7 @@ public sealed class ContentPageService : IContentPageService
         }).ToList();
     }
 
-    public async Task<ContentPageEditDto?> GetPageForEditAsync(Guid id)
+    public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id)
     {
         var page = await Context.ContentPages
             .Include(p => p.Translations)
@@ -176,7 +176,7 @@ public sealed class ContentPageService : IContentPageService
         };
     }
 
-    public ContentPageEditDto GetPageForCreate()
+    public ContentPageEditDto GetContentPageForCreate()
     {
         return new ContentPageEditDto
         {
@@ -187,7 +187,7 @@ public sealed class ContentPageService : IContentPageService
         };
     }
 
-    public async Task CreatePageAsync(ContentPageEditDto dto)
+    public async Task CreateContentPageAsync(ContentPageEditDto dto)
     {
         var page = new ContentPageEntity
         {
@@ -221,7 +221,7 @@ public sealed class ContentPageService : IContentPageService
         await Context.SaveChangesAsync();
     }
 
-    public async Task UpdatePageAsync(Guid id, ContentPageEditDto dto)
+    public async Task UpdateContentPageAsync(Guid id, ContentPageEditDto dto)
     {
         var page = await Context.ContentPages
             .IgnoreQueryFilters()
@@ -278,7 +278,7 @@ public sealed class ContentPageService : IContentPageService
         await Context.SaveChangesAsync();
     }
 
-    public async Task DeletePageAsync(Guid id)
+    public async Task SoftDeleteContentPageAsync(Guid id)
     {
         var page = await Context.ContentPages.FindAsync(id);
         if (page != null)

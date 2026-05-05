@@ -18,7 +18,7 @@ public class BlogController : BaseAdminController
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await BlogService.GetPagedPostsAdminAsync(query);
+        var result = await BlogService.GetPagedBlogPostsAdminAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public IActionResult Create()
     {
-        var model = BlogService.GetPostForCreate();
+        var model = BlogService.GetBlogPostForCreate();
         return View(model);
     }
 
@@ -51,7 +51,7 @@ public class BlogController : BaseAdminController
             }
 
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await BlogService.CreatePostAsync(userId, model);
+            await BlogService.CreateBlogPostAsync(userId, model);
             TempData["SuccessMessage"] = "Post created successfully.";
             return RedirectToAction(nameof(Index));
         }
@@ -65,7 +65,7 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var post = await BlogService.GetPostForEditAsync(id);
+        var post = await BlogService.GetBlogPostForEditAsync(id);
         if (post == null)
         {
             return NotFound();
@@ -77,7 +77,7 @@ public class BlogController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        var post = await BlogService.GetPostForEditAsync(id);
+        var post = await BlogService.GetBlogPostForEditAsync(id);
         if (post == null)
         {
             return NotFound();
@@ -112,7 +112,7 @@ public class BlogController : BaseAdminController
             }
 
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await BlogService.UpdatePostAsync(id, userId, model);
+            await BlogService.UpdateBlogPostAsync(id, userId, model);
             TempData["SuccessMessage"] = "Post updated successfully.";
             return RedirectToAction(nameof(Index));
         }
@@ -133,7 +133,7 @@ public class BlogController : BaseAdminController
     {
         try
         {
-            await BlogService.DeletePostAsync(id);
+            await BlogService.SoftDeleteBlogPostAsync(id);
             return Json(new { success = true, message = "Post deleted successfully." });
         }
         catch (Exception ex)

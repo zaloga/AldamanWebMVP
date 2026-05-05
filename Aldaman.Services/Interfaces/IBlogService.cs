@@ -9,47 +9,42 @@ namespace Aldaman.Services.Interfaces;
 public interface IBlogService
 {
     /// <summary>
-    /// Gets a list of latest posts for the home page.
-    /// </summary>
-    Task<IEnumerable<BlogPostListItemDto>> GetLatestPostsAsync(int count, string culture);
-
-    /// <summary>
     /// Gets a blog post by its URL slug.
     /// </summary>
-    Task<BlogPostDetailDto?> GetPostBySlugAsync(string slug, string culture);
+    Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture);
 
     /// <summary>
     /// Gets a paged list of blog posts for administrative view.
     /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAdminAsync(PaginationQuery query, string? culture = null);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Gets a paged list of blog posts.
     /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedPostsAsync(int page, int pageSize, string culture);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture);
 
     /// <summary>
     /// Gets a blog post for editing in admin.
     /// </summary>
-    Task<BlogPostEditDto?> GetPostForEditAsync(Guid id);
+    Task<BlogPostEditDto?> GetBlogPostForEditAsync(Guid id);
 
     /// <summary>
     /// Gets an empty blog post for creation in admin.
     /// </summary>
-    BlogPostEditDto GetPostForCreate();
+    BlogPostEditDto GetBlogPostForCreate();
 
     /// <summary>
     /// Creates a new blog post.
     /// </summary>
-    Task CreatePostAsync(Guid userId, BlogPostEditDto dto);
+    Task CreateBlogPostAsync(Guid userId, BlogPostEditDto dto);
 
     /// <summary>
     /// Updates an existing blog post.
     /// </summary>
-    Task UpdatePostAsync(Guid id, Guid userId, BlogPostEditDto dto);
+    Task UpdateBlogPostAsync(Guid id, Guid userId, BlogPostEditDto dto);
 
     /// <summary>
     /// Deletes a blog post and all its translations.
     /// </summary>
-    Task DeletePostAsync(Guid id);
+    Task SoftDeleteBlogPostAsync(Guid id);
 }

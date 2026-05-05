@@ -20,7 +20,7 @@ public sealed class ContentPageController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        ContentPageDetailDto? pageDetail = await ContentPageService.GetPageBySlugAsync(
+        ContentPageDetailDto? pageDetail = await ContentPageService.GetContentPageBySlugAsync(
             slug,
             cultureCode);
 

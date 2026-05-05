@@ -11,7 +11,7 @@ public interface IContentPageService
     /// <summary>
     /// Gets a page by its URL slug.
     /// </summary>
-    Task<ContentPageDetailDto?> GetPageBySlugAsync(string slug, string culture);
+    Task<ContentPageDetailDto?> GetContentPageBySlugAsync(string slug, string culture);
 
     /// <summary>
     /// Gets the home page contents.
@@ -31,31 +31,31 @@ public interface IContentPageService
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.
     /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedPagesAsync(PaginationQuery query);
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query);
 
     /// <summary>
     /// Gets a page for editing in admin.
     /// </summary>
-    Task<ContentPageEditDto?> GetPageForEditAsync(Guid id);
+    Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id);
 
     /// <summary>
     /// Gets a new page template for creation in admin.
     /// </summary>
     /// <returns>A new page template</returns>
-    ContentPageEditDto GetPageForCreate();
+    ContentPageEditDto GetContentPageForCreate();
 
     /// <summary>
     /// Creates a new page.
     /// </summary>
-    Task CreatePageAsync(ContentPageEditDto dto);
+    Task CreateContentPageAsync(ContentPageEditDto dto);
 
     /// <summary>
     /// Updates an existing page.
     /// </summary>
-    Task UpdatePageAsync(Guid id, ContentPageEditDto dto);
+    Task UpdateContentPageAsync(Guid id, ContentPageEditDto dto);
 
     /// <summary>
     /// Deletes a page and all its contents.
     /// </summary>
-    Task DeletePageAsync(Guid id);
+    Task SoftDeleteContentPageAsync(Guid id);
 }

@@ -23,7 +23,7 @@ public sealed class BlogController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedPostsAsync(
+        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedBlogPostsAsync(
             p,
             DefaultPageSize,
             cultureCode
@@ -42,7 +42,7 @@ public sealed class BlogController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        BlogPostDetailDto? postDetail = await BlogService.GetPostBySlugAsync(
+        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugAsync(
             slug,
             cultureCode
             /*cancellationToken*/);

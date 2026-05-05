@@ -15,7 +15,7 @@ public class ContentPagesController : BaseAdminController
 
     public async Task<IActionResult> Index(PaginationQuery query)
     {
-        var result = await ContentPageService.GetPagedPagesAsync(query);
+        var result = await ContentPageService.GetPagedContentPagesAsync(query);
         ViewData["Query"] = query;
         return View(result);
     }
@@ -26,7 +26,7 @@ public class ContentPagesController : BaseAdminController
     {
         try
         {
-            await ContentPageService.DeletePageAsync(id);
+            await ContentPageService.SoftDeleteContentPageAsync(id);
             return Json(new { success = true, message = "Page deleted successfully." });
         }
         catch (Exception ex)
@@ -38,7 +38,7 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public IActionResult Create()
     {
-        Services.Dtos.Page.ContentPageEditDto model = ContentPageService.GetPageForCreate();
+        Services.Dtos.Page.ContentPageEditDto model = ContentPageService.GetContentPageForCreate();
         return View(model);
     }
 
@@ -53,7 +53,7 @@ public class ContentPagesController : BaseAdminController
 
         try
         {
-            await ContentPageService.CreatePageAsync(model);
+            await ContentPageService.CreateContentPageAsync(model);
             TempData["SuccessMessage"] = "Page created successfully.";
             return RedirectToAction(nameof(Index));
         }
@@ -67,7 +67,7 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        var page = await ContentPageService.GetPageForEditAsync(id);
+        var page = await ContentPageService.GetContentPageForEditAsync(id);
         if (page == null)
         {
             return NotFound();
@@ -79,7 +79,7 @@ public class ContentPagesController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        var page = await ContentPageService.GetPageForEditAsync(id);
+        var page = await ContentPageService.GetContentPageForEditAsync(id);
         if (page == null)
         {
             return NotFound();
@@ -104,7 +104,7 @@ public class ContentPagesController : BaseAdminController
 
         try
         {
-            await ContentPageService.UpdatePageAsync(id, model);
+            await ContentPageService.UpdateContentPageAsync(id, model);
             TempData["SuccessMessage"] = "Page updated successfully.";
             return RedirectToAction(nameof(Index));
         }
