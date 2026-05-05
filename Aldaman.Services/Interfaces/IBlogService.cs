@@ -36,12 +36,12 @@ public interface IBlogService
     /// <summary>
     /// Creates a new blog post.
     /// </summary>
-    Task CreateBlogPostAsync(Guid userId, BlogPostEditDto dto);
+    Task CreateBlogPostAsync(BlogPostEditDto dto);
 
     /// <summary>
     /// Updates an existing blog post.
     /// </summary>
-    Task UpdateBlogPostAsync(Guid id, Guid userId, BlogPostEditDto dto);
+    Task UpdateBlogPostAsync(Guid id, BlogPostEditDto dto);
 
     /// <summary>
     /// Deletes a blog post and all its translations.

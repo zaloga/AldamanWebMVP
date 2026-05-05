@@ -21,7 +21,7 @@ public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<Cont
         builder.Property(x => x.Slug)
             .HasMaxLength(ContentPageTranslationEntity.SlugMaxLength)
             .IsRequired();
-            
+
         builder.Property(x => x.BodyHtml);
         builder.Property(x => x.BodyDeltaJson);
         builder.Property(x => x.PlainText)
@@ -51,11 +51,6 @@ public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<Cont
         builder.HasOne(x => x.UpdatedByUser)
             .WithMany()
             .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.DeletedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.DeletedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

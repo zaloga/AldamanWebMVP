@@ -5,7 +5,7 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Catalog of system pages.
 /// </summary>
-public class ContentPageEntity : BaseEntity
+public class ContentPageEntity : BaseEntityAuditableSoftDel
 {
     public const int PageKeyMaxLength = 256;
 

@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -50,8 +49,7 @@ public class BlogController : BaseAdminController
                 }
             }
 
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await BlogService.CreateBlogPostAsync(userId, model);
+            await BlogService.CreateBlogPostAsync(model);
             TempData["SuccessMessage"] = "Post created successfully.";
             return RedirectToAction(nameof(Index));
         }
@@ -111,8 +109,7 @@ public class BlogController : BaseAdminController
                 }
             }
 
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await BlogService.UpdateBlogPostAsync(id, userId, model);
+            await BlogService.UpdateBlogPostAsync(id, model);
             TempData["SuccessMessage"] = "Post updated successfully.";
             return RedirectToAction(nameof(Index));
         }

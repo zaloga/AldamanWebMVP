@@ -193,7 +193,7 @@ public sealed class ContentPageService : IContentPageService
         {
             PageKey = dto.PageKey,
             PlaceToShow = dto.PlaceToShow,
-            PageOrder = dto.PageOrder
+            PageOrder = dto.PageOrder,
         };
 
         foreach (var translationDto in dto.Translations)
@@ -248,8 +248,7 @@ public sealed class ContentPageService : IContentPageService
             {
                 if (existingTranslation != null)
                 {
-                    existingTranslation.IsDeleted = true;
-                    existingTranslation.DeletedAtUtc = DateTime.UtcNow;
+                    // TOTO delete translation? 
                 }
                 continue;
             }
@@ -263,9 +262,6 @@ public sealed class ContentPageService : IContentPageService
                 page.Translations.Add(existingTranslation);
             }
 
-            existingTranslation.IsDeleted = false;
-            existingTranslation.DeletedAtUtc = null;
-            existingTranslation.DeletedByUserId = null;
             existingTranslation.Title = title;
             existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
                 ? slug
@@ -284,7 +280,6 @@ public sealed class ContentPageService : IContentPageService
         if (page != null)
         {
             page.IsDeleted = true;
-            page.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
     }

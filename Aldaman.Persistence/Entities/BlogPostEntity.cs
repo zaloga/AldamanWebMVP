@@ -1,6 +1,6 @@
 namespace Aldaman.Persistence.Entities;
 
-public class BlogPostEntity : BaseEntity
+public class BlogPostEntity : BaseEntityAuditableSoftDel
 {
     public Guid? CoverMediaAssetId { get; set; }
 

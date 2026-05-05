@@ -1,6 +1,6 @@
 namespace Aldaman.Persistence.Entities;
 
-public class BlogPostTranslationEntity : BaseEntity
+public class BlogPostTranslationEntity : BaseEntityAuditable
 {
     public const int CultureCodeMaxLength = 5;
     public const int TitleMaxLength = 256;

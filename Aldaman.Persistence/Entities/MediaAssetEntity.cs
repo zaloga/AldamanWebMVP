@@ -1,6 +1,6 @@
 namespace Aldaman.Persistence.Entities;
 
-public class MediaAssetEntity : BaseEntity
+public class MediaAssetEntity : BaseEntityAuditableSoftDel
 {
     public const int TitleMaxLength = 512;
     public const int TitleMinLength = 3;

@@ -3,7 +3,7 @@ namespace Aldaman.Persistence.Entities;
 /// <summary>
 /// Content of a specific page for a specific language.
 /// </summary>
-public class ContentPageTranslationEntity : BaseEntity
+public class ContentPageTranslationEntity : BaseEntityAuditable
 {
     public const int CultureCodeMaxLength = 5;
     public const int TitleMaxLength = 256;

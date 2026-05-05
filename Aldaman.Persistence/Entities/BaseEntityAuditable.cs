@@ -1,6 +1,9 @@
 namespace Aldaman.Persistence.Entities;
 
-public abstract class BaseEntity
+/// <summary>
+/// Base entity class with common properties for all entities that require auditing and soft deletion.
+/// </summary>
+public abstract class BaseEntityAuditable
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -10,13 +13,8 @@ public abstract class BaseEntity
     public DateTime? UpdatedAtUtc { get; set; }
     public Guid? UpdatedByUserId { get; set; }
 
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAtUtc { get; set; }
-    public Guid? DeletedByUserId { get; set; }
-
 
     // Navigation properties
     public virtual AppUser? CreatedByUser { get; set; }
     public virtual AppUser? UpdatedByUser { get; set; }
-    public virtual AppUser? DeletedByUser { get; set; }
 }

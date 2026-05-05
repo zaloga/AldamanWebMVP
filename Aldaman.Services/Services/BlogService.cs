@@ -184,17 +184,13 @@ public sealed class BlogService : IBlogService
         };
     }
 
-    public async Task CreateBlogPostAsync(Guid userId, BlogPostEditDto dto)
+    public async Task CreateBlogPostAsync(BlogPostEditDto dto)
     {
         var post = new BlogPostEntity
         {
             CoverMediaAssetId = dto.CoverMediaAssetId,
             IsPublished = dto.IsPublished,
             PublishedAtUtc = dto.IsPublished ? (dto.PublishedAtUtc ?? DateTime.UtcNow) : null,
-            CreatedByUserId = userId,
-            UpdatedByUserId = userId,
-            CreatedAtUtc = DateTime.UtcNow,
-            UpdatedAtUtc = DateTime.UtcNow
         };
 
         foreach (var translationDto in dto.Translations)
@@ -222,7 +218,7 @@ public sealed class BlogService : IBlogService
         await Context.SaveChangesAsync();
     }
 
-    public async Task UpdateBlogPostAsync(Guid id, Guid userId, BlogPostEditDto dto)
+    public async Task UpdateBlogPostAsync(Guid id, BlogPostEditDto dto)
     {
         var post = await Context.BlogPosts
             .IgnoreQueryFilters()
@@ -245,9 +241,6 @@ public sealed class BlogService : IBlogService
             post.PublishedAtUtc = null;
         }
 
-        post.UpdatedByUserId = userId;
-        post.UpdatedAtUtc = DateTime.UtcNow;
-
         foreach (var translationDto in dto.Translations)
         {
             var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
@@ -259,9 +252,7 @@ public sealed class BlogService : IBlogService
             {
                 if (existingTranslation != null)
                 {
-                    existingTranslation.IsDeleted = true;
-                    existingTranslation.DeletedAtUtc = DateTime.UtcNow;
-                    existingTranslation.DeletedByUserId = userId;
+                    // TOTO delete translation
                 }
                 continue;
             }
@@ -275,9 +266,6 @@ public sealed class BlogService : IBlogService
                 post.Translations.Add(existingTranslation);
             }
 
-            existingTranslation.IsDeleted = false;
-            existingTranslation.DeletedAtUtc = null;
-            existingTranslation.DeletedByUserId = null;
             existingTranslation.Title = title;
             existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
                 ? slug
@@ -298,7 +286,6 @@ public sealed class BlogService : IBlogService
         if (post != null)
         {
             post.IsDeleted = true;
-            post.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
     }

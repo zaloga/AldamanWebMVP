@@ -52,11 +52,6 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
             .HasForeignKey(x => x.UpdatedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.DeletedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.DeletedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         // Relationships
         builder.HasOne(x => x.BlogPost)
             .WithMany(x => x.Translations)

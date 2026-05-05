@@ -31,9 +31,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
         // Global query filters for soft delete
         builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
-        builder.Entity<BlogPostTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
-        builder.Entity<ContentPageTranslationEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
     }
 
@@ -51,11 +49,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
     private void UpdateAuditFields()
     {
-        var entries = ChangeTracker.Entries<BaseEntity>();
         var currentUserId = UserContext.CurrentUserId;
         var now = DateTime.UtcNow;
 
-        foreach (var entry in entries)
+        var entriesAuditableSoftDeletable = ChangeTracker.Entries<BaseEntityAuditableSoftDel>();
+        foreach (var entry in entriesAuditableSoftDeletable)
         {
             switch (entry.State)
             {
@@ -69,13 +67,28 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                     entry.Entity.UpdatedAtUtc = now;
                     entry.Entity.UpdatedByUserId = currentUserId;
                     break;
+            }
 
-                case EntityState.Deleted:
-                    // Soft delete logic
-                    entry.State = EntityState.Modified;
-                    entry.Entity.IsDeleted = true;
-                    entry.Entity.DeletedAtUtc = now;
-                    entry.Entity.DeletedByUserId = currentUserId;
+            if (entry.Entity.IsDeleted)
+            {
+                entry.Entity.DeletedAtUtc = now;
+                entry.Entity.DeletedByUserId = currentUserId;
+            }
+        }
+
+        var entriesAuditable = ChangeTracker.Entries<BaseEntityAuditable>();
+        foreach (var entry in entriesAuditable)
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAtUtc = now;
+                    entry.Entity.CreatedByUserId = currentUserId;
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.UpdatedAtUtc = now;
+                    entry.Entity.UpdatedByUserId = currentUserId;
                     break;
             }
         }
