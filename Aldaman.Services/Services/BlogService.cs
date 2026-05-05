@@ -144,6 +144,7 @@ public sealed class BlogService : IBlogService
     {
         var post = await Context.BlogPosts
             .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (post == null) return null;
@@ -151,6 +152,8 @@ public sealed class BlogService : IBlogService
         return new BlogPostEditDto
         {
             Id = post.Id,
+            CoverMediaAssetId = post.CoverMediaAssetId,
+            CoverImageUrl = post.CoverMediaAsset?.RelativePath,
             IsPublished = post.IsPublished,
             PublishedAtUtc = post.PublishedAtUtc,
             Translations = Localization.SupportedCultures.Select(culture =>
@@ -185,6 +188,7 @@ public sealed class BlogService : IBlogService
     {
         var post = new BlogPostEntity
         {
+            CoverMediaAssetId = dto.CoverMediaAssetId,
             IsPublished = dto.IsPublished,
             PublishedAtUtc = dto.IsPublished ? (dto.PublishedAtUtc ?? DateTime.UtcNow) : null,
             CreatedByUserId = userId,
@@ -229,6 +233,7 @@ public sealed class BlogService : IBlogService
             throw new KeyNotFoundException($"Blog post with ID {id} not found.");
         }
 
+        post.CoverMediaAssetId = dto.CoverMediaAssetId;
         post.IsPublished = dto.IsPublished;
         if (dto.IsPublished && !post.PublishedAtUtc.HasValue)
         {

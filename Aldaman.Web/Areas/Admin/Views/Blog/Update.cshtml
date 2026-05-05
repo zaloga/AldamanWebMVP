@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <form asp-action="Update" method="post">
+    <form asp-action="Update" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -100,10 +100,17 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="CoverMediaAssetId" class="form-label">Cover Image ID</label>
-                            <input asp-for="CoverMediaAssetId" class="form-control" />
-                            <span asp-validation-for="CoverMediaAssetId" class="text-danger"></span>
-                            <small class="text-muted">Currently a GUID input. Media picker coming soon.</small>
+                            <label asp-for="CoverImageFile" class="form-label">Cover Image</label>
+                            @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                            {
+                                <div class="mb-2">
+                                    <img src="@Model.CoverImageUrl" class="img-thumbnail" style="max-height: 200px;" alt="Current Cover" />
+                                </div>
+                            }
+                            <input asp-for="CoverImageFile" class="form-control" type="file" accept="image/*" />
+                            <input type="hidden" asp-for="CoverMediaAssetId" />
+                            <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+                            <small class="text-muted">Upload a new image to replace the current one.</small>
                         </div>
 
                         <hr />

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Aldaman.Services.Dtos.Blog;
 
 /// <summary>
@@ -7,8 +9,10 @@ public class BlogPostEditDto
 {
     public Guid? Id { get; set; }
     public Guid? CoverMediaAssetId { get; set; }
+    public IFormFile? CoverImageFile { get; set; }
     public bool IsPublished { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
+    public string? CoverImageUrl { get; set; }
 
     // Support for multiple translations in admin
     public List<BlogPostTranslationDto> Translations { get; set; } = new();

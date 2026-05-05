@@ -8,10 +8,12 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class BlogController : BaseAdminController
 {
     private IBlogService BlogService { get; }
+    private IMediaService MediaService { get; }
 
-    public BlogController(IBlogService blogService)
+    public BlogController(IBlogService blogService, IMediaService mediaService)
     {
         BlogService = blogService;
+        MediaService = mediaService;
     }
 
     public async Task<IActionResult> Index(PaginationQuery query)
@@ -39,6 +41,15 @@ public class BlogController : BaseAdminController
 
         try
         {
+            if (model.CoverImageFile != null && model.CoverImageFile.Length > 0)
+            {
+                using (var stream = model.CoverImageFile.OpenReadStream())
+                {
+                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType);
+                    model.CoverMediaAssetId = asset.Id;
+                }
+            }
+
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await BlogService.CreatePostAsync(userId, model);
             TempData["SuccessMessage"] = "Post created successfully.";
@@ -91,6 +102,15 @@ public class BlogController : BaseAdminController
 
         try
         {
+            if (model.CoverImageFile != null && model.CoverImageFile.Length > 0)
+            {
+                using (var stream = model.CoverImageFile.OpenReadStream())
+                {
+                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType);
+                    model.CoverMediaAssetId = asset.Id;
+                }
+            }
+
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await BlogService.UpdatePostAsync(id, userId, model);
             TempData["SuccessMessage"] = "Post updated successfully.";

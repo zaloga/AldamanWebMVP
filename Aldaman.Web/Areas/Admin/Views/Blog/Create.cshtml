@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
         <div class="row">
@@ -99,10 +99,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="CoverMediaAssetId" class="form-label">Cover Image ID</label>
-                            <input asp-for="CoverMediaAssetId" class="form-control" />
-                            <span asp-validation-for="CoverMediaAssetId" class="text-danger"></span>
-                            <small class="text-muted">Currently a GUID input. Media picker coming soon.</small>
+                            <label asp-for="CoverImageFile" class="form-label">Cover Image</label>
+                            <input asp-for="CoverImageFile" class="form-control" type="file" accept="image/*" />
+                            <span asp-validation-for="CoverImageFile" class="text-danger"></span>
                         </div>
 
                         <hr />
