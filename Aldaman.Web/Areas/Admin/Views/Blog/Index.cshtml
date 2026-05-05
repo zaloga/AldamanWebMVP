@@ -51,7 +51,7 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">Title</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">Author</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">Published</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">Publish date</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                 </tr>
             </thead>
@@ -89,31 +89,19 @@
                             }
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="dropdown">
-                                <button class="btn btn-light btn-sm rounded-circle border shadow-sm p-1" type="button" data-bs-toggle="dropdown">
-                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+                            <div class="d-flex justify-content-end gap-2">
+                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    Edit
+                                </a>
+                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                    View
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.Title')">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    Delete
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" asp-action="Update" asp-route-id="@item.Id">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" asp-action="Details" asp-route-id="@item.Id">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                            View
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <button class="dropdown-item d-flex align-items-center gap-2 text-danger" onclick="deleteItem('@item.Id', '@item.Title')">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>
                             </div>
                         </td>
                     </tr>
