@@ -32,4 +32,19 @@ public interface IMediaService
     /// Deletes a media asset from the system.
     /// </summary>
     Task DeleteAssetAsync(Guid id);
+
+    /// <summary>
+    /// Gets a paged list of deleted media assets.
+    /// </summary>
+    Task<PagedResultDto<MediaAssetDto>> GetPagedDeletedAssetsAsync(PaginationQuery query);
+
+    /// <summary>
+    /// Restores a soft-deleted media asset.
+    /// </summary>
+    Task RestoreAssetAsync(Guid id);
+
+    /// <summary>
+    /// Permanently deletes a media asset.
+    /// </summary>
+    Task HardDeleteAssetAsync(Guid id);
 }

@@ -14,10 +14,17 @@ public class MediaController : BaseAdminController
         MediaService = mediaService;
     }
 
-    public async Task<IActionResult> Index(PaginationQuery query)
+    public async Task<IActionResult> Index(
+        [FromQuery] PaginationQuery query, 
+        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var result = await MediaService.ListAssetsAsync(query);
+        var deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
+        
         ViewData["Query"] = query;
+        ViewData["DeletedQuery"] = deletedItemsQuery;
+        ViewBag.DeletedItems = deletedResult;
+        
         return View(result);
     }
 
@@ -115,6 +122,36 @@ public class MediaController : BaseAdminController
         {
             await MediaService.DeleteAssetAsync(id);
             return Json(new { success = true, message = "Media asset deleted successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error deleting media: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(Guid id)
+    {
+        try
+        {
+            await MediaService.RestoreAssetAsync(id);
+            return Json(new { success = true, message = "Media asset restored successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error restoring media: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> HardDelete(Guid id)
+    {
+        try
+        {
+            await MediaService.HardDeleteAssetAsync(id);
+            return Json(new { success = true, message = "Media asset permanently deleted." });
         }
         catch (Exception ex)
         {

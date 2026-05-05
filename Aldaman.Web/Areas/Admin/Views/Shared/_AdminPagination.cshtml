@@ -2,6 +2,7 @@
 @model PagedResultBase
 @{
     var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
+    var pageParamName = ViewData["PageParamName"] as string ?? "page";
     var currentUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
@@ -43,8 +44,9 @@
 @functions {
     string GetPageUrl(int page)
     {
+        var pageParamName = ViewData["PageParamName"] as string ?? "page";
         var queryParams = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
-        queryParams["page"] = page.ToString();
+        queryParams[pageParamName] = page.ToString();
         var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={WebUtility.UrlEncode(x.Value)}"));
         return $"{Context.Request.Path}?{queryString}";
     }

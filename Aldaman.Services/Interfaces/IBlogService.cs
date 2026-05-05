@@ -47,4 +47,19 @@ public interface IBlogService
     /// Deletes a blog post and all its translations.
     /// </summary>
     Task SoftDeleteBlogPostAsync(Guid id);
+
+    /// <summary>
+    /// Gets a paged list of deleted blog posts.
+    /// </summary>
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query);
+
+    /// <summary>
+    /// Restores a soft-deleted blog post.
+    /// </summary>
+    Task RestoreBlogPostAsync(Guid id);
+
+    /// <summary>
+    /// Permanently deletes a blog post.
+    /// </summary>
+    Task HardDeleteBlogPostAsync(Guid id);
 }

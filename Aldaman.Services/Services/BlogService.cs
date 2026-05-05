@@ -14,11 +14,16 @@ public sealed class BlogService : IBlogService
 {
     private AppDbContext Context { get; }
     private LocalizationSettings Localization { get; }
+    private IMediaService MediaService { get; }
 
-    public BlogService(AppDbContext context, IOptions<LocalizationSettings> localizationOptions)
+    public BlogService(
+        AppDbContext context,
+        IOptions<LocalizationSettings> localizationOptions,
+        IMediaService mediaService)
     {
         Context = context;
         Localization = localizationOptions.Value;
+        MediaService = mediaService;
     }
 
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null)
@@ -287,6 +292,95 @@ public sealed class BlogService : IBlogService
         {
             post.IsDeleted = true;
             await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query)
+    {
+        var dbQuery = Context.BlogPosts
+            .IgnoreQueryFilters()
+            .Where(p => p.IsDeleted)
+            .Include(p => p.Translations)
+            .Include(p => p.CreatedByUser)
+            .OrderByDescending(p => p.DeletedAtUtc)
+            .AsQueryable();
+
+        var totalCount = await dbQuery.CountAsync();
+        var items = await dbQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(p => new BlogPostListItemDto
+            {
+                Id = p.Id,
+                Title = p.Translations.FirstOrDefault()!.Title ?? "No Title",
+                PublishedAtUtc = p.PublishedAtUtc,
+                IsPublished = p.IsPublished,
+                AuthorName = p.CreatedByUser != null ? p.CreatedByUser.DisplayName : "Unknown",
+                CreatedAtUtc = p.CreatedAtUtc
+            })
+            .ToListAsync();
+
+        return new PagedResultDto<BlogPostListItemDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize
+        };
+    }
+
+    public async Task RestoreBlogPostAsync(Guid id)
+    {
+        var post = await Context.BlogPosts.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (post != null)
+        {
+            post.IsDeleted = false;
+            post.DeletedAtUtc = null;
+            post.DeletedByUserId = null;
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task HardDeleteBlogPostAsync(Guid id)
+    {
+        var post = await Context.BlogPosts
+            .IgnoreQueryFilters()
+            .Include(p => p.Translations)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post != null)
+        {
+            var mediaId = post.CoverMediaAssetId;
+
+            // Explicitly remove translations
+            if (post.Translations.Any())
+            {
+                Context.RemoveRange(post.Translations);
+            }
+
+            // Delete post
+            Context.BlogPosts.Remove(post);
+            await Context.SaveChangesAsync();
+
+            // Try to delete media asset if it exists and is not used elsewhere
+            if (mediaId.HasValue)
+            {
+                var isUsedElsewhere = await Context.BlogPosts.AnyAsync(p => p.CoverMediaAssetId == mediaId.Value);
+                if (!isUsedElsewhere)
+                {
+                    try
+                    {
+                        await MediaService.HardDeleteAssetAsync(mediaId.Value);
+                    }
+                    catch
+                    {
+                        // TODO log the error
+                        // Ignore errors during media deletion to avoid failing the post deletion
+                    }
+                }
+            }
+
+            // TODO remove images used by RTE
         }
     }
 }

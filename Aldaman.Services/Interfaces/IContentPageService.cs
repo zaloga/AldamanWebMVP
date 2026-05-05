@@ -58,4 +58,19 @@ public interface IContentPageService
     /// Deletes a page and all its contents.
     /// </summary>
     Task SoftDeleteContentPageAsync(Guid id);
+
+    /// <summary>
+    /// Gets a paged list of deleted pages.
+    /// </summary>
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query);
+
+    /// <summary>
+    /// Restores a soft-deleted page.
+    /// </summary>
+    Task RestoreContentPageAsync(Guid id);
+
+    /// <summary>
+    /// Permanently deletes a page.
+    /// </summary>
+    Task HardDeleteContentPageAsync(Guid id);
 }

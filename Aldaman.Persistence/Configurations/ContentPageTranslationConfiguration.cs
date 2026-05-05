@@ -40,7 +40,7 @@ public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<Cont
         builder.HasOne(x => x.ContentPage)
             .WithMany(x => x.Translations)
             .HasForeignKey(x => x.ContentPageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Audit Relationships
         builder.HasOne(x => x.CreatedByUser)

@@ -13,10 +13,17 @@ public class ContentPagesController : BaseAdminController
         ContentPageService = contentPageService;
     }
 
-    public async Task<IActionResult> Index(PaginationQuery query)
+    public async Task<IActionResult> Index(
+        [FromQuery] PaginationQuery query, 
+        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var result = await ContentPageService.GetPagedContentPagesAsync(query);
+        var deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery);
+        
         ViewData["Query"] = query;
+        ViewData["DeletedQuery"] = deletedItemsQuery;
+        ViewBag.DeletedItems = deletedResult;
+        
         return View(result);
     }
 
@@ -28,6 +35,36 @@ public class ContentPagesController : BaseAdminController
         {
             await ContentPageService.SoftDeleteContentPageAsync(id);
             return Json(new { success = true, message = "Page deleted successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error deleting page: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(Guid id)
+    {
+        try
+        {
+            await ContentPageService.RestoreContentPageAsync(id);
+            return Json(new { success = true, message = "Page restored successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error restoring page: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> HardDelete(Guid id)
+    {
+        try
+        {
+            await ContentPageService.HardDeleteContentPageAsync(id);
+            return Json(new { success = true, message = "Page permanently deleted." });
         }
         catch (Exception ex)
         {

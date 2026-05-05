@@ -280,8 +280,73 @@ public sealed class ContentPageService : IContentPageService
         if (page != null)
         {
             page.IsDeleted = true;
+            page.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
     }
 
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query)
+    {
+        var dbQuery = Context.ContentPages
+            .IgnoreQueryFilters()
+            .Where(p => p.IsDeleted)
+            .OrderByDescending(p => p.DeletedAtUtc)
+            .AsQueryable();
+
+        var totalCount = await dbQuery.CountAsync();
+        var items = await dbQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(p => new ContentPageListItemDto
+            {
+                Id = p.Id,
+                PageKey = p.PageKey,
+                PlaceToShow = p.PlaceToShow,
+                PageOrder = p.PageOrder,
+                CreatedAtUtc = p.CreatedAtUtc
+            })
+            .ToListAsync();
+
+        return new PagedResultDto<ContentPageListItemDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize
+        };
+    }
+
+    public async Task RestoreContentPageAsync(Guid id)
+    {
+        var page = await Context.ContentPages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (page != null)
+        {
+            page.IsDeleted = false;
+            page.DeletedAtUtc = null;
+            page.DeletedByUserId = null;
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task HardDeleteContentPageAsync(Guid id)
+    {
+        var page = await Context.ContentPages
+            .IgnoreQueryFilters()
+            .Include(p => p.Translations)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (page != null)
+        {
+            // Explicitly remove translations
+            if (page.Translations.Any())
+            {
+                Context.RemoveRange(page.Translations);
+            }
+
+            Context.ContentPages.Remove(page);
+            await Context.SaveChangesAsync();
+        }
+
+        // TODO remove images used by RTE
+    }
 }

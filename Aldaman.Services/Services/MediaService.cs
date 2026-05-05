@@ -148,6 +148,67 @@ public sealed class MediaService : IMediaService
         }
     }
 
+    public async Task<PagedResultDto<MediaAssetDto>> GetPagedDeletedAssetsAsync(PaginationQuery query)
+    {
+        var dbQuery = Context.MediaAssets
+            .IgnoreQueryFilters()
+            .Where(p => p.IsDeleted)
+            .OrderByDescending(p => p.DeletedAtUtc)
+            .AsQueryable();
+
+        var totalCount = await dbQuery.CountAsync();
+        var items = await dbQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(p => Map(p))
+            .ToListAsync();
+
+        return new PagedResultDto<MediaAssetDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize
+        };
+    }
+
+    public async Task RestoreAssetAsync(Guid id)
+    {
+        var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (asset != null)
+        {
+            asset.IsDeleted = false;
+            asset.DeletedAtUtc = null;
+            asset.DeletedByUserId = null;
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task HardDeleteAssetAsync(Guid id)
+    {
+        var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (asset != null)
+        {
+            // Delete physical file
+            var physicalPath = Path.Combine(WebRootPath, asset.RelativePath.TrimStart('/'));
+            if (File.Exists(physicalPath))
+            {
+                try
+                {
+                    File.Delete(physicalPath);
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle file deletion error
+                    // We continue with DB deletion even if file deletion fails to avoid orphaned DB records
+                }
+            }
+
+            Context.MediaAssets.Remove(asset);
+            await Context.SaveChangesAsync();
+        }
+    }
+
     private static MediaAssetDto Map(MediaAssetEntity p)
     {
         return new MediaAssetDto

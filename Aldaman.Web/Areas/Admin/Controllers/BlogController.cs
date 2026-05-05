@@ -15,10 +15,17 @@ public class BlogController : BaseAdminController
         MediaService = mediaService;
     }
 
-    public async Task<IActionResult> Index(PaginationQuery query)
+    public async Task<IActionResult> Index(
+        [FromQuery] PaginationQuery query, 
+        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var result = await BlogService.GetPagedBlogPostsAdminAsync(query);
+        var deletedResult = await BlogService.GetPagedDeletedBlogPostsAsync(deletedItemsQuery);
+        
         ViewData["Query"] = query;
+        ViewData["DeletedQuery"] = deletedItemsQuery;
+        ViewBag.DeletedItems = deletedResult;
+        
         return View(result);
     }
 
@@ -132,6 +139,36 @@ public class BlogController : BaseAdminController
         {
             await BlogService.SoftDeleteBlogPostAsync(id);
             return Json(new { success = true, message = "Post deleted successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error deleting post: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(Guid id)
+    {
+        try
+        {
+            await BlogService.RestoreBlogPostAsync(id);
+            return Json(new { success = true, message = "Post restored successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error restoring post: " + ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> HardDelete(Guid id)
+    {
+        try
+        {
+            await BlogService.HardDeleteBlogPostAsync(id);
+            return Json(new { success = true, message = "Post permanently deleted." });
         }
         catch (Exception ex)
         {
