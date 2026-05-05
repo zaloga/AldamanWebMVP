@@ -24,6 +24,7 @@ public sealed class BlogService : IBlogService
     {
         var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
             .Include(p => p.CreatedByUser)
             .AsQueryable();
 
@@ -63,6 +64,7 @@ public sealed class BlogService : IBlogService
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 AuthorName = p.CreatedByUser != null ? p.CreatedByUser.DisplayName : "Unknown",
+                CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -80,6 +82,7 @@ public sealed class BlogService : IBlogService
     {
         var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
             .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
             .OrderByDescending(p => p.PublishedAtUtc)
             .AsQueryable();
@@ -96,6 +99,7 @@ public sealed class BlogService : IBlogService
                 Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
+                CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -136,7 +140,7 @@ public sealed class BlogService : IBlogService
             PlainText = translation.PlainText,
             PublishedAtUtc = post.PublishedAtUtc,
             AuthorName = post.CreatedByUser?.DisplayName,
-            CoverImageUrl = post.CoverMediaAsset?.RelativePath,
+            CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
         };
     }
 
@@ -153,7 +157,7 @@ public sealed class BlogService : IBlogService
         {
             Id = post.Id,
             CoverMediaAssetId = post.CoverMediaAssetId,
-            CoverImageUrl = post.CoverMediaAsset?.RelativePath,
+            CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
             IsPublished = post.IsPublished,
             PublishedAtUtc = post.PublishedAtUtc,
             Translations = Localization.SupportedCultures.Select(culture =>

@@ -101,10 +101,10 @@
 
                         <div class="mb-3">
                             <label asp-for="CoverImageFile" class="form-label">Cover Image</label>
-                            @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                            @if (!string.IsNullOrEmpty(Model.CoverImageRelativePath))
                             {
                                 <div class="mb-2">
-                                    <img src="@Model.CoverImageUrl" class="img-thumbnail" style="max-height: 200px;" alt="Current Cover" />
+                                    <img src="@Model.CoverImageRelativePath" class="img-thumbnail" style="max-height: 200px;" alt="Current Cover" />
                                 </div>
                             }
                             <input asp-for="CoverImageFile" class="form-control" type="file" accept="image/*" />

@@ -1,5 +1,3 @@
-using System;
-using Aldaman.Services.Dtos.Media;
 
 namespace Aldaman.Services.Dtos.Blog;
 
@@ -12,7 +10,7 @@ public class BlogPostListItemDto
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string? Perex { get; set; }
-    public MediaAssetDto? CoverImage { get; set; }
+    public string? CoverImageRelativePath { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
     public bool IsPublished { get; set; }
     public string? AuthorName { get; set; }

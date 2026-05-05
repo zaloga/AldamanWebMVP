@@ -1,4 +1,3 @@
-using Aldaman.Services.Dtos.Media;
 
 namespace Aldaman.Services.Dtos.Blog;
 
@@ -14,9 +13,7 @@ public class BlogPostDetailDto
     public string? BodyHtml { get; set; }
     public string? BodyDeltaJson { get; set; }
     public string? PlainText { get; set; }
-    public MediaAssetDto? CoverImage { get; set; }
+    public string? CoverImageRelativePath { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
     public string? AuthorName { get; set; }
-    public string? CoverImageUrl { get; set; }
-
 }
