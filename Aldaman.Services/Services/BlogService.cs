@@ -3,6 +3,7 @@ using Aldaman.Persistence.Entities;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -216,7 +217,7 @@ public sealed class BlogService : IBlogService
                 Perex = translationDto.Perex,
                 BodyHtml = translationDto.BodyHtml,
                 BodyDeltaJson = translationDto.BodyDeltaJson,
-                PlainText = StripHtml(translationDto.BodyHtml)
+                PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength)
             };
 
             post.Translations.Add(translation);
@@ -274,32 +275,12 @@ public sealed class BlogService : IBlogService
             existingTranslation.Perex = translationDto.Perex;
             existingTranslation.BodyHtml = translationDto.BodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
-            existingTranslation.PlainText = StripHtml(translationDto.BodyHtml);
+            existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength);
         }
 
         await Context.SaveChangesAsync();
     }
 
-    private static string? StripHtml(string? html)
-    {
-        if (string.IsNullOrWhiteSpace(html))
-        {
-            return html;
-        }
-
-        // Basic HTML stripping using Regex
-        var plainText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]*>", string.Empty);
-
-        // Decode HTML entities
-        plainText = System.Net.WebUtility.HtmlDecode(plainText);
-
-        if (plainText.Length > BlogPostTranslationEntity.PlainTextMaxLength)
-        {
-            plainText = plainText.Substring(0, BlogPostTranslationEntity.PlainTextMaxLength);
-        }
-
-        return plainText;
-    }
 
     public async Task DeletePostAsync(Guid id)
     {

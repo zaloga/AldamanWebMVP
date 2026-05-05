@@ -4,6 +4,7 @@ using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
+using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -210,7 +211,7 @@ public sealed class ContentPageService : IContentPageService
                     : translationDto.Title.ToLower().Replace(" ", "-"),
                 BodyHtml = translationDto.BodyHtml,
                 BodyDeltaJson = translationDto.BodyDeltaJson,
-                PlainText = StripHtml(translationDto.BodyHtml)
+                PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, ContentPageTranslationEntity.PlainTextMaxLength)
             };
 
             page.Translations.Add(translation);
@@ -262,7 +263,7 @@ public sealed class ContentPageService : IContentPageService
             existingTranslation.Slug = translationDto.Slug;
             existingTranslation.BodyHtml = translationDto.BodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
-            existingTranslation.PlainText = StripHtml(translationDto.BodyHtml);
+            existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);
         }
 
         await Context.SaveChangesAsync();
@@ -279,24 +280,4 @@ public sealed class ContentPageService : IContentPageService
         }
     }
 
-    private static string? StripHtml(string? html)
-    {
-        if (string.IsNullOrWhiteSpace(html))
-        {
-            return html;
-        }
-
-        // Basic HTML stripping using Regex
-        var plainText = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]*>", string.Empty);
-
-        // Decode HTML entities
-        plainText = System.Net.WebUtility.HtmlDecode(plainText);
-
-        if (plainText.Length > ContentPageTranslationEntity.PlainTextMaxLength)
-        {
-            plainText = plainText.Substring(0, ContentPageTranslationEntity.PlainTextMaxLength);
-        }
-
-        return plainText;
-    }
 }
