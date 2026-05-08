@@ -127,23 +127,17 @@ public sealed class ContentPageService : IContentPageService
 
     private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalAsync(string culture, PlaceToShowEnum placeToShow)
     {
-        var pages = await Context.ContentPages
-                    .Include(p => p.Translations)
-                    .Where(p => p.PlaceToShow.HasFlag(placeToShow))
-                    .OrderBy(p => p.PageOrder)
-                    .ToListAsync();
-
-        return pages.Select(page =>
-        {
-            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture)
-                         ?? page.Translations.FirstOrDefault();
-
-            return new ContentPageNavigationDto
+        return await Context.ContentPages
+            .Where(p => p.PlaceToShow.HasFlag(placeToShow))
+            .SelectMany(p => p.Translations.Where(t => t.CultureCode == culture))
+            .Where(t => !string.IsNullOrEmpty(t.Title) && !string.IsNullOrEmpty(t.Slug))
+            .OrderBy(t => t.ContentPage.PageOrder)
+            .Select(t => new ContentPageNavigationDto
             {
-                Title = content?.Title ?? string.Empty,
-                Slug = content?.Slug ?? string.Empty
-            };
-        }).ToList();
+                Title = t.Title,
+                Slug = t.Slug
+            })
+            .ToListAsync();
     }
 
     public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id)
