@@ -30,9 +30,9 @@
         </div>
         <div class="col-md-3">
             <select name="SortBy" class="form-select">
+                <option value="CreatedAt" selected="@(query.SortBy == "CreatedAt")">Sort by Created Date</option>
                 <option value="PageOrder" selected="@(query.SortBy == "PageOrder")">Sort by Order</option>
                 <option value="PageKey" selected="@(query.SortBy == "PageKey")">Sort by Key</option>
-                <option value="CreatedAt" selected="@(query.SortBy == "CreatedAt")">Sort by Created Date</option>
             </select>
         </div>
         <div class="col-md-2">

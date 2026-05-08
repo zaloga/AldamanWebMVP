@@ -45,7 +45,7 @@ public sealed class ContentPageService : IContentPageService
             "PageKey" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageKey) : dbQuery.OrderBy(p => p.PageKey),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
-            _ => dbQuery.OrderBy(p => p.PageOrder)
+            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
