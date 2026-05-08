@@ -2,7 +2,7 @@ using Aldaman.Persistence.Enums;
 
 namespace Aldaman.Persistence.Entities;
 
-public class ContactMessageEntity
+public class ContactMessageEntity : BaseEntityCreatableSoftDel
 {
     public const int EmailOrPhoneMaxLength = 256;
     public const int SubjectMaxLength = 256;
@@ -12,8 +12,6 @@ public class ContactMessageEntity
     public const int UserAgentMaxLength = 1024;
     public const int StateMaxLength = 16;
 
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     public string EmailOrPhone { get; set; } = string.Empty;
 
     public string Subject { get; set; } = "Kontakt z webu Aldaman";
@@ -21,8 +19,6 @@ public class ContactMessageEntity
     public string Message { get; set; } = string.Empty;
 
     public ContactMessageState State { get; set; } = ContactMessageState.Pending;
-
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     
     public DateTime? SentAtUtc { get; set; }
 

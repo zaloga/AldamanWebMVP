@@ -79,8 +79,7 @@ public sealed class ContactService : IContactService
             Message = dto.Message,
             ClientIp = clientIp,
             UserAgent = userAgent,
-            State = ContactMessageState.Pending,
-            CreatedAtUtc = DateTime.UtcNow
+            State = ContactMessageState.Pending
         };
 
         Context.ContactMessages.Add(entity);
@@ -129,9 +128,65 @@ public sealed class ContactService : IContactService
         var message = await Context.ContactMessages.FindAsync(id);
         if (message != null)
         {
+            message.IsDeleted = true;
+            message.DeletedAtUtc = DateTime.UtcNow;
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task RestoreMessageAsync(Guid id)
+    {
+        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (message != null)
+        {
+            message.IsDeleted = false;
+            message.DeletedAtUtc = null;
+            message.DeletedByUserId = null;
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task HardDeleteMessageAsync(Guid id)
+    {
+        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        if (message != null)
+        {
             Context.ContactMessages.Remove(message);
             await Context.SaveChangesAsync();
         }
+    }
+
+    public async Task<PagedResultDto<ContactMessageDto>> GetPagedDeletedMessagesAsync(PaginationQuery query)
+    {
+        var dbQuery = Context.ContactMessages
+            .IgnoreQueryFilters()
+            .Where(p => p.IsDeleted)
+            .OrderByDescending(p => p.DeletedAtUtc)
+            .AsQueryable();
+
+        var totalCount = await dbQuery.CountAsync();
+        var items = await dbQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(p => new ContactMessageDto
+            {
+                Id = p.Id,
+                EmailOrPhone = p.EmailOrPhone,
+                Subject = p.Subject,
+                Message = p.Message,
+                CreatedAtUtc = p.CreatedAtUtc,
+                SentAtUtc = p.SentAtUtc,
+                State = p.State
+            })
+            .ToListAsync();
+
+        return new PagedResultDto<ContactMessageDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = query.Page,
+            PageSize = query.PageSize
+        };
     }
 
     public async Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5)

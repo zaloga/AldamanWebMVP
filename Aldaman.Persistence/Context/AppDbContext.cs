@@ -33,6 +33,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -67,6 +68,23 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                     entry.Entity.UpdatedAtUtc = now;
                     entry.Entity.UpdatedByUserId = currentUserId;
                     break;
+            }
+
+            if (entry.Entity.IsDeleted)
+            {
+                entry.Entity.DeletedAtUtc = now;
+                entry.Entity.DeletedByUserId = currentUserId;
+            }
+        }
+
+        var entriesCreatableSoftDeletable = ChangeTracker.Entries<BaseEntityCreatableSoftDel>();
+        foreach (var entry in entriesCreatableSoftDeletable)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAtUtc = now;
+                entry.Entity.CreatedByUserId = currentUserId;
+                entry.Entity.IsDeleted = false;
             }
 
             if (entry.Entity.IsDeleted)

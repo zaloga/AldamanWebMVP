@@ -29,6 +29,21 @@ public interface IContactService
     Task DeleteMessageAsync(Guid id);
 
     /// <summary>
+    /// Restores a soft-deleted message.
+    /// </summary>
+    Task RestoreMessageAsync(Guid id);
+
+    /// <summary>
+    /// Permanently deletes a message from the system.
+    /// </summary>
+    Task HardDeleteMessageAsync(Guid id);
+
+    /// <summary>
+    /// Gets paged soft-deleted messages.
+    /// </summary>
+    Task<PagedResultDto<ContactMessageDto>> GetPagedDeletedMessagesAsync(PaginationQuery query);
+
+    /// <summary>
     /// Gets the most recent contact messages.
     /// </summary>
     Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5);
