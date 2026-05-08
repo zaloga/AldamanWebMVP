@@ -1,13 +1,100 @@
-@using Aldaman.Services.Dtos.Page
-@model IEnumerable<ContentPageNavigationDto>
+@using Aldaman.Web.ViewModels
+@model TopNavigationViewModel
 
-@foreach (var navigation in Model)
-{
-    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" 
-       asp-area="" 
-       asp-controller="ContentPage" 
-       asp-action="Detail" 
-       asp-route-slug="@navigation.Slug">
-        @navigation.Title
-    </a>
-}
+<div class="flex items-center gap-6">
+    <div class="relative">
+        <a id="home-nav-link" 
+           class="flex items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors cursor-pointer select-none" 
+           asp-area="" asp-controller="Home" asp-action="Index">
+            @Localizer[UIResourceKeys.Home]
+            @if (Model.HomePagePages.Any())
+            {
+                <svg id="home-nav-chevron" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            }
+        </a>
+
+        @if (Model.HomePagePages.Any())
+        {
+            <div id="home-nav-dropdown" class="absolute left-0 mt-2 w-64 rounded-xl shadow-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 opacity-0 invisible transition-all duration-300 z-50 transform origin-top-left -translate-y-2 border border-slate-100 dark:border-white/10 overflow-hidden">
+                <div class="py-2">
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="block px-4 py-3 text-sm font-bold text-brand-primary dark:text-brand-accent hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors border-b border-slate-100 dark:border-white/5">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            @Localizer[UIResourceKeys.Home]
+                        </div>
+                    </a>
+                    @foreach (var hpPage in Model.HomePagePages)
+                    {
+                        <a href="@Url.Action("Index", "Home")#@hpPage.PageKey" 
+                           class="block px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-brand-primary dark:hover:text-brand-accent transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span>@hpPage.Title</span>
+                                <span class="text-[10px] uppercase tracking-wider opacity-30 font-bold">#@hpPage.PageKey</span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <script>
+                (function() {
+                    const link = document.getElementById('home-nav-link');
+                    const dropdown = document.getElementById('home-nav-dropdown');
+                    const chevron = document.getElementById('home-nav-chevron');
+                    
+                    if (!link || !dropdown) return;
+
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isOpen = !dropdown.classList.contains('invisible');
+                        
+                        if (isOpen) {
+                            closeDropdown();
+                        } else {
+                            openDropdown();
+                        }
+                    });
+
+                    function openDropdown() {
+                        dropdown.classList.remove('invisible', 'opacity-0', '-translate-y-2');
+                        dropdown.classList.add('visible', 'opacity-100', 'translate-y-0');
+                        if (chevron) chevron.classList.add('rotate-180');
+                    }
+
+                    function closeDropdown() {
+                        dropdown.classList.add('invisible', 'opacity-0', '-translate-y-2');
+                        dropdown.classList.remove('visible', 'opacity-100', 'translate-y-0');
+                        if (chevron) chevron.classList.remove('rotate-180');
+                    }
+
+                    document.addEventListener('click', function(e) {
+                        if (!link.contains(e.target) && !dropdown.contains(e.target)) {
+                            closeDropdown();
+                        }
+                    });
+
+                    // Also close on escape key
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape') closeDropdown();
+                    });
+                })();
+            </script>
+        }
+    </div>
+
+    @foreach (var navigation in Model.NavigationPages)
+    {
+        <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" 
+           asp-area="" 
+           asp-controller="ContentPage" 
+           asp-action="Detail" 
+           asp-route-slug="@navigation.Slug">
+            @navigation.Title
+        </a>
+    }
+</div>

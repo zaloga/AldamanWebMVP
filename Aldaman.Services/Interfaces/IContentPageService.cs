@@ -19,6 +19,11 @@ public interface IContentPageService
     Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture);
 
     /// <summary>
+    /// Gets pages marked for display on home page as navigation links.
+    /// </summary>
+    Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture);
+
+    /// <summary>
     /// Gets pages marked for display in navigation.
     /// </summary>
     Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture);

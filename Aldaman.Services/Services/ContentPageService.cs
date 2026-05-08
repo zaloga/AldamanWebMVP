@@ -120,6 +120,11 @@ public sealed class ContentPageService : IContentPageService
         }).ToList();
     }
 
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture)
+    {
+        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.HomePage);
+    }
+
     public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture)
     {
         return await GetNavigationInternalAsync(culture, PlaceToShowEnum.TopNavigation);
@@ -139,6 +144,7 @@ public sealed class ContentPageService : IContentPageService
             .OrderBy(t => t.ContentPage.PageOrder)
             .Select(t => new ContentPageNavigationDto
             {
+                PageKey = t.ContentPage.PageKey,
                 Title = t.Title,
                 Slug = t.Slug
             })

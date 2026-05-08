@@ -22,8 +22,6 @@
                 <a class="text-xl font-bold tracking-tight text-slate-900 dark:text-white" asp-area="" asp-controller="Home" asp-action="Index">Aldaman</a>
                 
                 <div class="hidden md:flex items-center gap-6">
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Home" asp-action="Index">@Localizer[UIResourceKeys.Home]</a>
-                    
                     @await Component.InvokeAsync("TopNavigation")
 
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>

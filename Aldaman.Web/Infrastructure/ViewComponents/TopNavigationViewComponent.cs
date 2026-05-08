@@ -1,6 +1,7 @@
 using System.Globalization;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Aldaman.Web.ViewModels;
 
 namespace Aldaman.Web.Infrastructure.ViewComponents;
 
@@ -16,8 +17,13 @@ public class TopNavigationViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var navigationPages = await ContentPageService.GetTopNavigationAsync(cultureCode);
         
-        return View(navigationPages);
+        var model = new TopNavigationViewModel
+        {
+            NavigationPages = await ContentPageService.GetTopNavigationAsync(cultureCode),
+            HomePagePages = await ContentPageService.GetHomePageNavigationAsync(cultureCode)
+        };
+        
+        return View(model);
     }
 }
