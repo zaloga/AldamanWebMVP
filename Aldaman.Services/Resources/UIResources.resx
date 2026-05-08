@@ -196,7 +196,7 @@
     <value>Chyba</value>
   </data>
   <data name="ErrorOccurred" xml:space="preserve">
-    <value>Při zpracování vašeho požadavku došlo k chybě.</value>
+    <value>Došlo k chybě.</value>
   </data>
   <data name="RequestId" xml:space="preserve">
     <value>ID požadavku:</value>
@@ -227,5 +227,425 @@
   </data>
   <data name="MediaLibrary" xml:space="preserve">
     <value>Knihovna médií</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Zpět na seznam</value>
+  </data>
+  <data name="BackToSite" xml:space="preserve">
+    <value>Zpět na web</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Vytvořit</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Upravit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Zobrazit</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Akce</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtrovat</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Resetovat</value>
+  </data>
+  <data name="Showing" xml:space="preserve">
+    <value>Zobrazeno</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>až</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>z</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>výsledků</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Předchozí</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Další</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Odhlásit se</value>
+  </data>
+  <data name="AdminUser" xml:space="preserve">
+    <value>Administrátor</value>
+  </data>
+  <data name="CreateBlogPost" xml:space="preserve">
+    <value>Vytvořit příspěvek</value>
+  </data>
+  <data name="UpdateBlogPost" xml:space="preserve">
+    <value>Upravit příspěvek</value>
+  </data>
+  <data name="BlogPostDetails" xml:space="preserve">
+    <value>Detail příspěvku</value>
+  </data>
+  <data name="PostSettings" xml:space="preserve">
+    <value>Nastavení příspěvku</value>
+  </data>
+  <data name="IsPublished" xml:space="preserve">
+    <value>Publikováno</value>
+  </data>
+  <data name="PublicationDate" xml:space="preserve">
+    <value>Datum publikace</value>
+  </data>
+  <data name="CoverImage" xml:space="preserve">
+    <value>Úvodní obrázek</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Koncept</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Publikováno</value>
+  </data>
+  <data name="CreatePage" xml:space="preserve">
+    <value>Vytvořit stránku</value>
+  </data>
+  <data name="UpdatePage" xml:space="preserve">
+    <value>Upravit stránku</value>
+  </data>
+  <data name="PageDetails" xml:space="preserve">
+    <value>Detail stránky</value>
+  </data>
+  <data name="PageKey" xml:space="preserve">
+    <value>Klíč stránky</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Umístění</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Pořadí</value>
+  </data>
+  <data name="SystemPages" xml:space="preserve">
+    <value>Systémové stránky</value>
+  </data>
+  <data name="ContactMessageDetails" xml:space="preserve">
+    <value>Detail zprávy</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Odesílatel</value>
+  </data>
+  <data name="MarkHandled" xml:space="preserve">
+    <value>Označit jako vyřízené</value>
+  </data>
+  <data name="Handle" xml:space="preserve">
+    <value>Vyřídit</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Čeká na vyřízení</value>
+  </data>
+  <data name="Handled" xml:space="preserve">
+    <value>Vyřízeno</value>
+  </data>
+  <data name="UploadMedia" xml:space="preserve">
+    <value>Nahrát soubor</value>
+  </data>
+  <data name="EditMedia" xml:space="preserve">
+    <value>Upravit metadata</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Název souboru</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>Rozměry</value>
+  </data>
+  <data name="Uploaded" xml:space="preserve">
+    <value>Nahráno</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Náhled</value>
+  </data>
+  <data name="FileInfo" xml:space="preserve">
+    <value>Informace o souboru</value>
+  </data>
+  <data name="OpenOriginal" xml:space="preserve">
+    <value>Otevřít originál</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="DeletePermanently" xml:space="preserve">
+    <value>Trvale smazat</value>
+  </data>
+  <data name="NoItemsFound" xml:space="preserve">
+    <value>Nebyly nalezeny žádné položky.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Jste si jisti?</value>
+  </data>
+  <data name="YesDeleteIt" xml:space="preserve">
+    <value>Ano, smazat!</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Smazáno!</value>
+  </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>Obnoveno!</value>
+  </data>
+  <data name="TechnicalDetails" xml:space="preserve">
+    <value>Technické detaily</value>
+  </data>
+  <data name="ClientIp" xml:space="preserve">
+    <value>IP adresa klienta</value>
+  </data>
+  <data name="SentAtUtc" xml:space="preserve">
+    <value>Odesláno (UTC)</value>
+  </data>
+  <data name="UserAgent" xml:space="preserve">
+    <value>User Agent</value>
+  </data>
+  <data name="FailureReason" xml:space="preserve">
+    <value>Důvod selhání</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Informace</value>
+  </data>
+  <data name="SubmittedOn" xml:space="preserve">
+    <value>Odesláno dne</value>
+  </data>
+  <data name="SenderContact" xml:space="preserve">
+    <value>Kontakt na odesílatele</value>
+  </data>
+  <data name="DeletedMessage" xml:space="preserve">
+    <value>Smazaná zpráva</value>
+  </data>
+  <data name="MessageDeletedOn" xml:space="preserve">
+    <value>Tato zpráva byla smazána dne</value>
+  </data>
+  <data name="ReplyViaEmail" xml:space="preserve">
+    <value>Odpovědět e-mailem</value>
+  </data>
+  <data name="RestoreMessage" xml:space="preserve">
+    <value>Obnovit zprávu</value>
+  </data>
+  <data name="DeleteMessage" xml:space="preserve">
+    <value>Smazat zprávu</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Prostý text (obsah pro hledání)</value>
+  </data>
+  <data name="NoHtmlContent" xml:space="preserve">
+    <value>Pro tento jazyk není k dispozici žádný obsah HTML.</value>
+  </data>
+  <data name="NoPlainText" xml:space="preserve">
+    <value>Nebyl vygenerován žádný prostý text.</value>
+  </data>
+  <data name="CoverImageId" xml:space="preserve">
+    <value>ID úvodního obrázku</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Žádný</value>
+  </data>
+  <data name="NotRecorded" xml:space="preserve">
+    <value>Nezaznamenáno</value>
+  </data>
+  <data name="ClickToUpload" xml:space="preserve">
+    <value>Klikněte pro nahrání nebo přetáhněte soubor</value>
+  </data>
+  <data name="MaxFileSizeInfo" xml:space="preserve">
+    <value>Soubory do 1MB (obrázky, videa, dokumenty)</value>
+  </data>
+  <data name="UploadToLibrary" xml:space="preserve">
+    <value>Nahrát do knihovny</value>
+  </data>
+  <data name="AssetPreview" xml:space="preserve">
+    <value>Náhled souboru</value>
+  </data>
+  <data name="UpdateMediaInfo" xml:space="preserve">
+    <value>Aktualizujte alternativní text a název tohoto souboru.</value>
+  </data>
+  <data name="AltTextInfo" xml:space="preserve">
+    <value>Alt text pro přístupnost...</value>
+  </data>
+  <data name="TitleInfo" xml:space="preserve">
+    <value>Popisný název...</value>
+  </data>
+  <data name="UploadMediaInfo" xml:space="preserve">
+    <value>Nahrajte obrázky nebo videa do vaší mediální knihovny.</value>
+  </data>
+  <data name="PageKeyInfo" xml:space="preserve">
+    <value>Unikátní interní identifikátor (např. 'StrankaSluzeb').</value>
+  </data>
+  <data name="SlugInfo" xml:space="preserve">
+    <value>Ponechte prázdné pro vygenerování z názvu.</value>
+  </data>
+  <data name="ConfirmDeleteText" xml:space="preserve">
+    <value>Opravdu chcete smazat „{0}“? Tato položka bude označena k trvalému odstranění.</value>
+  </data>
+  <data name="ConfirmDeletePermanentlyText" xml:space="preserve">
+    <value>Opravdu chcete TRVALE smazat „{0}“? Tuto akci nelze vzít zpět!</value>
+  </data>
+  <data name="DeletePermanentlyButton" xml:space="preserve">
+    <value>Ano, smazat navždy!</value>
+  </data>
+  <data name="ConfirmDeleteMessageText" xml:space="preserve">
+    <value>Opravdu chcete smazat zprávu od „{0}“?</value>
+  </data>
+  <data name="ConfirmDeletePermanentlyMessageText" xml:space="preserve">
+    <value>Opravdu chcete TRVALE smazat zprávu od „{0}“? Tuto akci nelze vzít zpět!</value>
+  </data>
+  <data name="PublishDateInfo" xml:space="preserve">
+    <value>Pokud je zveřejněno, toto datum bude zobrazeno. Ponechte prázdné pro „Nyní“.</value>
+  </data>
+  <data name="CoverImageInfo" xml:space="preserve">
+    <value>Nahrajte nový obrázek pro nahrazení stávajícího.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Úspěch</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="PleaseCorrectErrors" xml:space="preserve">
+    <value>Prosím opravte následující chyby:</value>
+  </data>
+  <data name="TotalPages" xml:space="preserve">
+    <value>Celkem stránek</value>
+  </data>
+  <data name="PublishedPosts" xml:space="preserve">
+    <value>Publikované články</value>
+  </data>
+  <data name="PendingMessages" xml:space="preserve">
+    <value>Čekající zprávy</value>
+  </data>
+  <data name="MediaAssetsSize" xml:space="preserve">
+    <value>Velikost médií</value>
+  </data>
+  <data name="RecentMessages" xml:space="preserve">
+    <value>Nedávné zprávy</value>
+  </data>
+  <data name="NoSubject" xml:space="preserve">
+    <value>Bez předmětu</value>
+  </data>
+  <data name="NoRecentMessages" xml:space="preserve">
+    <value>Žádné nedávné zprávy.</value>
+  </data>
+  <data name="SortByDate" xml:space="preserve">
+    <value>Seřadit podle data</value>
+  </data>
+  <data name="SortByStatus" xml:space="preserve">
+    <value>Seřadit podle stavu</value>
+  </data>
+  <data name="Descending" xml:space="preserve">
+    <value>Sestupně</value>
+  </data>
+  <data name="Ascending" xml:space="preserve">
+    <value>Vzestupně</value>
+  </data>
+  <data name="DeletedMessages" xml:space="preserve">
+    <value>Smazané zprávy</value>
+  </data>
+  <data name="DeletedBadge" xml:space="preserve">
+    <value>Smazáno</value>
+  </data>
+  <data name="SortByCreatedDate" xml:space="preserve">
+    <value>Seřadit podle data vytvoření</value>
+  </data>
+  <data name="SortByOrder" xml:space="preserve">
+    <value>Seřadit podle pořadí</value>
+  </data>
+  <data name="SortByKey" xml:space="preserve">
+    <value>Seřadit podle klíče</value>
+  </data>
+  <data name="DeletedPages" xml:space="preserve">
+    <value>Smazané stránky</value>
+  </data>
+  <data name="SortByUploadDate" xml:space="preserve">
+    <value>Seřadit podle data nahrání</value>
+  </data>
+  <data name="SortByFilename" xml:space="preserve">
+    <value>Seřadit podle názvu souboru</value>
+  </data>
+  <data name="SortBySize" xml:space="preserve">
+    <value>Seřadit podle velikosti</value>
+  </data>
+  <data name="DeletedAssets" xml:space="preserve">
+    <value>Smazané soubory</value>
+  </data>
+  <data name="SortByTitle" xml:space="preserve">
+    <value>Seřadit podle názvu</value>
+  </data>
+  <data name="SortByPublishDate" xml:space="preserve">
+    <value>Seřadit podle data publikace</value>
+  </data>
+  <data name="DeletedPosts" xml:space="preserve">
+    <value>Smazané články</value>
+  </data>
+  <data name="PublishedOnDate" xml:space="preserve">
+    <value>Publikováno dne {0}</value>
+  </data>
+  <data name="DraftCreatedOn" xml:space="preserve">
+    <value>Koncept (vytvořeno {0})</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="Translations" xml:space="preserve">
+    <value>Překlady</value>
+  </data>
+  <data name="NotProvided" xml:space="preserve">
+    <value>Neuvedeno</value>
+  </data>
+  <data name="EditPage" xml:space="preserve">
+    <value>Upravit stránku</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titulek</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Obsah</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Domovská stránka</value>
+  </data>
+  <data name="TopNavigation" xml:space="preserve">
+    <value>Hlavní navigace</value>
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value>Patička</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="ChooseFile" xml:space="preserve">
+    <value>Vybrat soubor</value>
+  </data>
+  <data name="NoFileChosen" xml:space="preserve">
+    <value>Soubor nevybrán</value>
+  </data>
+  <data name="RemoveImage" xml:space="preserve">
+    <value>Odstranit obrázek</value>
   </data>
 </root>

@@ -2,7 +2,7 @@
 @model Aldaman.Services.Dtos.Page.ContentPageEditDto
 
 @{
-    ViewData["Title"] = "Edit Page";
+    ViewData["Title"] = Localizer["EditPage"];
 }
 
 @section Styles {
@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
         <a asp-action="Index" class="btn btn-secondary">
-            Back to List
+            @Localizer["BackToList"]
         </a>
     </div>
 
@@ -23,12 +23,12 @@
 
         <div class="row">
             <div class="col-lg-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Content Translations</h6>
+                <div class="card shadow mb-4 border-0">
+                    <div class="card-header py-3 bg-white border-0">
+                        <h6 class="m-0 fw-bold text-primary">@Localizer["Translations"]</h6>
                     </div>
                     <div class="card-body">
-                        <ul class="nav nav-tabs mb-3" id="translationTabs" role="tablist">
+                        <ul class="nav nav-tabs mb-4" id="translationTabs" role="tablist">
                             @for (int i = 0; i < Model.Translations.Count; i++)
                             {
                                 var culture = Model.Translations[i].CultureCode;
@@ -46,20 +46,21 @@
                                 <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
-                                    <div class="mb-3">
-                                        <label asp-for="Translations[i].Title" class="form-label">Title (@culture.ToUpper())</label>
-                                        <input asp-for="Translations[i].Title" class="form-control" />
+                                    <div class="mb-4">
+                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer["Title"] (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer["Title"] (@culture.ToUpper())..." />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label asp-for="Translations[i].Slug" class="form-label">Slug (@culture.ToUpper())</label>
-                                        <input asp-for="Translations[i].Slug" class="form-control" />
+                                    <div class="mb-4">
+                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer["Slug"] (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Slug" class="form-control" placeholder="page-abc" />
                                         <span asp-validation-for="Translations[i].Slug" class="text-danger"></span>
+                                        <small class="text-muted">@Localizer["SlugInfo"]</small>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].BodyHtml" class="form-label">Content (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer["Content"] (@culture.ToUpper())</label>
                                         <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
                                         <input type="hidden" asp-for="Translations[i].BodyHtml" />
                                         <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
@@ -75,44 +76,47 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Page Settings</h6>
+                <div class="card shadow mb-4 border-0">
+                    <div class="card-header py-3 bg-white border-0">
+                        <h6 class="m-0 fw-bold text-primary">@Localizer["Settings"]</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <label asp-for="PageKey" class="form-label">Page Key</label>
+                        <div class="mb-4">
+                            <label asp-for="PageKey" class="form-label fw-bold text-dark">@Localizer["PageKey"]</label>
                             <input asp-for="PageKey" class="form-control" />
                             <span asp-validation-for="PageKey" class="text-danger"></span>
-                            <small class="text-muted">Unique internal identifier (e.g. 'about', 'services').</small>
+                            <small class="text-muted">@Localizer["PageKeyInfo"]</small>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label d-block text-primary fw-bold">Display Locations</label>
-                            @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
-                            {
-                                <div class="form-check mb-1">
-                                    <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
-                                    <label class="form-check-label" for="loc-@value">
-                                        @if (value == PlaceToShowEnum.HomePage) { <text>Home Page</text> }
-                                        else if (value == PlaceToShowEnum.TopNavigation) { <text>Top Navigation</text> }
-                                        else { @value }
-                                    </label>
-                                </div>
-                            }
+                        <div class="mb-4">
+                            <label class="form-label d-block text-dark fw-bold">@Localizer["Locations"]</label>
+                            <div class="p-3 border rounded bg-light">
+                                @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
+                                        <label class="form-check-label fw-medium" for="loc-@value">
+                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer["HomePage"]</text> }
+                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer["TopNavigation"]</text> }
+                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer["Footer"]</text> }
+                                            else { @value }
+                                        </label>
+                                    </div>
+                                }
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="PageOrder" class="form-label">Sort Order</label>
+                        <div class="mb-4">
+                            <label asp-for="PageOrder" class="form-label fw-bold text-dark">@Localizer["Order"]</label>
                             <input asp-for="PageOrder" class="form-control" type="number" />
                             <span asp-validation-for="PageOrder" class="text-danger"></span>
                         </div>
 
-                        <hr />
+                        <hr class="my-4" />
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-                            <a asp-action="Index" class="btn btn-secondary btn-block">Cancel</a>
+                            <button type="submit" class="btn btn-primary py-2 fw-bold">@Localizer["Save"]</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary py-2">@Localizer["Cancel"]</a>
                         </div>
                     </div>
                 </div>

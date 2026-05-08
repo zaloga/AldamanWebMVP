@@ -1,26 +1,26 @@
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">Success</strong>
+        <strong class="d-block">@Localizer["Success"]</strong>
         @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Close"]"></button>
     </div>
 }
 
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">Error</strong>
+        <strong class="d-block">@Localizer["Error"]</strong>
         @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Close"]"></button>
     </div>
 }
 
 @if (TempData["InfoMessage"] != null)
 {
     <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">Information</strong>
+        <strong class="d-block">@Localizer["Information"]</strong>
         @TempData["InfoMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Close"]"></button>
     </div>
 }

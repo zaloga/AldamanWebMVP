@@ -22,14 +22,24 @@ public sealed class LocalizationRedirectMiddleware
     {
         string? path = context.Request.Path.Value;
 
-        // Skip root redirect - will handle below
+        // If we already matched a route (endpoint is not null), it means:
+        // 1. It's a localized route that already matched (so culture is already present)
+        // 2. It's an explicitly non-localized route (like /Admin/Media/UploadQuill)
+        // In both cases, we don't want to redirect.
+        if (context.GetEndpoint() != null)
+        {
+            await _next(context);
+            return;
+        }
+
+        // Handle root or empty path
         if (string.IsNullOrWhiteSpace(path) || path == "/")
         {
             RedirectToDefault(context, "/");
             return;
         }
 
-        // Check if the first segment is a supported culture
+        // Check if the first segment is a supported culture (fallback)
         string[] segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
         if (segments.Length > 0)
         {

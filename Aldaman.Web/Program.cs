@@ -97,10 +97,11 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        // Ensure culture is in URL - redirect if missing
-        app.UseMiddleware<LocalizationRedirectMiddleware>();
-
         app.UseRouting();
+
+        // Ensure culture is in URL - redirect if missing
+        // Moved after UseRouting so it can be route-aware
+        app.UseMiddleware<LocalizationRedirectMiddleware>();
 
         app.UseRequestLocalization();
 
@@ -113,6 +114,12 @@ public class Program
         string culturePattern = "{culture:regex(" + cultureRegex + ")}";
 
         // Admin and Areas
+        app.MapControllerRoute(
+            name: "admin_media_upload_quill",
+            pattern: "Admin/Media/UploadQuill",
+            defaults: new { area = "Admin", controller = "Media", action = "UploadQuill" })
+            .WithStaticAssets();
+
         app.MapControllerRoute(
             name: "areas_localized",
             pattern: $"{culturePattern}/{{area:exists}}/{{controller=Home}}/{{action=Index}}/{{id?}}")

@@ -10,14 +10,14 @@
 {
     <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center mt-4">
         <div class="text-muted small">
-            Showing <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> to 
-            <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> of 
-            <span class="fw-semibold">@Model.TotalCount</span> results
+            @Localizer["Showing"] <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> @Localizer["To"] 
+            <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> @Localizer["Of"] 
+            <span class="fw-semibold">@Model.TotalCount</span> @Localizer["Results"]
         </div>
         
         <ul class="pagination pagination-sm mb-0">
             <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
-                <a class="page-link" href="@GetPageUrl(Model.Page - 1)" tabindex="-1">Previous</a>
+                <a class="page-link" href="@GetPageUrl(Model.Page - 1)" tabindex="-1">@Localizer["Previous"]</a>
             </li>
             
             @for (int i = 1; i <= Model.TotalPages; i++)
@@ -35,7 +35,7 @@
             }
             
             <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
-                <a class="page-link" href="@GetPageUrl(Model.Page + 1)">Next</a>
+                <a class="page-link" href="@GetPageUrl(Model.Page + 1)">@Localizer["Next"]</a>
             </li>
         </ul>
     </nav>

@@ -232,62 +232,81 @@ public sealed class ContentPageService : IContentPageService
             throw new KeyNotFoundException($"Page with ID {id} not found.");
         }
 
+        // 1. Capture old state for media cleanup
+        var oldMediaPaths = page.Translations.ToDictionary(t => t.CultureCode, t => StringHelpers.ExtractMediaPaths(t.BodyHtml));
+        var currentTranslations = page.Translations.ToDictionary(t => t.CultureCode);
+        var mediaToDelete = new HashSet<string>();
+
+        // 2. Update core page properties
         page.PageKey = dto.PageKey;
         page.PlaceToShow = dto.PlaceToShow;
         page.PageOrder = dto.PageOrder;
 
+        // 3. Process translations
         foreach (var translationDto in dto.Translations)
         {
-            var existingTranslation = page.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
+            currentTranslations.TryGetValue(translationDto.CultureCode, out var existingTranslation);
 
             var title = translationDto.Title?.Trim() ?? string.Empty;
             var slug = translationDto.Slug?.Trim() ?? string.Empty;
+            var bodyHtml = translationDto.BodyHtml;
 
-            if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(slug))
+            // Determine if the translation is effectively empty
+            bool isEmpty = string.IsNullOrWhiteSpace(title) &&
+                           string.IsNullOrWhiteSpace(slug) &&
+                           string.IsNullOrWhiteSpace(bodyHtml);
+
+            if (isEmpty)
             {
                 if (existingTranslation != null)
                 {
-                    // TOTO delete translation? 
+                    // Mark media for deletion from this removed translation
+                    if (oldMediaPaths.TryGetValue(translationDto.CultureCode, out var paths))
+                    {
+                        foreach (var path in paths) mediaToDelete.Add(path);
+                    }
+
+                    Context.ContentPageTranslations.Remove(existingTranslation);
                 }
                 continue;
             }
 
+            // If it doesn't exist in DB, create it
             if (existingTranslation == null)
             {
                 existingTranslation = new ContentPageTranslationEntity
                 {
-                    CultureCode = translationDto.CultureCode
+                    CultureCode = translationDto.CultureCode,
+                    ContentPageId = page.Id
                 };
-                page.Translations.Add(existingTranslation);
+                Context.ContentPageTranslations.Add(existingTranslation);
+            }
+            else
+            {
+                // Calculate media diff for existing translation
+                if (oldMediaPaths.TryGetValue(translationDto.CultureCode, out var oldPaths))
+                {
+                    var newPaths = StringHelpers.ExtractMediaPaths(bodyHtml);
+                    foreach (var path in oldPaths.Except(newPaths))
+                    {
+                        mediaToDelete.Add(path);
+                    }
+                }
             }
 
             existingTranslation.Title = title;
-            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
-                ? slug
-                : title.ToLower().Replace(" ", "-");
-            existingTranslation.BodyHtml = translationDto.BodyHtml;
+            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug) ? slug : StringHelpers.ToSlug(title);
+            existingTranslation.BodyHtml = bodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
-            existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);
-        }
-
-        // Collect RTE media to delete
-        var mediaToDelete = new List<string>();
-        foreach (var translationDto in dto.Translations)
-        {
-            var existingTranslation = page.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
-            if (existingTranslation != null)
-            {
-                var oldPaths = StringHelpers.ExtractMediaPaths(existingTranslation.BodyHtml);
-                var newPaths = StringHelpers.ExtractMediaPaths(translationDto.BodyHtml);
-                mediaToDelete.AddRange(oldPaths.Except(newPaths));
-            }
+            existingTranslation.PlainText = StringHelpers.StripHtml(bodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);
         }
 
         await Context.SaveChangesAsync();
 
+        // 4. Cleanup orphaned media files
         if (mediaToDelete.Any())
         {
-            await MediaService.DeleteMediaAsync(mediaToDelete);
+            await MediaService.DeleteMediaAsync(mediaToDelete.ToList());
         }
     }
 

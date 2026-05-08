@@ -228,6 +228,7 @@ public sealed class BlogService : IBlogService
         var post = await Context.BlogPosts
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (post == null)
@@ -235,7 +236,22 @@ public sealed class BlogService : IBlogService
             throw new KeyNotFoundException($"Blog post with ID {id} not found.");
         }
 
-        post.CoverMediaAssetId = dto.CoverMediaAssetId;
+        // 1. Capture old state for media cleanup
+        var oldMediaPaths = post.Translations.ToDictionary(t => t.CultureCode, t => StringHelpers.ExtractMediaPaths(t.BodyHtml));
+        var currentTranslations = post.Translations.ToDictionary(t => t.CultureCode);
+        var mediaToDelete = new HashSet<string>();
+
+        // 2. Update core post properties
+        // Handle cover image removal or update
+        if (dto.RemoveCoverImage)
+        {
+            post.CoverMediaAssetId = null;
+        }
+        else if (dto.CoverMediaAssetId.HasValue)
+        {
+            post.CoverMediaAssetId = dto.CoverMediaAssetId;
+        }
+
         post.IsPublished = dto.IsPublished;
         if (dto.IsPublished && !post.PublishedAtUtc.HasValue)
         {
@@ -246,59 +262,81 @@ public sealed class BlogService : IBlogService
             post.PublishedAtUtc = null;
         }
 
+        // 3. Process translations
         foreach (var translationDto in dto.Translations)
         {
-            var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
+            currentTranslations.TryGetValue(translationDto.CultureCode, out var existingTranslation);
 
             var title = translationDto.Title?.Trim() ?? string.Empty;
             var slug = translationDto.Slug?.Trim() ?? string.Empty;
+            var perex = translationDto.Perex?.Trim() ?? string.Empty;
+            var bodyHtml = translationDto.BodyHtml;
 
-            if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(slug))
+            // Determine if the translation is effectively empty
+            bool isEmpty = string.IsNullOrWhiteSpace(title) &&
+                           string.IsNullOrWhiteSpace(slug) &&
+                           string.IsNullOrWhiteSpace(perex) &&
+                           string.IsNullOrWhiteSpace(bodyHtml);
+
+            if (isEmpty)
             {
                 if (existingTranslation != null)
                 {
-                    // TOTO delete translation
+                    // Mark media for deletion from this removed translation
+                    if (oldMediaPaths.TryGetValue(translationDto.CultureCode, out var paths))
+                    {
+                        foreach (var path in paths) mediaToDelete.Add(path);
+                    }
+
+                    Context.BlogPostTranslations.Remove(existingTranslation);
                 }
                 continue;
             }
 
+            // If it doesn't exist in DB, create it
             if (existingTranslation == null)
             {
                 existingTranslation = new BlogPostTranslationEntity
                 {
-                    CultureCode = translationDto.CultureCode
+                    CultureCode = translationDto.CultureCode,
+                    BlogPostId = post.Id
                 };
-                post.Translations.Add(existingTranslation);
+                Context.BlogPostTranslations.Add(existingTranslation);
+            }
+            else
+            {
+                // Calculate media diff for existing translation
+                if (oldMediaPaths.TryGetValue(translationDto.CultureCode, out var oldPaths))
+                {
+                    var newPaths = StringHelpers.ExtractMediaPaths(bodyHtml);
+                    foreach (var path in oldPaths.Except(newPaths))
+                    {
+                        mediaToDelete.Add(path);
+                    }
+                }
             }
 
+            // Update fields
             existingTranslation.Title = title;
-            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug)
-                ? slug
-                : title.ToLower().Replace(" ", "-");
+            existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug) ? slug : StringHelpers.ToSlug(title);
             existingTranslation.Perex = translationDto.Perex;
-            existingTranslation.BodyHtml = translationDto.BodyHtml;
+            existingTranslation.BodyHtml = bodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
-            existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength);
+            existingTranslation.PlainText = StringHelpers.StripHtml(bodyHtml, BlogPostTranslationEntity.PlainTextMaxLength);
         }
 
-        // Collect RTE media to delete
-        var mediaToDelete = new List<string>();
-        foreach (var translationDto in dto.Translations)
+        // Handle cover image deletion if requested
+        if (dto.RemoveCoverImage && post.CoverMediaAsset != null)
         {
-            var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
-            if (existingTranslation != null)
-            {
-                var oldPaths = StringHelpers.ExtractMediaPaths(existingTranslation.BodyHtml);
-                var newPaths = StringHelpers.ExtractMediaPaths(translationDto.BodyHtml);
-                mediaToDelete.AddRange(oldPaths.Except(newPaths));
-            }
+            mediaToDelete.Add(post.CoverMediaAsset.RelativePath);
         }
 
         await Context.SaveChangesAsync();
 
+        // 4. Cleanup orphaned media files
         if (mediaToDelete.Any())
         {
-            await MediaService.DeleteMediaAsync(mediaToDelete);
+            await MediaService.DeleteMediaAsync(mediaToDelete.ToList());
         }
     }
 

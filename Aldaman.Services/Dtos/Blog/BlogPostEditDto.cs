@@ -13,6 +13,7 @@ public class BlogPostEditDto
     public string? CoverImageRelativePath { get; set; }
     public bool IsPublished { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
+    public bool RemoveCoverImage { get; set; }
 
     // Support for multiple translations in admin
     public List<BlogPostTranslationDto> Translations { get; set; } = new();

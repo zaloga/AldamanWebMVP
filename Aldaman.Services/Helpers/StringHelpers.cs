@@ -52,4 +52,39 @@ public static class StringHelpers
         var matches = Regex.Matches(html, @"[""'](/uploads/[^""']+)[""']", RegexOptions.IgnoreCase);
         return matches.Select(m => m.Groups[1].Value).Distinct();
     }
+
+    /// <summary>
+    /// Converts a string into a URL-friendly slug.
+    /// </summary>
+    public static string ToSlug(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+
+        // Convert to lowercase
+        text = text.ToLowerInvariant();
+
+        // Remove accents
+        var normalizedString = text.Normalize(System.Text.NormalizationForm.FormD);
+        var stringBuilder = new System.Text.StringBuilder();
+
+        foreach (var c in normalizedString)
+        {
+            var unicodeCategory = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+            if (unicodeCategory != System.Globalization.UnicodeCategory.NonSpacingMark)
+            {
+                stringBuilder.Append(c);
+            }
+        }
+
+        text = stringBuilder.ToString().Normalize(System.Text.NormalizationForm.FormC);
+
+        // Replace invalid characters with spaces
+        text = Regex.Replace(text, @"[^a-z0-9\s-]", "");
+
+        // Replace multiple spaces/hyphens with a single hyphen
+        text = Regex.Replace(text, @"\s+", "-").Trim('-');
+        text = Regex.Replace(text, @"-+", "-");
+
+        return text;
+    }
 }

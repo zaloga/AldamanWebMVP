@@ -196,7 +196,7 @@
     <value>Error</value>
   </data>
   <data name="ErrorOccurred" xml:space="preserve">
-    <value>An error occurred while processing your request.</value>
+    <value>An error occurred.</value>
   </data>
   <data name="RequestId" xml:space="preserve">
     <value>Request ID:</value>
@@ -227,5 +227,425 @@
   </data>
   <data name="MediaLibrary" xml:space="preserve">
     <value>Media Library</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to list</value>
+  </data>
+  <data name="BackToSite" xml:space="preserve">
+    <value>Back to site</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Showing" xml:space="preserve">
+    <value>Showing</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>results</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="AdminUser" xml:space="preserve">
+    <value>Admin User</value>
+  </data>
+  <data name="CreateBlogPost" xml:space="preserve">
+    <value>Create Blog Post</value>
+  </data>
+  <data name="UpdateBlogPost" xml:space="preserve">
+    <value>Update Blog Post</value>
+  </data>
+  <data name="BlogPostDetails" xml:space="preserve">
+    <value>Blog Post Details</value>
+  </data>
+  <data name="PostSettings" xml:space="preserve">
+    <value>Post Settings</value>
+  </data>
+  <data name="IsPublished" xml:space="preserve">
+    <value>Is Published</value>
+  </data>
+  <data name="PublicationDate" xml:space="preserve">
+    <value>Publication Date</value>
+  </data>
+  <data name="CoverImage" xml:space="preserve">
+    <value>Cover Image</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="CreatePage" xml:space="preserve">
+    <value>Create Page</value>
+  </data>
+  <data name="UpdatePage" xml:space="preserve">
+    <value>Update Page</value>
+  </data>
+  <data name="PageDetails" xml:space="preserve">
+    <value>Page Details</value>
+  </data>
+  <data name="PageKey" xml:space="preserve">
+    <value>Page Key</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="SystemPages" xml:space="preserve">
+    <value>System Pages</value>
+  </data>
+  <data name="ContactMessageDetails" xml:space="preserve">
+    <value>Message Details</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="MarkHandled" xml:space="preserve">
+    <value>Mark as handled</value>
+  </data>
+  <data name="Handle" xml:space="preserve">
+    <value>Handle</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Handled" xml:space="preserve">
+    <value>Handled</value>
+  </data>
+  <data name="UploadMedia" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="EditMedia" xml:space="preserve">
+    <value>Edit Metadata</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+  <data name="Uploaded" xml:space="preserve">
+    <value>Uploaded</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="FileInfo" xml:space="preserve">
+    <value>File Info</value>
+  </data>
+  <data name="OpenOriginal" xml:space="preserve">
+    <value>Open Original</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="DeletePermanently" xml:space="preserve">
+    <value>Delete permanently</value>
+  </data>
+  <data name="NoItemsFound" xml:space="preserve">
+    <value>No items found.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="YesDeleteIt" xml:space="preserve">
+    <value>Yes, delete it!</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted successfully!</value>
+  </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>Restored successfully!</value>
+  </data>
+  <data name="TechnicalDetails" xml:space="preserve">
+    <value>Technical Details</value>
+  </data>
+  <data name="ClientIp" xml:space="preserve">
+    <value>Client IP Address</value>
+  </data>
+  <data name="SentAtUtc" xml:space="preserve">
+    <value>Sent at (UTC)</value>
+  </data>
+  <data name="UserAgent" xml:space="preserve">
+    <value>User Agent</value>
+  </data>
+  <data name="FailureReason" xml:space="preserve">
+    <value>Failure Reason</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="SubmittedOn" xml:space="preserve">
+    <value>Submitted on</value>
+  </data>
+  <data name="SenderContact" xml:space="preserve">
+    <value>Sender Contact</value>
+  </data>
+  <data name="DeletedMessage" xml:space="preserve">
+    <value>Deleted Message</value>
+  </data>
+  <data name="MessageDeletedOn" xml:space="preserve">
+    <value>This message was deleted on</value>
+  </data>
+  <data name="ReplyViaEmail" xml:space="preserve">
+    <value>Reply via Email</value>
+  </data>
+  <data name="RestoreMessage" xml:space="preserve">
+    <value>Restore Message</value>
+  </data>
+  <data name="DeleteMessage" xml:space="preserve">
+    <value>Delete Message</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Plain Text (Search Content)</value>
+  </data>
+  <data name="NoHtmlContent" xml:space="preserve">
+    <value>No HTML content available for this language.</value>
+  </data>
+  <data name="NoPlainText" xml:space="preserve">
+    <value>No plain text generated.</value>
+  </data>
+  <data name="CoverImageId" xml:space="preserve">
+    <value>Cover Image ID</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NotRecorded" xml:space="preserve">
+    <value>Not recorded</value>
+  </data>
+  <data name="ClickToUpload" xml:space="preserve">
+    <value>Click to upload or drag and drop</value>
+  </data>
+  <data name="MaxFileSizeInfo" xml:space="preserve">
+    <value>Files up to 1MB (images, videos, documents)</value>
+  </data>
+  <data name="UploadToLibrary" xml:space="preserve">
+    <value>Upload to Library</value>
+  </data>
+  <data name="AssetPreview" xml:space="preserve">
+    <value>Asset Preview</value>
+  </data>
+  <data name="UpdateMediaInfo" xml:space="preserve">
+    <value>Update the alternative text and title for this asset.</value>
+  </data>
+  <data name="AltTextInfo" xml:space="preserve">
+    <value>Alt text for accessibility...</value>
+  </data>
+  <data name="TitleInfo" xml:space="preserve">
+    <value>Descriptive title...</value>
+  </data>
+  <data name="UploadMediaInfo" xml:space="preserve">
+    <value>Upload images or videos to your media library.</value>
+  </data>
+  <data name="PageKeyInfo" xml:space="preserve">
+    <value>Unique internal identifier (e.g. 'ServicesPage').</value>
+  </data>
+  <data name="SlugInfo" xml:space="preserve">
+    <value>Leave empty to generate from title.</value>
+  </data>
+  <data name="ConfirmDeleteText" xml:space="preserve">
+    <value>Are you sure you want to delete "{0}"? This item will be marked for permanent removal.</value>
+  </data>
+  <data name="ConfirmDeletePermanentlyText" xml:space="preserve">
+    <value>Are you sure you want to PERMANENTLY delete "{0}"? This action cannot be undone!</value>
+  </data>
+  <data name="DeletePermanentlyButton" xml:space="preserve">
+    <value>Yes, delete forever!</value>
+  </data>
+  <data name="ConfirmDeleteMessageText" xml:space="preserve">
+    <value>Are you sure you want to delete the message from "{0}"?</value>
+  </data>
+  <data name="ConfirmDeletePermanentlyMessageText" xml:space="preserve">
+    <value>Are you sure you want to PERMANENTLY delete the message from "{0}"? This action cannot be undone!</value>
+  </data>
+  <data name="PublishDateInfo" xml:space="preserve">
+    <value>If published, this date will be shown. Leave empty for "Now".</value>
+  </data>
+  <data name="CoverImageInfo" xml:space="preserve">
+    <value>Upload a new image to replace the current one.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="PleaseCorrectErrors" xml:space="preserve">
+    <value>Please correct the following errors:</value>
+  </data>
+  <data name="TotalPages" xml:space="preserve">
+    <value>Total Pages</value>
+  </data>
+  <data name="PublishedPosts" xml:space="preserve">
+    <value>Published Articles</value>
+  </data>
+  <data name="PendingMessages" xml:space="preserve">
+    <value>Pending Messages</value>
+  </data>
+  <data name="MediaAssetsSize" xml:space="preserve">
+    <value>Media Assets Size</value>
+  </data>
+  <data name="RecentMessages" xml:space="preserve">
+    <value>Recent Messages</value>
+  </data>
+  <data name="NoSubject" xml:space="preserve">
+    <value>No Subject</value>
+  </data>
+  <data name="NoRecentMessages" xml:space="preserve">
+    <value>No recent messages.</value>
+  </data>
+  <data name="SortByDate" xml:space="preserve">
+    <value>Sort by Date</value>
+  </data>
+  <data name="SortByStatus" xml:space="preserve">
+    <value>Sort by Status</value>
+  </data>
+  <data name="Descending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="Ascending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="DeletedMessages" xml:space="preserve">
+    <value>Deleted Messages</value>
+  </data>
+  <data name="DeletedBadge" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="SortByCreatedDate" xml:space="preserve">
+    <value>Sort by Created Date</value>
+  </data>
+  <data name="SortByOrder" xml:space="preserve">
+    <value>Sort by Order</value>
+  </data>
+  <data name="SortByKey" xml:space="preserve">
+    <value>Sort by Key</value>
+  </data>
+  <data name="DeletedPages" xml:space="preserve">
+    <value>Deleted Pages</value>
+  </data>
+  <data name="SortByUploadDate" xml:space="preserve">
+    <value>Sort by Upload Date</value>
+  </data>
+  <data name="SortByFilename" xml:space="preserve">
+    <value>Sort by Filename</value>
+  </data>
+  <data name="SortBySize" xml:space="preserve">
+    <value>Sort by Size</value>
+  </data>
+  <data name="DeletedAssets" xml:space="preserve">
+    <value>Deleted Assets</value>
+  </data>
+  <data name="SortByTitle" xml:space="preserve">
+    <value>Sort by Title</value>
+  </data>
+  <data name="SortByPublishDate" xml:space="preserve">
+    <value>Sort by Publish Date</value>
+  </data>
+  <data name="DeletedPosts" xml:space="preserve">
+    <value>Deleted Posts</value>
+  </data>
+  <data name="PublishedOnDate" xml:space="preserve">
+    <value>Published on {0}</value>
+  </data>
+  <data name="DraftCreatedOn" xml:space="preserve">
+    <value>Draft (Created {0})</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Translations" xml:space="preserve">
+    <value>Translations</value>
+  </data>
+  <data name="NotProvided" xml:space="preserve">
+    <value>Not provided</value>
+  </data>
+  <data name="EditPage" xml:space="preserve">
+    <value>Edit Page</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="TopNavigation" xml:space="preserve">
+    <value>Top Navigation</value>
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value>Footer</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="ChooseFile" xml:space="preserve">
+    <value>Choose file</value>
+  </data>
+  <data name="NoFileChosen" xml:space="preserve">
+    <value>No file chosen</value>
+  </data>
+  <data name="RemoveImage" xml:space="preserve">
+    <value>Remove image</value>
   </data>
 </root>

@@ -1,30 +1,30 @@
 @using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContactMessage.ContactMessageDto
 @{
-    ViewData["Title"] = "Message Details";
+    ViewData["Title"] = $"{Localizer["ContactMessageDetails"]}";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item"><a asp-action="Index">Contact Messages</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Details</li>
+                <li class="breadcrumb-item"><a asp-action="Index">@Localizer["ContactMessages"]</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Localizer["Details"]</li>
             </ol>
         </nav>
-        <h2 class="h4 mb-0">Message from @Model.EmailOrPhone</h2>
+        <h2 class="h4 mb-0">@Localizer["Sender"]: @Model.EmailOrPhone</h2>
     </div>
     <div class="d-flex gap-2">
         <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Back to List
+            @Localizer["BackToList"]
         </a>
         @if (!Model.IsDeleted && Model.State == ContactMessageState.Pending)
         {
             <form asp-action="MarkHandled" asp-route-id="@Model.Id" method="post">
                 <button type="submit" class="btn btn-success d-inline-flex align-items-center gap-2">
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    Mark as Handled
+                    @Localizer["MarkHandled"]
                 </button>
             </form>
         }
@@ -35,37 +35,37 @@
     <div class="col-lg-8">
         <div class="admin-card bg-white shadow-sm border p-4 mb-4">
             <div class="mb-4">
-                <h5 class="fw-bold mb-3">Subject</h5>
-                <div class="p-3 bg-light rounded border">
+                <h5 class="fw-bold mb-3 text-primary">@Localizer["Subject"]</h5>
+                <div class="p-3 bg-light rounded border fw-bold text-dark">
                     @Model.Subject
                 </div>
             </div>
 
             <div>
-                <h5 class="fw-bold mb-3">Message</h5>
-                <div class="p-4 bg-light rounded border white-space-pre-wrap">@Model.Message</div>
+                <h5 class="fw-bold mb-3 text-primary">@Localizer["Message"]</h5>
+                <div class="p-4 bg-light rounded border white-space-pre-wrap text-dark" style="line-height: 1.6;">@Model.Message</div>
             </div>
         </div>
 
         <div class="admin-card bg-white shadow-sm border p-4">
-            <h5 class="fw-bold mb-4">Technical Details</h5>
+            <h5 class="fw-bold mb-4 text-primary">@Localizer["TechnicalDetails"]</h5>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">Client IP</label>
-                    <div class="font-monospace">@(Model.ClientIp ?? "N/A")</div>
+                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["ClientIp"]</label>
+                    <div class="font-monospace text-dark">@(Model.ClientIp ?? "---")</div>
                 </div>
                 <div class="col-md-6">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">Sent At (UTC)</label>
-                    <div>@(Model.SentAtUtc?.ToString("MMM dd, yyyy HH:mm:ss") ?? "Not recorded")</div>
+                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SentAtUtc"]</label>
+                    <div class="text-dark">@(Model.SentAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? Localizer["NotRecorded"].Value)</div>
                 </div>
                 <div class="col-12">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">User Agent</label>
-                    <div class="font-monospace small p-2 bg-light border rounded">@(Model.UserAgent ?? "N/A")</div>
+                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["UserAgent"]</label>
+                    <div class="font-monospace small p-2 bg-light border rounded text-muted">@(Model.UserAgent ?? "---")</div>
                 </div>
                 @if (!string.IsNullOrEmpty(Model.FailureReason))
                 {
                     <div class="col-12">
-                        <label class="small text-danger text-uppercase fw-bold mb-1 d-block">Failure Reason</label>
+                        <label class="small text-danger text-uppercase fw-bold mb-1 d-block">@Localizer["FailureReason"]</label>
                         <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small">
                             @Model.FailureReason
                         </div>
@@ -77,73 +77,71 @@
 
     <div class="col-lg-4">
         <div class="admin-card bg-white shadow-sm border p-4 mb-4">
-            <h5 class="fw-bold mb-4">Information</h5>
+            <h5 class="fw-bold mb-4 text-primary">@Localizer["Status"]</h5>
             
             <div class="mb-4">
-                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">Status</label>
                 @switch (Model.State)
                 {
                     case ContactMessageState.Pending:
-                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">Pending</span>
+                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">@Localizer["Pending"]</span>
                         break;
                     case ContactMessageState.Sent:
-                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">Handled</span>
+                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">@Localizer["Handled"]</span>
                         break;
                     case ContactMessageState.Failed:
-                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">Failed</span>
+                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">@Localizer["Failed"]</span>
                         break;
                 }
             </div>
 
             <div class="mb-4">
-                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">Submitted On</label>
-                <div class="fw-medium">@Model.CreatedAtUtc.ToString("MMM dd, yyyy")</div>
-                <div class="text-muted small">@Model.CreatedAtUtc.ToString("HH:mm:ss") UTC</div>
+                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Date"]</label>
+                <div class="fw-medium text-dark">@Model.CreatedAtUtc.ToString("f")</div>
             </div>
 
             <div class="mb-4">
-                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">Sender Contact</label>
-                <div class="fw-medium">@Model.EmailOrPhone</div>
+                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SenderContact"]</label>
+                <div class="fw-bold text-primary">@Model.EmailOrPhone</div>
             </div>
 
             @if (Model.IsDeleted)
             {
-                <div class="p-3 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded mb-4">
+                <div class="p-3 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded mb-4 shadow-sm">
                     <div class="d-flex align-items-center gap-2 mb-1">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        <span class="fw-bold">Deleted Message</span>
+                        <span class="fw-bold">@Localizer["DeletedMessage"]</span>
                     </div>
                     <div class="small">
-                        This message was deleted on @(Model.DeletedAtUtc?.ToString("MMM dd, yyyy") ?? "unknown date").
+                        @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToString("f") ?? "---").
                     </div>
                 </div>
             }
         </div>
 
         <div class="admin-card bg-white shadow-sm border p-4">
-            <h5 class="fw-bold mb-4">Actions</h5>
+            <h5 class="fw-bold mb-4 text-primary">@Localizer["Actions"]</h5>
             <div class="d-grid gap-2">
-                <a href="mailto:@Model.EmailOrPhone" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2">
+                <a href="mailto:@Model.EmailOrPhone" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2 shadow-sm">
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Reply via Email
+                    @Localizer["ReplyViaEmail"]
                 </a>
                 
                 @if (Model.IsDeleted)
                 {
-                    <button class="btn btn-outline-success d-inline-flex align-items-center justify-content-center gap-2" onclick="restoreItem('@Model.Id', '@Model.EmailOrPhone')">
+                    <button class="btn btn-outline-success d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" onclick="restoreItem('@Model.Id', '@Model.EmailOrPhone')">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        Restore Message
+                        @Localizer["RestoreMessage"]
                     </button>
-                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" onclick="hardDeleteItem('@Model.Id', '@Model.EmailOrPhone')">
+                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" onclick="hardDeleteItem('@Model.Id', '@Model.EmailOrPhone')">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        Delete Permanently
+                        @Localizer["DeletePermanently"]
                     </button>
                 }
                 else
                 {
-                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" onclick="deleteItem('@Model.Id', '@Model.EmailOrPhone')">
+                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" onclick="deleteItem('@Model.Id', '@Model.EmailOrPhone')">
                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        Delete Message
+                        @Localizer["DeleteMessage"]
                     </button>
                 }
             </div>
@@ -162,13 +160,13 @@
     <script>
         function deleteItem(id, title) {
             Swal.fire({
-                title: 'Delete message?',
-                text: `Are you sure you want to delete the message from "${title}"?`,
+                title: '@Localizer["AreYouSure"]',
+                text: '@Localizer["ConfirmDeleteMessageText"]'.replace('{0}', title),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: '@Localizer["YesDeleteIt"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -180,15 +178,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Deleted!', response.message, 'success').then(() => {
+                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
                                     window.location.href = '@Url.Action("Index")';
                                 });
                             } else {
-                                Swal.fire('Error!', response.message, 'error');
+                                Swal.fire('@Localizer["Error"]', response.message, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                         }
                     });
                 }
@@ -205,28 +203,28 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        Swal.fire('Restored!', response.message, 'success').then(() => {
+                        Swal.fire('@Localizer["Success"]', response.message, 'success').then(() => {
                             location.reload();
                         });
                     } else {
-                        Swal.fire('Error!', response.message, 'error');
+                        Swal.fire('@Localizer["Error"]', response.message, 'error');
                     }
                 },
                 error: function() {
-                    Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                 }
             });
         }
 
         function hardDeleteItem(id, title) {
             Swal.fire({
-                title: 'Permanently delete message?',
-                text: `Are you sure you want to PERMANENTLY delete the message from "${title}"? This action cannot be undone!`,
+                title: '@Localizer["AreYouSure"]',
+                text: '@Localizer["ConfirmDeletePermanentlyMessageText"]'.replace('{0}', title),
                 icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, delete forever!'
+                confirmButtonText: '@Localizer["DeletePermanentlyButton"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -238,15 +236,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Deleted!', response.message, 'success').then(() => {
+                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
                                     window.location.href = '@Url.Action("Index")';
                                 });
                             } else {
-                                Swal.fire('Error!', response.message, 'error');
+                                Swal.fire('@Localizer["Error"]', response.message, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                         }
                     });
                 }
