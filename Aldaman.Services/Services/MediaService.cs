@@ -209,6 +209,18 @@ public sealed class MediaService : IMediaService
         }
     }
 
+    public async Task DeleteMediaAsync(IEnumerable<string> relativePaths)
+    {
+        foreach (var path in relativePaths.Distinct())
+        {
+            var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(a => a.RelativePath == path);
+            if (asset != null)
+            {
+                await HardDeleteAssetAsync(asset.Id);
+            }
+        }
+    }
+
     private static MediaAssetDto Map(MediaAssetEntity p)
     {
         return new MediaAssetDto

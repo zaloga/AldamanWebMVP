@@ -35,4 +35,21 @@ public static class StringHelpers
 
         return plainText;
     }
+
+    /// <summary>
+    /// Extracts all media paths (starting with /uploads/) from HTML content.
+    /// </summary>
+    /// <param name="html">The HTML content to parse.</param>
+    /// <returns>A collection of unique relative paths.</returns>
+    public static IEnumerable<string> ExtractMediaPaths(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html))
+        {
+            return Enumerable.Empty<string>();
+        }
+
+        // Match any string starting with /uploads/ inside quotes (common for src and href)
+        var matches = Regex.Matches(html, @"[""'](/uploads/[^""']+)[""']", RegexOptions.IgnoreCase);
+        return matches.Select(m => m.Groups[1].Value).Distinct();
+    }
 }

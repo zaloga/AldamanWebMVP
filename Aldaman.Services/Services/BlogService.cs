@@ -281,7 +281,25 @@ public sealed class BlogService : IBlogService
             existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength);
         }
 
+        // Collect RTE media to delete
+        var mediaToDelete = new List<string>();
+        foreach (var translationDto in dto.Translations)
+        {
+            var existingTranslation = post.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
+            if (existingTranslation != null)
+            {
+                var oldPaths = StringHelpers.ExtractMediaPaths(existingTranslation.BodyHtml);
+                var newPaths = StringHelpers.ExtractMediaPaths(translationDto.BodyHtml);
+                mediaToDelete.AddRange(oldPaths.Except(newPaths));
+            }
+        }
+
         await Context.SaveChangesAsync();
+
+        if (mediaToDelete.Any())
+        {
+            await MediaService.DeleteMediaAsync(mediaToDelete);
+        }
     }
 
 
@@ -380,7 +398,15 @@ public sealed class BlogService : IBlogService
                 }
             }
 
-            // TODO remove images used by RTE
+            // Remove images used by RTE
+            var rteMediaPaths = post.Translations
+                .SelectMany(t => StringHelpers.ExtractMediaPaths(t.BodyHtml))
+                .ToList();
+
+            if (rteMediaPaths.Any())
+            {
+                await MediaService.DeleteMediaAsync(rteMediaPaths);
+            }
         }
     }
 }

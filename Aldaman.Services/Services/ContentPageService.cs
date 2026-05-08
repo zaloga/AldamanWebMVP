@@ -15,11 +15,16 @@ public sealed class ContentPageService : IContentPageService
 {
     private AppDbContext Context { get; }
     private LocalizationSettings Localization { get; }
+    private IMediaService MediaService { get; }
 
-    public ContentPageService(AppDbContext context, IOptions<LocalizationSettings> localizationOptions)
+    public ContentPageService(
+        AppDbContext context,
+        IOptions<LocalizationSettings> localizationOptions,
+        IMediaService mediaService)
     {
         Context = context;
         Localization = localizationOptions.Value;
+        MediaService = mediaService;
     }
 
     public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query)
@@ -265,7 +270,25 @@ public sealed class ContentPageService : IContentPageService
             existingTranslation.PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);
         }
 
+        // Collect RTE media to delete
+        var mediaToDelete = new List<string>();
+        foreach (var translationDto in dto.Translations)
+        {
+            var existingTranslation = page.Translations.FirstOrDefault(t => t.CultureCode == translationDto.CultureCode);
+            if (existingTranslation != null)
+            {
+                var oldPaths = StringHelpers.ExtractMediaPaths(existingTranslation.BodyHtml);
+                var newPaths = StringHelpers.ExtractMediaPaths(translationDto.BodyHtml);
+                mediaToDelete.AddRange(oldPaths.Except(newPaths));
+            }
+        }
+
         await Context.SaveChangesAsync();
+
+        if (mediaToDelete.Any())
+        {
+            await MediaService.DeleteMediaAsync(mediaToDelete);
+        }
     }
 
     public async Task SoftDeleteContentPageAsync(Guid id)
@@ -337,10 +360,19 @@ public sealed class ContentPageService : IContentPageService
                 Context.RemoveRange(page.Translations);
             }
 
+            // Delete page
             Context.ContentPages.Remove(page);
             await Context.SaveChangesAsync();
-        }
 
-        // TODO remove images used by RTE
+            // Remove images used by RTE
+            var rteMediaPaths = page.Translations
+                .SelectMany(t => StringHelpers.ExtractMediaPaths(t.BodyHtml))
+                .ToList();
+
+            if (rteMediaPaths.Any())
+            {
+                await MediaService.DeleteMediaAsync(rteMediaPaths);
+            }
+        }
     }
 }

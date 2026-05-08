@@ -47,4 +47,9 @@ public interface IMediaService
     /// Permanently deletes a media asset.
     /// </summary>
     Task HardDeleteAssetAsync(Guid id);
+    
+    /// <summary>
+    /// Permanently deletes multiple media assets by their relative paths.
+    /// </summary>
+    Task DeleteMediaAsync(IEnumerable<string> relativePaths);
 }
