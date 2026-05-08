@@ -1,7 +1,7 @@
 @using Aldaman.Services.Dtos.Media
 @model PagedResultDto<MediaAssetDto>
 @{
-    ViewData["Title"] = "Media Assets";
+    ViewData["Title"] = Localizer["MediaLibrary"];
     var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
     var deletedItems = ViewBag.DeletedItems as PagedResultDto<MediaAssetDto>;
     var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
@@ -9,7 +9,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="h4 mb-0">Media Library</h2>
+        <h2 class="h4 mb-0">@Localizer["MediaLibrary"]</h2>
     </div>
     <a asp-action="Upload" class="btn btn-primary d-inline-flex align-items-center gap-2">
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>

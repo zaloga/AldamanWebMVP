@@ -1,7 +1,7 @@
 @using Aldaman.Services.Dtos.Blog
 @model PagedResultDto<BlogPostListItemDto>
 @{
-    ViewData["Title"] = "Blog Posts";
+    ViewData["Title"] = Localizer["BlogPosts"];
     var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
     var deletedItems = ViewBag.DeletedItems as PagedResultDto<BlogPostListItemDto>;
     var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
@@ -9,7 +9,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="h4 mb-0">Blog Posts</h2>
+        <h2 class="h4 mb-0">@Localizer["BlogPosts"]</h2>
     </div>
     <a asp-action="Create" class="btn btn-primary d-inline-flex align-items-center gap-2">
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>

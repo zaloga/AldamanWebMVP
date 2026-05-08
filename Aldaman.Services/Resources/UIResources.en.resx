@@ -213,4 +213,19 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="BlogPosts" xml:space="preserve">
+    <value>Blog Posts</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="ContactMessages" xml:space="preserve">
+    <value>Contact Messages</value>
+  </data>
+  <data name="MediaLibrary" xml:space="preserve">
+    <value>Media Library</value>
+  </data>
 </root>

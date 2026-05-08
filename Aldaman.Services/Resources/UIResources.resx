@@ -213,4 +213,19 @@
   <data name="Login" xml:space="preserve">
     <value>Přihlásit</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Administrační panel</value>
+  </data>
+  <data name="BlogPosts" xml:space="preserve">
+    <value>Příspěvky</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Stránky</value>
+  </data>
+  <data name="ContactMessages" xml:space="preserve">
+    <value>Kontaktní zprávy</value>
+  </data>
+  <data name="MediaLibrary" xml:space="preserve">
+    <value>Knihovna médií</value>
+  </data>
 </root>
