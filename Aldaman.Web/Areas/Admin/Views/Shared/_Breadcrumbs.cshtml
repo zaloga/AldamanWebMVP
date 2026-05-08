@@ -21,7 +21,7 @@
 <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb admin-breadcrumb p-2 bg-light rounded border">
         <li class="breadcrumb-item">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-decoration-none d-inline-flex align-items-center">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-inline-flex align-items-center">
                 <svg class="me-1" style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                 @Localizer["Dashboard"]
             </a>
@@ -29,7 +29,7 @@
         @if (!isHome && !isIndex)
         {
             <li class="breadcrumb-item">
-                <a asp-action="Index" asp-controller="@controller" class="text-decoration-none">
+                <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
                     @listTitle
                 </a>
             </li>
