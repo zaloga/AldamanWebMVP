@@ -44,6 +44,11 @@ public interface IContactService
     Task<PagedResultDto<ContactMessageDto>> GetPagedDeletedMessagesAsync(PaginationQuery query);
 
     /// <summary>
+    /// Gets a contact message by its ID.
+    /// </summary>
+    Task<ContactMessageDto?> GetMessageByIdAsync(Guid id);
+
+    /// <summary>
     /// Gets the most recent contact messages.
     /// </summary>
     Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5);

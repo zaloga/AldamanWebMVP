@@ -57,7 +57,9 @@ public sealed class ContactService : IContactService
                 Message = p.Message,
                 CreatedAtUtc = p.CreatedAtUtc,
                 SentAtUtc = p.SentAtUtc,
-                State = p.State
+                State = p.State,
+                IsDeleted = p.IsDeleted,
+                DeletedAtUtc = p.DeletedAtUtc
             })
             .ToListAsync();
 
@@ -187,6 +189,29 @@ public sealed class ContactService : IContactService
             Page = query.Page,
             PageSize = query.PageSize
         };
+    }
+
+    public async Task<ContactMessageDto?> GetMessageByIdAsync(Guid id)
+    {
+        return await Context.ContactMessages
+            .IgnoreQueryFilters()
+            .Where(p => p.Id == id)
+            .Select(p => new ContactMessageDto
+            {
+                Id = p.Id,
+                EmailOrPhone = p.EmailOrPhone,
+                Subject = p.Subject,
+                Message = p.Message,
+                CreatedAtUtc = p.CreatedAtUtc,
+                SentAtUtc = p.SentAtUtc,
+                State = p.State,
+                FailureReason = p.FailureReason,
+                ClientIp = p.ClientIp,
+                UserAgent = p.UserAgent,
+                IsDeleted = p.IsDeleted,
+                DeletedAtUtc = p.DeletedAtUtc
+            })
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5)

@@ -27,6 +27,25 @@ public class ContactMessagesController : BaseAdminController
         return View(result);
     }
 
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var message = await ContactService.GetMessageByIdAsync(id);
+        if (message == null)
+        {
+            return NotFound();
+        }
+
+        return View(message);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MarkHandled(Guid id)
+    {
+        await ContactService.MarkAsHandledAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)

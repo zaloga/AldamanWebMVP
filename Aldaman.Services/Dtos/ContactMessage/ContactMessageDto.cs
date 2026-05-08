@@ -14,4 +14,9 @@ public class ContactMessageDto
     public DateTime CreatedAtUtc { get; set; }
     public DateTime? SentAtUtc { get; set; }
     public ContactMessageState State { get; set; }
+    public string? FailureReason { get; set; }
+    public string? ClientIp { get; set; }
+    public string? UserAgent { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
 }
