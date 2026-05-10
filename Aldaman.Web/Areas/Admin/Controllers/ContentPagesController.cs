@@ -17,8 +17,9 @@ public class ContentPagesController : BaseAdminController
         [FromQuery] PaginationQuery query, 
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var result = await ContentPageService.GetPagedContentPagesAsync(query);
-        var deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery);
+        var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var result = await ContentPageService.GetPagedContentPagesAsync(query, culture);
+        var deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery, culture);
         
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;

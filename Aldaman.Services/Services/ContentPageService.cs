@@ -27,7 +27,7 @@ public sealed class ContentPageService : IContentPageService
         MediaService = mediaService;
     }
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null)
     {
         var dbQuery = Context.ContentPages
             .Include(p => p.Translations)
@@ -42,6 +42,9 @@ public sealed class ContentPageService : IContentPageService
         // Sorting
         dbQuery = query.SortBy switch
         {
+            "Title" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
+                : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
             "PageKey" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageKey) : dbQuery.OrderBy(p => p.PageKey),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
@@ -56,6 +59,9 @@ public sealed class ContentPageService : IContentPageService
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
+                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
+                        ?? p.Translations.FirstOrDefault()!.Title
+                        ?? "-",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
                 CreatedAtUtc = p.CreatedAtUtc
@@ -327,11 +333,12 @@ public sealed class ContentPageService : IContentPageService
         }
     }
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query, string? culture = null)
     {
         var dbQuery = Context.ContentPages
             .IgnoreQueryFilters()
             .Where(p => p.IsDeleted)
+            .Include(p => p.Translations)
             .OrderByDescending(p => p.DeletedAtUtc)
             .AsQueryable();
 
@@ -343,6 +350,9 @@ public sealed class ContentPageService : IContentPageService
             {
                 Id = p.Id,
                 PageKey = p.PageKey,
+                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
+                        ?? p.Translations.FirstOrDefault()!.Title
+                        ?? "-",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
                 CreatedAtUtc = p.CreatedAtUtc

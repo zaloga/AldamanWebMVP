@@ -51,7 +51,7 @@ public interface IBlogService
     /// <summary>
     /// Gets a paged list of deleted blog posts.
     /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Restores a soft-deleted blog post.

@@ -64,12 +64,19 @@
                     <h6 class="m-0 fw-bold text-primary">@Localizer["Translations"]</h6>
                 </div>
                 <div class="card-body">
-                    <ul class="nav nav-tabs mb-4 border-bottom-0" id="detailsTabs" role="tablist">
+                    @{
+                        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                        var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture) 
+                            ? currentCulture 
+                            : Model.Translations.FirstOrDefault()?.CultureCode;
+                    }
+                    <ul class="nav nav-tabs mb-4" id="detailsTabs" role="tablist">
                         @for (int i = 0; i < Model.Translations.Count; i++)
                         {
                             var culture = Model.Translations[i].CultureCode;
+                            var isActive = culture == activeCulture;
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link border-0 fw-semibold @(i == 0 ? "active bg-light" : "text-muted")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(i == 0 ? "true" : "false")">
+                                <button class="nav-link fw-semibold @(isActive ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(isActive ? "true" : "false")">
                                     @culture.ToUpper()
                                 </button>
                             </li>
@@ -80,7 +87,8 @@
                         {
                             var translation = Model.Translations[i];
                             var culture = translation.CultureCode;
-                            <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
+                            var isActive = culture == activeCulture;
+                            <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                 <dl class="row">
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
                                     <dd class="col-sm-10 fw-bold text-dark">@(string.IsNullOrWhiteSpace(translation.Title) ? Localizer["NotProvided"].Value : translation.Title)</dd>

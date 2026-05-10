@@ -466,7 +466,7 @@
     <value>Ne</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Žádný</value>
+    <value>Není</value>
   </data>
   <data name="NotRecorded" xml:space="preserve">
     <value>Nezaznamenáno</value>

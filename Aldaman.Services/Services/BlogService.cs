@@ -47,8 +47,8 @@ public sealed class BlogService : IBlogService
         dbQuery = query.SortBy switch
         {
             "Title" => query.SortDescending
-                ? dbQuery.OrderByDescending(p => p.Translations.FirstOrDefault()!.Title)
-                : dbQuery.OrderBy(p => p.Translations.FirstOrDefault()!.Title),
+                ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
+                : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
             "CreatedAt" => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
                 : dbQuery.OrderBy(p => p.CreatedAtUtc),
@@ -65,7 +65,7 @@ public sealed class BlogService : IBlogService
             .Select(p => new BlogPostListItemDto
             {
                 Id = p.Id,
-                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title ?? "No Title",
+                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title ?? "-",
                 Perex = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Perex ?? "",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
@@ -351,7 +351,7 @@ public sealed class BlogService : IBlogService
         }
     }
 
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query)
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query, string? culture = null)
     {
         var dbQuery = Context.BlogPosts
             .IgnoreQueryFilters()
@@ -368,7 +368,9 @@ public sealed class BlogService : IBlogService
             .Select(p => new BlogPostListItemDto
             {
                 Id = p.Id,
-                Title = p.Translations.FirstOrDefault()!.Title ?? "No Title",
+                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
+                        ?? p.Translations.FirstOrDefault()!.Title
+                        ?? "-",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 AuthorName = p.CreatedByUser != null ? p.CreatedByUser.DisplayName : "Unknown",

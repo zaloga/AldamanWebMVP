@@ -36,7 +36,7 @@ public interface IContentPageService
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.
     /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query);
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Gets a page for editing in admin.
@@ -67,7 +67,7 @@ public interface IContentPageService
     /// <summary>
     /// Gets a paged list of deleted pages.
     /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query);
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Restores a soft-deleted page.

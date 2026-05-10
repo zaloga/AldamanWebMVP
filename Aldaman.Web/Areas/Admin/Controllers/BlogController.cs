@@ -19,8 +19,9 @@ public class BlogController : BaseAdminController
         [FromQuery] PaginationQuery query, 
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var result = await BlogService.GetPagedBlogPostsAdminAsync(query);
-        var deletedResult = await BlogService.GetPagedDeletedBlogPostsAsync(deletedItemsQuery);
+        var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
+        var deletedResult = await BlogService.GetPagedDeletedBlogPostsAsync(deletedItemsQuery, culture);
         
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
