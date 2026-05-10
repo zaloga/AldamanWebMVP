@@ -52,6 +52,15 @@ public sealed class BlogController : Controller
             return NotFound();
         }
 
+        // Provide alternative URLs for the language switcher
+        var alternativeSlugs = await BlogService.GetAlternativeSlugsAsync(postDetail.Id);
+        var alternatives = new Dictionary<string, string>();
+        foreach (var slugEntry in alternativeSlugs)
+        {
+            alternatives[slugEntry.Key] = Url.Action("Detail", "Blog", new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
+        }
+        ViewData["LanguageAlternatives"] = alternatives;
+
         return View(new BlogPostViewModel
         {
             Post = postDetail

@@ -410,4 +410,11 @@ public sealed class ContentPageService : IContentPageService
             }
         }
     }
+
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id)
+    {
+        return await Context.ContentPageTranslations
+            .Where(t => t.ContentPageId == id)
+            .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+    }
 }

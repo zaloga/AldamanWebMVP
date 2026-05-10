@@ -62,4 +62,9 @@ public interface IBlogService
     /// Permanently deletes a blog post.
     /// </summary>
     Task HardDeleteBlogPostAsync(Guid id);
+
+    /// <summary>
+    /// Gets slugs for all translations of a blog post.
+    /// </summary>
+    Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
 }

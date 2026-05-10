@@ -78,4 +78,9 @@ public interface IContentPageService
     /// Permanently deletes a page.
     /// </summary>
     Task HardDeleteContentPageAsync(Guid id);
+
+    /// <summary>
+    /// Gets slugs for all translations of a page.
+    /// </summary>
+    Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
 }

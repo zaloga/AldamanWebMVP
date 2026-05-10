@@ -29,6 +29,15 @@ public sealed class ContentPageController : Controller
             return NotFound();
         }
 
+        // Provide alternative URLs for the language switcher
+        var alternativeSlugs = await ContentPageService.GetAlternativeSlugsAsync(pageDetail.Id);
+        var alternatives = new Dictionary<string, string>();
+        foreach (var slugEntry in alternativeSlugs)
+        {
+            alternatives[slugEntry.Key] = Url.Action("Detail", "ContentPage", new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
+        }
+        ViewData["LanguageAlternatives"] = alternatives;
+
         ContentPageViewModel viewModel = new()
         {
             Page = pageDetail

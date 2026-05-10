@@ -449,4 +449,11 @@ public sealed class BlogService : IBlogService
             }
         }
     }
+
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id)
+    {
+        return await Context.BlogPostTranslations
+            .Where(t => t.BlogPostId == id)
+            .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+    }
 }
