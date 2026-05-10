@@ -1,30 +1,35 @@
 using Aldaman.Services.Dtos.Blog;
+using Aldaman.Services.Resources;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Services.Validators.Blog;
 
 public class BlogPostTranslationDtoValidator : AbstractValidator<BlogPostTranslationDto>
 {
-    public BlogPostTranslationDtoValidator()
+    public BlogPostTranslationDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
         RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage("Title is required if you provide any content for this translation.")
+            .WithMessage(localizer[ValidationResourceKeys.TitleRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage("Slug is required if you provide any content for this translation.")
+            .WithMessage(localizer[ValidationResourceKeys.SlugRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Title)
-            .MaximumLength(256);
+            .MaximumLength(256)
+            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, 256]);
 
         RuleFor(x => x.Slug)
-            .MaximumLength(256);
+            .MaximumLength(256)
+            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, 256]);
 
         RuleFor(x => x.Perex)
-            .MaximumLength(1024);
+            .MaximumLength(1024)
+            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, 1024]);
     }
 
     private bool IsTranslationEmpty(BlogPostTranslationDto dto)
@@ -38,8 +43,8 @@ public class BlogPostTranslationDtoValidator : AbstractValidator<BlogPostTransla
 
 public class BlogPostEditDtoValidator : AbstractValidator<BlogPostEditDto>
 {
-    public BlogPostEditDtoValidator()
+    public BlogPostEditDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
-        RuleForEach(x => x.Translations).SetValidator(new BlogPostTranslationDtoValidator());
+        RuleForEach(x => x.Translations).SetValidator(new BlogPostTranslationDtoValidator(localizer));
     }
 }

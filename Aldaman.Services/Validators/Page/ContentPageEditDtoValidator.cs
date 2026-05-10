@@ -1,27 +1,31 @@
 using Aldaman.Services.Dtos.Page;
+using Aldaman.Services.Resources;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Services.Validators.Page;
 
 public class ContentPageTranslationDtoValidator : AbstractValidator<ContentPageTranslationDto>
 {
-    public ContentPageTranslationDtoValidator()
+    public ContentPageTranslationDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
         RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage("Title is required if you provide any content for this translation.")
+            .WithMessage(localizer[ValidationResourceKeys.TitleRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage("Slug is required if you provide any content for this translation.")
+            .WithMessage(localizer[ValidationResourceKeys.SlugRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Title)
-            .MaximumLength(256);
+            .MaximumLength(256)
+            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, 256]);
 
         RuleFor(x => x.Slug)
-            .MaximumLength(256);
+            .MaximumLength(256)
+            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, 256]);
     }
 
     private bool IsTranslationEmpty(ContentPageTranslationDto dto)
@@ -34,12 +38,14 @@ public class ContentPageTranslationDtoValidator : AbstractValidator<ContentPageT
 
 public class ContentPageEditDtoValidator : AbstractValidator<ContentPageEditDto>
 {
-    public ContentPageEditDtoValidator()
+    public ContentPageEditDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
         RuleFor(x => x.PageKey)
             .NotEmpty()
-            .MaximumLength(256);
+            .WithMessage(localizer[ValidationResourceKeys.PageKeyRequired])
+            .MaximumLength(256)
+            .WithMessage(localizer[ValidationResourceKeys.PageKeyMaxLength, 256]);
 
-        RuleForEach(x => x.Translations).SetValidator(new ContentPageTranslationDtoValidator());
+        RuleForEach(x => x.Translations).SetValidator(new ContentPageTranslationDtoValidator(localizer));
     }
 }

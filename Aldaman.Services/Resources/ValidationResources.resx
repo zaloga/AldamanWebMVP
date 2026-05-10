@@ -103,4 +103,19 @@
   <data name="EmailOrPhoneMaxLength" xml:space="preserve">
     <value>E-mail nebo telefon může mít maximálně {0} znaků.</value>
   </data>
+  <data name="PageKeyRequired" xml:space="preserve">
+    <value>Klíč stránky je povinný.</value>
+  </data>
+  <data name="PageKeyMaxLength" xml:space="preserve">
+    <value>Klíč stránky může mít maximálně {0} znaků.</value>
+  </data>
+  <data name="TitleRequiredIfTranslationNotEmpty" xml:space="preserve">
+    <value>Název je povinný, pokud vyplňujete obsah pro tento překlad.</value>
+  </data>
+  <data name="SlugRequiredIfTranslationNotEmpty" xml:space="preserve">
+    <value>Slug je povinný, pokud vyplňujete obsah pro tento překlad.</value>
+  </data>
+  <data name="GenericMaxLength" xml:space="preserve">
+    <value>Pole může mít maximálně {0} znaků.</value>
+  </data>
 </root>

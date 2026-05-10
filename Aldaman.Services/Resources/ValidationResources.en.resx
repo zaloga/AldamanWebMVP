@@ -103,4 +103,19 @@
   <data name="EmailOrPhoneMaxLength" xml:space="preserve">
     <value>Email or phone can have at most {0} characters.</value>
   </data>
+  <data name="PageKeyRequired" xml:space="preserve">
+    <value>Page key is required.</value>
+  </data>
+  <data name="PageKeyMaxLength" xml:space="preserve">
+    <value>Page key can have at most {0} characters.</value>
+  </data>
+  <data name="TitleRequiredIfTranslationNotEmpty" xml:space="preserve">
+    <value>Title is required if you provide any content for this translation.</value>
+  </data>
+  <data name="SlugRequiredIfTranslationNotEmpty" xml:space="preserve">
+    <value>Slug is required if you provide any content for this translation.</value>
+  </data>
+  <data name="GenericMaxLength" xml:space="preserve">
+    <value>The field can have at most {0} characters.</value>
+  </data>
 </root>
