@@ -46,4 +46,5 @@ public static class UIResourceKeys
     public const string ErrorOccurred = nameof(ErrorOccurred);
     public const string RequestId = nameof(RequestId);
     public const string SectionNoContent = nameof(SectionNoContent);
+    public const string GenerateSlug = nameof(GenerateSlug);
 }
