@@ -77,7 +77,7 @@ public class ContentPagesController : BaseAdminController
     public IActionResult Create()
     {
         Services.Dtos.Page.ContentPageEditDto model = ContentPageService.GetContentPageForCreate();
-        return View(model);
+        return View("Update", model);
     }
 
     [HttpPost]
@@ -86,7 +86,7 @@ public class ContentPagesController : BaseAdminController
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return View("Update", model);
         }
 
         try
@@ -98,7 +98,7 @@ public class ContentPagesController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError("", "Error creating page: " + ex.Message);
-            return View(model);
+            return View("Update", model);
         }
     }
 

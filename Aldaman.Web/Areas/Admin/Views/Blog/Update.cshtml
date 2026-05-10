@@ -1,7 +1,8 @@
 @model Aldaman.Services.Dtos.Blog.BlogPostEditDto
 
 @{
-    ViewData["Title"] = Localizer["UpdateBlogPost"];
+    var isCreate = Model.Id == null || Model.Id == Guid.Empty;
+    ViewData["Title"] = isCreate ? Localizer["CreateBlogPost"] : Localizer["UpdateBlogPost"];
 }
 
 @section Styles {
@@ -16,8 +17,12 @@
         </a>
     </div>
 
-    <form asp-action="Update" method="post" enctype="multipart/form-data">
-        <input type="hidden" asp-for="Id" />
+    <form asp-action="@(isCreate ? "Create" : "Update")" method="post" enctype="multipart/form-data">
+        @if (!isCreate)
+        {
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CoverMediaAssetId" />
+        }
         <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
         <div class="row">
@@ -27,25 +32,15 @@
                         <h6 class="m-0 font-weight-bold text-primary">@Localizer["Translations"]</h6>
                     </div>
                     <div class="card-body">
-                        <ul class="nav nav-tabs mb-3" id="translationTabs" role="tablist">
+                        <partial name="_TranslationTabs" model="Model.Translations.Select(t => t.CultureCode)" />
+                        
+                        <div class="tab-content" id="translationTabsContent">
                             @{
                                 var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
                                 var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture) 
                                     ? currentCulture 
                                     : Model.Translations.FirstOrDefault()?.CultureCode;
                             }
-                            @for (int i = 0; i < Model.Translations.Count; i++)
-                            {
-                                var culture = Model.Translations[i].CultureCode;
-                                var isActive = culture == activeCulture;
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link @(isActive ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(isActive ? "true" : "false")">
-                                            @culture.ToUpper()
-                                        </button>
-                                    </li>
-                            }
-                        </ul>
-                        <div class="tab-content" id="translationTabsContent">
                             @for (int i = 0; i < Model.Translations.Count; i++)
                             {
                                 var culture = Model.Translations[i].CultureCode;
@@ -61,9 +56,8 @@
 
                                     <div class="mb-3">
                                         <label asp-for="Translations[i].Slug" class="form-label">@Localizer["Slug"] (@culture.ToUpper())</label>
-                                        <input asp-for="Translations[i].Slug" class="form-control" placeholder="@culture.ToLower()/my-post" />
+                                        <input asp-for="Translations[i].Slug" class="form-control" />
                                         <span asp-validation-for="Translations[i].Slug" class="text-danger"></span>
-                                        <small class="text-muted">@Localizer["SlugInfo"]</small>
                                     </div>
 
                                     <div class="mb-3">
@@ -138,7 +132,7 @@
                         <hr />
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block">@Localizer["Save"]</button>
+                            <button type="submit" class="btn btn-primary btn-block">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
                             <a asp-action="Index" class="btn btn-secondary btn-block">@Localizer["Cancel"]</a>
                         </div>
                     </div>

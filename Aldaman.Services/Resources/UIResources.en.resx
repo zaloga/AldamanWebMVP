@@ -498,9 +498,6 @@
   <data name="PageKeyInfo" xml:space="preserve">
     <value>Unique internal identifier (e.g. 'ServicesPage').</value>
   </data>
-  <data name="SlugInfo" xml:space="preserve">
-    <value>Leave empty to generate from title.</value>
-  </data>
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Are you sure you want to delete "{0}"? This item will be marked for permanent removal.</value>
   </data>

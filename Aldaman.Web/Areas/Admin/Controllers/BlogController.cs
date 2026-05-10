@@ -34,7 +34,7 @@ public class BlogController : BaseAdminController
     public IActionResult Create()
     {
         var model = BlogService.GetBlogPostForCreate();
-        return View(model);
+        return View("Update", model);
     }
 
     [HttpPost]
@@ -43,7 +43,7 @@ public class BlogController : BaseAdminController
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return View("Update", model);
         }
 
         try
@@ -64,7 +64,7 @@ public class BlogController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError("", "Error creating post: " + ex.Message);
-            return View(model);
+            return View("Update", model);
         }
     }
 

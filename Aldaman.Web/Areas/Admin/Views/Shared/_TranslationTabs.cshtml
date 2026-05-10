@@ -1,0 +1,28 @@
+@model IEnumerable<string>
+
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var cultures = Model.ToList();
+    var activeCulture = cultures.Contains(currentCulture) 
+        ? currentCulture 
+        : cultures.FirstOrDefault();
+}
+
+<ul class="nav nav-tabs mb-4" id="translationTabs" role="tablist">
+    @foreach (var culture in cultures)
+    {
+        var isActive = culture == activeCulture;
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(isActive ? "active" : "")" 
+                    id="tab-@culture" 
+                    data-bs-toggle="tab" 
+                    data-bs-target="#content-@culture" 
+                    type="button" 
+                    role="tab" 
+                    aria-controls="content-@culture" 
+                    aria-selected="@(isActive ? "true" : "false")">
+                @culture.ToUpper()
+            </button>
+        </li>
+    }
+</ul>

@@ -498,9 +498,6 @@
   <data name="PageKeyInfo" xml:space="preserve">
     <value>Unikátní interní identifikátor (např. 'StrankaSluzeb').</value>
   </data>
-  <data name="SlugInfo" xml:space="preserve">
-    <value>Ponechte prázdné pro vygenerování z názvu.</value>
-  </data>
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Opravdu chcete smazat „{0}“? Tato položka bude označena k trvalému odstranění.</value>
   </data>
