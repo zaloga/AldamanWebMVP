@@ -28,11 +28,10 @@
                     </a>
                     @foreach (var hpPage in Model.HomePagePages)
                     {
-                        <a href="@Url.Action("Index", "Home")#@hpPage.PageKey" 
+                        <a href="@Url.Action("Index", "Home")#@hpPage.Slug" 
                            class="block px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-brand-primary dark:hover:text-brand-accent transition-colors">
                             <div class="flex items-center justify-between">
                                 <span>@hpPage.Title</span>
-                                <span class="text-[10px] uppercase tracking-wider opacity-30 font-bold">#@hpPage.PageKey</span>
                             </div>
                         </a>
                     }
