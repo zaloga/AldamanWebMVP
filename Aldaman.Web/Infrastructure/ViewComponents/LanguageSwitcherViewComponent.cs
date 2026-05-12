@@ -15,7 +15,7 @@ public sealed class LanguageSwitcherViewComponent : ViewComponent
         _settings = options.Value;
     }
 
-    public IViewComponentResult Invoke()
+    public IViewComponentResult Invoke(string viewName = "Default")
     {
         string currentCulture = CultureInfo.CurrentUICulture.Name;
         var supportedLanguages = new List<LanguageInfo>();
@@ -62,6 +62,6 @@ public sealed class LanguageSwitcherViewComponent : ViewComponent
             SupportedLanguages = supportedLanguages
         };
 
-        return View(viewModel);
+        return View(viewName, viewModel);
     }
 }

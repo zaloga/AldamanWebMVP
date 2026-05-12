@@ -1,0 +1,26 @@
+@model Aldaman.Web.ViewModels.LanguageSwitcherViewModel
+
+<div class="d-flex align-items-center gap-2 small fw-medium">
+    @foreach (var lang in Model.SupportedLanguages)
+    {
+        if (lang.IsActive)
+        {
+            <span class="text-dark fw-bold cursor-default px-1">
+                @lang.DisplayName
+            </span>
+        }
+        else
+        {
+            <a href="@lang.Url" 
+               class="text-secondary text-decoration-none px-1"
+               title="Switch to @lang.DisplayName">
+                @lang.DisplayName
+            </a>
+        }
+
+        @if (lang != Model.SupportedLanguages.Last())
+        {
+            <span class="text-muted opacity-25">|</span>
+        }
+    }
+</div>
