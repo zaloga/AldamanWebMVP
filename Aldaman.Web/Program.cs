@@ -172,6 +172,7 @@ public class Program
             pattern: $"{culturePattern}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 
+        app.MapControllers();
         app.Run();
     }
 }
