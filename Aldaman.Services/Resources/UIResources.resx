@@ -636,4 +636,25 @@
   <data name="Total" xml:space="preserve">
     <value>Celkem</value>
   </data>
+  <data name="RecentBlogPosts" xml:space="preserve">
+    <value>Nedávné příspěvky</value>
+  </data>
+  <data name="RecentPages" xml:space="preserve">
+    <value>Nedávné stránky</value>
+  </data>
+  <data name="RecentMedia" xml:space="preserve">
+    <value>Nedávná média</value>
+  </data>
+  <data name="NoRecentBlogPosts" xml:space="preserve">
+    <value>Žádné nedávné příspěvky.</value>
+  </data>
+  <data name="NoRecentPages" xml:space="preserve">
+    <value>Žádné nedávné stránky.</value>
+  </data>
+  <data name="NoRecentMedia" xml:space="preserve">
+    <value>Žádná nedávná média.</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Velikost</value>
+  </data>
 </root>

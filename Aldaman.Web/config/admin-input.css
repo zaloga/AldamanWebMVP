@@ -71,6 +71,20 @@
         background-color: #f8fafc;
         min-width: 0;
     }
+
+    .stats-card {
+        @apply transition-all duration-300;
+    }
+
+        .stats-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(173, 216, 230, 0.5);
+        }
+
+    /* Target the anchor wrapping the stats-card to remove default link styling */
+    a:has(.stats-card) {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
 }
 
 /* Fix for Bootstrap conflict with Tailwind utilities */

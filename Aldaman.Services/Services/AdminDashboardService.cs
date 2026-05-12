@@ -1,6 +1,9 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Services.Dtos.AdminDashboard;
+using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.ContactMessage;
+using Aldaman.Services.Dtos.Media;
+using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +42,50 @@ internal sealed class AdminDashboardService : IAdminDashboardService
             State = x.State
         }).ToList();
 
+        var latestPostsEntities = await _context.BlogPosts
+            .Include(x => x.Translations)
+            .OrderByDescending(x => x.CreatedAtUtc)
+            .Take(5)
+            .ToListAsync();
+
+        var latestPosts = latestPostsEntities.Select(x => new BlogPostListItemDto
+        {
+            Id = x.Id,
+            Title = x.Translations.FirstOrDefault()?.Title ?? "Untitled",
+            CreatedAtUtc = x.CreatedAtUtc,
+            PublishedAtUtc = x.PublishedAtUtc,
+            IsPublished = x.IsPublished
+        }).ToList();
+
+        var latestPagesEntities = await _context.ContentPages
+            .Include(x => x.Translations)
+            .OrderByDescending(x => x.CreatedAtUtc)
+            .Take(5)
+            .ToListAsync();
+
+        var latestPages = latestPagesEntities.Select(x => new ContentPageListItemDto
+        {
+            Id = x.Id,
+            Title = x.Translations.FirstOrDefault()?.Title ?? "Untitled",
+            PageKey = x.PageKey,
+            CreatedAtUtc = x.CreatedAtUtc
+        }).ToList();
+
+        var latestMediaEntities = await _context.MediaAssets
+            .OrderByDescending(x => x.CreatedAtUtc)
+            .Take(5)
+            .ToListAsync();
+
+        var latestMedia = latestMediaEntities.Select(x => new MediaAssetDto
+        {
+            Id = x.Id,
+            OriginalFileName = x.OriginalFileName,
+            RelativePath = x.RelativePath,
+            UploadedAtUtc = x.CreatedAtUtc,
+            FileSize = x.FileSize,
+            ContentType = x.ContentType
+        }).ToList();
+
         return new AdminDashboardStatsDto
         {
             TotalPagesCount = totalPages,
@@ -47,7 +94,10 @@ internal sealed class AdminDashboardService : IAdminDashboardService
             TotalMediaCount = totalMedia,
             TotalMediaSizeInBytes = totalMediaSize,
             RecentMessagesCount = latestMessages.Count,
-            LatestMessages = latestMessages
+            LatestMessages = latestMessages,
+            LatestBlogPosts = latestPosts,
+            LatestPages = latestPages,
+            LatestMedia = latestMedia
         };
     }
 }
