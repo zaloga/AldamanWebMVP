@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aldaman.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260422123501_ContactMessageEntityBiggerRefactor")]
-    partial class ContactMessageEntityBiggerRefactor
+    [Migration("20260512115326_DBInitMigration")]
+    partial class DBInitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,15 +211,6 @@ namespace Aldaman.Persistence.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<DateTime?>("DeletedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Perex")
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
@@ -248,8 +239,6 @@ namespace Aldaman.Persistence.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("DeletedByUserId");
-
                     b.HasIndex("Slug")
                         .IsUnique();
 
@@ -274,6 +263,15 @@ namespace Aldaman.Persistence.Migrations
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("EmailOrPhone")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -282,6 +280,9 @@ namespace Aldaman.Persistence.Migrations
                     b.Property<string>("FailureReason")
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -307,6 +308,10 @@ namespace Aldaman.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("DeletedByUserId");
+
                     b.ToTable("ContactMessages");
                 });
 
@@ -321,11 +326,6 @@ namespace Aldaman.Persistence.Migrations
 
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("DefaultSortOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
 
                     b.Property<DateTime?>("DeletedAtUtc")
                         .HasColumnType("datetime2");
@@ -346,10 +346,10 @@ namespace Aldaman.Persistence.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<bool>("ShowOnHomePage")
+                    b.Property<int>("PlaceToShow")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
@@ -377,6 +377,12 @@ namespace Aldaman.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("BodyDeltaJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BodyHtml")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ContentPageId")
                         .HasColumnType("uniqueidentifier");
 
@@ -391,14 +397,9 @@ namespace Aldaman.Persistence.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<DateTime?>("DeletedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<string>("PlainText")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -419,8 +420,6 @@ namespace Aldaman.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("DeletedByUserId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -516,6 +515,65 @@ namespace Aldaman.Persistence.Migrations
                     b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("MediaAssets");
+                });
+
+            modelBuilder.Entity("Aldaman.Persistence.Entities.StyleSettingEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DefaultValue")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime?>("DeletedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("DeletedByUserId");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("StyleSettings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -665,11 +723,6 @@ namespace Aldaman.Persistence.Migrations
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
-                        .WithMany()
-                        .HasForeignKey("DeletedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
                         .WithMany()
                         .HasForeignKey("UpdatedByUserId")
@@ -679,9 +732,22 @@ namespace Aldaman.Persistence.Migrations
 
                     b.Navigation("CreatedByUser");
 
-                    b.Navigation("DeletedByUser");
-
                     b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContactMessageEntity", b =>
+                {
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
+                        .WithMany()
+                        .HasForeignKey("DeletedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("DeletedByUser");
                 });
 
             modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageEntity", b =>
@@ -713,17 +779,12 @@ namespace Aldaman.Persistence.Migrations
                     b.HasOne("Aldaman.Persistence.Entities.ContentPageEntity", "ContentPage")
                         .WithMany("Translations")
                         .HasForeignKey("ContentPageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
-                        .WithMany()
-                        .HasForeignKey("DeletedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
@@ -734,8 +795,6 @@ namespace Aldaman.Persistence.Migrations
                     b.Navigation("ContentPage");
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("DeletedByUser");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -756,6 +815,27 @@ namespace Aldaman.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("DeletedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("Aldaman.Persistence.Entities.StyleSettingEntity", b =>
+                {
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
+                        .WithMany()
+                        .HasForeignKey("DeletedByUserId");
+
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
 
                     b.Navigation("CreatedByUser");
 
