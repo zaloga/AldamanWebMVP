@@ -39,3 +39,12 @@
     @apply max-w-7xl mx-auto py-12;
   }
 }
+
+/* Quill editor spacing resets */
+.ql-snow .ql-editor {
+    padding: 0 !important; /* Force removal of default padding 12px 15px */
+}
+
+.ql-snow .ql-editor p {
+    margin: 0; /* Remove vertical margins from paragraphs */
+}
