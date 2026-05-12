@@ -15,16 +15,16 @@ public class MediaController : BaseAdminController
     }
 
     public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query, 
+        [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var result = await MediaService.ListAssetsAsync(query);
         var deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
-        
+
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
         ViewBag.DeletedItems = deletedResult;
-        
+
         return View(result);
     }
 
@@ -82,6 +82,15 @@ public class MediaController : BaseAdminController
         {
             return Json(new { success = false, message = ex.Message });
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var asset = await MediaService.GetAssetAsync(id);
+        if (asset == null) return NotFound();
+
+        return View(asset);
     }
 
     [HttpGet]

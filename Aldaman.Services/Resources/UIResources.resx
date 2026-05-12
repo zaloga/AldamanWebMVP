@@ -657,4 +657,22 @@
   <data name="Size" xml:space="preserve">
     <value>Velikost</value>
   </data>
+  <data name="MediaDetails" xml:space="preserve">
+    <value>Detail média</value>
+  </data>
+  <data name="MediaDetailsInfo" xml:space="preserve">
+    <value>Technické informace a metadata souboru.</value>
+  </data>
+  <data name="Metadata" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="OriginalFileName" xml:space="preserve">
+    <value>Původní název souboru</value>
+  </data>
+  <data name="FileSize" xml:space="preserve">
+    <value>Velikost souboru</value>
+  </data>
+  <data name="ContentType" xml:space="preserve">
+    <value>Typ obsahu</value>
+  </data>
 </root>
