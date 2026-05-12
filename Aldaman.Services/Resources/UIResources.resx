@@ -678,4 +678,10 @@
   <data name="GoToWeb" xml:space="preserve">
     <value>Přejít na web</value>
   </data>
+  <data name="SummaryOverviews" xml:space="preserve">
+    <value>Souhrnné přehledy</value>
+  </data>
+  <data name="NextSettings" xml:space="preserve">
+    <value>Další nastavení</value>
+  </data>
 </root>

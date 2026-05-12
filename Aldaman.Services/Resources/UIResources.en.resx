@@ -678,4 +678,10 @@
   <data name="GoToWeb" xml:space="preserve">
     <value>Go to web</value>
   </data>
+  <data name="SummaryOverviews" xml:space="preserve">
+    <value>summary overviews</value>
+  </data>
+  <data name="NextSettings" xml:space="preserve">
+    <value>Next settings</value>
+  </data>
 </root>

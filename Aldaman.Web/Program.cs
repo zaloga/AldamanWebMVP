@@ -37,6 +37,8 @@ public class Program
         builder.Services.AddApplicationServices(
             builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
+        builder.Services.AddMemoryCache();
+
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         builder.Services.AddValidatorsFromAssemblyContaining<Aldaman.Services.Validators.Media.UpdateMediaAssetDtoValidator>();
         builder.Services.AddFluentValidationAutoValidation();

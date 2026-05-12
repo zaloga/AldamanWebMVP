@@ -14,6 +14,7 @@ public static class DependencyInjection
         services.AddScoped<IMediaService>(sp => new MediaService(sp.GetRequiredService<Aldaman.Persistence.Context.AppDbContext>(), webRootPath));
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+        services.AddScoped<IStyleService, StyleService>();
 
         // Register other services here as they are implemented
 

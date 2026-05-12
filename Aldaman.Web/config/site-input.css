@@ -4,11 +4,11 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-primary: #a83f23; /* Terracotta Orange */
-  --color-brand-secondary: #4a332a; /* Earthy dark brown */
-  --color-brand-accent: #ffb100; /* Amber Yellow */
-  --color-brand-bg-light: #fdfaf6; /* Warm off-white / cream */
-  --color-brand-bg-dark: #1b1816; /* Very dark warm slate/brown */
+  --color-brand-primary: var(--brand-primary, #a83f23); /* Terracotta Orange */
+  --color-brand-secondary: var(--brand-secondary, #4a332a); /* Earthy dark brown */
+  --color-brand-accent: var(--brand-accent, #ffb100); /* Amber Yellow */
+  --color-brand-bg-light: var(--brand-bg-light, #fdfaf6); /* Warm off-white / cream */
+  --color-brand-bg-dark: var(--brand-bg-dark, #1b1816); /* Very dark warm slate/brown */
 
   /* Minimal dependencies: Use built-in system fonts */
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

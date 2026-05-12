@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<BlogPostEntity> BlogPosts { get; set; } = null!;
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;
     public DbSet<ContactMessageEntity> ContactMessages { get; set; } = null!;
+    public DbSet<StyleSettingEntity> StyleSettings { get; set; } = null!;
 
     private IUserContext UserContext { get; }
 
@@ -34,6 +35,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<StyleSettingEntity>().HasQueryFilter(e => !e.IsDeleted);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,0 +1,62 @@
+@model Aldaman.Services.Dtos.StyleSettings.UpdateStyleSettingDto
+@using Aldaman.Persistence.Enums
+
+@{
+    bool isEdit = Model.Id.HasValue && Model.Id != Guid.Empty;
+    ViewData["Title"] = isEdit ? "Update Style Setting" : "Create Style Setting";
+}
+
+<div class="mb-4">
+    <h2 class="h3 mb-0 text-gray-800">@(isEdit ? "Update Style Setting" : "Create Style Setting")</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@(isEdit ? "Edit CSS Variable" : "New CSS Variable")</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Update" method="post">
+            @if (isEdit)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+
+            <div class="mb-3">
+                <label asp-for="Key" class="form-label">Key (e.g. --brand-primary)</label>
+                <input asp-for="Key" class="form-control" placeholder="--my-variable" required />
+                <span asp-validation-for="Key" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Type" class="form-label">Type</label>
+                <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<CssType>()" required></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Value" class="form-label">Value (e.g. #ff0000 or 1.5rem)</label>
+                @if (Model.Type == CssType.Color)
+                {
+                    <div class="d-flex gap-2">
+                        <input type="color" asp-for="Value" class="form-control form-control-color" title="Choose color">
+                        <input type="text" asp-for="Value" class="form-control" placeholder="#000000" required />
+                    </div>
+                }
+                else
+                {
+                    <input asp-for="Value" class="form-control" placeholder="#000000" required />
+                }
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">@(isEdit ? "Update Setting" : "Create Setting")</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

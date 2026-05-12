@@ -4,7 +4,7 @@
     ViewData["Title"] = Localizer["Dashboard"];
 }
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 my-3">
     <!-- Stats Cards -->
     <div class="col">
         <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index">
@@ -52,7 +52,13 @@
     </div>
 </div>
 
-<div class="row mt-5">
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-muted mb-3">@Localizer["SummaryOverviews"]</h2>
+    </div>
+</div>
+
+<div class="row my-3">
     <div class="col-12 col-xl-6">
         <div class="card shadow-md mb-3">
             <div class="card-header bg-white border-0 pt-4 pb-0">
@@ -242,5 +248,24 @@
                 }
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-muted mb-3">@Localizer["NextSettings"]</h2>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 my-3">
+    <div class="col">
+        <a asp-area="Admin" asp-controller="StyleSettings" asp-action="Index">
+            <div class="card h-100 shadow-md stats-card">
+                <div class="card-body">
+                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">Theme Settings</h5>
+                    <h6 class="card-title mb-0">Manage CSS variables</h6>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
