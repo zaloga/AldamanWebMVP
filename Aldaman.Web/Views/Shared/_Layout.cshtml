@@ -28,7 +28,7 @@
     <header class="glass sticky top-0 z-50 transition-colors duration-300">
         <nav class="container flex items-center justify-between h-16">
             <div class="flex items-center gap-8">
-                <a class="text-xl font-bold tracking-tight text-slate-900 dark:text-white" asp-area="" asp-controller="Home" asp-action="Index">Aldaman</a>
+                @await Component.InvokeAsync("Brand")
                 
                 <div class="hidden md:flex items-center gap-6">
                     @await Component.InvokeAsync("TopNavigation")
