@@ -675,4 +675,7 @@
   <data name="ContentType" xml:space="preserve">
     <value>Typ obsahu</value>
   </data>
+  <data name="GoToWeb" xml:space="preserve">
+    <value>Přejít na web</value>
+  </data>
 </root>

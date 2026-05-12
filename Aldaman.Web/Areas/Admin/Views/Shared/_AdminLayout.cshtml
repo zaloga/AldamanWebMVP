@@ -22,7 +22,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-link btn-sm text-secondary p-0 text-decoration-none d-flex align-items-center">
                         <svg width="16" height="16" class="me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                        @Localizer["BackToSite"]
+                        @Localizer["GoToWeb"]
                     </a>
                     @await Component.InvokeAsync("LanguageSwitcher", new { viewName = "Admin" })
                     <span class="small fw-medium text-muted">@Localizer["AdminUser"]</span>
