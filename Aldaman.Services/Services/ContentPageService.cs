@@ -102,28 +102,21 @@ public sealed class ContentPageService : IContentPageService
 
     public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture)
     {
-        var pages = await Context.ContentPages
-            .Include(p => p.Translations)
+        return await Context.ContentPages
             .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+            .Where(p => p.Translations.Any(t => t.CultureCode == culture))
             .OrderBy(p => p.PageOrder)
-            .ToListAsync();
-
-        return pages.Select(page =>
-        {
-            var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture)
-                         ?? page.Translations.FirstOrDefault();
-
-            return new ContentPageDetailDto
+            .Select(p => new ContentPageDetailDto
             {
-                Id = page.Id,
-                PageKey = page.PageKey,
-                Title = content?.Title ?? string.Empty,
-                Slug = content?.Slug ?? string.Empty,
-                BodyHtml = content?.BodyHtml,
-                BodyDeltaJson = content?.BodyDeltaJson,
-                PlainText = content?.PlainText
-            };
-        }).ToList();
+                Id = p.Id,
+                PageKey = p.PageKey,
+                Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
+                BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
+                BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,
+                PlainText = p.Translations.First(t => t.CultureCode == culture).PlainText
+            })
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture)
