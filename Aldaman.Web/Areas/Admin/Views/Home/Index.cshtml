@@ -7,44 +7,45 @@
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
     <!-- Stats Cards -->
     <div class="col">
-        <a asp-area="Admin" asp-controller="ContentPages" asp-action="Index" class="stats-card-link">
+        <a asp-area="Admin" asp-controller="ContentPages" asp-action="Index">
             <div class="card h-100 border-0 shadow-sm stats-card">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">@Localizer["TotalPages"]</h6>
-                    <h2 class="card-title mb-0 fw-bold">@Model.TotalPagesCount</h2>
+                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["Pages"]</h5>
+                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.TotalPagesCount</h6>
                 </div>
             </div>
         </a>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="stats-card-link">
+        <a asp-area="Admin" asp-controller="Blog" asp-action="Index">
             <div class="card h-100 border-0 shadow-sm stats-card">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">@Localizer["PublishedPosts"]</h6>
-                    <h2 class="card-title mb-0 fw-bold">@Model.PublishedBlogPostsCount</h2>
+                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["BlogPosts"]</h5>
+                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.BlogPostsCount</h6>
                 </div>
             </div>
         </a>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index" class="stats-card-link">
+        <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index">
             <div class="card h-100 border-0 shadow-sm stats-card">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">@Localizer["PendingMessages"]</h6>
-                    <h2 class="card-title mb-0 fw-bold">@Model.PendingContactMessagesCount</h2>
+                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["ContactMessages"]</h5>
+                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.ContactMessagesCount</h6>
                 </div>
             </div>
         </a>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="Media" asp-action="Index" class="stats-card-link">
+        <a asp-area="Admin" asp-controller="Media" asp-action="Index">
             <div class="card h-100 border-0 shadow-sm stats-card">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted text-uppercase small fw-bold">@Localizer["MediaAssetsSize"]</h6>
-                    <h2 class="card-title mb-0 fw-bold">@(Model.TotalMediaSizeInBytes / 1024 / 1024) MB</h2>
+                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["MediaLibrary"]</h5>
+                    <h6 class="card-title mb-0">@Localizer["Total"] @(Model.TotalMediaCount)</h6>
+                    <h6 class="card-title mb-0">@(Model.TotalMediaSizeInBytes / 1048576) MB</h6>
                 </div>
             </div>
         </a>

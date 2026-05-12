@@ -528,18 +528,6 @@
   <data name="PleaseCorrectErrors" xml:space="preserve">
     <value>Prosím opravte následující chyby:</value>
   </data>
-  <data name="TotalPages" xml:space="preserve">
-    <value>Celkem stránek</value>
-  </data>
-  <data name="PublishedPosts" xml:space="preserve">
-    <value>Publikované články</value>
-  </data>
-  <data name="PendingMessages" xml:space="preserve">
-    <value>Čekající zprávy</value>
-  </data>
-  <data name="MediaAssetsSize" xml:space="preserve">
-    <value>Velikost médií</value>
-  </data>
   <data name="RecentMessages" xml:space="preserve">
     <value>Nedávné zprávy</value>
   </data>
@@ -644,5 +632,8 @@
   </data>
   <data name="RemoveImage" xml:space="preserve">
     <value>Odstranit obrázek</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Celkem</value>
   </data>
 </root>

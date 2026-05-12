@@ -11,13 +11,6 @@
     <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
     <p class="text-xl text-gray-500">@Model.Post.Perex</p>
 </div>
-    
-@if (!string.IsNullOrEmpty(Model.Post.CoverImageRelativePath))
-{
-    <div class="mb-8">
-        <img src="@Model.Post.CoverImageRelativePath" alt="@Model.Post.Title" class="w-full h-auto rounded-lg shadow-md" />
-    </div>
-}
 
 <div class="prose prose-lg prose-indigo text-gray-700 mx-auto">
     <div class="ql-snow">

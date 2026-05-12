@@ -18,8 +18,9 @@ internal sealed class AdminDashboardService : IAdminDashboardService
     public async Task<AdminDashboardStatsDto> GetStatsAsync()
     {
         var totalPages = await _context.ContentPages.CountAsync();
-        var publishedPosts = await _context.BlogPosts.CountAsync(x => x.IsPublished);
-        var pendingMessages = await _context.ContactMessages.CountAsync(x => x.State == Persistence.Enums.ContactMessageState.Pending);
+        var totalPosts = await _context.BlogPosts.CountAsync();
+        var totalMessages = await _context.ContactMessages.CountAsync();
+        var totalMedia = await _context.MediaAssets.CountAsync();
         var totalMediaSize = await _context.MediaAssets.SumAsync(x => x.FileSize);
 
         var latestMessagesEntities = await _context.ContactMessages
@@ -41,8 +42,9 @@ internal sealed class AdminDashboardService : IAdminDashboardService
         return new AdminDashboardStatsDto
         {
             TotalPagesCount = totalPages,
-            PublishedBlogPostsCount = publishedPosts,
-            PendingContactMessagesCount = pendingMessages,
+            BlogPostsCount = totalPosts,
+            ContactMessagesCount = totalMessages,
+            TotalMediaCount = totalMedia,
             TotalMediaSizeInBytes = totalMediaSize,
             RecentMessagesCount = latestMessages.Count,
             LatestMessages = latestMessages
