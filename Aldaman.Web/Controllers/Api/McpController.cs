@@ -5,7 +5,7 @@ namespace Aldaman.Web.Controllers.Api;
 
 [ApiController]
 [Route("api/[controller]")]
-public sealed class McpController : ControllerBase
+public sealed class McpController : ControllerBase // TODO move hardcoded strings to resx etc.
 {
     private ISearchService SearchService { get; }
     private ILogger<McpController> Logger { get; }
@@ -33,9 +33,9 @@ public sealed class McpController : ControllerBase
 
             // Construct base URL for absolute links
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            
+
             var results = await SearchService.SearchAsync(query, culture, baseUrl, HttpContext.RequestAborted);
-            
+
             return Ok(new
             {
                 Count = results.Count,
