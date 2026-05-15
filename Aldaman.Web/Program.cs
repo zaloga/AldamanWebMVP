@@ -37,6 +37,11 @@ public class Program
         builder.Services.AddApplicationServices(
             builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
+        // MCP Services
+        builder.Services.Configure<Aldaman.Services.Configuration.McpSettings>(builder.Configuration.GetSection(Aldaman.Services.Configuration.McpSettings.SectionName));
+        builder.Services.AddSingleton<Aldaman.Services.Interfaces.IMcpSessionManager, Aldaman.Services.Services.McpSessionManager>();
+        builder.Services.AddScoped<Aldaman.Services.Interfaces.IMcpMessageHandlerService, Aldaman.Services.Services.McpMessageHandlerService>();
+
         builder.Services.AddMemoryCache();
 
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();

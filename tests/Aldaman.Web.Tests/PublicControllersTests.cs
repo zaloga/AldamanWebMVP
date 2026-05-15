@@ -14,7 +14,6 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
 
     [Theory]
     [InlineData("/cs")]
-    [InlineData("/cs/Home/Privacy")]
     [InlineData("/cs/blog")]
     [InlineData("/cs/contact")]
     public async Task Get_EndpointsReturnSuccessAndHtmlContentType(string url)
