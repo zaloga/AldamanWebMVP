@@ -456,4 +456,53 @@ public sealed class BlogService : IBlogService
             .Where(t => t.BlogPostId == id)
             .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
     }
+
+    public async Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationAsync(Guid currentPostId, string culture)
+    {
+        var currentPost = await Context.BlogPosts.FindAsync(currentPostId);
+        if (currentPost == null || !currentPost.PublishedAtUtc.HasValue)
+        {
+            return (null, null);
+        }
+
+        var publishedAt = currentPost.PublishedAtUtc.Value;
+
+        // Previous post (older)
+        var previousPost = await Context.BlogPosts
+            .Include(p => p.Translations)
+            .Where(p => p.IsPublished && p.PublishedAtUtc < publishedAt && p.Translations.Any(t => t.CultureCode == culture))
+            .OrderByDescending(p => p.PublishedAtUtc)
+            .FirstOrDefaultAsync();
+
+        // Next post (newer)
+        var nextPost = await Context.BlogPosts
+            .Include(p => p.Translations)
+            .Where(p => p.IsPublished && p.PublishedAtUtc > publishedAt && p.Translations.Any(t => t.CultureCode == culture))
+            .OrderBy(p => p.PublishedAtUtc)
+            .FirstOrDefaultAsync();
+
+        BlogPostNavigationDto? previousDto = null;
+        if (previousPost != null)
+        {
+            var translation = previousPost.Translations.First(t => t.CultureCode == culture);
+            previousDto = new BlogPostNavigationDto
+            {
+                Title = translation.Title,
+                Slug = translation.Slug
+            };
+        }
+
+        BlogPostNavigationDto? nextDto = null;
+        if (nextPost != null)
+        {
+            var translation = nextPost.Translations.First(t => t.CultureCode == culture);
+            nextDto = new BlogPostNavigationDto
+            {
+                Title = translation.Title,
+                Slug = translation.Slug
+            };
+        }
+
+        return (previousDto, nextDto);
+    }
 }

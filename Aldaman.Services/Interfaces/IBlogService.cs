@@ -67,4 +67,9 @@ public interface IBlogService
     /// Gets slugs for all translations of a blog post.
     /// </summary>
     Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
+
+    /// <summary>
+    /// Gets navigation information (previous and next post) for a blog post.
+    /// </summary>
+    Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationAsync(Guid currentPostId, string culture);
 }

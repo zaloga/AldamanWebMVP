@@ -61,9 +61,13 @@ public sealed class BlogController : Controller
         }
         ViewData["LanguageAlternatives"] = alternatives;
 
+        var navigation = await BlogService.GetBlogPostNavigationAsync(postDetail.Id, cultureCode);
+
         return View(new BlogPostViewModel
         {
-            Post = postDetail
+            Post = postDetail,
+            PreviousPost = navigation.Previous,
+            NextPost = navigation.Next
         });
     }
 }

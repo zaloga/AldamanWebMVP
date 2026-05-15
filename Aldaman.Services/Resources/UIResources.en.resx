@@ -231,6 +231,9 @@
   <data name="BackToList" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="BackToBlog" xml:space="preserve">
+    <value>Back to blog</value>
+  </data>
   <data name="BackToSite" xml:space="preserve">
     <value>Back to site</value>
   </data>
@@ -638,6 +641,12 @@
   </data>
   <data name="RecentBlogPosts" xml:space="preserve">
     <value>Recent Blog Posts</value>
+  </data>
+  <data name="PreviousPost" xml:space="preserve">
+    <value>Older post</value>
+  </data>
+  <data name="NextPost" xml:space="preserve">
+    <value>Newer post</value>
   </data>
   <data name="RecentPages" xml:space="preserve">
     <value>Recent Pages</value>

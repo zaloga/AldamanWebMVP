@@ -231,6 +231,9 @@
   <data name="BackToList" xml:space="preserve">
     <value>Zpět na seznam</value>
   </data>
+  <data name="BackToBlog" xml:space="preserve">
+    <value>Zpět na blog</value>
+  </data>
   <data name="BackToSite" xml:space="preserve">
     <value>Zpět na web</value>
   </data>
@@ -638,6 +641,12 @@
   </data>
   <data name="RecentBlogPosts" xml:space="preserve">
     <value>Nedávné příspěvky</value>
+  </data>
+  <data name="PreviousPost" xml:space="preserve">
+    <value>Starší příspěvek</value>
+  </data>
+  <data name="NextPost" xml:space="preserve">
+    <value>Novější příspěvek</value>
   </data>
   <data name="RecentPages" xml:space="preserve">
     <value>Nedávné stránky</value>

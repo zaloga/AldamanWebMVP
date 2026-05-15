@@ -7,22 +7,67 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<div class="text-center border-b border-gray-200 pb-8 mb-8">
-    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
-    <p class="text-xl text-gray-500">@Model.Post.Perex</p>
-</div>
-
-<div class="prose prose-lg prose-indigo text-gray-700 mx-auto">
-    <div class="ql-snow">
-        <div class="ql-editor p-0">
-            @if (!string.IsNullOrEmpty(Model.Post.BodyHtml))
-            {
-                @Html.Raw(Model.Post.BodyHtml)
-            }
-            else
-            {
-                <p class="text-slate-400 italic">No content available.</p>
-            }
-        </div>
+<div class="py-8 md:py-12">
+    <div class="mb-8">
+        <a asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            @Localizer["BackToBlog"]
+        </a>
     </div>
+
+    <article class="max-w-4xl mx-auto">
+        <header class="text-center border-b border-slate-200 dark:border-white/10 pb-8 mb-8">
+            <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
+            <p class="text-xl text-slate-500 dark:text-slate-400">@Model.Post.Perex</p>
+        </header>
+
+        <div class="prose prose-lg dark:prose-invert prose-slate text-slate-700 dark:text-slate-300 mx-auto">
+            <div class="ql-snow">
+                <div class="ql-editor p-0">
+                    @if (!string.IsNullOrEmpty(Model.Post.BodyHtml))
+                    {
+                        @Html.Raw(Model.Post.BodyHtml)
+                    }
+                    else
+                    {
+                        <p class="text-slate-400 italic">@Localizer["NoHtmlContent"]</p>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                @if (Model.PreviousPost != null)
+                {
+                    <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="group flex items-center gap-4 p-3 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5">@Localizer["PreviousPost"]</span>
+                            <span class="font-bold line-clamp-1">@Model.PreviousPost.Title</span>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <div class="hidden sm:block"></div>
+                }
+
+                @if (Model.NextPost != null)
+                {
+                    <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="group flex items-center justify-end text-right gap-4 p-3 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border">
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5">@Localizer["NextPost"]</span>
+                            <span class="font-bold line-clamp-1">@Model.NextPost.Title</span>
+                        </div>
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </a>
+                }
+            </div>
+        </footer>
+    </article>
 </div>

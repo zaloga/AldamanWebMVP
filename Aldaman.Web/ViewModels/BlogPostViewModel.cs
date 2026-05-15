@@ -5,4 +5,6 @@ namespace Aldaman.Web.ViewModels;
 public class BlogPostViewModel
 {
     public BlogPostDetailDto Post { get; init; } = default!;
+    public BlogPostNavigationDto? PreviousPost { get; init; }
+    public BlogPostNavigationDto? NextPost { get; init; }
 }
