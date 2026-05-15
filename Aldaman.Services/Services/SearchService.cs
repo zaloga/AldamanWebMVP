@@ -63,4 +63,50 @@ public sealed class SearchService : ISearchService
 
         return allResults;
     }
+
+    public async Task<List<AutocompleteResultDto>> AutocompleteAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return new List<AutocompleteResultDto>();
+        }
+
+        query = query.Trim();
+        baseUrl = baseUrl.TrimEnd('/');
+
+        // 1. Search Blog Posts
+        var blogResults = await Context.BlogPostTranslations
+            .Include(t => t.BlogPost)
+            .Where(t => t.CultureCode == cultureCode && t.BlogPost.IsPublished)
+            .Where(t => t.Title.Contains(query))
+            .OrderByDescending(t => t.BlogPost.PublishedAtUtc)
+            .Take(10)
+            .Select(t => new AutocompleteResultDto
+            {
+                Title = t.Title,
+                Url = $"{baseUrl}/{cultureCode}/blog/{t.Slug}"
+            })
+            .ToListAsync(ct);
+
+        // 2. Search Content Pages
+        var pageResults = await Context.ContentPageTranslations
+            .Include(t => t.ContentPage)
+            .Where(t => t.CultureCode == cultureCode)
+            .Where(t => t.Title.Contains(query))
+            .OrderBy(t => t.ContentPage.PageOrder)
+            .Take(10)
+            .Select(t => new AutocompleteResultDto
+            {
+                Title = t.Title,
+                Url = $"{baseUrl}/{cultureCode}/page/{t.Slug}"
+            })
+            .ToListAsync(ct);
+
+        // Combine and return
+        var allResults = blogResults.Concat(pageResults)
+            .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        return allResults;
+    }
 }

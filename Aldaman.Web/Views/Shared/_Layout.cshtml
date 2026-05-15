@@ -7,21 +7,32 @@
     <title>@ViewData["Title"] - Aldaman</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-        :root {
-            @foreach (var style in await StyleService.GetActiveStylesAsync())
-            {
-                @Html.Raw($"{style.Key}: {style.Value};")
+            :root {
+                @foreach (var style in await StyleService.GetActiveStylesAsync())
+                {
+                    @Html.Raw($"{style.Key}: {style.Value};")
+                }
             }
-        }
+
+            #site-search:focus {
+                border-color: var(--brand-primary) !important;
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
+                outline: none !important;
+            }
+
+            .dark #site-search:focus {
+                border-color: var(--brand-accent) !important;
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent), transparent 70%) !important;
+            }
     </style>
     @await RenderSectionAsync("Styles", required: false)
     <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+            // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
     </script>
 </head>
 <body class="flex flex-col min-h-full bg-brand-bg-light dark:bg-brand-bg-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
@@ -29,13 +40,25 @@
         <nav class="container flex items-center justify-between h-16">
             <div class="flex items-center gap-8">
                 @await Component.InvokeAsync("Brand")
-                
-                <div class="hidden md:flex items-center gap-6">
+
+                <div class="flex items-center gap-6">
                     @await Component.InvokeAsync("TopNavigation")
 
                     <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
-                    
+
                     <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <input type="text" id="site-search"
+                           class="block w-48 lg:w-64 p-3 pl-4 pr-10 text-sm text-slate-900 border border-slate-200 rounded-full bg-white shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400 dark:text-white transition-all focus:w-64 lg:focus:w-80 outline-none"
+                           placeholder="@Localizer[UIResourceKeys.Search]..."
+                           autocomplete="off"
+                           data-culture="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+                    <div id="search-results" class="absolute left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl hidden overflow-hidden z-[60]">
+                    </div>
                 </div>
             </div>
 

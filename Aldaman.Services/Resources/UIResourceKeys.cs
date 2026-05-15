@@ -10,6 +10,7 @@ public static class UIResourceKeys
     public const string Logout = nameof(Logout);
     public const string Login = nameof(Login);
     public const string Admin = nameof(Admin);
+    public const string Search = nameof(Search);
 
     // Account & Auth
     public const string AccessDenied = nameof(AccessDenied);
