@@ -11,7 +11,7 @@
     <div class="mb-8">
         <a asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
             <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            @Localizer["BackToBlog"]
+            @Localizer[UIResourceKeys.AllArticles]
         </a>
     </div>
 
@@ -37,33 +37,31 @@
         </div>
         
         <footer>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="flex flex-row justify-end gap-3 sm:gap-6">
                 @if (Model.PreviousPost != null)
                 {
-                    <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="group flex items-center gap-4 p-3 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="group flex items-center gap-2 p-3 sm:p-4 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border border-slate-200 dark:border-white/10 hover:border-brand-primary/50 dark:hover:border-brand-accent/50 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm hover:shadow-md flex-1 sm:flex-none sm:min-w-[220px] sm:max-w-[320px] min-w-0">
+                        <div class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
+                            <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         </div>
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5">@Localizer["PreviousPost"]</span>
-                            <span class="font-bold line-clamp-1">@Model.PreviousPost.Title</span>
+                        <div class="flex flex-col flex-1 min-w-0 overflow-hidden text-center px-1">
+                            <span class="text-[9px] sm:text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5 truncate">@Localizer["PreviousPost"]</span>
+                            <span class="text-xs sm:text-base font-bold line-clamp-1">@Model.PreviousPost.Title</span>
                         </div>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0"></div> @* Spacer for symmetry *@
                     </a>
-                }
-                else
-                {
-                    <div class="hidden sm:block"></div>
                 }
 
                 @if (Model.NextPost != null)
                 {
-                    <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="group flex items-center justify-end text-right gap-4 p-3 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border">
-                        <div class="flex flex-col min-w-0">
-                            <span class="text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5">@Localizer["NextPost"]</span>
-                            <span class="font-bold line-clamp-1">@Model.NextPost.Title</span>
+                    <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="group flex items-center gap-2 p-3 sm:p-4 rounded-2xl text-brand-primary dark:text-brand-accent transition-all border border-slate-200 dark:border-white/10 hover:border-brand-primary/50 dark:hover:border-brand-accent/50 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm shadow-sm hover:shadow-md flex-1 sm:flex-none sm:min-w-[220px] sm:max-w-[320px] min-w-0">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0"></div> @* Spacer for symmetry *@
+                        <div class="flex flex-col flex-1 min-w-0 overflow-hidden text-center px-1">
+                            <span class="text-[9px] sm:text-[10px] uppercase tracking-widest font-black opacity-60 mb-0.5 truncate">@Localizer["NextPost"]</span>
+                            <span class="text-xs sm:text-base font-bold line-clamp-1">@Model.NextPost.Title</span>
                         </div>
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        <div class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-primary text-white group-hover:scale-110 transition-transform flex-shrink-0 shadow-lg shadow-brand-primary/20">
+                            <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </a>
                 }

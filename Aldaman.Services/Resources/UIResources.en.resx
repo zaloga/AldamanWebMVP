@@ -231,8 +231,8 @@
   <data name="BackToList" xml:space="preserve">
     <value>Back to list</value>
   </data>
-  <data name="BackToBlog" xml:space="preserve">
-    <value>Back to blog</value>
+  <data name="AllArticles" xml:space="preserve">
+    <value>All articles</value>
   </data>
   <data name="BackToSite" xml:space="preserve">
     <value>Back to site</value>

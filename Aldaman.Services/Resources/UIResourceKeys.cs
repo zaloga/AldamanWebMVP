@@ -27,6 +27,7 @@ public static class UIResourceKeys
     public const string Blog = nameof(Blog);
     public const string BlogSubtitle = nameof(BlogSubtitle);
     public const string Article = nameof(Article);
+    public const string AllArticles = nameof(AllArticles);
     public const string Administrator = nameof(Administrator);
 
     // Contact

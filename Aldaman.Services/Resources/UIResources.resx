@@ -231,8 +231,8 @@
   <data name="BackToList" xml:space="preserve">
     <value>Zpět na seznam</value>
   </data>
-  <data name="BackToBlog" xml:space="preserve">
-    <value>Zpět na blog</value>
+  <data name="AllArticles" xml:space="preserve">
+    <value>Výpis všech článků</value>
   </data>
   <data name="BackToSite" xml:space="preserve">
     <value>Zpět na web</value>
