@@ -32,12 +32,4 @@
     <Touch Files="node_modules\.install-stamp" AlwaysCreate="true" />
   </Target>
 
-  <Target Name="BuildTailwind" BeforeTargets="Build" DependsOnTargets="NpmInstall" Inputs="tailwind.config.js;config\admin-input.css;@(Content-&gt;WithMetadataValue('Extension', '.cshtml'))" Outputs="wwwroot\css\admin.css">
-    <Exec Command="npm run build" />
-  </Target>
-
-  <Target Name="CleanTailwind" AfterTargets="Clean">
-    <Delete Files="wwwroot\css\admin.css" />
-  </Target>
-
 </Project>
