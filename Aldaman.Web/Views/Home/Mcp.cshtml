@@ -1,0 +1,116 @@
+@{
+    ViewData["Title"] = "MCP API for AI";
+}
+
+<div class="py-12 md:py-20 max-w-5xl mx-auto px-4">
+    <!-- Header -->
+    <header class="mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
+            </span>
+            Model Context Protocol
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
+            MCP API for <span class="text-brand-primary">AI Agents</span>
+        </h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
+            Integrate Aldaman directly into your LLM workflows. The Model Context Protocol implementation enables AI agents to browse content, search articles, and interact with site resources with native context awareness.
+        </p>
+    </header>
+
+    <!-- Content Sections -->
+    <div class="space-y-12">
+        <!-- Step 1 -->
+        <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
+            <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-brand-primary text-white text-sm font-bold shadow-lg">1</div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Establish SSE Connection</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
+                Connect to the Server-Sent Events stream to create a persistent communication channel.
+            </p>
+            <div class="flex items-center gap-3 bg-slate-900 rounded-xl p-4 font-mono text-sm mb-4 border border-white/5">
+                <span class="text-emerald-400">GET</span>
+                <span class="text-slate-300">/api/mcp/sse</span>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5">
+                <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-widest">Initial Event</p>
+                <code class="text-xs text-brand-primary dark:text-brand-accent break-all">event: endpoint | data: https://aldaman.cz/api/mcp/message?sessionId=...</code>
+            </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
+            <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-brand-accent text-white text-sm font-bold shadow-lg">2</div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Execute JSON-RPC Requests</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
+                Send standard MCP requests using the unique session URL provided by the SSE stream.
+            </p>
+            <div class="flex items-center gap-3 bg-slate-900 rounded-xl p-4 font-mono text-sm mb-6 border border-white/5">
+                <span class="text-blue-400">POST</span>
+                <span class="text-slate-300">/api/mcp/message?sessionId={id}</span>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-5 rounded-xl bg-slate-900 border border-white/5">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">List Tools</p>
+                    <pre class="text-[11px] text-slate-300 leading-tight"><code>{
+  "jsonrpc": "2.0",
+  "method": "tools/list",
+  "id": 1
+}</code></pre>
+                </div>
+                <div class="p-5 rounded-xl bg-slate-900 border border-white/5">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">Search Request</p>
+                    <pre class="text-[11px] text-slate-300 leading-tight"><code>{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "search_site",
+    "arguments": { "query": "..." }
+  },
+  "id": 2
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
+            <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 dark:bg-white text-white dark:text-slate-900 text-sm font-bold shadow-lg">3</div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Receive Async Responses</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
+                The server processes requests asynchronously and streams responses back via the SSE channel.
+            </p>
+            <div class="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Incoming SSE Event</p>
+                </div>
+                <code class="text-xs text-slate-700 dark:text-slate-300 break-all">event: message | data: {"jsonrpc":"2.0","result":{...},"id":2}</code>
+            </div>
+        </section>
+    </div>
+
+    <!-- Features -->
+    <div class="grid md:grid-cols-2 gap-8 mt-16">
+        <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-brand-primary/10 text-brand-primary flex items-center justify-center shadow-inner">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+            <div>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1">Native Context</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Exposes site hierarchy and metadata directly to LLM context windows.</p>
+            </div>
+        </div>
+        <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center shadow-inner">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <div>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1">Low Latency</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Optimized data retrieval designed for high-speed AI interactions.</p>
+            </div>
+        </div>
+    </div>
+</div>
