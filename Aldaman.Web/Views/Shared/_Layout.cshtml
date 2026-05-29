@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
             :root {
-                @foreach (var style in await StyleService.GetActiveStylesAsync())
+                @foreach (var style
+                in await StyleService.GetActiveStylesAsync())
                 {
                     @Html.Raw($"{style.Key}: {style.Value};")
                 }
@@ -74,16 +75,9 @@
     </header>
 
     <main role="main" class="flex-grow bg-brand-bg-light dark:bg-brand-bg-dark">
-        @if (ViewData["FullWidth"] as bool? == true)
-        {
+        <div class="container">
             @RenderBody()
-        }
-        else
-        {
-            <div class="container">
-                @RenderBody()
-            </div>
-        }
+        </div>
     </main>
 
     <footer class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/10 py-10">

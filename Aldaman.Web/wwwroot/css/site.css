@@ -2553,7 +2553,7 @@
   .container {
     margin-inline: auto;
     max-width: var(--container-7xl);
-    padding: calc(var(--spacing) * 5);
+    padding: calc(var(--spacing) * 10);
   }
 }
 .ql-snow .ql-editor {
