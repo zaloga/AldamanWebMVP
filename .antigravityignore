@@ -1,0 +1,17 @@
+# Git a verzování
+.git/
+
+# .NET kompilované výstupy a cache
+[Bb]in/
+[Oo]bj/
+
+# Nástroje a dočasné soubory
+.vs/
+.idea/
+TestResults/
+*.user
+*.suo
+/notes/
+
+# Frontend (pokud využíváš Node.js build tooling pro MVC UI)
+node_modules/
