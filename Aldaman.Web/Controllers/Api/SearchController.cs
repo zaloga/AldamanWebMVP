@@ -37,7 +37,7 @@ public sealed class SearchController : ControllerBase
             }
 
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            var results = await SearchService.SearchAsync(query, culture, baseUrl, HttpContext.RequestAborted);
+            var results = await SearchService.SearchCachedAsync(query, culture, baseUrl, HttpContext.RequestAborted);
 
             return Ok(new
             {
@@ -71,7 +71,7 @@ public sealed class SearchController : ControllerBase
             }
 
             string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            List<AutocompleteResultDto> results = await SearchService.AutocompleteAsync(query, culture, baseUrl, HttpContext.RequestAborted);
+            List<AutocompleteResultDto> results = await SearchService.AutocompleteCachedAsync(query, culture, baseUrl, HttpContext.RequestAborted);
 
             return Ok(new
             {

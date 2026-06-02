@@ -12,7 +12,7 @@ public interface ISearchService
     /// <param name="baseUrl">Base URL of the website (for absolute URLs).</param>
     /// <param name="ct">Cancellation token.</param>
     /// <returns>List of search results.</returns>
-    Task<List<SearchResultDto>> SearchAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default);
+    Task<List<SearchResultDto>> SearchCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default);
 
     /// <summary>
     /// Searches for content and returns only Title and Url (for autocomplete).
@@ -22,5 +22,5 @@ public interface ISearchService
     /// <param name="baseUrl">Base URL of the website.</param>
     /// <param name="ct">Cancellation token.</param>
     /// <returns>List of autocomplete results.</returns>
-    Task<List<AutocompleteResultDto>> AutocompleteAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default);
+    Task<List<AutocompleteResultDto>> AutocompleteCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default);
 }

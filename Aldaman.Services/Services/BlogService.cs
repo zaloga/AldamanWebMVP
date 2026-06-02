@@ -26,6 +26,8 @@ public sealed class BlogService : IBlogService
         MediaService = mediaService;
     }
 
+    #region Admin web part methods
+
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null)
     {
         var dbQuery = Context.BlogPosts
@@ -81,67 +83,6 @@ public sealed class BlogService : IBlogService
             TotalCount = totalCount,
             Page = query.Page,
             PageSize = query.PageSize
-        };
-    }
-
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture)
-    {
-        var dbQuery = Context.BlogPosts
-            .Include(p => p.Translations)
-            .Include(p => p.CoverMediaAsset)
-            .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
-            .OrderByDescending(p => p.PublishedAtUtc)
-            .AsQueryable();
-
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(p => new BlogPostListItemDto
-            {
-                Id = p.Id,
-                Title = p.Translations.First(t => t.CultureCode == culture).Title,
-                Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
-                Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
-                PublishedAtUtc = p.PublishedAtUtc,
-                IsPublished = p.IsPublished,
-                CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
-                CreatedAtUtc = p.CreatedAtUtc
-            })
-            .ToListAsync();
-
-        return new PagedResultDto<BlogPostListItemDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize
-        };
-    }
-
-    public async Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture)
-    {
-        var post = await Context.BlogPosts
-            .Include(p => p.Translations)
-            .Include(p => p.CoverMediaAsset)
-            .Include(p => p.CreatedByUser)
-            .FirstOrDefaultAsync(p => p.IsPublished && p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
-
-        if (post == null) return null;
-
-        var translation = post.Translations.First(t => t.CultureCode == culture);
-
-        return new BlogPostDetailDto
-        {
-            Id = post.Id,
-            Title = translation.Title,
-            Perex = translation.Perex,
-            BodyHtml = translation.BodyHtml,
-            BodyDeltaJson = translation.BodyDeltaJson,
-            PlainText = translation.PlainText,
-            PublishedAtUtc = post.PublishedAtUtc,
-            AuthorName = post.CreatedByUser?.DisplayName,
-            CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
         };
     }
 
@@ -450,6 +391,71 @@ public sealed class BlogService : IBlogService
         }
     }
 
+    #endregion
+
+    #region Public web prart methods
+
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture)
+    {
+        var dbQuery = Context.BlogPosts
+            .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
+            .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
+            .OrderByDescending(p => p.PublishedAtUtc)
+            .AsQueryable();
+
+        var totalCount = await dbQuery.CountAsync();
+        var items = await dbQuery
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new BlogPostListItemDto
+            {
+                Id = p.Id,
+                Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
+                Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
+                PublishedAtUtc = p.PublishedAtUtc,
+                IsPublished = p.IsPublished,
+                CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
+                CreatedAtUtc = p.CreatedAtUtc
+            })
+            .ToListAsync();
+
+        return new PagedResultDto<BlogPostListItemDto>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize
+        };
+    }
+
+    public async Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture)
+    {
+        var post = await Context.BlogPosts
+            .Include(p => p.Translations)
+            .Include(p => p.CoverMediaAsset)
+            .Include(p => p.CreatedByUser)
+            .FirstOrDefaultAsync(p => p.IsPublished && p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
+
+        if (post == null) return null;
+
+        var translation = post.Translations.First(t => t.CultureCode == culture);
+
+        return new BlogPostDetailDto
+        {
+            Id = post.Id,
+            Title = translation.Title,
+            Perex = translation.Perex,
+            BodyHtml = translation.BodyHtml,
+            BodyDeltaJson = translation.BodyDeltaJson,
+            PlainText = translation.PlainText,
+            PublishedAtUtc = post.PublishedAtUtc,
+            AuthorName = post.CreatedByUser?.DisplayName,
+            CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
+        };
+    }
+
     public async Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id)
     {
         return await Context.BlogPostTranslations
@@ -520,4 +526,6 @@ public sealed class BlogService : IBlogService
             .Select(t => t.Slug)
             .FirstOrDefaultAsync();
     }
+
+    #endregion
 }

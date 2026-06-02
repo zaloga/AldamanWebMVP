@@ -117,7 +117,7 @@ public sealed class McpMessageHandlerService : IMcpMessageHandlerService
                 culture = cultureObj.ToString()!;
             }
 
-            var searchResults = await _searchService.SearchAsync(query, culture, baseUrl, cancellationToken);
+            var searchResults = await _searchService.SearchCachedAsync(query, culture, baseUrl, cancellationToken);
 
             var result = new McpCallToolResult();
             foreach (var item in searchResults)

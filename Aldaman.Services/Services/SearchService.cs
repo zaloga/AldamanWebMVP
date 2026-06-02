@@ -18,7 +18,7 @@ public sealed class SearchService : ISearchService
         Cache = cache;
     }
 
-    public async Task<List<SearchResultDto>> SearchAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
+    public async Task<List<SearchResultDto>> SearchCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -70,7 +70,7 @@ public sealed class SearchService : ISearchService
         return cachedResults;
     }
 
-    public async Task<List<AutocompleteResultDto>> AutocompleteAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
+    public async Task<List<AutocompleteResultDto>> AutocompleteCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(query))
         {

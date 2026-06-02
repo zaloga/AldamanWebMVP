@@ -92,7 +92,7 @@ public class McpMessageHandlerTests
             Params = jsonElement
         };
 
-        _searchServiceMock.Setup(s => s.SearchAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()))
+        _searchServiceMock.Setup(s => s.SearchCachedAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Aldaman.Services.Dtos.Search.SearchResultDto>
             {
                 new() { Title = "Result 1", Content = "Content", Url = "/url", Type = "Post" }
@@ -106,6 +106,6 @@ public class McpMessageHandlerTests
         var result = Assert.IsType<McpCallToolResult>(response.Result);
         Assert.Single(result.Content);
         Assert.Contains("Result 1", result.Content[0].Text);
-        _searchServiceMock.Verify(s => s.SearchAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()), Times.Once);
+        _searchServiceMock.Verify(s => s.SearchCachedAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()), Times.Once);
     }
 }
