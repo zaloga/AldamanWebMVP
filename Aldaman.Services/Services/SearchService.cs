@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Enums;
 using Aldaman.Services.Dtos.Search;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -75,10 +76,12 @@ public sealed class SearchService : ISearchService
         baseUrl = baseUrl.TrimEnd('/');
 
         // 1. Search Blog Posts
-        var blogResults = await Context.BlogPostTranslations
+        List<AutocompleteResultDto> blogResults = await Context.BlogPostTranslations
             .Include(t => t.BlogPost)
-            .Where(t => t.CultureCode == cultureCode && t.BlogPost.IsPublished)
-            .Where(t => t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query)))
+            .Where(t =>
+                t.CultureCode == cultureCode
+                && t.BlogPost.IsPublished
+                && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
             .OrderByDescending(t => t.BlogPost.PublishedAtUtc)
             .Take(10)
             .Select(t => new AutocompleteResultDto
@@ -89,24 +92,27 @@ public sealed class SearchService : ISearchService
             .ToListAsync(ct);
 
         // 2. Search Content Pages
-        var pageResults = await Context.ContentPageTranslations
+        List<AutocompleteResultDto> pageResults = await Context.ContentPageTranslations
             .Include(t => t.ContentPage)
-            .Where(t => t.CultureCode == cultureCode)
-            .Where(t => t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query)))
+            .Where(t =>
+                t.CultureCode == cultureCode
+                && t.ContentPage.PlaceToShow != PlaceToShowEnum.None
+                && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
             .OrderBy(t => t.ContentPage.PageOrder)
             .Take(10)
             .Select(t => new AutocompleteResultDto
             {
                 Title = t.Title,
-                Url = $"{baseUrl}/{cultureCode}/page/{t.Slug}"
+                Url = t.ContentPage.PlaceToShow == PlaceToShowEnum.HomePage
+                    ? $"{baseUrl}/{cultureCode}#{t.Slug}"
+                    : $"{baseUrl}/{cultureCode}/page/{t.Slug}"
             })
             .ToListAsync(ct);
 
         // Combine and return
-        var allResults = blogResults.Concat(pageResults)
+        List<AutocompleteResultDto> allResults = [.. blogResults.Concat(pageResults)
             .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
-            .Take(10)
-            .ToList();
+            .Take(10)];
 
         return allResults;
     }

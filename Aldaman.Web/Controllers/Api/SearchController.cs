@@ -1,3 +1,4 @@
+using Aldaman.Services.Dtos.Search;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,8 +70,8 @@ public sealed class SearchController : ControllerBase
                 return BadRequest("Query parameter is required and must have at least 2 characters.");
             }
 
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            var results = await SearchService.AutocompleteAsync(query, culture, baseUrl, HttpContext.RequestAborted);
+            string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            List<AutocompleteResultDto> results = await SearchService.AutocompleteAsync(query, culture, baseUrl, HttpContext.RequestAborted);
 
             return Ok(new
             {
