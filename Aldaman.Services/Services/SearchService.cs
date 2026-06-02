@@ -11,11 +11,13 @@ public sealed class SearchService : ISearchService
 {
     private AppDbContext Context { get; }
     private IMemoryCache Cache { get; }
+    private MemoryCacheEntryOptions CacheOptions { get; }
 
     public SearchService(AppDbContext context, IMemoryCache cache)
     {
         Context = context;
         Cache = cache;
+        CacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
     }
 
     public async Task<List<SearchResultDto>> SearchCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)
@@ -61,10 +63,7 @@ public sealed class SearchService : ISearchService
                 .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase)) // Very basic relevance: title matches first
                 .ToList();
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
-
-            Cache.Set(cacheKey, cachedResults, cacheOptions);
+            Cache.Set(cacheKey, cachedResults, CacheOptions);
         }
 
         return cachedResults;
@@ -111,10 +110,7 @@ public sealed class SearchService : ISearchService
                 .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .Take(10)];
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
-
-            Cache.Set(cacheKey, cachedResults, cacheOptions);
+            Cache.Set(cacheKey, cachedResults, CacheOptions);
         }
 
         return cachedResults;

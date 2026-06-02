@@ -20,6 +20,7 @@ public sealed class BlogService : IBlogService
     private LocalizationSettings Localization { get; }
     private IMediaService MediaService { get; }
     private IMemoryCache Cache { get; }
+    private MemoryCacheEntryOptions CacheOptions { get; }
 
     public BlogService(
         AppDbContext context,
@@ -31,6 +32,9 @@ public sealed class BlogService : IBlogService
         Localization = localizationOptions.Value;
         MediaService = mediaService;
         Cache = cache;
+        CacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
     }
 
     /// <summary>
@@ -457,11 +461,7 @@ public sealed class BlogService : IBlogService
                 PageSize = pageSize
             };
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -501,11 +501,7 @@ public sealed class BlogService : IBlogService
                 };
             }
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -521,11 +517,7 @@ public sealed class BlogService : IBlogService
                 .Where(t => t.BlogPostId == id)
                 .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -585,11 +577,7 @@ public sealed class BlogService : IBlogService
                 result = (previousDto, nextDto);
             }
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -618,11 +606,7 @@ public sealed class BlogService : IBlogService
                     .FirstOrDefaultAsync();
             }
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;

@@ -21,6 +21,7 @@ public sealed class ContentPageService : IContentPageService
     private LocalizationSettings Localization { get; }
     private IMediaService MediaService { get; }
     private IMemoryCache Cache { get; }
+    private MemoryCacheEntryOptions CacheOptions { get; }
 
     public ContentPageService(
         AppDbContext context,
@@ -32,6 +33,9 @@ public sealed class ContentPageService : IContentPageService
         Localization = localizationOptions.Value;
         MediaService = mediaService;
         Cache = cache;
+        CacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
     }
 
     /// <summary>
@@ -369,11 +373,7 @@ public sealed class ContentPageService : IContentPageService
         {
             result = await GetPagedContentPagesAsync(query, culture);
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -415,11 +415,7 @@ public sealed class ContentPageService : IContentPageService
                 }
             }
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -447,11 +443,7 @@ public sealed class ContentPageService : IContentPageService
                 })
                 .ToListAsync();
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -491,11 +483,7 @@ public sealed class ContentPageService : IContentPageService
                 })
                 .ToListAsync();
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -511,11 +499,7 @@ public sealed class ContentPageService : IContentPageService
                 .Where(t => t.ContentPageId == id)
                 .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
@@ -544,11 +528,7 @@ public sealed class ContentPageService : IContentPageService
                     .FirstOrDefaultAsync();
             }
 
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
-                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
-
-            Cache.Set(cacheKey, result, cacheOptions);
+            Cache.Set(cacheKey, result, CacheOptions);
         }
 
         return result;
