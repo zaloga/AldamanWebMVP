@@ -72,4 +72,9 @@ public interface IBlogService
     /// Gets navigation information (previous and next post) for a blog post.
     /// </summary>
     Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationAsync(Guid currentPostId, string culture);
+
+    /// <summary>
+    /// Finds the slug for a published blog post in a target culture if it exists under the given slug in any other culture.
+    /// </summary>
+    Task<string?> GetRedirectSlugAsync(string slug, string targetCulture);
 }

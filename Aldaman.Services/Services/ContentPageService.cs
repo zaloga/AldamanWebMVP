@@ -410,4 +410,19 @@ public sealed class ContentPageService : IContentPageService
             .Where(t => t.ContentPageId == id)
             .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
     }
+
+    public async Task<string?> GetRedirectSlugAsync(string slug, string targetCulture)
+    {
+        var pageId = await Context.ContentPageTranslations
+            .Where(t => t.Slug == slug)
+            .Select(t => (Guid?)t.ContentPageId)
+            .FirstOrDefaultAsync();
+
+        if (pageId == null) return null;
+
+        return await Context.ContentPageTranslations
+            .Where(t => t.ContentPageId == pageId.Value && t.CultureCode == targetCulture)
+            .Select(t => t.Slug)
+            .FirstOrDefaultAsync();
+    }
 }

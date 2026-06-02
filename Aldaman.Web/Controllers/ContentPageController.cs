@@ -26,6 +26,14 @@ public sealed class ContentPageController : Controller
 
         if (pageDetail is null)
         {
+            if (cultureCode != "cs")
+            {
+                var csSlug = await ContentPageService.GetRedirectSlugAsync(slug, "cs");
+                if (csSlug != null)
+                {
+                    return RedirectToAction("Detail", "ContentPage", new { culture = "cs", slug = csSlug });
+                }
+            }
             return NotFound();
         }
 

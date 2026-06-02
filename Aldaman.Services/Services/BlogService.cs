@@ -505,4 +505,19 @@ public sealed class BlogService : IBlogService
 
         return (previousDto, nextDto);
     }
+
+    public async Task<string?> GetRedirectSlugAsync(string slug, string targetCulture)
+    {
+        var postId = await Context.BlogPostTranslations
+            .Where(t => t.Slug == slug && t.BlogPost.IsPublished)
+            .Select(t => (Guid?)t.BlogPostId)
+            .FirstOrDefaultAsync();
+
+        if (postId == null) return null;
+
+        return await Context.BlogPostTranslations
+            .Where(t => t.BlogPostId == postId.Value && t.CultureCode == targetCulture)
+            .Select(t => t.Slug)
+            .FirstOrDefaultAsync();
+    }
 }

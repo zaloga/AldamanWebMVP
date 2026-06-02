@@ -83,4 +83,9 @@ public interface IContentPageService
     /// Gets slugs for all translations of a page.
     /// </summary>
     Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
+
+    /// <summary>
+    /// Finds the slug for a page in a target culture if it exists under the given slug in any other culture.
+    /// </summary>
+    Task<string?> GetRedirectSlugAsync(string slug, string targetCulture);
 }

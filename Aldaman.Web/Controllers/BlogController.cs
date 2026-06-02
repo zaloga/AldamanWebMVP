@@ -49,6 +49,14 @@ public sealed class BlogController : Controller
 
         if (postDetail is null)
         {
+            if (cultureCode != "cs")
+            {
+                var csSlug = await BlogService.GetRedirectSlugAsync(slug, "cs");
+                if (csSlug != null)
+                {
+                    return RedirectToAction("Detail", "Blog", new { culture = "cs", slug = csSlug });
+                }
+            }
             return NotFound();
         }
 
