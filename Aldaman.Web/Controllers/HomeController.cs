@@ -18,7 +18,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var homePages = await ContentPageService.GetHomePageAsync(cultureCode);
+        var homePages = await ContentPageService.GetHomePageCachedAsync(cultureCode);
 
         return View(homePages);
     }

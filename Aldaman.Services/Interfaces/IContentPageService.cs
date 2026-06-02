@@ -11,12 +11,12 @@ public interface IContentPageService
     /// <summary>
     /// Gets a page by its URL slug.
     /// </summary>
-    Task<ContentPageDetailDto?> GetContentPageBySlugAsync(string slug, string culture);
+    Task<ContentPageDetailDto?> GetContentPageBySlugCachedAsync(string slug, string culture);
 
     /// <summary>
     /// Gets the home page contents.
     /// </summary>
-    Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture);
+    Task<IEnumerable<ContentPageDetailDto>> GetHomePageCachedAsync(string culture);
 
     /// <summary>
     /// Gets pages marked for display on home page as navigation links.
@@ -36,7 +36,7 @@ public interface IContentPageService
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.
     /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null);
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesCachedAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Gets a page for editing in admin.
@@ -82,10 +82,15 @@ public interface IContentPageService
     /// <summary>
     /// Gets slugs for all translations of a page.
     /// </summary>
-    Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
+    Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id);
 
     /// <summary>
     /// Finds the slug for a page in a target culture if it exists under the given slug in any other culture.
     /// </summary>
-    Task<string?> GetRedirectSlugAsync(string slug, string targetCulture);
+    Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture);
+
+    /// <summary>
+    /// Gets a paged list of content pages for admin listing with pagination, sorting and filtering, without caching.
+    /// </summary>
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null);
 }

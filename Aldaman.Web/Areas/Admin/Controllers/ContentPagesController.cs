@@ -14,17 +14,17 @@ public class ContentPagesController : BaseAdminController
     }
 
     public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query, 
+        [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         var result = await ContentPageService.GetPagedContentPagesAsync(query, culture);
         var deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery, culture);
-        
+
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
         ViewBag.DeletedItems = deletedResult;
-        
+
         return View(result);
     }
 

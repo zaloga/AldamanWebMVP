@@ -7,25 +7,46 @@ using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace Aldaman.Services.Services;
 
 public sealed class ContentPageService : IContentPageService
 {
+    private static CancellationTokenSource _pageCacheTokenSource = new();
+
     private AppDbContext Context { get; }
     private LocalizationSettings Localization { get; }
     private IMediaService MediaService { get; }
+    private IMemoryCache Cache { get; }
 
     public ContentPageService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
-        IMediaService mediaService)
+        IMediaService mediaService,
+        IMemoryCache cache)
     {
         Context = context;
         Localization = localizationOptions.Value;
         MediaService = mediaService;
+        Cache = cache;
     }
+
+    /// <summary>
+    /// Instantly invalidates all blog-related cached entries.
+    /// It swaps the shared <see cref="_blogCacheTokenSource"/> with a new instance and cancels the old one,
+    /// triggering eviction for all cache entries associated with the cancellation change token.
+    /// </summary>
+    private static void InvalidateCache()
+    {
+        var oldSource = Interlocked.Exchange(ref _pageCacheTokenSource, new CancellationTokenSource());
+        oldSource.Cancel();
+        oldSource.Dispose();
+    }
+
+    #region Admin web part methods
 
     public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null)
     {
@@ -75,79 +96,6 @@ public sealed class ContentPageService : IContentPageService
             Page = query.Page,
             PageSize = query.PageSize
         };
-    }
-
-    public async Task<ContentPageDetailDto?> GetContentPageBySlugAsync(string slug, string culture)
-    {
-        var page = await Context.ContentPages
-            .Include(p => p.Translations)
-            .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture));
-
-        if (page == null) return null;
-
-        var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture);
-        if (content == null) return null;
-
-        return new ContentPageDetailDto
-        {
-            Id = page.Id,
-            PageKey = page.PageKey,
-            Title = content.Title,
-            Slug = content.Slug,
-            BodyHtml = content.BodyHtml,
-            BodyDeltaJson = content.BodyDeltaJson,
-            PlainText = content.PlainText
-        };
-    }
-
-    public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageAsync(string culture)
-    {
-        return await Context.ContentPages
-            .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
-            .Where(p => p.Translations.Any(t => t.CultureCode == culture))
-            .OrderBy(p => p.PageOrder)
-            .Select(p => new ContentPageDetailDto
-            {
-                Id = p.Id,
-                PageKey = p.PageKey,
-                Title = p.Translations.First(t => t.CultureCode == culture).Title,
-                Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
-                BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
-                BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,
-                PlainText = p.Translations.First(t => t.CultureCode == culture).PlainText
-            })
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture)
-    {
-        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.HomePage);
-    }
-
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture)
-    {
-        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.TopNavigation);
-    }
-
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture)
-    {
-        return await GetNavigationInternalAsync(culture, PlaceToShowEnum.Footer);
-    }
-
-    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalAsync(string culture, PlaceToShowEnum placeToShow)
-    {
-        return await Context.ContentPages
-            .Where(p => p.PlaceToShow.HasFlag(placeToShow))
-            .SelectMany(p => p.Translations.Where(t => t.CultureCode == culture))
-            .Where(t => !string.IsNullOrEmpty(t.Title) && !string.IsNullOrEmpty(t.Slug))
-            .OrderBy(t => t.ContentPage.PageOrder)
-            .Select(t => new ContentPageNavigationDto
-            {
-                PageKey = t.ContentPage.PageKey,
-                Title = t.Title,
-                Slug = t.Slug
-            })
-            .ToListAsync();
     }
 
     public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id)
@@ -223,6 +171,7 @@ public sealed class ContentPageService : IContentPageService
 
         Context.ContentPages.Add(page);
         await Context.SaveChangesAsync();
+        InvalidateCache();
     }
 
     public async Task UpdateContentPageAsync(Guid id, ContentPageEditDto dto)
@@ -307,6 +256,7 @@ public sealed class ContentPageService : IContentPageService
         }
 
         await Context.SaveChangesAsync();
+        InvalidateCache();
 
         // 4. Cleanup orphaned media files
         if (mediaToDelete.Any())
@@ -323,6 +273,7 @@ public sealed class ContentPageService : IContentPageService
             page.IsDeleted = true;
             page.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync();
+            InvalidateCache();
         }
     }
 
@@ -370,6 +321,7 @@ public sealed class ContentPageService : IContentPageService
             page.DeletedAtUtc = null;
             page.DeletedByUserId = null;
             await Context.SaveChangesAsync();
+            InvalidateCache();
         }
     }
 
@@ -391,6 +343,7 @@ public sealed class ContentPageService : IContentPageService
             // Delete page
             Context.ContentPages.Remove(page);
             await Context.SaveChangesAsync();
+            InvalidateCache();
 
             // Remove images used by RTE
             var rteMediaPaths = page.Translations
@@ -404,25 +357,202 @@ public sealed class ContentPageService : IContentPageService
         }
     }
 
-    public async Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id)
+    #endregion
+
+    #region Public web part methods
+
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesCachedAsync(PaginationQuery query, string? culture = null)
     {
-        return await Context.ContentPageTranslations
-            .Where(t => t.ContentPageId == id)
-            .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+        string cacheKey = $"Page:Paged:{query.Page}:{query.PageSize}:{query.SearchTerm ?? ""}:{query.SortBy ?? ""}:{query.SortDescending}:{culture ?? ""}";
+
+        if (!Cache.TryGetValue(cacheKey, out PagedResultDto<ContentPageListItemDto>? result) || result == null)
+        {
+            result = await GetPagedContentPagesAsync(query, culture);
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
     }
 
-    public async Task<string?> GetRedirectSlugAsync(string slug, string targetCulture)
+    public async Task<ContentPageDetailDto?> GetContentPageBySlugCachedAsync(string slug, string culture)
     {
-        var pageId = await Context.ContentPageTranslations
-            .Where(t => t.Slug == slug)
-            .Select(t => (Guid?)t.ContentPageId)
-            .FirstOrDefaultAsync();
+        string cacheKey = $"Page:Slug:{culture}:{slug.ToLowerInvariant()}";
 
-        if (pageId == null) return null;
+        if (!Cache.TryGetValue(cacheKey, out ContentPageDetailDto? result))
+        {
+            var page = await Context.ContentPages
+                .Include(p => p.Translations)
+                .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture));
 
-        return await Context.ContentPageTranslations
-            .Where(t => t.ContentPageId == pageId.Value && t.CultureCode == targetCulture)
-            .Select(t => t.Slug)
-            .FirstOrDefaultAsync();
+            if (page == null)
+            {
+                result = null;
+            }
+            else
+            {
+                var content = page.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                if (content == null)
+                {
+                    result = null;
+                }
+                else
+                {
+                    result = new ContentPageDetailDto
+                    {
+                        Id = page.Id,
+                        PageKey = page.PageKey,
+                        Title = content.Title,
+                        Slug = content.Slug,
+                        BodyHtml = content.BodyHtml,
+                        BodyDeltaJson = content.BodyDeltaJson,
+                        PlainText = content.PlainText
+                    };
+                }
+            }
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
     }
+
+    public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageCachedAsync(string culture)
+    {
+        string cacheKey = $"Page:Home:{culture}";
+
+        if (!Cache.TryGetValue(cacheKey, out IEnumerable<ContentPageDetailDto>? result) || result == null)
+        {
+            result = await Context.ContentPages
+                .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+                .Where(p => p.Translations.Any(t => t.CultureCode == culture))
+                .OrderBy(p => p.PageOrder)
+                .Select(p => new ContentPageDetailDto
+                {
+                    Id = p.Id,
+                    PageKey = p.PageKey,
+                    Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                    Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
+                    BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
+                    BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,
+                    PlainText = p.Translations.First(t => t.CultureCode == culture).PlainText
+                })
+                .ToListAsync();
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture)
+    {
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.HomePage);
+    }
+
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture)
+    {
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.TopNavigation);
+    }
+
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture)
+    {
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.Footer);
+    }
+
+    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalCachedAsync(string culture, PlaceToShowEnum placeToShow)
+    {
+        string cacheKey = $"Page:Navigation:{culture}:{placeToShow}";
+
+        if (!Cache.TryGetValue(cacheKey, out IEnumerable<ContentPageNavigationDto>? result) || result == null)
+        {
+            result = await Context.ContentPages
+                .Where(p => p.PlaceToShow.HasFlag(placeToShow))
+                .SelectMany(p => p.Translations.Where(t => t.CultureCode == culture))
+                .Where(t => !string.IsNullOrEmpty(t.Title) && !string.IsNullOrEmpty(t.Slug))
+                .OrderBy(t => t.ContentPage.PageOrder)
+                .Select(t => new ContentPageNavigationDto
+                {
+                    PageKey = t.ContentPage.PageKey,
+                    Title = t.Title,
+                    Slug = t.Slug
+                })
+                .ToListAsync();
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id)
+    {
+        string cacheKey = $"Page:AlternativeSlugs:{id}";
+
+        if (!Cache.TryGetValue(cacheKey, out Dictionary<string, string>? result) || result == null)
+        {
+            result = await Context.ContentPageTranslations
+                .Where(t => t.ContentPageId == id)
+                .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture)
+    {
+        string cacheKey = $"Page:RedirectSlug:{slug.ToLowerInvariant()}:{targetCulture}";
+
+        if (!Cache.TryGetValue(cacheKey, out string? result))
+        {
+            var pageId = await Context.ContentPageTranslations
+                .Where(t => t.Slug == slug)
+                .Select(t => (Guid?)t.ContentPageId)
+                .FirstOrDefaultAsync();
+
+            if (pageId == null)
+            {
+                result = null;
+            }
+            else
+            {
+                result = await Context.ContentPageTranslations
+                    .Where(t => t.ContentPageId == pageId.Value && t.CultureCode == targetCulture)
+                    .Select(t => t.Slug)
+                    .FirstOrDefaultAsync();
+            }
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    #endregion
 }

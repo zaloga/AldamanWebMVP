@@ -26,7 +26,7 @@ public sealed class ContentPageController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        ContentPageDetailDto? pageDetail = await ContentPageService.GetContentPageBySlugAsync(
+        ContentPageDetailDto? pageDetail = await ContentPageService.GetContentPageBySlugCachedAsync(
             slug,
             cultureCode);
 
@@ -36,7 +36,7 @@ public sealed class ContentPageController : Controller
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {
-                var fallbackSlug = await ContentPageService.GetRedirectSlugAsync(slug, defaultCulture);
+                var fallbackSlug = await ContentPageService.GetRedirectSlugCachedAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
                     TempData["ShowTranslationMissingToast"] = true;
@@ -47,7 +47,7 @@ public sealed class ContentPageController : Controller
         }
 
         // Provide alternative URLs for the language switcher
-        var alternativeSlugs = await ContentPageService.GetAlternativeSlugsAsync(pageDetail.Id);
+        var alternativeSlugs = await ContentPageService.GetAlternativeSlugsCachedAsync(pageDetail.Id);
         var alternatives = new Dictionary<string, string>();
         foreach (var slugEntry in alternativeSlugs)
         {

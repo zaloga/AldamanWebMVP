@@ -417,7 +417,7 @@ public sealed class BlogService : IBlogService
 
     #endregion
 
-    #region Public web prart methods
+    #region Public web part methods
 
     public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsCachedAsync(int page, int pageSize, string culture)
     {
