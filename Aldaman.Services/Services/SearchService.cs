@@ -26,11 +26,7 @@ public sealed class SearchService : ISearchService
         baseUrl = baseUrl.TrimEnd('/');
 
         // 1. Search Blog Posts
-        var blogResults = await Context.BlogPostTranslations
-            .Include(t => t.BlogPost)
-            .Where(t => t.CultureCode == cultureCode && t.BlogPost.IsPublished)
-            .Where(t => t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query)))
-            .OrderByDescending(t => t.BlogPost.PublishedAtUtc)
+        var blogResults = await SearchBlogResultsInternal(query, cultureCode)
             .Take(20)
             .Select(t => new SearchResultDto
             {
@@ -42,11 +38,7 @@ public sealed class SearchService : ISearchService
             .ToListAsync(ct);
 
         // 2. Search Content Pages
-        var pageResults = await Context.ContentPageTranslations
-            .Include(t => t.ContentPage)
-            .Where(t => t.CultureCode == cultureCode)
-            .Where(t => t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query)))
-            .OrderBy(t => t.ContentPage.PageOrder)
+        var pageResults = await SearchContentPagesInternal(query, cultureCode)
             .Take(20)
             .Select(t => new SearchResultDto
             {
@@ -76,13 +68,7 @@ public sealed class SearchService : ISearchService
         baseUrl = baseUrl.TrimEnd('/');
 
         // 1. Search Blog Posts
-        List<AutocompleteResultDto> blogResults = await Context.BlogPostTranslations
-            .Include(t => t.BlogPost)
-            .Where(t =>
-                t.CultureCode == cultureCode
-                && t.BlogPost.IsPublished
-                && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
-            .OrderByDescending(t => t.BlogPost.PublishedAtUtc)
+        List<AutocompleteResultDto> blogResults = await SearchBlogResultsInternal(query, cultureCode)
             .Take(10)
             .Select(t => new AutocompleteResultDto
             {
@@ -92,13 +78,7 @@ public sealed class SearchService : ISearchService
             .ToListAsync(ct);
 
         // 2. Search Content Pages
-        List<AutocompleteResultDto> pageResults = await Context.ContentPageTranslations
-            .Include(t => t.ContentPage)
-            .Where(t =>
-                t.CultureCode == cultureCode
-                && t.ContentPage.PlaceToShow != PlaceToShowEnum.None
-                && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
-            .OrderBy(t => t.ContentPage.PageOrder)
+        List<AutocompleteResultDto> pageResults = await SearchContentPagesInternal(query, cultureCode)
             .Take(10)
             .Select(t => new AutocompleteResultDto
             {
@@ -115,5 +95,27 @@ public sealed class SearchService : ISearchService
             .Take(10)];
 
         return allResults;
+    }
+
+    private IOrderedQueryable<Persistence.Entities.BlogPostTranslationEntity> SearchBlogResultsInternal(string query, string cultureCode)
+    {
+        return Context.BlogPostTranslations
+                    .Include(t => t.BlogPost)
+                    .Where(t =>
+                        t.CultureCode == cultureCode
+                        && t.BlogPost.IsPublished
+                        && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
+                    .OrderByDescending(t => t.BlogPost.PublishedAtUtc);
+    }
+
+    private IOrderedQueryable<Persistence.Entities.ContentPageTranslationEntity> SearchContentPagesInternal(string query, string cultureCode)
+    {
+        return Context.ContentPageTranslations
+                    .Include(t => t.ContentPage)
+                    .Where(t =>
+                        t.CultureCode == cultureCode
+                        && t.ContentPage.PlaceToShow != PlaceToShowEnum.None
+                        && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
+                    .OrderBy(t => t.ContentPage.PageOrder);
     }
 }
