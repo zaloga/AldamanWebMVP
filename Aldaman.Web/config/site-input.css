@@ -38,6 +38,10 @@
   .container {
     @apply max-w-7xl mx-auto px-4 py-6 md:p-10;
   }
+
+  .footer-link {
+    @apply text-xs text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors;
+  }
 }
 
 /* Quill editor spacing resets */

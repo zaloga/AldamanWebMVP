@@ -90,18 +90,18 @@
                     &copy; @DateTime.Today.Year Aldaman.
                 </p>
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                    <a asp-area="" asp-controller="Home" asp-action="Mcp" class="text-xs text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors">MCP API for AI</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Search" class="text-xs text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors">Search API for AI</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link">MCP API for AI</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link">Search API for AI</a>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-xs text-slate-400 dark:text-slate-600 hover:text-brand-primary transition-colors">@Localizer[UIResourceKeys.Admin]</a>
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="footer-link">@Localizer[UIResourceKeys.Admin]</a>
                         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="inline leading-4">
-                            <button type="submit" class="text-xs text-slate-400 dark:text-slate-600 hover:text-brand-primary transition-colors">@Localizer[UIResourceKeys.Logout]</button>
+                            <button type="submit" class="footer-link">@Localizer[UIResourceKeys.Logout]</button>
                         </form>
                     }
                     else
                     {
-                        <a asp-area="" asp-controller="Account" asp-action="Login" class="text-xs text-slate-400 dark:text-slate-600 hover:text-brand-primary transition-colors">@Localizer[UIResourceKeys.Login]</a>
+                        <a asp-area="" asp-controller="Account" asp-action="Login" class="footer-link">@Localizer[UIResourceKeys.Login]</a>
                     }
                 </div>
             </div>

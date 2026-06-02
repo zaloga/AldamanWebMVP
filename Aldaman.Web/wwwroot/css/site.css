@@ -2616,6 +2616,22 @@
       padding: calc(var(--spacing) * 10);
     }
   }
+  .footer-link {
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
+    color: var(--color-slate-400);
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-brand-primary);
+      }
+    }
+    &:where(.dark, .dark *) {
+      color: var(--color-slate-500);
+    }
+  }
 }
 .ql-snow .ql-editor {
   padding: 0 !important;
