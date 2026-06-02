@@ -6,24 +6,43 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace Aldaman.Services.Services;
 
 public sealed class BlogService : IBlogService
 {
+    private static CancellationTokenSource _blogCacheTokenSource = new();
+
     private AppDbContext Context { get; }
     private LocalizationSettings Localization { get; }
     private IMediaService MediaService { get; }
+    private IMemoryCache Cache { get; }
 
     public BlogService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
-        IMediaService mediaService)
+        IMediaService mediaService,
+        IMemoryCache cache)
     {
         Context = context;
         Localization = localizationOptions.Value;
         MediaService = mediaService;
+        Cache = cache;
+    }
+
+    /// <summary>
+    /// Instantly invalidates all blog-related cached entries.
+    /// It swaps the shared <see cref="_blogCacheTokenSource"/> with a new instance and cancels the old one,
+    /// triggering eviction for all cache entries associated with the cancellation change token.
+    /// </summary>
+    private static void InvalidateCache()
+    {
+        var oldSource = Interlocked.Exchange(ref _blogCacheTokenSource, new CancellationTokenSource());
+        oldSource.Cancel();
+        oldSource.Dispose();
     }
 
     #region Admin web part methods
@@ -162,6 +181,7 @@ public sealed class BlogService : IBlogService
 
         Context.BlogPosts.Add(post);
         await Context.SaveChangesAsync();
+        InvalidateCache();
     }
 
     public async Task UpdateBlogPostAsync(Guid id, BlogPostEditDto dto)
@@ -273,6 +293,7 @@ public sealed class BlogService : IBlogService
         }
 
         await Context.SaveChangesAsync();
+        InvalidateCache();
 
         // 4. Cleanup orphaned media files
         if (mediaToDelete.Any())
@@ -289,6 +310,7 @@ public sealed class BlogService : IBlogService
         {
             post.IsDeleted = true;
             await Context.SaveChangesAsync();
+            InvalidateCache();
         }
     }
 
@@ -337,6 +359,7 @@ public sealed class BlogService : IBlogService
             post.DeletedAtUtc = null;
             post.DeletedByUserId = null;
             await Context.SaveChangesAsync();
+            InvalidateCache();
         }
     }
 
@@ -360,6 +383,7 @@ public sealed class BlogService : IBlogService
             // Delete post
             Context.BlogPosts.Remove(post);
             await Context.SaveChangesAsync();
+            InvalidateCache();
 
             // Try to delete media asset if it exists and is not used elsewhere
             if (mediaId.HasValue)
@@ -395,136 +419,213 @@ public sealed class BlogService : IBlogService
 
     #region Public web prart methods
 
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture)
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsCachedAsync(int page, int pageSize, string culture)
     {
-        var dbQuery = Context.BlogPosts
-            .Include(p => p.Translations)
-            .Include(p => p.CoverMediaAsset)
-            .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
-            .OrderByDescending(p => p.PublishedAtUtc)
-            .AsQueryable();
+        string cacheKey = $"Blog:Paged:{page}:{pageSize}:{culture}";
 
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(p => new BlogPostListItemDto
+        if (!Cache.TryGetValue(cacheKey, out PagedResultDto<BlogPostListItemDto>? result) || result == null)
+        {
+            var dbQuery = Context.BlogPosts
+                .Include(p => p.Translations)
+                .Include(p => p.CoverMediaAsset)
+                .Where(p => p.IsPublished && p.Translations.Any(t => t.CultureCode == culture))
+                .OrderByDescending(p => p.PublishedAtUtc)
+                .AsQueryable();
+
+            var totalCount = await dbQuery.CountAsync();
+            var items = await dbQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new BlogPostListItemDto
+                {
+                    Id = p.Id,
+                    Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                    Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
+                    Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
+                    PublishedAtUtc = p.PublishedAtUtc,
+                    IsPublished = p.IsPublished,
+                    CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
+                    CreatedAtUtc = p.CreatedAtUtc
+                })
+                .ToListAsync();
+
+            result = new PagedResultDto<BlogPostListItemDto>
             {
-                Id = p.Id,
-                Title = p.Translations.First(t => t.CultureCode == culture).Title,
-                Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
-                Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
-                PublishedAtUtc = p.PublishedAtUtc,
-                IsPublished = p.IsPublished,
-                CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
-                CreatedAtUtc = p.CreatedAtUtc
-            })
-            .ToListAsync();
-
-        return new PagedResultDto<BlogPostListItemDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = page,
-            PageSize = pageSize
-        };
-    }
-
-    public async Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture)
-    {
-        var post = await Context.BlogPosts
-            .Include(p => p.Translations)
-            .Include(p => p.CoverMediaAsset)
-            .Include(p => p.CreatedByUser)
-            .FirstOrDefaultAsync(p => p.IsPublished && p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
-
-        if (post == null) return null;
-
-        var translation = post.Translations.First(t => t.CultureCode == culture);
-
-        return new BlogPostDetailDto
-        {
-            Id = post.Id,
-            Title = translation.Title,
-            Perex = translation.Perex,
-            BodyHtml = translation.BodyHtml,
-            BodyDeltaJson = translation.BodyDeltaJson,
-            PlainText = translation.PlainText,
-            PublishedAtUtc = post.PublishedAtUtc,
-            AuthorName = post.CreatedByUser?.DisplayName,
-            CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
-        };
-    }
-
-    public async Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id)
-    {
-        return await Context.BlogPostTranslations
-            .Where(t => t.BlogPostId == id)
-            .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
-    }
-
-    public async Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationAsync(Guid currentPostId, string culture)
-    {
-        var currentPost = await Context.BlogPosts.FindAsync(currentPostId);
-        if (currentPost == null || !currentPost.PublishedAtUtc.HasValue)
-        {
-            return (null, null);
-        }
-
-        var publishedAt = currentPost.PublishedAtUtc.Value;
-
-        // Previous post (older)
-        var previousPost = await Context.BlogPosts
-            .Include(p => p.Translations)
-            .Where(p => p.IsPublished && p.PublishedAtUtc < publishedAt && p.Translations.Any(t => t.CultureCode == culture))
-            .OrderByDescending(p => p.PublishedAtUtc)
-            .FirstOrDefaultAsync();
-
-        // Next post (newer)
-        var nextPost = await Context.BlogPosts
-            .Include(p => p.Translations)
-            .Where(p => p.IsPublished && p.PublishedAtUtc > publishedAt && p.Translations.Any(t => t.CultureCode == culture))
-            .OrderBy(p => p.PublishedAtUtc)
-            .FirstOrDefaultAsync();
-
-        BlogPostNavigationDto? previousDto = null;
-        if (previousPost != null)
-        {
-            var translation = previousPost.Translations.First(t => t.CultureCode == culture);
-            previousDto = new BlogPostNavigationDto
-            {
-                Title = translation.Title,
-                Slug = translation.Slug
+                Items = items,
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
             };
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
         }
 
-        BlogPostNavigationDto? nextDto = null;
-        if (nextPost != null)
-        {
-            var translation = nextPost.Translations.First(t => t.CultureCode == culture);
-            nextDto = new BlogPostNavigationDto
-            {
-                Title = translation.Title,
-                Slug = translation.Slug
-            };
-        }
-
-        return (previousDto, nextDto);
+        return result;
     }
 
-    public async Task<string?> GetRedirectSlugAsync(string slug, string targetCulture)
+    public async Task<BlogPostDetailDto?> GetBlogPostBySlugCachedAsync(string slug, string culture)
     {
-        var postId = await Context.BlogPostTranslations
-            .Where(t => t.Slug == slug && t.BlogPost.IsPublished)
-            .Select(t => (Guid?)t.BlogPostId)
-            .FirstOrDefaultAsync();
+        string cacheKey = $"Blog:Slug:{culture}:{slug.ToLowerInvariant()}";
 
-        if (postId == null) return null;
+        if (!Cache.TryGetValue(cacheKey, out BlogPostDetailDto? result))
+        {
+            var post = await Context.BlogPosts
+                .Include(p => p.Translations)
+                .Include(p => p.CoverMediaAsset)
+                .Include(p => p.CreatedByUser)
+                .FirstOrDefaultAsync(p => p.IsPublished && p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
 
-        return await Context.BlogPostTranslations
-            .Where(t => t.BlogPostId == postId.Value && t.CultureCode == targetCulture)
-            .Select(t => t.Slug)
-            .FirstOrDefaultAsync();
+            if (post == null)
+            {
+                result = null;
+            }
+            else
+            {
+                var translation = post.Translations.First(t => t.CultureCode == culture);
+
+                result = new BlogPostDetailDto
+                {
+                    Id = post.Id,
+                    Title = translation.Title,
+                    Perex = translation.Perex,
+                    BodyHtml = translation.BodyHtml,
+                    BodyDeltaJson = translation.BodyDeltaJson,
+                    PlainText = translation.PlainText,
+                    PublishedAtUtc = post.PublishedAtUtc,
+                    AuthorName = post.CreatedByUser?.DisplayName,
+                    CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
+                };
+            }
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id)
+    {
+        string cacheKey = $"Blog:AlternativeSlugs:{id}";
+
+        if (!Cache.TryGetValue(cacheKey, out Dictionary<string, string>? result) || result == null)
+        {
+            result = await Context.BlogPostTranslations
+                .Where(t => t.BlogPostId == id)
+                .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationCachedAsync(Guid currentPostId, string culture)
+    {
+        string cacheKey = $"Blog:Navigation:{currentPostId}:{culture}";
+
+        if (!Cache.TryGetValue(cacheKey, out (BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next) result))
+        {
+            var currentPost = await Context.BlogPosts.FindAsync(currentPostId);
+            if (currentPost == null || !currentPost.PublishedAtUtc.HasValue)
+            {
+                result = (null, null);
+            }
+            else
+            {
+                var publishedAt = currentPost.PublishedAtUtc.Value;
+
+                // Previous post (older)
+                var previousPost = await Context.BlogPosts
+                    .Include(p => p.Translations)
+                    .Where(p => p.IsPublished && p.PublishedAtUtc < publishedAt && p.Translations.Any(t => t.CultureCode == culture))
+                    .OrderByDescending(p => p.PublishedAtUtc)
+                    .FirstOrDefaultAsync();
+
+                // Next post (newer)
+                var nextPost = await Context.BlogPosts
+                    .Include(p => p.Translations)
+                    .Where(p => p.IsPublished && p.PublishedAtUtc > publishedAt && p.Translations.Any(t => t.CultureCode == culture))
+                    .OrderBy(p => p.PublishedAtUtc)
+                    .FirstOrDefaultAsync();
+
+                BlogPostNavigationDto? previousDto = null;
+                if (previousPost != null)
+                {
+                    var translation = previousPost.Translations.First(t => t.CultureCode == culture);
+                    previousDto = new BlogPostNavigationDto
+                    {
+                        Title = translation.Title,
+                        Slug = translation.Slug
+                    };
+                }
+
+                BlogPostNavigationDto? nextDto = null;
+                if (nextPost != null)
+                {
+                    var translation = nextPost.Translations.First(t => t.CultureCode == culture);
+                    nextDto = new BlogPostNavigationDto
+                    {
+                        Title = translation.Title,
+                        Slug = translation.Slug
+                    };
+                }
+
+                result = (previousDto, nextDto);
+            }
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture)
+    {
+        string cacheKey = $"Blog:RedirectSlug:{slug.ToLowerInvariant()}:{targetCulture}";
+
+        if (!Cache.TryGetValue(cacheKey, out string? result))
+        {
+            var postId = await Context.BlogPostTranslations
+                .Where(t => t.Slug == slug && t.BlogPost.IsPublished)
+                .Select(t => (Guid?)t.BlogPostId)
+                .FirstOrDefaultAsync();
+
+            if (postId == null)
+            {
+                result = null;
+            }
+            else
+            {
+                result = await Context.BlogPostTranslations
+                    .Where(t => t.BlogPostId == postId.Value && t.CultureCode == targetCulture)
+                    .Select(t => t.Slug)
+                    .FirstOrDefaultAsync();
+            }
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+
+            Cache.Set(cacheKey, result, cacheOptions);
+        }
+
+        return result;
     }
 
     #endregion

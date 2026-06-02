@@ -11,7 +11,7 @@ public interface IBlogService
     /// <summary>
     /// Gets a blog post by its URL slug.
     /// </summary>
-    Task<BlogPostDetailDto?> GetBlogPostBySlugAsync(string slug, string culture);
+    Task<BlogPostDetailDto?> GetBlogPostBySlugCachedAsync(string slug, string culture);
 
     /// <summary>
     /// Gets a paged list of blog posts for administrative view.
@@ -21,7 +21,7 @@ public interface IBlogService
     /// <summary>
     /// Gets a paged list of blog posts.
     /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAsync(int page, int pageSize, string culture);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsCachedAsync(int page, int pageSize, string culture);
 
     /// <summary>
     /// Gets a blog post for editing in admin.
@@ -66,15 +66,15 @@ public interface IBlogService
     /// <summary>
     /// Gets slugs for all translations of a blog post.
     /// </summary>
-    Task<Dictionary<string, string>> GetAlternativeSlugsAsync(Guid id);
+    Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id);
 
     /// <summary>
     /// Gets navigation information (previous and next post) for a blog post.
     /// </summary>
-    Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationAsync(Guid currentPostId, string culture);
+    Task<(BlogPostNavigationDto? Previous, BlogPostNavigationDto? Next)> GetBlogPostNavigationCachedAsync(Guid currentPostId, string culture);
 
     /// <summary>
     /// Finds the slug for a published blog post in a target culture if it exists under the given slug in any other culture.
     /// </summary>
-    Task<string?> GetRedirectSlugAsync(string slug, string targetCulture);
+    Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture);
 }

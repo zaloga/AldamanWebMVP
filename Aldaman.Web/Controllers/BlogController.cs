@@ -29,7 +29,7 @@ public sealed class BlogController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedBlogPostsAsync(
+        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedBlogPostsCachedAsync(
             p,
             DefaultPageSize,
             cultureCode
@@ -48,7 +48,7 @@ public sealed class BlogController : Controller
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
-        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugAsync(
+        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugCachedAsync(
             slug,
             cultureCode
             /*cancellationToken*/);
@@ -59,7 +59,7 @@ public sealed class BlogController : Controller
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {
-                var fallbackSlug = await BlogService.GetRedirectSlugAsync(slug, defaultCulture);
+                var fallbackSlug = await BlogService.GetRedirectSlugCachedAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
                     TempData["ShowTranslationMissingToast"] = true;
@@ -70,7 +70,7 @@ public sealed class BlogController : Controller
         }
 
         // Provide alternative URLs for the language switcher
-        var alternativeSlugs = await BlogService.GetAlternativeSlugsAsync(postDetail.Id);
+        var alternativeSlugs = await BlogService.GetAlternativeSlugsCachedAsync(postDetail.Id);
         var alternatives = new Dictionary<string, string>();
         foreach (var slugEntry in alternativeSlugs)
         {
@@ -78,7 +78,7 @@ public sealed class BlogController : Controller
         }
         ViewData["LanguageAlternatives"] = alternatives;
 
-        var navigation = await BlogService.GetBlogPostNavigationAsync(postDetail.Id, cultureCode);
+        var navigation = await BlogService.GetBlogPostNavigationCachedAsync(postDetail.Id, cultureCode);
 
         return View(new BlogPostViewModel
         {
