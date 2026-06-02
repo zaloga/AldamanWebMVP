@@ -36,25 +36,25 @@
             }
     </script>
 </head>
-<body class="flex flex-col min-h-full bg-brand-bg-light dark:bg-brand-bg-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<body class="min-w-[300px] flex flex-col min-h-full bg-brand-bg-light dark:bg-brand-bg-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <header class="glass sticky top-0 z-50 transition-colors duration-300">
-        <nav class="container flex items-center justify-between h-16">
-            <div class="flex items-center gap-8">
+        <nav class="container flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 md:py-0 md:h-16">
+            <div class="flex items-center justify-between w-full md:w-auto">
                 @await Component.InvokeAsync("Brand")
-
-                <div class="flex items-center gap-6">
-                    @await Component.InvokeAsync("TopNavigation")
-
-                    <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
-
-                    <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
-                </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="relative group">
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2">
+                @await Component.InvokeAsync("TopNavigation")
+
+                <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
+
+                <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+            </div>
+
+            <div class="flex items-center justify-center w-full md:w-auto gap-4">
+                <div class="relative group w-full max-w-[200px] md:max-w-none">
                     <input type="text" id="site-search"
-                           class="block w-48 lg:w-64 p-3 pl-4 pr-10 text-sm text-slate-900 border border-slate-200 rounded-full bg-white shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400 dark:text-white transition-all focus:w-64 lg:focus:w-80 outline-none"
+                           class="block w-full md:w-40 lg:w-48 p-2.5 pl-4 pr-10 text-sm text-slate-900 border border-slate-200 rounded-full bg-white shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400 dark:text-white transition-all focus:md:w-48 lg:focus:w-56 outline-none"
                            placeholder="@Localizer[UIResourceKeys.Search]..."
                            autocomplete="off"
                            data-culture="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
@@ -63,10 +63,10 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center gap-4">
                 @await Component.InvokeAsync("LanguageSwitcher")
 
-                <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700 rounded-lg text-sm p-2.5 transition-all">
+                <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700 rounded-lg text-sm p-2 transition-all">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
                     <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zm2.12 10.607a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM3 10a1 1 0 100 2H4a1 1 0 100-2H3z"></path></svg>
                 </button>
@@ -81,16 +81,16 @@
     </main>
 
     <footer class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/10 py-10">
-        <div class="container flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex flex-col gap-1">
+        <div class="container flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div class="flex flex-col items-center md:items-start gap-1">
                 <p class="text-sm text-slate-500 dark:text-slate-400">
                     &copy; @DateTime.Today.Year Aldaman.
                 </p>
-                <div class="flex items-center gap-4">
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
                     <a asp-area="" asp-controller="Home" asp-action="Mcp" class="text-[10px] text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors">MCP API for AI</a>
                     <a asp-area="" asp-controller="Home" asp-action="Search" class="text-[10px] text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors">Search API for AI</a>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="text-[10px] text-slate-400 dark:text-slate-600 hover:text-brand-primary transition-colors">@Localizer[UIResourceKeys.Admin]</a>
@@ -105,7 +105,7 @@
                     }
                 </div>
             </div>
-            <div class="flex items-center gap-6">
+            <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
                 @await Component.InvokeAsync("FooterNavigation")
             </div>
         </div>
