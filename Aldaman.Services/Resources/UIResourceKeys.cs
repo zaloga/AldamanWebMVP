@@ -49,4 +49,5 @@ public static class UIResourceKeys
     public const string RequestId = nameof(RequestId);
     public const string SectionNoContent = nameof(SectionNoContent);
     public const string GenerateSlug = nameof(GenerateSlug);
+    public const string TranslationMissing = nameof(TranslationMissing);
 }

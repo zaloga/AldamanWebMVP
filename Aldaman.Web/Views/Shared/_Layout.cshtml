@@ -108,6 +108,30 @@
         </div>
     </footer>
 
+    @if (TempData["ShowTranslationMissingToast"] as bool? == true)
+    {
+        <div id="toast-wrapper" class="fixed top-20 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+            <div id="translation-missing-toast" class="pointer-events-auto flex items-center gap-3 w-full max-w-sm p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl transition-all duration-500 transform -translate-y-10 opacity-0 overflow-hidden">
+                <div class="text-blue-500 dark:text-blue-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1 text-sm font-medium text-slate-800 dark:text-slate-200 pr-2">
+                    @Localizer[UIResourceKeys.TranslationMissing]
+                </div>
+                <button id="close-toast-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 dark:bg-slate-700 rounded-b-xl overflow-hidden">
+                    <div id="toast-progress" class="h-full bg-blue-500 dark:bg-blue-400 w-full transition-all duration-100 ease-linear"></div>
+                </div>
+            </div>
+        </div>
+    }
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

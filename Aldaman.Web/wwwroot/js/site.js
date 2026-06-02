@@ -99,4 +99,48 @@ document.addEventListener('DOMContentLoaded', function () {
         searchResults.innerHTML = html;
         searchResults.classList.remove('hidden');
     }
+
+    // Translation Missing Toast Initialization
+    const toast = document.getElementById('translation-missing-toast');
+    if (toast) {
+        setTimeout(() => {
+            toast.classList.remove('-translate-y-10', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        }, 100);
+
+        const duration = 10000;
+        const interval = 100;
+        let elapsed = 0;
+        const progressBar = document.getElementById('toast-progress');
+        const closeBtn = document.getElementById('close-toast-btn');
+
+        const timer = setInterval(() => {
+            elapsed += interval;
+            const percentage = Math.max(0, 100 - (elapsed / duration) * 100);
+            if (progressBar) {
+                progressBar.style.width = percentage + '%';
+            }
+            if (elapsed >= duration) {
+                dismissToast();
+            }
+        }, interval);
+
+        function dismissToast() {
+            clearInterval(timer);
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('-translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                const wrapper = document.getElementById('toast-wrapper');
+                if (wrapper) {
+                    wrapper.remove();
+                } else {
+                    toast.remove();
+                }
+            }, 500);
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', dismissToast);
+        }
+    }
 });

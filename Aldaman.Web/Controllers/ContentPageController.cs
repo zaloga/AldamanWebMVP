@@ -36,6 +36,7 @@ public sealed class ContentPageController : Controller
                 var fallbackSlug = await ContentPageService.GetRedirectSlugAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
+                    TempData["ShowTranslationMissingToast"] = true;
                     return RedirectToAction("Detail", "ContentPage", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }

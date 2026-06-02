@@ -693,4 +693,7 @@
   <data name="NextSettings" xml:space="preserve">
     <value>Další nastavení</value>
   </data>
+  <data name="TranslationMissing" xml:space="preserve">
+    <value>Pro tento obsah zatím neexistuje překlad</value>
+  </data>
 </root>

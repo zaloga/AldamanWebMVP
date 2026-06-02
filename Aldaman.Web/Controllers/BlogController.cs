@@ -59,6 +59,7 @@ public sealed class BlogController : Controller
                 var fallbackSlug = await BlogService.GetRedirectSlugAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
+                    TempData["ShowTranslationMissingToast"] = true;
                     return RedirectToAction("Detail", "Blog", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
