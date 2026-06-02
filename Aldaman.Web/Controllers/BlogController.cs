@@ -1,9 +1,11 @@
 using System.Globalization;
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Web.Controllers;
 
@@ -12,10 +14,12 @@ public sealed class BlogController : Controller
     private const int DefaultPageSize = 10;
 
     private IBlogService BlogService { get; }
+    private LocalizationSettings LocalizationSettings { get; }
 
-    public BlogController(IBlogService blogService)
+    public BlogController(IBlogService blogService, IOptions<LocalizationSettings> localizationOptions)
     {
         BlogService = blogService;
+        LocalizationSettings = localizationOptions.Value;
     }
 
     [HttpGet]
@@ -49,12 +53,13 @@ public sealed class BlogController : Controller
 
         if (postDetail is null)
         {
-            if (cultureCode != "cs")
+            string defaultCulture = LocalizationSettings.DefaultCulture;
+            if (cultureCode != defaultCulture)
             {
-                var csSlug = await BlogService.GetRedirectSlugAsync(slug, "cs");
-                if (csSlug != null)
+                var fallbackSlug = await BlogService.GetRedirectSlugAsync(slug, defaultCulture);
+                if (fallbackSlug != null)
                 {
-                    return RedirectToAction("Detail", "Blog", new { culture = "cs", slug = csSlug });
+                    return RedirectToAction("Detail", "Blog", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
             return NotFound();

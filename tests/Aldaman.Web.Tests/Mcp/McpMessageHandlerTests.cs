@@ -26,7 +26,8 @@ public class McpMessageHandlerTests
         _loggerMock = new Mock<ILogger<McpMessageHandlerService>>();
 
         var options = Options.Create(new McpSettings());
-        _handler = new McpMessageHandlerService(_searchServiceMock.Object, options, _loggerMock.Object);
+        var locOptions = Options.Create(new LocalizationSettings { DefaultCulture = "cs", SupportedCultures = new[] { "cs", "en" } });
+        _handler = new McpMessageHandlerService(_searchServiceMock.Object, options, locOptions, _loggerMock.Object);
     }
 
     [Fact]

@@ -1,18 +1,22 @@
 using System.Globalization;
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Web.Controllers;
 
 public sealed class ContentPageController : Controller
 {
     private IContentPageService ContentPageService { get; }
+    private LocalizationSettings LocalizationSettings { get; }
 
-    public ContentPageController(IContentPageService contentPageService)
+    public ContentPageController(IContentPageService contentPageService, IOptions<LocalizationSettings> localizationOptions)
     {
         ContentPageService = contentPageService;
+        LocalizationSettings = localizationOptions.Value;
     }
 
     [HttpGet]
@@ -26,12 +30,13 @@ public sealed class ContentPageController : Controller
 
         if (pageDetail is null)
         {
-            if (cultureCode != "cs")
+            string defaultCulture = LocalizationSettings.DefaultCulture;
+            if (cultureCode != defaultCulture)
             {
-                var csSlug = await ContentPageService.GetRedirectSlugAsync(slug, "cs");
-                if (csSlug != null)
+                var fallbackSlug = await ContentPageService.GetRedirectSlugAsync(slug, defaultCulture);
+                if (fallbackSlug != null)
                 {
-                    return RedirectToAction("Detail", "ContentPage", new { culture = "cs", slug = csSlug });
+                    return RedirectToAction("Detail", "ContentPage", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
             return NotFound();

@@ -13,15 +13,18 @@ public sealed class McpMessageHandlerService : IMcpMessageHandlerService
 {
     private readonly ISearchService _searchService;
     private readonly McpSettings _settings;
+    private readonly LocalizationSettings _localizationSettings;
     private readonly ILogger<McpMessageHandlerService> _logger;
 
     public McpMessageHandlerService(
         ISearchService searchService,
         IOptions<McpSettings> options,
+        IOptions<LocalizationSettings> localizationOptions,
         ILogger<McpMessageHandlerService> logger)
     {
         _searchService = searchService;
         _settings = options.Value;
+        _localizationSettings = localizationOptions.Value;
         _logger = logger;
     }
 
@@ -76,7 +79,7 @@ public sealed class McpMessageHandlerService : IMcpMessageHandlerService
                         Properties = new Dictionary<string, object>
                         {
                             { "query", new { type = "string", description = "The search term." } },
-                            { "culture", new { type = "string", description = "Culture code (cs, en). Defaults to cs." } }
+                            { "culture", new { type = "string", description = $"Culture code (cs, en). Defaults to {_localizationSettings.DefaultCulture}." } }
                         },
                         Required = new List<string> { "query" }
                     }
@@ -108,7 +111,7 @@ public sealed class McpMessageHandlerService : IMcpMessageHandlerService
             }
 
             string query = queryObj.ToString()!;
-            string culture = "cs";
+            string culture = _localizationSettings.DefaultCulture;
             if (callParams.Arguments.TryGetValue("culture", out var cultureObj) && cultureObj != null)
             {
                 culture = cultureObj.ToString()!;
