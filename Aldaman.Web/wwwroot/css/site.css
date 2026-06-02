@@ -1550,9 +1550,6 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
-  .text-\[8px\] {
-    font-size: 8px;
-  }
   .text-\[9px\] {
     font-size: 9px;
   }
@@ -1561,6 +1558,10 @@
   }
   .text-\[11px\] {
     font-size: 11px;
+  }
+  .leading-4 {
+    --tw-leading: calc(var(--spacing) * 4);
+    line-height: calc(var(--spacing) * 4);
   }
   .leading-relaxed {
     --tw-leading: var(--leading-relaxed);
@@ -2414,11 +2415,6 @@
   .dark\:text-slate-600 {
     &:where(.dark, .dark *) {
       color: var(--color-slate-600);
-    }
-  }
-  .dark\:text-slate-800 {
-    &:where(.dark, .dark *) {
-      color: var(--color-slate-800);
     }
   }
   .dark\:text-slate-900 {
