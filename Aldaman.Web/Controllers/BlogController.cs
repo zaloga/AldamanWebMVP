@@ -15,11 +15,13 @@ public sealed class BlogController : Controller
 
     private IBlogService BlogService { get; }
     private LocalizationSettings LocalizationSettings { get; }
+    private ILogger<BlogController> Logger { get; }
 
-    public BlogController(IBlogService blogService, IOptions<LocalizationSettings> localizationOptions)
+    public BlogController(IBlogService blogService, IOptions<LocalizationSettings> localizationOptions, ILogger<BlogController> logger)
     {
         BlogService = blogService;
         LocalizationSettings = localizationOptions.Value;
+        Logger = logger;
     }
 
     [HttpGet]
@@ -53,6 +55,7 @@ public sealed class BlogController : Controller
 
         if (postDetail is null)
         {
+            Logger.LogWarning("Requested blog post content does not exist. Slug: {Slug}, CultureCode: {CultureCode}", slug, cultureCode);
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {

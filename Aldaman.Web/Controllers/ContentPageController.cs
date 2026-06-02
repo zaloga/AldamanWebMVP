@@ -12,11 +12,13 @@ public sealed class ContentPageController : Controller
 {
     private IContentPageService ContentPageService { get; }
     private LocalizationSettings LocalizationSettings { get; }
+    private ILogger<ContentPageController> Logger { get; }
 
-    public ContentPageController(IContentPageService contentPageService, IOptions<LocalizationSettings> localizationOptions)
+    public ContentPageController(IContentPageService contentPageService, IOptions<LocalizationSettings> localizationOptions, ILogger<ContentPageController> logger)
     {
         ContentPageService = contentPageService;
         LocalizationSettings = localizationOptions.Value;
+        Logger = logger;
     }
 
     [HttpGet]
@@ -30,6 +32,7 @@ public sealed class ContentPageController : Controller
 
         if (pageDetail is null)
         {
+            Logger.LogWarning("Requested content page does not exist. Slug: {Slug}, CultureCode: {CultureCode}", slug, cultureCode);
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {
