@@ -14,7 +14,7 @@
         <header class="mb-2">
             <div class="d-flex align-items-center gap-3 py-2">
                 <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none text-dark d-flex align-items-center me-4">
-                    <span class="h5 mb-0 fw-bold tracking-tight">@Localizer["Admin"]</span>
+                    <span class="h5 mb-0 fw-bold">@Localizer["Admin"]</span>
                 </a>
                 <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-link btn-sm text-secondary p-0 text-decoration-none d-flex align-items-center">
                     @Localizer["GoToWeb"]
@@ -22,20 +22,17 @@
                 @await Component.InvokeAsync("LanguageSwitcher", new { viewName = "Admin" })
                 <span class="small fw-medium text-muted">@Localizer["AdminUser"]</span>
                 <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline line-height-21">
-                    <button type="submit" class="btn btn-link btn-sm text-primary p-0 text-decoration-none">@Localizer["SignOut"]</button>
+                    <button type="submit" class="btn btn-link btn-sm text-primary fw-medium p-0 text-decoration-none">@Localizer["SignOut"]</button>
                 </form>
             </div>
         </header>
 
         <!-- Main Content Area -->
-        <main class="admin-main">
+        <main>
             <partial name="_Breadcrumbs" />
             <partial name="_FlashMessages" />
             <partial name="_ValidationSummary" />
-
-            <div class="admin-card">
-                @RenderBody()
-            </div>
+            @RenderBody()
         </main>
     </div>
 
