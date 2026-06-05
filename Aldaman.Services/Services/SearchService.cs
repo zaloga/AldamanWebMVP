@@ -4,6 +4,8 @@ using Aldaman.Services.Dtos.Search;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using Aldaman.Services.Configuration;
 
 namespace Aldaman.Services.Services;
 
@@ -13,11 +15,11 @@ public sealed class SearchService : ISearchService
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
 
-    public SearchService(AppDbContext context, IMemoryCache cache)
+    public SearchService(AppDbContext context, IMemoryCache cache, IOptions<CacheSettings> cacheOptions)
     {
         Context = context;
         Cache = cache;
-        CacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+        CacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(cacheOptions.Value.SearchExpirationMinutes));
     }
 
     public async Task<List<SearchResultDto>> SearchCachedAsync(string query, string cultureCode, string baseUrl, CancellationToken ct = default)

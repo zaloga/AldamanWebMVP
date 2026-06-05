@@ -25,6 +25,7 @@ public sealed class BlogService : IBlogService
     public BlogService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
+        IOptions<CacheSettings> cacheOptions,
         IMediaService mediaService,
         IMemoryCache cache)
     {
@@ -33,7 +34,7 @@ public sealed class BlogService : IBlogService
         MediaService = mediaService;
         Cache = cache;
         CacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.BlogExpirationHours))
                 .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
     }
 

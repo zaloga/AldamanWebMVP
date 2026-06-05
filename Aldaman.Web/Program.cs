@@ -58,6 +58,10 @@ public class Program
         var localizationSection = builder.Configuration.GetSection(LocalizationSettings.SectionName);
         builder.Services.Configure<LocalizationSettings>(localizationSection);
 
+        // Cache configuration
+        var cacheSection = builder.Configuration.GetSection(CacheSettings.SectionName);
+        builder.Services.Configure<CacheSettings>(cacheSection);
+
         var localizationSettings = localizationSection.Get<LocalizationSettings>()!;
         var supportedCultures = localizationSettings.SupportedCultures
             .Select(c => new CultureInfo(c))

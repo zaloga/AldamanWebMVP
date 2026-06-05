@@ -26,6 +26,7 @@ public sealed class ContentPageService : IContentPageService
     public ContentPageService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
+        IOptions<CacheSettings> cacheOptions,
         IMediaService mediaService,
         IMemoryCache cache)
     {
@@ -34,7 +35,7 @@ public sealed class ContentPageService : IContentPageService
         MediaService = mediaService;
         Cache = cache;
         CacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(24))
+                .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentPageExpirationHours))
                 .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
     }
 
