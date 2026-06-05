@@ -2099,26 +2099,6 @@
       display: block;
     }
   }
-  .md\:h-16 {
-    @media (width >= 48rem) {
-      height: calc(var(--spacing) * 16);
-    }
-  }
-  .md\:w-40 {
-    @media (width >= 48rem) {
-      width: calc(var(--spacing) * 40);
-    }
-  }
-  .md\:w-auto {
-    @media (width >= 48rem) {
-      width: auto;
-    }
-  }
-  .md\:max-w-none {
-    @media (width >= 48rem) {
-      max-width: none;
-    }
-  }
   .md\:grid-cols-2 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2127,11 +2107,6 @@
   .md\:flex-row {
     @media (width >= 48rem) {
       flex-direction: row;
-    }
-  }
-  .md\:items-center {
-    @media (width >= 48rem) {
-      align-items: center;
     }
   }
   .md\:items-start {
@@ -2147,11 +2122,6 @@
   .md\:justify-start {
     @media (width >= 48rem) {
       justify-content: flex-start;
-    }
-  }
-  .md\:py-0 {
-    @media (width >= 48rem) {
-      padding-block: calc(var(--spacing) * 0);
     }
   }
   .md\:py-12 {
@@ -2181,16 +2151,24 @@
       line-height: var(--tw-leading, var(--text-sm--line-height));
     }
   }
-  .focus\:md\:w-48 {
-    &:focus {
-      @media (width >= 48rem) {
-        width: calc(var(--spacing) * 48);
-      }
+  .lg\:h-16 {
+    @media (width >= 64rem) {
+      height: calc(var(--spacing) * 16);
     }
   }
-  .lg\:w-48 {
+  .lg\:w-40 {
     @media (width >= 64rem) {
-      width: calc(var(--spacing) * 48);
+      width: calc(var(--spacing) * 40);
+    }
+  }
+  .lg\:w-auto {
+    @media (width >= 64rem) {
+      width: auto;
+    }
+  }
+  .lg\:max-w-none {
+    @media (width >= 64rem) {
+      max-width: none;
     }
   }
   .lg\:grid-cols-3 {
@@ -2198,8 +2176,40 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
-  .lg\:focus\:w-56 {
+  .lg\:flex-row {
     @media (width >= 64rem) {
+      flex-direction: row;
+    }
+  }
+  .lg\:items-center {
+    @media (width >= 64rem) {
+      align-items: center;
+    }
+  }
+  .lg\:justify-start {
+    @media (width >= 64rem) {
+      justify-content: flex-start;
+    }
+  }
+  .lg\:py-0 {
+    @media (width >= 64rem) {
+      padding-block: calc(var(--spacing) * 0);
+    }
+  }
+  .focus\:lg\:w-48 {
+    &:focus {
+      @media (width >= 64rem) {
+        width: calc(var(--spacing) * 48);
+      }
+    }
+  }
+  .xl\:w-48 {
+    @media (width >= 80rem) {
+      width: calc(var(--spacing) * 48);
+    }
+  }
+  .xl\:focus\:w-56 {
+    @media (width >= 80rem) {
       &:focus {
         width: calc(var(--spacing) * 56);
       }
