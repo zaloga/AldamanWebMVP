@@ -88,13 +88,6 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-4">
-                            <label asp-for="PageKey" class="form-label fw-bold text-dark">@Localizer["PageKey"]</label>
-                            <input asp-for="PageKey" class="form-control" />
-                            <span asp-validation-for="PageKey" class="text-danger"></span>
-                            <small class="text-muted">@Localizer["PageKeyInfo"]</small>
-                        </div>
-
-                        <div class="mb-4">
                             <label class="form-label d-block text-dark fw-bold">@Localizer["Locations"]</label>
                             <div class="p-3 border rounded bg-light">
                                 @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))

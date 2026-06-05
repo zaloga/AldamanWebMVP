@@ -40,12 +40,6 @@ public class ContentPageEditDtoValidator : AbstractValidator<ContentPageEditDto>
 {
     public ContentPageEditDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
-        RuleFor(x => x.PageKey)
-            .NotEmpty()
-            .WithMessage(localizer[ValidationResourceKeys.PageKeyRequired])
-            .MaximumLength(256)
-            .WithMessage(localizer[ValidationResourceKeys.PageKeyMaxLength, 256]);
-
         RuleForEach(x => x.Translations).SetValidator(new ContentPageTranslationDtoValidator(localizer));
     }
 }

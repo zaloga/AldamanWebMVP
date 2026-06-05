@@ -20,8 +20,6 @@ public static class ValidationResourceKeys
     public const string TitleMaxLength = nameof(TitleMaxLength);
     public const string AltTextMinLength = nameof(AltTextMinLength);
     public const string AltTextMaxLength = nameof(AltTextMaxLength);
-    public const string PageKeyRequired = nameof(PageKeyRequired);
-    public const string PageKeyMaxLength = nameof(PageKeyMaxLength);
     public const string TitleRequiredIfTranslationNotEmpty = nameof(TitleRequiredIfTranslationNotEmpty);
     public const string SlugRequiredIfTranslationNotEmpty = nameof(SlugRequiredIfTranslationNotEmpty);
     public const string GenericMaxLength = nameof(GenericMaxLength);

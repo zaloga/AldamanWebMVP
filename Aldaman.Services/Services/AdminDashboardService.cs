@@ -67,7 +67,6 @@ internal sealed class AdminDashboardService : IAdminDashboardService
         {
             Id = x.Id,
             Title = x.Translations.FirstOrDefault()?.Title ?? "Untitled",
-            PageKey = x.PageKey,
             CreatedAtUtc = x.CreatedAtUtc
         }).ToList();
 

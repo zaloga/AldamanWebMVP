@@ -11,12 +11,6 @@ public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEnti
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.PageKey)
-            .HasMaxLength(ContentPageEntity.PageKeyMaxLength)
-            .IsRequired();
-
-        builder.HasIndex(x => x.PageKey)
-            .IsUnique();
 
         builder.Property(x => x.PlaceToShow)
             .IsRequired()

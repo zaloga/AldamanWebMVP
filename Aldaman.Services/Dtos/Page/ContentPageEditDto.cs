@@ -8,7 +8,7 @@ namespace Aldaman.Services.Dtos.Page;
 public class ContentPageEditDto
 {
     public Guid? Id { get; set; }
-    public string PageKey { get; set; } = string.Empty;
+
     public PlaceToShowEnum PlaceToShow { get; set; } = PlaceToShowEnum.None;
     public int PageOrder { get; set; } = 0;
 

@@ -5,7 +5,6 @@ namespace Aldaman.Services.Dtos.Page;
 /// </summary>
 public class ContentPageNavigationDto
 {
-    public string PageKey { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
 }

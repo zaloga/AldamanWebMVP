@@ -62,7 +62,7 @@ public sealed class ContentPageService : IContentPageService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.PageKey.Contains(query.SearchTerm) || p.Translations.Any(c => c.Slug.Contains(query.SearchTerm)));
+            dbQuery = dbQuery.Where(p => p.Translations.Any(c => c.Slug.Contains(query.SearchTerm) || c.Title.Contains(query.SearchTerm)));
         }
 
         // Sorting
@@ -71,7 +71,6 @@ public sealed class ContentPageService : IContentPageService
             "Title" => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
-            "PageKey" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageKey) : dbQuery.OrderBy(p => p.PageKey),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
             _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
@@ -84,7 +83,6 @@ public sealed class ContentPageService : IContentPageService
             .Select(p => new ContentPageListItemDto
             {
                 Id = p.Id,
-                PageKey = p.PageKey,
                 Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
                         ?? p.Translations.FirstOrDefault()!.Title
                         ?? "-",
@@ -114,7 +112,6 @@ public sealed class ContentPageService : IContentPageService
         return new ContentPageEditDto
         {
             Id = page.Id,
-            PageKey = page.PageKey,
             PlaceToShow = page.PlaceToShow,
             PageOrder = page.PageOrder,
             Translations = Localization.SupportedCultures.Select(culture =>
@@ -148,7 +145,6 @@ public sealed class ContentPageService : IContentPageService
     {
         var page = new ContentPageEntity
         {
-            PageKey = dto.PageKey,
             PlaceToShow = dto.PlaceToShow,
             PageOrder = dto.PageOrder,
         };
@@ -197,7 +193,6 @@ public sealed class ContentPageService : IContentPageService
         var mediaToDelete = new HashSet<string>();
 
         // 2. Update core page properties
-        page.PageKey = dto.PageKey;
         page.PlaceToShow = dto.PlaceToShow;
         page.PageOrder = dto.PageOrder;
 
@@ -298,7 +293,6 @@ public sealed class ContentPageService : IContentPageService
             .Select(p => new ContentPageListItemDto
             {
                 Id = p.Id,
-                PageKey = p.PageKey,
                 Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
                         ?? p.Translations.FirstOrDefault()!.Title
                         ?? "-",
@@ -406,7 +400,6 @@ public sealed class ContentPageService : IContentPageService
                     result = new ContentPageDetailDto
                     {
                         Id = page.Id,
-                        PageKey = page.PageKey,
                         Title = content.Title,
                         Slug = content.Slug,
                         BodyHtml = content.BodyHtml,
@@ -435,7 +428,6 @@ public sealed class ContentPageService : IContentPageService
                 .Select(p => new ContentPageDetailDto
                 {
                     Id = p.Id,
-                    PageKey = p.PageKey,
                     Title = p.Translations.First(t => t.CultureCode == culture).Title,
                     Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
                     BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
@@ -478,7 +470,6 @@ public sealed class ContentPageService : IContentPageService
                 .OrderBy(t => t.ContentPage.PageOrder)
                 .Select(t => new ContentPageNavigationDto
                 {
-                    PageKey = t.ContentPage.PageKey,
                     Title = t.Title,
                     Slug = t.Slug
                 })

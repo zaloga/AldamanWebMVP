@@ -336,9 +336,6 @@
   <data name="PageDetails" xml:space="preserve">
     <value>Page Details</value>
   </data>
-  <data name="PageKey" xml:space="preserve">
-    <value>Page Key</value>
-  </data>
   <data name="Locations" xml:space="preserve">
     <value>Locations</value>
   </data>
@@ -498,9 +495,6 @@
   <data name="UploadMediaInfo" xml:space="preserve">
     <value>Upload images or videos to your media library.</value>
   </data>
-  <data name="PageKeyInfo" xml:space="preserve">
-    <value>Unique internal identifier (e.g. 'ServicesPage').</value>
-  </data>
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Are you sure you want to delete "{0}"? This item will be marked for permanent removal.</value>
   </data>
@@ -563,9 +557,6 @@
   </data>
   <data name="SortByOrder" xml:space="preserve">
     <value>Sort by Order</value>
-  </data>
-  <data name="SortByKey" xml:space="preserve">
-    <value>Sort by Key</value>
   </data>
   <data name="DeletedPages" xml:space="preserve">
     <value>Deleted Pages</value>

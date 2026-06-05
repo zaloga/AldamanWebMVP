@@ -11,7 +11,7 @@
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]: @Model.PageKey</h1>
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
         <div>
             <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Edit"]</a>
             <a asp-action="Index" class="btn btn-secondary ms-2">@Localizer["BackToList"]</a>
@@ -26,9 +26,6 @@
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["PageKey"]</dt>
-                        <dd class="col-sm-7 fw-bold text-dark">@Model.PageKey</dd>
-
                         <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Locations"]</dt>
                         <dd class="col-sm-7">
                             <div class="d-flex flex-wrap gap-1">

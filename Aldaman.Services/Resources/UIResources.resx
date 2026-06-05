@@ -336,9 +336,6 @@
   <data name="PageDetails" xml:space="preserve">
     <value>Detail stránky</value>
   </data>
-  <data name="PageKey" xml:space="preserve">
-    <value>Klíč stránky</value>
-  </data>
   <data name="Locations" xml:space="preserve">
     <value>Umístění</value>
   </data>
@@ -498,9 +495,6 @@
   <data name="UploadMediaInfo" xml:space="preserve">
     <value>Nahrajte obrázky nebo videa do vaší mediální knihovny.</value>
   </data>
-  <data name="PageKeyInfo" xml:space="preserve">
-    <value>Unikátní interní identifikátor (např. 'StrankaSluzeb').</value>
-  </data>
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Opravdu chcete smazat „{0}“? Tato položka bude označena k trvalému odstranění.</value>
   </data>
@@ -563,9 +557,6 @@
   </data>
   <data name="SortByOrder" xml:space="preserve">
     <value>Seřadit podle pořadí</value>
-  </data>
-  <data name="SortByKey" xml:space="preserve">
-    <value>Seřadit podle klíče</value>
   </data>
   <data name="DeletedPages" xml:space="preserve">
     <value>Smazané stránky</value>

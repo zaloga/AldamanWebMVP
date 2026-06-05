@@ -7,12 +7,6 @@ namespace Aldaman.Persistence.Entities;
 /// </summary>
 public class ContentPageEntity : BaseEntityAuditableSoftDel
 {
-    public const int PageKeyMaxLength = 256;
-
-    /// <summary>
-    /// Unique page key (e.g. home, about).
-    /// </summary>
-    public string PageKey { get; set; } = string.Empty;
 
     /// <summary>
     /// Indicates where this page should be displayed.
