@@ -9,14 +9,7 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-        <a asp-action="Index" class="btn btn-secondary">
-            @Localizer["BackToList"]
-        </a>
-    </div>
-
+<div class="container-fluid">
     <form asp-action="@(isCreate ? "Create" : "Update")" method="post" enctype="multipart/form-data">
         @if (!isCreate)
         {
@@ -136,9 +129,8 @@
 
                         <hr />
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
-                            <a asp-action="Index" class="btn btn-secondary btn-block">@Localizer["Cancel"]</a>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-block">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
                         </div>
                     </div>
                 </div>

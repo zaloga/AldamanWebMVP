@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
         <a asp-action="Index" class="btn btn-secondary">
@@ -114,7 +114,7 @@
                         <hr class="my-4" />
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary py-2 fw-bold">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
+                            <button type="submit" class="btn btn-success py-2 fw-bold">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
                             <a asp-action="Index" class="btn btn-outline-secondary py-2">@Localizer["Cancel"]</a>
                         </div>
                     </div>

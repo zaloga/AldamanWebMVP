@@ -8,44 +8,8 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-        <div>
-            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Edit"]</a>
-            <a asp-action="Index" class="btn btn-secondary ms-2">@Localizer["BackToList"]</a>
-        </div>
-    </div>
-
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["PostSettings"]</h6>
-                </div>
-                <div class="card-body">
-                    <dl class="row mb-0">
-                        <dt class="col-sm-6">@Localizer["IsPublished"]</dt>
-                        <dd class="col-sm-6">
-                            @if (Model.IsPublished)
-                            {
-                                <span class="badge bg-success">@Localizer["Published"]</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">@Localizer["Draft"]</span>
-                            }
-                        </dd>
-
-                        <dt class="col-sm-6">@Localizer["PublishedAt"]</dt>
-                        <dd class="col-sm-6 text-dark fw-medium">@(Model.PublishedAtUtc?.ToString("g") ?? "---")</dd>
-
-                        <dt class="col-sm-6">@Localizer["CoverImageId"]</dt>
-                        <dd class="col-sm-6 text-truncate text-muted">@(Model.CoverMediaAssetId?.ToString() ?? Localizer["None"].Value)</dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
 
         <div class="col-lg-8">
             <div class="card shadow mb-4">
@@ -55,8 +19,8 @@
                 <div class="card-body">
                     @{
                         var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                        var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture) 
-                            ? currentCulture 
+                        var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture)
+                            ? currentCulture
                             : Model.Translations.FirstOrDefault()?.CultureCode;
                     }
                     <ul class="nav nav-tabs mb-3" id="detailsTabs" role="tablist">
@@ -128,5 +92,41 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["PostSettings"]</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-6">@Localizer["IsPublished"]</dt>
+                        <dd class="col-sm-6">
+                            @if (Model.IsPublished)
+                            {
+                                <span class="badge bg-success">@Localizer["Published"]</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@Localizer["Draft"]</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-6">@Localizer["PublishedAt"]</dt>
+                        <dd class="col-sm-6 text-dark fw-medium">@(Model.PublishedAtUtc?.ToString("g") ?? "---")</dd>
+
+                        <dt class="col-sm-6">@Localizer["CoverImageId"]</dt>
+                        <dd class="col-sm-6 text-truncate text-muted">@(Model.CoverMediaAssetId?.ToString() ?? Localizer["None"].Value)</dd>
+                    </dl>
+
+                    <hr />
+
+                    <div class="d-grid">
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block">@Localizer["Edit"]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
