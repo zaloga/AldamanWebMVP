@@ -57,7 +57,6 @@ public sealed class BlogService : IBlogService
         var dbQuery = Context.BlogPosts
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
-            .Include(p => p.CreatedByUser)
             .AsQueryable();
 
         // Filtering
@@ -95,8 +94,8 @@ public sealed class BlogService : IBlogService
                 Perex = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Perex ?? "",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
-                AuthorName = p.CreatedByUser != null ? p.CreatedByUser.DisplayName : "Unknown",
                 CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
+                UpdatedAtUtc = p.UpdatedAtUtc,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -325,7 +324,6 @@ public sealed class BlogService : IBlogService
             .IgnoreQueryFilters()
             .Where(p => p.IsDeleted)
             .Include(p => p.Translations)
-            .Include(p => p.CreatedByUser)
             .OrderByDescending(p => p.DeletedAtUtc)
             .AsQueryable();
 
@@ -341,7 +339,7 @@ public sealed class BlogService : IBlogService
                         ?? "-",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
-                AuthorName = p.CreatedByUser != null ? p.CreatedByUser.DisplayName : "Unknown",
+                UpdatedAtUtc = p.UpdatedAtUtc,
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();

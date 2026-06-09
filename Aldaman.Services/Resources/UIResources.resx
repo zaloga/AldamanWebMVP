@@ -543,9 +543,6 @@
   <data name="PublishedOnDate" xml:space="preserve">
     <value>Publikováno dne {0}</value>
   </data>
-  <data name="DraftCreatedOn" xml:space="preserve">
-    <value>Koncept (vytvořeno {0})</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Nastavení</value>
   </data>
@@ -575,6 +572,12 @@
   </data>
   <data name="Author" xml:space="preserve">
     <value>Autor</value>
+  </data>
+  <data name="CreatedAt" xml:space="preserve">
+    <value>Vytvořeno</value>
+  </data>
+  <data name="UpdatedAt" xml:space="preserve">
+    <value>Upraveno</value>
   </data>
   <data name="ChooseFile" xml:space="preserve">
     <value>Vybrat soubor</value>

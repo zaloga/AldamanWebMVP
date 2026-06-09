@@ -13,6 +13,6 @@ public class BlogPostListItemDto
     public string? CoverImageRelativePath { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
     public bool IsPublished { get; set; }
-    public string? AuthorName { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }

@@ -49,7 +49,8 @@
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">@Localizer["Title"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Author"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["UpdatedAt"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["PublicationDate"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
@@ -58,7 +59,7 @@
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="5" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -68,8 +69,11 @@
                             <div class="fw-semibold text-dark">@item.Title</div>
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Perex</div>
                         </td>
-                        <td class="py-3">
-                            <span class="badge bg-light text-dark fw-normal border">@item.AuthorName</span>
+                        <td class="py-3 text-muted small">
+                            @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
+                        </td>
+                        <td class="py-3 text-muted small">
+                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "-")
                         </td>
                         <td class="py-3">
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
@@ -83,7 +87,7 @@
                             {
                                 <span class="d-flex align-items-center text-warning small fw-medium">
                                     <span class="bg-warning rounded-circle me-2" style="width: 8px; height: 8px;"></span>
-                                    @string.Format(Localizer["DraftCreatedOn"].Value, item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy"))
+                                    @Localizer["Draft"]
                                 </span>
                             }
                         </td>
@@ -129,7 +133,8 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 40%">@Localizer["Title"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Author"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["UpdatedAt"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["PublicationDate"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
@@ -140,13 +145,28 @@
                         <tr id="row-deleted-@item.Id">
                             <td class="ps-4 py-3">
                                 <div class="fw-semibold text-muted text-decoration-line-through">@item.Title</div>
-                                <div class="small text-muted">@Localizer["Uploaded"]: @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy")</div>
+                            </td>
+                            <td class="py-3 text-muted small">
+                                @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
+                            </td>
+                            <td class="py-3 text-muted small">
+                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "-")
                             </td>
                             <td class="py-3">
-                                <span class="badge bg-light text-muted fw-normal border">@item.AuthorName</span>
-                            </td>
-                            <td class="py-3">
-                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["DeletedBadge"]</span>
+                                @if (item.IsPublished && item.PublishedAtUtc.HasValue)
+                                {
+                                    <span class="d-flex align-items-center text-success small fw-medium">
+                                        <span class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></span>
+                                        @string.Format(Localizer["PublishedOnDate"].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy"))
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="d-flex align-items-center text-warning small fw-medium">
+                                        <span class="bg-warning rounded-circle me-2" style="width: 8px; height: 8px;"></span>
+                                        @Localizer["Draft"]
+                                    </span>
+                                }
                             </td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
