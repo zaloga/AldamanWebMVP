@@ -152,6 +152,7 @@
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["UpdatedAt"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["PublicationDate"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["DeletedBadge"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
                 </thead>
@@ -195,6 +196,9 @@
                                         @Localizer["Draft"]
                                     </span>
                                 }
+                            </td>
+                            <td class="py-3 text-muted small">
+                                @(item.DeletedAtUtc.HasValue ? item.DeletedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "-")
                             </td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">

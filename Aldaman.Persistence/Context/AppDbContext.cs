@@ -58,6 +58,14 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         var entriesAuditableSoftDeletable = ChangeTracker.Entries<BaseEntityAuditableSoftDel>();
         foreach (var entry in entriesAuditableSoftDeletable)
         {
+            var isSoftDeleting = entry.State == EntityState.Modified &&
+                                 entry.Property(e => e.IsDeleted).IsModified &&
+                                 entry.Entity.IsDeleted;
+
+            var isSoftRestoring = entry.State == EntityState.Modified &&
+                                  entry.Property(e => e.IsDeleted).IsModified &&
+                                  !entry.Entity.IsDeleted;
+
             switch (entry.State)
             {
                 case EntityState.Added:
@@ -67,8 +75,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                     break;
 
                 case EntityState.Modified:
-                    entry.Entity.UpdatedAtUtc = now;
-                    entry.Entity.UpdatedByUserId = currentUserId;
+                    if (!isSoftDeleting && !isSoftRestoring)
+                    {
+                        entry.Entity.UpdatedAtUtc = now;
+                        entry.Entity.UpdatedByUserId = currentUserId;
+                    }
                     break;
             }
 
@@ -77,11 +88,20 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 entry.Entity.DeletedAtUtc = now;
                 entry.Entity.DeletedByUserId = currentUserId;
             }
+            else if (isSoftRestoring)
+            {
+                entry.Entity.DeletedAtUtc = null;
+                entry.Entity.DeletedByUserId = null;
+            }
         }
 
         var entriesCreatableSoftDeletable = ChangeTracker.Entries<BaseEntityCreatableSoftDel>();
         foreach (var entry in entriesCreatableSoftDeletable)
         {
+            var isSoftRestoring = entry.State == EntityState.Modified &&
+                                  entry.Property(e => e.IsDeleted).IsModified &&
+                                  !entry.Entity.IsDeleted;
+
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAtUtc = now;
@@ -93,6 +113,11 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             {
                 entry.Entity.DeletedAtUtc = now;
                 entry.Entity.DeletedByUserId = currentUserId;
+            }
+            else if (isSoftRestoring)
+            {
+                entry.Entity.DeletedAtUtc = null;
+                entry.Entity.DeletedByUserId = null;
             }
         }
 
