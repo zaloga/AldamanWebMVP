@@ -95,7 +95,11 @@ public sealed class BlogService : IBlogService
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
-                UpdatedAtUtc = p.UpdatedAtUtc,
+                UpdatedAtUtc = p.UpdatedAtUtc == null
+                    ? p.Translations.Max(t => t.UpdatedAtUtc)
+                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
+                        ? p.Translations.Max(t => t.UpdatedAtUtc)
+                        : p.UpdatedAtUtc),
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -339,7 +343,11 @@ public sealed class BlogService : IBlogService
                         ?? "-",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
-                UpdatedAtUtc = p.UpdatedAtUtc,
+                UpdatedAtUtc = p.UpdatedAtUtc == null
+                    ? p.Translations.Max(t => t.UpdatedAtUtc)
+                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
+                        ? p.Translations.Max(t => t.UpdatedAtUtc)
+                        : p.UpdatedAtUtc),
                 CreatedAtUtc = p.CreatedAtUtc,
                 DeletedAtUtc = p.DeletedAtUtc
             })

@@ -12,5 +12,6 @@ public class ContentPageListItemDto
     public string Title { get; set; } = string.Empty;
     public PlaceToShowEnum PlaceToShow { get; set; }
     public int PageOrder { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }

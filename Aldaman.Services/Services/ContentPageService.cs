@@ -88,6 +88,11 @@ public sealed class ContentPageService : IContentPageService
                         ?? "-",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
+                UpdatedAtUtc = p.UpdatedAtUtc == null
+                    ? p.Translations.Max(t => t.UpdatedAtUtc)
+                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
+                        ? p.Translations.Max(t => t.UpdatedAtUtc)
+                        : p.UpdatedAtUtc),
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
@@ -298,6 +303,11 @@ public sealed class ContentPageService : IContentPageService
                         ?? "-",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
+                UpdatedAtUtc = p.UpdatedAtUtc == null
+                    ? p.Translations.Max(t => t.UpdatedAtUtc)
+                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
+                        ? p.Translations.Max(t => t.UpdatedAtUtc)
+                        : p.UpdatedAtUtc),
                 CreatedAtUtc = p.CreatedAtUtc
             })
             .ToListAsync();
