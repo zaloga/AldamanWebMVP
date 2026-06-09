@@ -7,7 +7,8 @@
     "build:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css",
     "watch:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css --watch",
     "copy:quill": "npx shx mkdir -p wwwroot/lib/quill && npx shx cp node_modules/quill/dist/quill.js wwwroot/lib/quill/ && npx shx cp node_modules/quill/dist/quill.snow.css wwwroot/lib/quill/",
-    "build": "npm run copy:quill && npm run build:web"
+    "copy:bootstrap-icons": "npx shx mkdir -p wwwroot/lib/bootstrap-icons && npx shx cp -r node_modules/bootstrap-icons/font wwwroot/lib/bootstrap-icons/",
+    "build": "npm run copy:quill && npm run copy:bootstrap-icons && npm run build:web"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.2",
     "autoprefixer": "^10.4.27",
+    "bootstrap-icons": "^1.11.1",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2"
   },
