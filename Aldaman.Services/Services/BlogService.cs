@@ -340,7 +340,8 @@ public sealed class BlogService : IBlogService
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 UpdatedAtUtc = p.UpdatedAtUtc,
-                CreatedAtUtc = p.CreatedAtUtc
+                CreatedAtUtc = p.CreatedAtUtc,
+                DeletedAtUtc = p.DeletedAtUtc
             })
             .ToListAsync();
 

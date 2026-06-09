@@ -112,11 +112,20 @@
                             }
                         </dd>
 
-                        <dt class="col-sm-6">@Localizer["PublishedAt"]</dt>
+                        <dt class="col-sm-6">@Localizer["PublicationDate"]</dt>
                         <dd class="col-sm-6 text-dark fw-medium">@(Model.PublishedAtUtc?.ToString("g") ?? "---")</dd>
 
-                        <dt class="col-sm-6">@Localizer["CoverImageId"]</dt>
-                        <dd class="col-sm-6 text-truncate text-muted">@(Model.CoverMediaAssetId?.ToString() ?? Localizer["None"].Value)</dd>
+                        <dt class="col-sm-6">@Localizer["CoverImage"]</dt>
+                        <dd class="col-sm-6">
+                            @if (!string.IsNullOrEmpty(Model.CoverImageRelativePath))
+                            {
+                                <img src="@Model.CoverImageRelativePath" class="img-thumbnail" style="max-height: 150px;" alt="Cover Image" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">@Localizer["None"]</span>
+                            }
+                        </dd>
                     </dl>
 
                     <hr />
