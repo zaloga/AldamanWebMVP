@@ -21,7 +21,7 @@
                 </a>
                 @await Component.InvokeAsync("LanguageSwitcher", new { viewName = "Admin" })
                 <span class="small fw-medium text-muted">@Localizer["AdminUser"]</span>
-                <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline line-height-21">
+                <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@ViewContext.RouteData.Values["culture"]" method="post" class="d-inline line-height-21">
                     <button type="submit" class="btn btn-link btn-sm text-primary fw-medium p-0 text-decoration-none">@Localizer["SignOut"]</button>
                 </form>
             </div>
