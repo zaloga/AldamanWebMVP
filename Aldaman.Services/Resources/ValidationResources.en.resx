@@ -58,25 +58,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NameRequired" xml:space="preserve">
-    <value>Name is required.</value>
-  </data>
-  <data name="NameMaxLength" xml:space="preserve">
-    <value>Name can have a maximum of {0} characters.</value>
-  </data>
-  <data name="EmailRequired" xml:space="preserve">
+<data name="EmailRequired" xml:space="preserve">
     <value>E-mail is required.</value>
   </data>
   <data name="EmailInvalid" xml:space="preserve">
     <value>Invalid e-mail format.</value>
   </data>
-  <data name="EmailMaxLength" xml:space="preserve">
-    <value>E-mail can have a maximum of {0} characters.</value>
-  </data>
-  <data name="SubjectMaxLength" xml:space="preserve">
-    <value>Subject can have a maximum of {0} characters.</value>
-  </data>
-  <data name="MessageRequired" xml:space="preserve">
+<data name="MessageRequired" xml:space="preserve">
     <value>Message is required.</value>
   </data>
   <data name="MessageMaxLength" xml:space="preserve">

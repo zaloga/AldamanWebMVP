@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # media files
 /Aldaman.Web/wwwroot/uploads
+/delete_unused.py
+/find_unused.py

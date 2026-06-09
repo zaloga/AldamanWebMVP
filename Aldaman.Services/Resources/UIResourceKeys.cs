@@ -27,16 +27,12 @@ public static class UIResourceKeys
     // Blog
     public const string Blog = nameof(Blog);
     public const string BlogSubtitle = nameof(BlogSubtitle);
-    public const string Article = nameof(Article);
-    public const string AllArticles = nameof(AllArticles);
-    public const string Administrator = nameof(Administrator);
-
-    // Contact
+public const string AllArticles = nameof(AllArticles);
+// Contact
     public const string Contact = nameof(Contact);
     public const string ContactMe = nameof(ContactMe);
     public const string ContactSubtitle = nameof(ContactSubtitle);
-    public const string FullName = nameof(FullName);
-    public const string Subject = nameof(Subject);
+public const string Subject = nameof(Subject);
     public const string Message = nameof(Message);
     public const string SendMessage = nameof(SendMessage);
     public const string MessageSent = nameof(MessageSent);
