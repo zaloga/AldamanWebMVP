@@ -618,4 +618,7 @@
   <data name="TranslationMissing" xml:space="preserve">
     <value>Pro tento obsah zatím neexistuje překlad</value>
   </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Spravovat</value>
+  </data>
 </root>

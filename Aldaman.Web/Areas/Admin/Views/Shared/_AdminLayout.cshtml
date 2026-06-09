@@ -19,7 +19,7 @@
                     <span class="h4 mb-0 fw-bold text-primary">@Localizer["Admin"]</span>
                 </a>
 
-                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2">
+                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-outline-primary btn-md d-flex align-items-center gap-2">
                     <i class="bi bi-box-arrow-up-right"></i> @Localizer["GoToWeb"]
                 </a>
             </div>
@@ -37,7 +37,6 @@
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown">
-                        <li><h6 class="dropdown-header">Můj účet</h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@ViewContext.RouteData.Values["culture"]" method="post" class="m-0">

@@ -14,14 +14,14 @@
         <div class="card h-100 border-0 shadow-sm rounded-4">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
-                        <i class="bi bi-journal-text fs-5"></i>
+                    <div class="text-secondary p-2 rounded-3">
+                        <i class="bi bi-journal-text fs-3"></i>
                     </div>
                     <h5 class="fw-bold mb-0">@Localizer["BlogPosts"] (@Model.BlogPostsCount)</h5>
                 </div>
                 <div class="mt-auto pt-3 border-top d-flex justify-content-between">
                     <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
-                        Spravovat <i class="bi bi-arrow-right"></i>
+                        @Localizer["Manage"] <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -32,14 +32,14 @@
         <div class="card h-100 border-0 shadow-sm rounded-4">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
-                        <i class="bi bi-files fs-5"></i>
+                    <div class="text-secondary p-2 rounded-3">
+                        <i class="bi bi-files fs-3"></i>
                     </div>
                     <h5 class="fw-bold mb-0">@Localizer["Pages"] (@Model.TotalPagesCount)</h5>
                 </div>
                 <div class="mt-auto pt-3 border-top">
                     <a asp-area="Admin" asp-controller="ContentPages" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
-                        Spravovat <i class="bi bi-arrow-right"></i>
+                        @Localizer["Manage"] <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -50,14 +50,14 @@
         <div class="card h-100 border-0 shadow-sm rounded-4">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
-                        <i class="bi bi-envelope fs-5"></i>
+                    <div class="text-secondary p-2 rounded-3">
+                        <i class="bi bi-envelope fs-3"></i>
                     </div>
                     <h5 class="fw-bold mb-0">@Localizer["ContactMessages"] (@Model.ContactMessagesCount)</h5>
                 </div>
                 <div class="mt-auto pt-3 border-top">
                     <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
-                        Spravovat <i class="bi bi-arrow-right"></i>
+                        @Localizer["Manage"] <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -68,14 +68,14 @@
         <div class="card h-100 border-0 shadow-sm rounded-4">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
-                        <i class="bi bi-images fs-5"></i>
+                    <div class="text-secondary p-2 rounded-3">
+                        <i class="bi bi-images fs-3"></i>
                     </div>
                     <h5 class="fw-bold mb-0">@Localizer["MediaLibrary"] (@Model.TotalMediaCount) @(Model.TotalMediaSizeInBytes / 1048576) MB</h5>
                 </div>
                 <div class="mt-auto pt-3 border-top">
                     <a asp-area="Admin" asp-controller="Media" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
-                        Spravovat <i class="bi bi-arrow-right"></i>
+                        @Localizer["Manage"] <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -86,14 +86,14 @@
         <div class="card h-100 border-0 shadow-sm rounded-4">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
-                        <i class="bi bi-sliders fs-5"></i>
+                    <div class="text-secondary p-2 rounded-3">
+                        <i class="bi bi-sliders fs-3"></i>
                     </div>
                     <h5 class="fw-bold mb-0">Theme Settings</h5>
                 </div>
                 <div class="mt-auto pt-3 border-top">
                     <a asp-area="Admin" asp-controller="StyleSettings" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
-                        Spravovat <i class="bi bi-arrow-right"></i>
+                        @Localizer["Manage"] <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>

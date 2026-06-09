@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Admin" xml:space="preserve">
-    <value>Admin</value>
+    <value>Administration</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home Page</value>
@@ -214,7 +214,7 @@
     <value>Pages of web</value>
   </data>
   <data name="ContactMessages" xml:space="preserve">
-    <value>Contact messages from web</value>
+    <value>Contact web messages</value>
   </data>
   <data name="MediaLibrary" xml:space="preserve">
     <value>Media Library</value>
@@ -617,5 +617,8 @@
   </data>
   <data name="TranslationMissing" xml:space="preserve">
     <value>There is no translation available for this content yet</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Manage</value>
   </data>
 </root>
