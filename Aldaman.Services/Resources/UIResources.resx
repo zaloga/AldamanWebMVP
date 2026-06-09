@@ -156,7 +156,7 @@
   <data name="BlogSubtitle" xml:space="preserve">
     <value>Nejnovější články z webu Aldaman.cz.</value>
   </data>
-<data name="Contact" xml:space="preserve">
+  <data name="Contact" xml:space="preserve">
     <value>Kontakt</value>
   </data>
   <data name="ContactMe" xml:space="preserve">
@@ -165,7 +165,7 @@
   <data name="ContactSubtitle" xml:space="preserve">
     <value>Máte dotaz nebo zájem o mé služby? Vyplňte formulář níže a ozvu se zpět.</value>
   </data>
-<data name="Subject" xml:space="preserve">
+  <data name="Subject" xml:space="preserve">
     <value>Předmět</value>
   </data>
   <data name="Message" xml:space="preserve">
@@ -208,13 +208,13 @@
     <value>Administrační panel</value>
   </data>
   <data name="BlogPosts" xml:space="preserve">
-    <value>Příspěvky</value>
+    <value>Příspěvky blogu</value>
   </data>
   <data name="Pages" xml:space="preserve">
-    <value>Stránky</value>
+    <value>Stránky webu</value>
   </data>
   <data name="ContactMessages" xml:space="preserve">
-    <value>Kontaktní zprávy</value>
+    <value>Kontaktní zprávy webu</value>
   </data>
   <data name="MediaLibrary" xml:space="preserve">
     <value>Knihovna médií</value>
@@ -225,7 +225,7 @@
   <data name="AllArticles" xml:space="preserve">
     <value>Výpis všech článků</value>
   </data>
-<data name="Create" xml:space="preserve">
+  <data name="Create" xml:space="preserve">
     <value>Vytvořit</value>
   </data>
   <data name="Edit" xml:space="preserve">
@@ -261,7 +261,7 @@
   <data name="Filter" xml:space="preserve">
     <value>Filtrovat</value>
   </data>
-<data name="Showing" xml:space="preserve">
+  <data name="Showing" xml:space="preserve">
     <value>Zobrazeno</value>
   </data>
   <data name="To" xml:space="preserve">
@@ -327,7 +327,7 @@
   <data name="Order" xml:space="preserve">
     <value>Pořadí</value>
   </data>
-<data name="ContactMessageDetails" xml:space="preserve">
+  <data name="ContactMessageDetails" xml:space="preserve">
     <value>Detail zprávy</value>
   </data>
   <data name="Sender" xml:space="preserve">
@@ -366,7 +366,7 @@
   <data name="FileInfo" xml:space="preserve">
     <value>Informace o souboru</value>
   </data>
-<data name="Restore" xml:space="preserve">
+  <data name="Restore" xml:space="preserve">
     <value>Obnovit</value>
   </data>
   <data name="DeletePermanently" xml:space="preserve">
@@ -405,7 +405,7 @@
   <data name="Information" xml:space="preserve">
     <value>Informace</value>
   </data>
-<data name="SenderContact" xml:space="preserve">
+  <data name="SenderContact" xml:space="preserve">
     <value>Kontakt na odesílatele</value>
   </data>
   <data name="DeletedMessage" xml:space="preserve">
@@ -435,7 +435,7 @@
   <data name="CoverImageId" xml:space="preserve">
     <value>ID úvodního obrázku</value>
   </data>
-<data name="None" xml:space="preserve">
+  <data name="None" xml:space="preserve">
     <value>Není</value>
   </data>
   <data name="NotRecorded" xml:space="preserve">
@@ -447,7 +447,7 @@
   <data name="MaxFileSizeInfo" xml:space="preserve">
     <value>Soubory do 1MB (obrázky, videa, dokumenty)</value>
   </data>
-<data name="AssetPreview" xml:space="preserve">
+  <data name="AssetPreview" xml:space="preserve">
     <value>Náhled souboru</value>
   </data>
   <data name="UpdateMediaInfo" xml:space="preserve">
@@ -459,7 +459,7 @@
   <data name="TitleInfo" xml:space="preserve">
     <value>Popisný název...</value>
   </data>
-<data name="ConfirmDeleteText" xml:space="preserve">
+  <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Opravdu chcete smazat „{0}“? Tato položka bude označena k trvalému odstranění.</value>
   </data>
   <data name="ConfirmDeletePermanentlyText" xml:space="preserve">
@@ -489,10 +489,10 @@
   <data name="PleaseCorrectErrors" xml:space="preserve">
     <value>Prosím opravte následující chyby:</value>
   </data>
-<data name="NoSubject" xml:space="preserve">
+  <data name="NoSubject" xml:space="preserve">
     <value>Bez předmětu</value>
   </data>
-<data name="SortByDate" xml:space="preserve">
+  <data name="SortByDate" xml:space="preserve">
     <value>Seřadit podle data</value>
   </data>
   <data name="SortByStatus" xml:space="preserve">
@@ -585,13 +585,13 @@
   <data name="RemoveImage" xml:space="preserve">
     <value>Odstranit obrázek</value>
   </data>
-<data name="PreviousPost" xml:space="preserve">
+  <data name="PreviousPost" xml:space="preserve">
     <value>Starší příspěvek</value>
   </data>
   <data name="NextPost" xml:space="preserve">
     <value>Novější příspěvek</value>
   </data>
-<data name="Size" xml:space="preserve">
+  <data name="Size" xml:space="preserve">
     <value>Velikost</value>
   </data>
   <data name="MediaDetails" xml:space="preserve">
@@ -614,9 +614,6 @@
   </data>
   <data name="GoToWeb" xml:space="preserve">
     <value>Přejít na web</value>
-  </data>
-<data name="NextSettings" xml:space="preserve">
-    <value>Další nastavení</value>
   </data>
   <data name="TranslationMissing" xml:space="preserve">
     <value>Pro tento obsah zatím neexistuje překlad</value>
