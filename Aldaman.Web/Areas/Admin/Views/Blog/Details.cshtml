@@ -122,7 +122,8 @@
                     <hr />
 
                     <div class="d-grid">
-                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block">@Localizer["Edit"]</a>
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
                     </div>
                 </div>
             </div>

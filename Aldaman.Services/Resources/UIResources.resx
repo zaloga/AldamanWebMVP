@@ -624,4 +624,7 @@
   <data name="Manage" xml:space="preserve">
     <value>Spravovat</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zpět</value>
+  </data>
 </root>
