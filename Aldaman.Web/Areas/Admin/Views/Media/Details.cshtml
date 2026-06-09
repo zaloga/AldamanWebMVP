@@ -84,14 +84,16 @@
                 <div class="col-sm-8">@Model.UploadedAtUtc.ToLocalTime().ToString("g")</div>
             </div>
 
-            <div class="d-flex justify-content-end gap-2 border-top pt-4 mt-4">
+            @* commented out for now, can be added in the future when we have usecase for it
+                <div class="d-flex justify-content-end gap-2 border-top pt-4 mt-4">
                  <button class="btn btn-outline-danger px-4" onclick="deleteItem('@Model.Id', '@Model.OriginalFileName')">@Localizer["Delete"]</button>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
 
-@section Scripts {
+@* commented out for now, can be added in the future when we have usecase for it
+    @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function deleteItem(id, title) {
@@ -130,4 +132,4 @@
             });
         }
     </script>
-}
+} *@
