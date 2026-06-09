@@ -4,90 +4,120 @@
     ViewData["Title"] = Localizer["Dashboard"];
 }
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 my-3">
-    <!-- Stats Cards -->
+<div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+    <h2 class="h4 mb-0 text-dark fw-bold">@Localizer["Dashboard"]</h2>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-4 mb-5">
+
     <div class="col">
-        <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index">
-            <div class="card h-100 shadow-md stats-card">
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["ContactMessages"]</h5>
-                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.ContactMessagesCount</h6>
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="text-muted text-uppercase fw-bold small tracking-wide">@Localizer["ContactMessages"]</span>
+                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3 d-flex">
+                        <i class="bi bi-envelope fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold text-dark mb-1">@Model.ContactMessagesCount</h3>
+                <div class="mt-auto pt-3 border-top">
+                    <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Index" class="text-decoration-none fw-medium text-primary d-flex align-items-center gap-1 small">
+                        Zobrazit zprávy <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="Blog" asp-action="Index">
-            <div class="card h-100 shadow-md stats-card">
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["BlogPosts"]</h5>
-                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.BlogPostsCount</h6>
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="text-muted text-uppercase fw-bold small tracking-wide">@Localizer["BlogPosts"]</span>
+                    <div class="bg-success bg-opacity-10 text-success p-2 rounded-3 d-flex">
+                        <i class="bi bi-journal-text fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold text-dark mb-1">@Model.BlogPostsCount</h3>
+                <div class="mt-auto pt-3 border-top d-flex justify-content-between">
+                    <a asp-area="Admin" asp-controller="Blog" asp-action="Index" class="text-decoration-none fw-medium text-success d-flex align-items-center gap-1 small">
+                        Spravovat <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="ContentPages" asp-action="Index">
-            <div class="card h-100 shadow-md stats-card">
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["Pages"]</h5>
-                    <h6 class="card-title mb-0">@Localizer["Total"] @Model.TotalPagesCount</h6>
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="text-muted text-uppercase fw-bold small tracking-wide">@Localizer["Pages"]</span>
+                    <div class="bg-info bg-opacity-10 text-info p-2 rounded-3 d-flex">
+                        <i class="bi bi-files fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold text-dark mb-1">@Model.TotalPagesCount</h3>
+                <div class="mt-auto pt-3 border-top">
+                    <a asp-area="Admin" asp-controller="ContentPages" asp-action="Index" class="text-decoration-none fw-medium text-info d-flex align-items-center gap-1 small">
+                        Upravit web <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 
     <div class="col">
-        <a asp-area="Admin" asp-controller="Media" asp-action="Index">
-            <div class="card h-100 shadow-md stats-card">
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">@Localizer["MediaLibrary"]</h5>
-                    <h6 class="card-title mb-0">@Localizer["Total"] @(Model.TotalMediaCount)</h6>
-                    <h6 class="card-title mb-0">@(Model.TotalMediaSizeInBytes / 1048576) MB</h6>
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="text-muted text-uppercase fw-bold small tracking-wide">@Localizer["MediaLibrary"]</span>
+                    <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-3 d-flex">
+                        <i class="bi bi-images fs-5"></i>
+                    </div>
+                </div>
+                <div class="d-flex align-items-baseline gap-2 mb-1">
+                    <h3 class="display-6 fw-bold text-dark mb-0">@Model.TotalMediaCount</h3>
+                    <span class="text-muted small">souborů</span>
+                </div>
+                <p class="text-muted small mb-0">Zabráno @(Model.TotalMediaSizeInBytes / 1048576) MB</p>
+                <div class="mt-auto pt-3 border-top">
+                    <a asp-area="Admin" asp-controller="Media" asp-action="Index" class="text-decoration-none fw-medium text-warning d-flex align-items-center gap-1 small">
+                        Otevřít galerii <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        <h2 class="text-muted mb-3">@Localizer["SummaryOverviews"]</h2>
-    </div>
-</div>
 
-<div class="row my-3">
+<h4 class="text-dark fw-bold mb-3 mt-5">@Localizer["SummaryOverviews"]</h4>
+
+<div class="row g-4 mb-4">
+
     <div class="col-12 col-xl-6">
-        <div class="card shadow-md mb-3">
-            <div class="card-header bg-white border-0 pt-4 pb-0">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                 <h5 class="fw-bold mb-0">@Localizer["RecentMessages"]</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body px-4">
                 @if (Model.LatestMessages.Any())
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>@Localizer["Date"]</th>
-                                    <th>@Localizer["EmailOrPhone"]</th>
-                                    <th>@Localizer["Message"]</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-hover align-middle border-top mb-0">
                             <tbody>
                                 @foreach (var message in Model.LatestMessages)
                                 {
                                     <tr>
-                                        <td>@message.CreatedAtUtc.ToLocalTime().ToString("g")</td>
                                         <td>
-                                            <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Details" asp-route-id="@message.Id" class="text-decoration-none text-dark fw-bold">
+                                            <div class="small text-muted mb-1">@message.CreatedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                                            <a asp-area="Admin" asp-controller="ContactMessages" asp-action="Details" asp-route-id="@message.Id" class="text-decoration-none text-dark fw-bold d-block">
                                                 @message.EmailOrPhone
                                             </a>
-                                        </td>
-                                        <td>
-                                            @(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)
+                                            <span class="small text-secondary">
+                                                @(message.Message.Length > 80 ? message.Message.Substring(0, 80) + "..." : message.Message)
+                                            </span>
                                         </td>
                                     </tr>
                                 }
@@ -97,47 +127,46 @@
                 }
                 else
                 {
-                    <p class="text-muted mb-0">@Localizer["NoRecentMessages"]</p>
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-inbox fs-2 text-secondary"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark">Žádné nové zprávy</h6>
+                        <p class="text-muted small mb-0">Zatím vás nikdo nekontaktoval.</p>
+                    </div>
                 }
             </div>
         </div>
     </div>
 
     <div class="col-12 col-xl-6">
-        <div class="card shadow-md mb-3">
-            <div class="card-header bg-white border-0 pt-4 pb-0">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                 <h5 class="fw-bold mb-0">@Localizer["RecentBlogPosts"]</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body px-4">
                 @if (Model.LatestBlogPosts.Any())
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>@Localizer["Date"]</th>
-                                    <th>@Localizer["Title"]</th>
-                                    <th>@Localizer["Status"]</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-hover align-middle border-top mb-0">
                             <tbody>
                                 @foreach (var post in Model.LatestBlogPosts)
                                 {
                                     <tr>
-                                        <td>@post.CreatedAtUtc.ToLocalTime().ToString("g")</td>
                                         <td>
+                                            <div class="small text-muted mb-1">@post.CreatedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
                                             <a asp-area="Admin" asp-controller="Blog" asp-action="Update" asp-route-id="@post.Id" class="text-decoration-none text-dark fw-bold">
                                                 @post.Title
                                             </a>
                                         </td>
-                                        <td>
+                                        <td class="text-end">
                                             @if (post.IsPublished)
                                             {
-                                                <span class="badge bg-success">@Localizer["Published"]</span>
+                                                <span class="badge rounded-pill bg-success bg-opacity-10 text-success border border-success-subtle fw-normal">@Localizer["Published"]</span>
                                             }
                                             else
                                             {
-                                                <span class="badge bg-warning">@Localizer["Draft"]</span>
+                                                <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning border border-warning-subtle fw-normal">@Localizer["Draft"]</span>
                                             }
                                         </td>
                                     </tr>
@@ -148,34 +177,34 @@
                 }
                 else
                 {
-                    <p class="text-muted mb-0">@Localizer["NoRecentBlogPosts"]</p>
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-journal-x fs-2 text-secondary"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark">Žádné příspěvky</h6>
+                        <p class="text-muted small mb-0">Zatím nebyly vydány žádné články.</p>
+                    </div>
                 }
             </div>
         </div>
     </div>
 
     <div class="col-12 col-xl-6">
-        <div class="card shadow-md mb-3">
-            <div class="card-header bg-white border-0 pt-4 pb-0">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                 <h5 class="fw-bold mb-0">@Localizer["RecentPages"]</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body px-4">
                 @if (Model.LatestPages.Any())
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>@Localizer["Date"]</th>
-                                    <th>@Localizer["Title"]</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-hover align-middle border-top mb-0">
                             <tbody>
                                 @foreach (var contentPage in Model.LatestPages)
                                 {
                                     <tr>
-                                        <td>@contentPage.CreatedAtUtc.ToLocalTime().ToString("g")</td>
                                         <td>
+                                            <div class="small text-muted mb-1">@contentPage.CreatedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
                                             <a asp-area="Admin" asp-controller="ContentPages" asp-action="Update" asp-route-id="@contentPage.Id" class="text-decoration-none text-dark fw-bold">
                                                 @contentPage.Title
                                             </a>
@@ -188,52 +217,50 @@
                 }
                 else
                 {
-                    <p class="text-muted mb-0">@Localizer["NoRecentPages"]</p>
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-file-earmark-x fs-2 text-secondary"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark">Žádné stránky</h6>
+                        <p class="text-muted small mb-0">Váš web zatím nemá žádné stránky.</p>
+                    </div>
                 }
             </div>
         </div>
     </div>
 
     <div class="col-12 col-xl-6">
-        <div class="card shadow-md mb-3">
-            <div class="card-header bg-white border-0 pt-4 pb-0">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-2 px-4">
                 <h5 class="fw-bold mb-0">@Localizer["RecentMedia"]</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body px-4">
                 @if (Model.LatestMedia.Any())
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>@Localizer["Date"]</th>
-                                    <th>@Localizer["FileName"]</th>
-                                    <th>@Localizer["Size"]</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-hover align-middle border-top mb-0">
                             <tbody>
                                 @foreach (var media in Model.LatestMedia)
                                 {
                                     <tr>
-                                        <td>@media.UploadedAtUtc.ToLocalTime().ToString("g")</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                @if (media.ContentType.StartsWith("image/"))
-                                                {
-                                                    <img src="@media.RelativePath" alt="@media.OriginalFileName" class="rounded me-2" style="width: 32px; height: 32px; object-fit: cover;" />
-                                                }
-                                                else
-                                                {
-                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
-                                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" /></svg>
-                                                    </div>
-                                                }
-                                                <a asp-area="Admin" asp-controller="Media" asp-action="Details" asp-route-id="@media.Id" class="text-decoration-none text-dark fw-bold text-truncate d-block" style="max-width: 150px;" title="@media.OriginalFileName">
-                                                    @media.OriginalFileName
-                                                </a>
-                                            </div>
+                                        <td style="width: 48px;">
+                                            @if (media.ContentType.StartsWith("image/"))
+                                            {
+                                                <img src="@media.RelativePath" alt="@media.OriginalFileName" class="rounded-3 shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" />
+                                            }
+                                            else
+                                            {
+                                                <div class="bg-light text-secondary rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-file-earmark fs-5"></i>
+                                                </div>
+                                            }
                                         </td>
-                                        <td>@(media.FileSize / 1024) KB</td>
+                                        <td>
+                                            <a asp-area="Admin" asp-controller="Media" asp-action="Details" asp-route-id="@media.Id" class="text-decoration-none text-dark fw-bold d-block text-truncate" style="max-width: 250px;" title="@media.OriginalFileName">
+                                                @media.OriginalFileName
+                                            </a>
+                                            <span class="small text-muted">@media.UploadedAtUtc.ToLocalTime().ToString("dd.MM.yyyy") &bull; @(media.FileSize / 1024) KB</span>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -242,28 +269,36 @@
                 }
                 else
                 {
-                    <p class="text-muted mb-0">@Localizer["NoRecentMedia"]</p>
+                    <div class="text-center py-5">
+                        <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="bi bi-images fs-2 text-secondary"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark">Prázdná knihovna</h6>
+                        <p class="text-muted small mb-0">Nenahráli jste žádné soubory.</p>
+                    </div>
                 }
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        <h2 class="text-muted mb-3">@Localizer["NextSettings"]</h2>
-    </div>
-</div>
+<h4 class="text-dark fw-bold mb-3 mt-5">@Localizer["NextSettings"]</h4>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 my-3">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-4 mb-5">
     <div class="col">
-        <a asp-area="Admin" asp-controller="StyleSettings" asp-action="Index">
-            <div class="card h-100 shadow-md stats-card">
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted text-uppercase fw-bold">Theme Settings</h5>
-                    <h6 class="card-title mb-0">Manage CSS variables</h6>
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-secondary bg-opacity-10 text-secondary p-2 rounded-3">
+                        <i class="bi bi-sliders fs-5"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Theme Settings</h5>
                 </div>
+                <p class="text-muted small mb-4">Manage CSS variables, colors, and the overall look of the site.</p>
+                <a asp-area="Admin" asp-controller="StyleSettings" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100 rounded-pill">
+                    Upravit vzhled
+                </a>
             </div>
-        </a>
+        </div>
     </div>
 </div>
