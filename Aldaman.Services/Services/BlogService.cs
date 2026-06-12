@@ -116,6 +116,7 @@ public sealed class BlogService : IBlogService
     public async Task<BlogPostEditDto?> GetBlogPostForEditAsync(Guid id)
     {
         var post = await Context.BlogPosts
+            .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
             .FirstOrDefaultAsync(p => p.Id == id);
@@ -328,8 +329,34 @@ public sealed class BlogService : IBlogService
             .IgnoreQueryFilters()
             .Where(p => p.IsDeleted)
             .Include(p => p.Translations)
-            .OrderByDescending(p => p.DeletedAtUtc)
             .AsQueryable();
+
+        // Filtering
+        if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+        {
+            dbQuery = dbQuery.Where(p => p.Translations.Any(
+                t => t.Title.Contains(query.SearchTerm)
+                || (t.Perex != null && t.Perex.Contains(query.SearchTerm))
+                || (t.PlainText != null && t.PlainText.Contains(query.SearchTerm))));
+        }
+
+        // Sorting
+        dbQuery = query.SortBy switch
+        {
+            "Title" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
+                : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
+            "CreatedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+                : dbQuery.OrderBy(p => p.CreatedAtUtc),
+            "PublishedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.PublishedAtUtc)
+                : dbQuery.OrderBy(p => p.PublishedAtUtc),
+            "DeletedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            _ => dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+        };
 
         var totalCount = await dbQuery.CountAsync();
         var items = await dbQuery

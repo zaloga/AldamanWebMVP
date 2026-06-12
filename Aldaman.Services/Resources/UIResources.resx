@@ -538,10 +538,10 @@
     <value>Seřadit podle data publikace</value>
   </data>
   <data name="DeletedPosts" xml:space="preserve">
-    <value>Smazané články</value>
+    <value>Smazané příspěvky</value>
   </data>
   <data name="PublishedOnDate" xml:space="preserve">
-    <value>Publikováno dne {0}</value>
+    <value>Publikováno {0}</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Nastavení</value>

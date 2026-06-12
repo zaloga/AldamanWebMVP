@@ -20,6 +20,19 @@ public class BlogController : BaseAdminController
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
         var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        
+        deletedItemsQuery.SearchTerm = query.SearchTerm;
+        if (Request.Query.ContainsKey("SortBy"))
+        {
+            deletedItemsQuery.SortBy = query.SortBy;
+            deletedItemsQuery.SortDescending = query.SortDescending;
+        }
+        else
+        {
+            deletedItemsQuery.SortBy = "DeletedAt";
+            deletedItemsQuery.SortDescending = true;
+        }
+
         var result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
         var deletedResult = await BlogService.GetPagedDeletedBlogPostsAsync(deletedItemsQuery, culture);
         

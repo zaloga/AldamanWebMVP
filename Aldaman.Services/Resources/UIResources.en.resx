@@ -409,7 +409,7 @@
     <value>Sender Contact</value>
   </data>
   <data name="DeletedMessage" xml:space="preserve">
-    <value>Deleted Message</value>
+    <value>Deleted message</value>
   </data>
   <data name="MessageDeletedOn" xml:space="preserve">
     <value>This message was deleted on</value>
@@ -421,7 +421,7 @@
     <value>Restore Message</value>
   </data>
   <data name="DeleteMessage" xml:space="preserve">
-    <value>Delete Message</value>
+    <value>Delete message</value>
   </data>
   <data name="PlainText" xml:space="preserve">
     <value>Plain Text (Search Content)</value>
@@ -505,7 +505,7 @@
     <value>Ascending</value>
   </data>
   <data name="DeletedMessages" xml:space="preserve">
-    <value>Deleted Messages</value>
+    <value>Deleted messages</value>
   </data>
   <data name="DeletedBadge" xml:space="preserve">
     <value>Deleted</value>
@@ -517,7 +517,7 @@
     <value>Sort by Order</value>
   </data>
   <data name="DeletedPages" xml:space="preserve">
-    <value>Deleted Pages</value>
+    <value>Deleted pages</value>
   </data>
   <data name="SortByUploadDate" xml:space="preserve">
     <value>Sort by Upload Date</value>
@@ -529,7 +529,7 @@
     <value>Sort by Size</value>
   </data>
   <data name="DeletedAssets" xml:space="preserve">
-    <value>Deleted Assets</value>
+    <value>Deleted files</value>
   </data>
   <data name="SortByTitle" xml:space="preserve">
     <value>Sort by Title</value>
@@ -538,10 +538,10 @@
     <value>Sort by Publish Date</value>
   </data>
   <data name="DeletedPosts" xml:space="preserve">
-    <value>Deleted Posts</value>
+    <value>Deleted posts</value>
   </data>
   <data name="PublishedOnDate" xml:space="preserve">
-    <value>Published on {0}</value>
+    <value>Published {0}</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
