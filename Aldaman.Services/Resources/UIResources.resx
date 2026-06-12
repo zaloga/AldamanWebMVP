@@ -532,7 +532,7 @@
     <value>Smazané soubory</value>
   </data>
   <data name="SortByTitle" xml:space="preserve">
-    <value>Seřadit podle názvu</value>
+    <value>Seřadit podle titulku</value>
   </data>
   <data name="SortByPublishDate" xml:space="preserve">
     <value>Seřadit podle data publikace</value>
