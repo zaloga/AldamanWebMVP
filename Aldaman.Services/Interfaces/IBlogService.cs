@@ -16,7 +16,7 @@ public interface IBlogService
     /// <summary>
     /// Gets a paged list of blog posts for administrative view.
     /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null);
+    Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false);
 
     /// <summary>
     /// Gets a paged list of blog posts.
@@ -47,11 +47,6 @@ public interface IBlogService
     /// Deletes a blog post and all its translations.
     /// </summary>
     Task SoftDeleteBlogPostAsync(Guid id);
-
-    /// <summary>
-    /// Gets a paged list of deleted blog posts.
-    /// </summary>
-    Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query, string? culture = null);
 
     /// <summary>
     /// Restores a soft-deleted blog post.

@@ -34,7 +34,7 @@ public class BlogController : BaseAdminController
         }
 
         var result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
-        var deletedResult = await BlogService.GetPagedDeletedBlogPostsAsync(deletedItemsQuery, culture);
+        var deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
         
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;

@@ -52,9 +52,13 @@ public sealed class BlogService : IBlogService
 
     #region Admin web part methods
 
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null)
+    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedBlogPostsAdminAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false)
     {
-        var dbQuery = Context.BlogPosts
+        var dbQuery = filterDeleted
+            ? Context.BlogPosts.IgnoreQueryFilters().Where(p => p.IsDeleted)
+            : Context.BlogPosts;
+
+        dbQuery = dbQuery
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
             .AsQueryable();
@@ -80,7 +84,12 @@ public sealed class BlogService : IBlogService
             "PublishedAt" => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.PublishedAtUtc)
                 : dbQuery.OrderBy(p => p.PublishedAtUtc),
-            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+            "DeletedAt" => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            _ => filterDeleted
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -90,7 +99,9 @@ public sealed class BlogService : IBlogService
             .Select(p => new BlogPostListItemDto
             {
                 Id = p.Id,
-                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title ?? "-",
+                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
+                        ?? p.Translations.FirstOrDefault()!.Title
+                        ?? "-",
                 Perex = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Perex ?? "",
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
@@ -100,7 +111,8 @@ public sealed class BlogService : IBlogService
                     : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
                         ? p.Translations.Max(t => t.UpdatedAtUtc)
                         : p.UpdatedAtUtc),
-                CreatedAtUtc = p.CreatedAtUtc
+                CreatedAtUtc = p.CreatedAtUtc,
+                DeletedAtUtc = p.DeletedAtUtc
             })
             .ToListAsync();
 
@@ -321,72 +333,6 @@ public sealed class BlogService : IBlogService
             await Context.SaveChangesAsync();
             InvalidateCache();
         }
-    }
-
-    public async Task<PagedResultDto<BlogPostListItemDto>> GetPagedDeletedBlogPostsAsync(PaginationQuery query, string? culture = null)
-    {
-        var dbQuery = Context.BlogPosts
-            .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted)
-            .Include(p => p.Translations)
-            .AsQueryable();
-
-        // Filtering
-        if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-        {
-            dbQuery = dbQuery.Where(p => p.Translations.Any(
-                t => t.Title.Contains(query.SearchTerm)
-                || (t.Perex != null && t.Perex.Contains(query.SearchTerm))
-                || (t.PlainText != null && t.PlainText.Contains(query.SearchTerm))));
-        }
-
-        // Sorting
-        dbQuery = query.SortBy switch
-        {
-            "Title" => query.SortDescending
-                ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
-                : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
-            "CreatedAt" => query.SortDescending
-                ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
-                : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "PublishedAt" => query.SortDescending
-                ? dbQuery.OrderByDescending(p => p.PublishedAtUtc)
-                : dbQuery.OrderBy(p => p.PublishedAtUtc),
-            "DeletedAt" => query.SortDescending
-                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
-                : dbQuery.OrderBy(p => p.DeletedAtUtc),
-            _ => dbQuery.OrderByDescending(p => p.DeletedAtUtc)
-        };
-
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .Select(p => new BlogPostListItemDto
-            {
-                Id = p.Id,
-                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
-                        ?? p.Translations.FirstOrDefault()!.Title
-                        ?? "-",
-                PublishedAtUtc = p.PublishedAtUtc,
-                IsPublished = p.IsPublished,
-                UpdatedAtUtc = p.UpdatedAtUtc == null
-                    ? p.Translations.Max(t => t.UpdatedAtUtc)
-                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
-                        ? p.Translations.Max(t => t.UpdatedAtUtc)
-                        : p.UpdatedAtUtc),
-                CreatedAtUtc = p.CreatedAtUtc,
-                DeletedAtUtc = p.DeletedAtUtc
-            })
-            .ToListAsync();
-
-        return new PagedResultDto<BlogPostListItemDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = query.Page,
-            PageSize = query.PageSize
-        };
     }
 
     public async Task RestoreBlogPostAsync(Guid id)

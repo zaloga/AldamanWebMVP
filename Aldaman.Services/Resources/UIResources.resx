@@ -627,4 +627,7 @@
   <data name="Back" xml:space="preserve">
     <value>Zpět</value>
   </data>
+  <data name="TitleAndPerex" xml:space="preserve">
+    <value>Titulek a perex</value>
+  </data>
 </root>

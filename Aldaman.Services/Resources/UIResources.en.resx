@@ -627,4 +627,7 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="TitleAndPerex" xml:space="preserve">
+    <value>Title and perex</value>
+  </data>
 </root>
