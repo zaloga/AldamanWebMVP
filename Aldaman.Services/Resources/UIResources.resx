@@ -507,7 +507,7 @@
   <data name="DeletedMessages" xml:space="preserve">
     <value>Smazané zprávy</value>
   </data>
-  <data name="DeletedBadge" xml:space="preserve">
+  <data name="Deleted" xml:space="preserve">
     <value>Smazáno</value>
   </data>
   <data name="SortByCreatedDate" xml:space="preserve">
@@ -629,5 +629,14 @@
   </data>
   <data name="TitleAndPerex" xml:space="preserve">
     <value>Titulek a perex</value>
+  </data>
+  <data name="Slug" xml:space="preserve">
+    <value>Koncová část URL</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="DeletedOnDate" xml:space="preserve">
+    <value>Smazáno {0}</value>
   </data>
 </root>

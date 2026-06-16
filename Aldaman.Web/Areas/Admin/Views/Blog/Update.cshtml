@@ -130,7 +130,8 @@
                         <hr />
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-block">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
+                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
                         </div>
                     </div>
                 </div>

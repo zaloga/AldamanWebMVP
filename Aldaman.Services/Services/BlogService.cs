@@ -99,16 +99,15 @@ public sealed class BlogService : IBlogService
             .Select(p => new BlogPostListItemDto
             {
                 Id = p.Id,
-                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
-                        ?? p.Translations.FirstOrDefault()!.Title
-                        ?? "-",
-                Perex = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Perex ?? "",
+                Title = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Title ?? p.Translations.FirstOrDefault()!.Title,
+                Slug = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Slug,
+                Perex = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Perex,
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
                 UpdatedAtUtc = p.UpdatedAtUtc == null
                     ? p.Translations.Max(t => t.UpdatedAtUtc)
-                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
+                    : (p.Translations.Max(t => t.UpdatedAtUtc) > p.UpdatedAtUtc
                         ? p.Translations.Max(t => t.UpdatedAtUtc)
                         : p.UpdatedAtUtc),
                 CreatedAtUtc = p.CreatedAtUtc,
@@ -138,6 +137,7 @@ public sealed class BlogService : IBlogService
         return new BlogPostEditDto
         {
             Id = post.Id,
+            IsDeleted = post.IsDeleted,
             CoverMediaAssetId = post.CoverMediaAssetId,
             CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
             IsPublished = post.IsPublished,
