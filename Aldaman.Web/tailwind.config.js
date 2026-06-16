@@ -2,7 +2,6 @@
 module.exports = {
   content: [
     "./Views/**/*.cshtml",
-    "./Areas/Admin/Views/**/*.cshtml",
     "./wwwroot/js/**/*.js"
   ],
   darkMode: 'class',
