@@ -642,4 +642,34 @@
   <data name="DeletionDate" xml:space="preserve">
     <value>Datum smazání</value>
   </data>
+  <data name="PostCreatedSuccessfully" xml:space="preserve">
+    <value>Příspěvek byl úspěšně vytvořen.</value>
+  </data>
+  <data name="ErrorCreatingPost" xml:space="preserve">
+    <value>Chyba při vytváření příspěvku: {0}</value>
+  </data>
+  <data name="PostUpdatedSuccessfully" xml:space="preserve">
+    <value>Příspěvek byl úspěšně upraven.</value>
+  </data>
+  <data name="ErrorUpdatingPost" xml:space="preserve">
+    <value>Chyba při úpravě příspěvku: {0}</value>
+  </data>
+  <data name="PostDeletedSuccessfully" xml:space="preserve">
+    <value>Příspěvek byl úspěšně smazán.</value>
+  </data>
+  <data name="ErrorDeletingPost" xml:space="preserve">
+    <value>Chyba při mazání příspěvku: {0}</value>
+  </data>
+  <data name="PostRestoredSuccessfully" xml:space="preserve">
+    <value>Příspěvek byl úspěšně obnoven.</value>
+  </data>
+  <data name="ErrorRestoringPost" xml:space="preserve">
+    <value>Chyba při obnovování příspěvku: {0}</value>
+  </data>
+  <data name="PostPermanentlyDeleted" xml:space="preserve">
+    <value>Příspěvek byl trvale smazán.</value>
+  </data>
+  <data name="ErrorPermanentlyDeletingPost" xml:space="preserve">
+    <value>Chyba při trvalém mazání příspěvku: {0}</value>
+  </data>
 </root>

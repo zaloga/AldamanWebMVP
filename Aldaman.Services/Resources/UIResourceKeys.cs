@@ -27,12 +27,23 @@ public static class UIResourceKeys
     // Blog
     public const string Blog = nameof(Blog);
     public const string BlogSubtitle = nameof(BlogSubtitle);
-public const string AllArticles = nameof(AllArticles);
-// Contact
+    public const string AllArticles = nameof(AllArticles);
+    public const string PostCreatedSuccessfully = nameof(PostCreatedSuccessfully);
+    public const string ErrorCreatingPost = nameof(ErrorCreatingPost);
+    public const string PostUpdatedSuccessfully = nameof(PostUpdatedSuccessfully);
+    public const string ErrorUpdatingPost = nameof(ErrorUpdatingPost);
+    public const string PostDeletedSuccessfully = nameof(PostDeletedSuccessfully);
+    public const string ErrorDeletingPost = nameof(ErrorDeletingPost);
+    public const string PostRestoredSuccessfully = nameof(PostRestoredSuccessfully);
+    public const string ErrorRestoringPost = nameof(ErrorRestoringPost);
+    public const string PostPermanentlyDeleted = nameof(PostPermanentlyDeleted);
+    public const string ErrorPermanentlyDeletingPost = nameof(ErrorPermanentlyDeletingPost);
+
+    // Contact
     public const string Contact = nameof(Contact);
     public const string ContactMe = nameof(ContactMe);
     public const string ContactSubtitle = nameof(ContactSubtitle);
-public const string Subject = nameof(Subject);
+    public const string Subject = nameof(Subject);
     public const string Message = nameof(Message);
     public const string SendMessage = nameof(SendMessage);
     public const string MessageSent = nameof(MessageSent);

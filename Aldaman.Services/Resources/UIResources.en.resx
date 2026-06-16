@@ -642,4 +642,34 @@
   <data name="DeletionDate" xml:space="preserve">
     <value>Date of deletion</value>
   </data>
+  <data name="PostCreatedSuccessfully" xml:space="preserve">
+    <value>Post created successfully.</value>
+  </data>
+  <data name="ErrorCreatingPost" xml:space="preserve">
+    <value>Error creating post: {0}</value>
+  </data>
+  <data name="PostUpdatedSuccessfully" xml:space="preserve">
+    <value>Post updated successfully.</value>
+  </data>
+  <data name="ErrorUpdatingPost" xml:space="preserve">
+    <value>Error updating post: {0}</value>
+  </data>
+  <data name="PostDeletedSuccessfully" xml:space="preserve">
+    <value>Post deleted successfully.</value>
+  </data>
+  <data name="ErrorDeletingPost" xml:space="preserve">
+    <value>Error deleting post: {0}</value>
+  </data>
+  <data name="PostRestoredSuccessfully" xml:space="preserve">
+    <value>Post restored successfully.</value>
+  </data>
+  <data name="ErrorRestoringPost" xml:space="preserve">
+    <value>Error restoring post: {0}</value>
+  </data>
+  <data name="PostPermanentlyDeleted" xml:space="preserve">
+    <value>Post permanently deleted.</value>
+  </data>
+  <data name="ErrorPermanentlyDeletingPost" xml:space="preserve">
+    <value>Error permanently deleting post: {0}</value>
+  </data>
 </root>

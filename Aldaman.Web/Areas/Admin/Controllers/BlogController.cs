@@ -1,6 +1,8 @@
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
@@ -8,11 +10,13 @@ public class BlogController : BaseAdminController
 {
     private IBlogService BlogService { get; }
     private IMediaService MediaService { get; }
+    private IStringLocalizer<UIResources> Localizer { get; }
 
-    public BlogController(IBlogService blogService, IMediaService mediaService)
+    public BlogController(IBlogService blogService, IMediaService mediaService, IStringLocalizer<UIResources> localizer)
     {
         BlogService = blogService;
         MediaService = mediaService;
+        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index(
@@ -71,12 +75,12 @@ public class BlogController : BaseAdminController
             }
 
             await BlogService.CreateBlogPostAsync(model);
-            TempData["SuccessMessage"] = "Post created successfully.";
+            TempData["SuccessMessage"] = Localizer[UIResourceKeys.PostCreatedSuccessfully].Value;
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Error creating post: " + ex.Message);
+            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorCreatingPost, ex.Message]);
             return View("Update", model);
         }
     }
@@ -131,7 +135,7 @@ public class BlogController : BaseAdminController
             }
 
             await BlogService.UpdateBlogPostAsync(id, model);
-            TempData["SuccessMessage"] = "Post updated successfully.";
+            TempData["SuccessMessage"] = Localizer[UIResourceKeys.PostUpdatedSuccessfully].Value;
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)
@@ -140,7 +144,7 @@ public class BlogController : BaseAdminController
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Error updating post: " + ex.Message);
+            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorUpdatingPost, ex.Message]);
             return View(model);
         }
     }
@@ -152,11 +156,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.SoftDeleteBlogPostAsync(id);
-            return Json(new { success = true, message = "Post deleted successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PostDeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting post: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeletingPost, ex.Message].Value });
         }
     }
 
@@ -167,11 +171,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.RestoreBlogPostAsync(id);
-            return Json(new { success = true, message = "Post restored successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PostRestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error restoring post: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoringPost, ex.Message].Value });
         }
     }
 
@@ -182,11 +186,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.HardDeleteBlogPostAsync(id);
-            return Json(new { success = true, message = "Post permanently deleted." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PostPermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting post: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeletingPost, ex.Message].Value });
         }
     }
 }

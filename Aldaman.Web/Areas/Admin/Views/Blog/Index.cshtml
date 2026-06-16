@@ -93,7 +93,7 @@
                             @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
                         </td>
                         <td class="py-3 text-muted small">
-                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "-")
+                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "")
                         </td>
                         <td class="py-3">
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
@@ -188,7 +188,7 @@
                                 @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
                             </td>
                             <td class="py-3 text-muted small">
-                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "-")
+                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "")
                             </td>
                             <td class="py-3">
                                 <span class="d-flex align-items-center text-danger small fw-medium">
