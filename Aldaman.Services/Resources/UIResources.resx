@@ -639,4 +639,7 @@
   <data name="DeletedOnDate" xml:space="preserve">
     <value>Smazáno {0}</value>
   </data>
+  <data name="DeletionDate" xml:space="preserve">
+    <value>Datum smazání</value>
+  </data>
 </root>

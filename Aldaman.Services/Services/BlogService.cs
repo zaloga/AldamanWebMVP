@@ -138,6 +138,7 @@ public sealed class BlogService : IBlogService
         {
             Id = post.Id,
             IsDeleted = post.IsDeleted,
+            DeletedAtUtc = post.DeletedAtUtc,
             CoverMediaAssetId = post.CoverMediaAssetId,
             CoverImageRelativePath = post.CoverMediaAsset?.RelativePath,
             IsPublished = post.IsPublished,

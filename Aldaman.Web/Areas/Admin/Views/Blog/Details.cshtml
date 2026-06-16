@@ -108,7 +108,7 @@
                             }
                             else if (Model.IsPublished)
                             {
-                            <span class="badge bg-success">@Localizer["Published"]</span>
+                                <span class="badge bg-success">@Localizer["Published"]</span>
                             }
                             else
                             {
@@ -116,8 +116,17 @@
                             }
                         </dd>
 
-                        <dt class="col-sm-6">@Localizer["PublicationDate"]</dt>
-                        <dd class="col-sm-6 text-dark fw-medium">@(Model.PublishedAtUtc?.ToString("g") ?? "---")</dd>
+                        @if (Model.IsDeleted)
+                        {
+                            <dt class="col-sm-6">@Localizer["DeletionDate"]</dt>
+                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToString("g")</dd>
+                        }
+
+                        @if (Model.IsPublished)
+                        {
+                            <dt class="col-sm-6">@Localizer["PublicationDate"]</dt>
+                            <dd class="col-sm-6 text-dark fw-medium">@Model.PublishedAtUtc?.ToString("g")</dd>
+                        }
 
                         <dt class="col-sm-6">@Localizer["CoverImage"]</dt>
                         <dd class="col-sm-6">

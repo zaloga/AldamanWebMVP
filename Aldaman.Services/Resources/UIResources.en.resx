@@ -639,4 +639,7 @@
   <data name="DeletedOnDate" xml:space="preserve">
     <value>Deleted {0}</value>
   </data>
+  <data name="DeletionDate" xml:space="preserve">
+    <value>Date of deletion</value>
+  </data>
 </root>
