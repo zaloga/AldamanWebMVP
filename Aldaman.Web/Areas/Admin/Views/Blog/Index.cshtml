@@ -50,7 +50,6 @@
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Slug"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -60,7 +59,7 @@
                 @if (!Model.Items.Items.Any())
                 {
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="4" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items.Items)
@@ -68,10 +67,13 @@
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
                             <div class="fw-semibold text-dark">@item.Title</div>
-                            <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Perex</div>
-                        </td>
-                        <td class="py-3 text-muted small">
-                            @item.Slug
+                            <div class="small text-muted text-truncate mt-2" style="max-width: 300px;">@item.Perex</div>
+                            <div class="text-muted small mt-2">
+                                @{
+                                    var postUrl = Url.RouteUrl("blog_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                }
+                                <a href="@postUrl" target="_blank" class="text-decoration-none text-primary">@postUrl</a>
+                            </div>
                         </td>
                         <td class="py-3">
                             @if (!string.IsNullOrEmpty(item.CoverImageRelativePath))
@@ -156,7 +158,6 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Slug"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -167,11 +168,14 @@
                     {
                         <tr id="row-deleted-@item.Id">
                             <td class="ps-4 py-3">
-                                <div class="fw-semibold text-dark text-decoration-line-through">@item.Title</div>
-                                <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Perex</div>
-                            </td>
-                            <td class="py-3 text-muted small">
-                                @item.Slug
+                                <div class="fw-semibold text-dark">@item.Title</div>
+                                <div class="small text-muted text-truncate mt-2" style="max-width: 300px;">@item.Perex</div>
+                                <div class="text-muted small mt-2">
+                                    @{
+                                        var deletedPostUrl = Url.RouteUrl("blog_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                    }
+                                    <span class="text-decoration-none text-secondary">@deletedPostUrl</span>
+                                </div>
                             </td>
                             <td class="py-3">
                                 @if (!string.IsNullOrEmpty(item.CoverImageRelativePath))

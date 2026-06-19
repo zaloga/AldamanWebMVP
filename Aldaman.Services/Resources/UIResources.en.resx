@@ -672,4 +672,7 @@
   <data name="ErrorPermanentlyDeletingPost" xml:space="preserve">
     <value>Error permanently deleting post: {0}</value>
   </data>
+  <data name="Perex" xml:space="preserve">
+    <value>Perex</value>
+  </data>
 </root>

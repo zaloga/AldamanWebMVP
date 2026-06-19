@@ -140,7 +140,7 @@
                     {
                         <tr id="row-deleted-@item.Id">
                             <td class="ps-4 py-3">
-                                <div class="fw-semibold text-muted text-decoration-line-through">@item.EmailOrPhone</div>
+                                <div class="fw-semibold text-muted">@item.EmailOrPhone</div>
                             </td>
                             <td class="py-3">
                                 <div class="fw-medium text-muted text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>

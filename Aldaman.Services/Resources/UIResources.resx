@@ -628,7 +628,7 @@
     <value>Zpět</value>
   </data>
   <data name="TitleAndPerex" xml:space="preserve">
-    <value>Titulek a perex</value>
+    <value>Titulek a úvod</value>
   </data>
   <data name="Slug" xml:space="preserve">
     <value>Koncová část URL</value>
@@ -671,5 +671,8 @@
   </data>
   <data name="ErrorPermanentlyDeletingPost" xml:space="preserve">
     <value>Chyba při trvalém mazání příspěvku: {0}</value>
+  </data>
+  <data name="Perex" xml:space="preserve">
+    <value>Úvod</value>
   </data>
 </root>
