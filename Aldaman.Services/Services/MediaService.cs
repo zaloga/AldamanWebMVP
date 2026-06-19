@@ -236,6 +236,7 @@ public sealed class MediaService : IMediaService
             AltText = p.AltText,
             Title = p.Title,
             UploadedAtUtc = p.CreatedAtUtc,
+            UpdatedAtUtc = p.UpdatedAtUtc,
             IsImage = p.IsImage,
             IsVideo = p.IsVideo
         };

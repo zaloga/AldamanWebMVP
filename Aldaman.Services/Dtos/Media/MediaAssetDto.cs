@@ -17,6 +17,7 @@ public class MediaAssetDto
     
     // Admin specific
     public DateTime UploadedAtUtc { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
     public bool IsImage { get; set; }
     public bool IsVideo { get; set; }
 }

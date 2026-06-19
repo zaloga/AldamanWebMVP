@@ -52,8 +52,7 @@
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Slug"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["UpdatedAt"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
@@ -62,7 +61,7 @@
                 @if (!Model.Items.Items.Any())
                 {
                     <tr>
-                        <td colspan="7" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="6" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items.Items)
@@ -90,10 +89,17 @@
                             }
                         </td>
                         <td class="py-3 text-muted small">
-                            @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                        </td>
-                        <td class="py-3 text-muted small">
-                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot) : "")
+                            <div>
+                                <i class="bi bi-asterisk"></i>
+                                @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                            </div>
+                            @if (item.UpdatedAtUtc.HasValue)
+                            {
+                                <div class="text-secondary text-opacity-75 mt-2">
+                                    <i class="bi bi-pencil"></i>
+                                    @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                            }
                         </td>
                         <td class="py-3">
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
@@ -155,8 +161,7 @@
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Slug"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["UpdatedAt"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
@@ -185,10 +190,17 @@
                                 }
                             </td>
                             <td class="py-3 text-muted small">
-                                @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                            </td>
-                            <td class="py-3 text-muted small">
-                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot) : "")
+                                <div>
+                                    <i class="bi bi-asterisk"></i>
+                                    @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                </div>
+                                @if (item.UpdatedAtUtc.HasValue)
+                                {
+                                    <div class="text-secondary text-opacity-75 mt-2">
+                                        <i class="bi bi-pencil"></i>
+                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                                }
                             </td>
                             <td class="py-3">
                                 <span class="d-flex align-items-center text-danger small fw-medium">
