@@ -15,39 +15,40 @@
     </a>
 </div>
 
-<div class="mb-4 p-3 bg-white border rounded-4">
+<div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="input-group">
-                <span class="input-group-text bg-light border-end-0">
+                <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
                 </span>
                 <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer["Search"]..." value="@query.SearchTerm">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <select name="SortBy" class="form-select">
                 <option value="CreatedAt" selected="@(query.SortBy == "CreatedAt")">@Localizer["SortByCreatedDate"]</option>
                 <option value="Title" selected="@(query.SortBy == "Title")">@Localizer["SortByTitle"]</option>
                 <option value="PageOrder" selected="@(query.SortBy == "PageOrder")">@Localizer["SortByOrder"]</option>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <select name="SortDescending" class="form-select">
                 <option value="true" selected="@(query.SortDescending == true)">@Localizer["Descending"]</option>
                 <option value="false" selected="@(query.SortDescending == false)">@Localizer["Ascending"]</option>
             </select>
         </div>
-        <div class="col-md-1 d-grid">
-            <button type="submit" class="btn btn-outline-secondary">@Localizer["Filter"]</button>
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
+            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
         </div>
     </form>
 </div>
 
-<div class="bg-white border rounded-4 overflow-hidden">
+<div class="bg-light border shadow rounded-4 overflow-hidden">
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="bg-light">
+        <table class="table table-light table-hover align-middle mb-0">
+            <thead>
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["Page"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Locations"]</th>
@@ -147,10 +148,10 @@
         </h3>
     </div>
 
-    <div class="bg-white border rounded-4 overflow-hidden">
+    <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
+            <table class="table table-light table-hover align-middle mb-0">
+                <thead>
                     <tr>
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["Page"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Locations"]</th>

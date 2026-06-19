@@ -7,70 +7,68 @@
 }
 
 <div class="mb-4">
-    <a asp-action="Update" class="btn btn-success>
+    <a asp-action="Update" class="btn btn-success">
         <i class="bi bi-plus-lg me-1"></i>
         Create New Setting
     </a>
 </div>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Customize Theme Variables</h6>
+<div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
+    <div class="p-3 border-bottom bg-light">
+        <h6 class="m-0 fw-bold text-primary">Customize Theme Variables</h6>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Key</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th class="text-end">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var setting in Model)
-                    {
-                        <tr id="row-@setting.Id">
-                            <td><code>@setting.Key</code></td>
-                            <td>@setting.Type</td>
-                            <td>
-                                <form asp-action="UpdateInline" method="post" class="d-flex align-items-center gap-2 m-0">
-                                    <input type="hidden" name="id" value="@setting.Id" />
-                                    
-                                    @if (setting.Type == CssType.Color)
-                                    {
-                                        <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="Choose color">
-                                        <input type="text" class="form-control" value="@setting.Value" disabled style="width: 100px;" />
-                                    }
-                                    else
-                                    {
-                                        <input type="text" name="value" class="form-control" value="@setting.Value" />
-                                    }
-                                    
-                                    <div class="btn-group btn-group-sm">
-                                        <button type="submit" class="btn btn-success">Save</button>
-                                        <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault('@setting.Id', '@setting.Key', '@setting.DefaultValue')" title="Reset to default (@setting.DefaultValue)">
-                                            <i class="bi bi-arrow-counterclockwise" style="font-size: 14px;"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end gap-1">
-                                    <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm" title="Edit Full">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="deleteItem('@setting.Id', '@setting.Key')" title="Delete">
-                                        <i class="bi bi-trash"></i>
+    <div class="table-responsive">
+        <table class="table table-light table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Key</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">Type</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">Value</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var setting in Model)
+                {
+                    <tr id="row-@setting.Id">
+                        <td class="ps-4 py-3"><code>@setting.Key</code></td>
+                        <td class="py-3">@setting.Type</td>
+                        <td class="py-3">
+                            <form asp-action="UpdateInline" method="post" class="d-flex align-items-center gap-2 m-0">
+                                <input type="hidden" name="id" value="@setting.Id" />
+                                
+                                @if (setting.Type == CssType.Color)
+                                {
+                                    <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="Choose color">
+                                    <input type="text" class="form-control" value="@setting.Value" disabled style="width: 100px;" />
+                                }
+                                else
+                                {
+                                    <input type="text" name="value" class="form-control" value="@setting.Value" />
+                                }
+                                
+                                <div class="btn-group btn-group-sm">
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault('@setting.Id', '@setting.Key', '@setting.DefaultValue')" title="Reset to default (@setting.DefaultValue)">
+                                        <i class="bi bi-arrow-counterclockwise" style="font-size: 14px;"></i>
                                     </button>
                                 </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                            </form>
+                        </td>
+                        <td class="py-3 text-end pe-4">
+                            <div class="d-flex justify-content-end gap-1">
+                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm" title="Edit Full">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteItem('@setting.Id', '@setting.Key')" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -83,25 +81,25 @@
         </h3>
     </div>
 
-    <div class="card border rounded-4 overflow-hidden">
+    <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
+            <table class="table table-light table-hover align-middle mb-0">
+                <thead>
                     <tr>
-                        <th>Key</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th class="text-end pe-4">Actions</th>
+                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Key</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">Type</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">Value</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in deletedItems)
                     {
                         <tr id="row-deleted-@item.Id">
-                            <td><code class="text-muted">@item.Key</code></td>
-                            <td>@item.Type</td>
-                            <td><span class="text-muted">@item.Value</span></td>
-                            <td class="text-end pe-4">
+                            <td class="ps-4 py-3"><code class="text-muted">@item.Key</code></td>
+                            <td class="py-3">@item.Type</td>
+                            <td class="py-3"><span class="text-muted">@item.Value</span></td>
+                            <td class="py-3 text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
                                     <button class="btn btn-outline-success btn-sm" onclick="restoreItem('@item.Id', '@item.Key')">
                                         Restore
