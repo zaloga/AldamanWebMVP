@@ -14,9 +14,9 @@
     </a>
 </div>
 
-<div class="admin-card mb-4 p-3 bg-white border rounded-4">
+<div class="admin-card mb-4 p-3 bg-white bg-opacity-50 border rounded-4">
     <form method="get" class="row g-3">
-        <div class="col-md-5">
+        <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
@@ -31,13 +31,13 @@
                 <option value="PublishedAt" selected="@(query.SortBy == "PublishedAt")">@Localizer["SortByPublishDate"]</option>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <select name="SortDescending" class="form-select">
                 <option value="true" selected="@(query.SortDescending == true)">@Localizer["Descending"]</option>
                 <option value="false" selected="@(query.SortDescending == false)">@Localizer["Ascending"]</option>
             </select>
         </div>
-        <div class="col-md-2 d-flex gap-2">
+        <div class="col-md-3 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
             <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
         </div>
