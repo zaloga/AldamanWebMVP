@@ -1,4 +1,5 @@
 using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,15 +18,20 @@ public class ContentPagesController : BaseAdminController
         [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        var result = await ContentPageService.GetPagedContentPagesAsync(query, culture);
-        var deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery, culture);
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture);
+        PagedResultDto<ContentPageListItemDto> deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery, culture);
+
+        var model = new PagedResultsDto<ContentPageListItemDto>
+        {
+            Items = result,
+            DeletedItems = deletedResult
+        };
 
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        ViewBag.DeletedItems = deletedResult;
 
-        return View(result);
+        return View(model);
     }
 
     [HttpPost]

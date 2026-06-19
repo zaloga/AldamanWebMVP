@@ -21,11 +21,11 @@ public class BlogController : BaseAdminController
     }
 
     public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query, 
+        [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+
         deletedItemsQuery.SearchTerm = query.SearchTerm;
         if (Request.Query.ContainsKey("SortBy"))
         {
@@ -38,18 +38,18 @@ public class BlogController : BaseAdminController
             deletedItemsQuery.SortDescending = true;
         }
 
-        var result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
-        var deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
-        
+        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
+        PagedResultDto<BlogPostListItemDto> deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
+
         var model = new PagedResultsDto<BlogPostListItemDto>
         {
             Items = result,
             DeletedItems = deletedResult
         };
-        
+
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        
+
         return View(model);
     }
 
