@@ -1,3 +1,4 @@
+using Aldaman.Services.Dtos.ContactMessage;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,16 @@ public class ContactMessagesController : BaseAdminController
         var result = await ContactService.GetPagedMessagesAsync(query);
         var deletedResult = await ContactService.GetPagedDeletedMessagesAsync(deletedItemsQuery);
         
+        var model = new PagedResultsDto<ContactMessageDto>
+        {
+            Items = result,
+            DeletedItems = deletedResult
+        };
+
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        ViewBag.DeletedItems = deletedResult;
         
-        return View(result);
+        return View(model);
     }
 
     public async Task<IActionResult> Details(Guid id)

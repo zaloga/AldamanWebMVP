@@ -21,11 +21,16 @@ public class MediaController : BaseAdminController
         var result = await MediaService.ListAssetsAsync(query);
         var deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
 
+        var model = new PagedResultsDto<MediaAssetDto>
+        {
+            Items = result,
+            DeletedItems = deletedResult
+        };
+
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        ViewBag.DeletedItems = deletedResult;
 
-        return View(result);
+        return View(model);
     }
 
     [HttpGet]
