@@ -7,7 +7,7 @@
     var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
 }
 
-<div class="admin-card mb-4 p-3 bg-white border rounded-4">
+<div class="mb-4 p-3 bg-white border rounded-4">
     <form method="get" class="row g-3">
         <div class="col-md-6">
             <div class="input-group">
@@ -35,7 +35,7 @@
     </form>
 </div>
 
-<div class="admin-card bg-white border rounded-4 overflow-hidden">
+<div class="bg-white border rounded-4 overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
@@ -46,7 +46,7 @@
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
             </thead>
-            <tbody class="border-top-0">
+            <tbody>
                 @if (!Model.Items.Items.Any())
                 {
                     <tr>
@@ -124,7 +124,7 @@
         </h3>
     </div>
 
-    <div class="admin-card bg-white border rounded-4 overflow-hidden">
+    <div class="bg-white border rounded-4 overflow-hidden">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light">
@@ -135,7 +135,7 @@
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
                 </thead>
-                <tbody class="border-top-0">
+                <tbody>
                     @foreach (var item in Model.DeletedItems.Items)
                     {
                         <tr id="row-deleted-@item.Id">
