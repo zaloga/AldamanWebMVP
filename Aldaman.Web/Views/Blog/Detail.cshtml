@@ -10,7 +10,7 @@
 <div class="py-8 md:py-12">
     <div class="mb-8">
         <a asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <i class="bi bi-arrow-left mr-2"></i>
             @Localizer[UIResourceKeys.AllArticles]
         </a>
     </div>
@@ -42,7 +42,7 @@
                     @if (Model.PreviousPost != null)
                     {
                         <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            <i class="bi bi-arrow-left mr-2"></i>
                             @Localizer["PreviousPost"]
                         </a>
                     }
@@ -52,7 +52,7 @@
                     {
                         <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
                             @Localizer["NextPost"]
-                            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <i class="bi bi-arrow-right ml-2"></i>
                         </a>
                     }
                 </div>

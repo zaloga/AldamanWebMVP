@@ -8,9 +8,7 @@
         Aldaman
         @if (Model.Any())
         {
-            <svg id="brand-nav-chevron" class="w-4 h-4 transition-transform duration-300 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
+            <i id="brand-nav-chevron" class="bi bi-chevron-down w-4 h-4 transition-transform duration-300 text-slate-400"></i>
         }
     </a>
 
@@ -21,7 +19,7 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index"
                    class="block px-4 py-3 text-sm font-bold text-brand-primary dark:text-brand-accent hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors border-b border-slate-100 dark:border-white/5">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <i class="bi bi-house-door text-sm"></i>
                         @Localizer[UIResourceKeys.Home]
                     </div>
                 </a>

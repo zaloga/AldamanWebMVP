@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Aldaman</title>
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
             :root {
@@ -67,8 +68,8 @@
                 @await Component.InvokeAsync("LanguageSwitcher")
 
                 <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700 rounded-lg text-sm p-2 transition-all">
-                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zm2.12 10.607a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM3 10a1 1 0 100 2H4a1 1 0 100-2H3z"></path></svg>
+                    <i id="theme-toggle-dark-icon" class="bi bi-moon-fill hidden text-xl"></i>
+                    <i id="theme-toggle-light-icon" class="bi bi-sun-fill hidden text-xl"></i>
                 </button>
             </div>
         </nav>
@@ -113,17 +114,13 @@
         <div id="toast-wrapper" class="fixed top-20 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
             <div id="translation-missing-toast" class="pointer-events-auto flex items-center gap-3 w-full max-w-sm p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl transition-all duration-500 transform -translate-y-10 opacity-0 overflow-hidden">
                 <div class="text-blue-500 dark:text-blue-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i class="bi bi-info-circle text-2xl"></i>
                 </div>
                 <div class="flex-1 text-sm font-medium text-slate-800 dark:text-slate-200 pr-2">
                     @Localizer[UIResourceKeys.TranslationMissing]
                 </div>
                 <button id="close-toast-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <i class="bi bi-x text-lg"></i>
                 </button>
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 dark:bg-slate-700 rounded-b-xl overflow-hidden">
                     <div id="toast-progress" class="h-full bg-blue-500 dark:bg-blue-400 w-full transition-all duration-100 ease-linear"></div>
