@@ -15,12 +15,12 @@ public class ContactMessagesController : BaseAdminController
     }
 
     public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query, 
+        [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var result = await ContactService.GetPagedMessagesAsync(query);
-        var deletedResult = await ContactService.GetPagedDeletedMessagesAsync(deletedItemsQuery);
-        
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query);
+        PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedDeletedMessagesAsync(deletedItemsQuery);
+
         var model = new PagedResultsDto<ContactMessageDto>
         {
             Items = result,
@@ -29,7 +29,7 @@ public class ContactMessagesController : BaseAdminController
 
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        
+
         return View(model);
     }
 

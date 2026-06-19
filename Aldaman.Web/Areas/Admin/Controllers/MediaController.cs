@@ -18,8 +18,8 @@ public class MediaController : BaseAdminController
         [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
-        var result = await MediaService.ListAssetsAsync(query);
-        var deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
+        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query);
+        PagedResultDto<MediaAssetDto> deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
 
         var model = new PagedResultsDto<MediaAssetDto>
         {
