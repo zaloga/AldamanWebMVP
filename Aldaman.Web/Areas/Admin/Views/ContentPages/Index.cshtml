@@ -94,15 +94,15 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
+                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer["Edit"]
                                 </a>
-                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer["Details"]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.Title')">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.Title')">
                                     <i class="bi bi-trash"></i>
                                     @Localizer["Delete"]
                                 </button>
@@ -168,11 +168,11 @@
                             </td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-inline-flex flex-column gap-2">
-                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Title')">
+                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Title')">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer["Restore"]
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.Title')">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.Title')">
                                         <i class="bi bi-trash"></i>
                                         @Localizer["DeletePermanently"]
                                     </button>

@@ -94,20 +94,20 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer["Edit"]">
+                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer["Edit"]">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer["Edit"]
                                 </a>
-                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer["Details"]">
+                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer["Details"]">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer["Details"]
                                 </a>
-                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1" href="@item.RelativePath" target="_blank" title="@Localizer["View"]">
+                                <a class="btn btn-outline-secondary btn-sm d-inline align-items-center gap-1" href="@item.RelativePath" target="_blank" title="@Localizer["View"]">
                                     <i class="bi bi-box-arrow-up-right"></i>
                                     @Localizer["View"]
                                 </a>
                                 @* commented out for now, can be added in the future when we have usecase for it
-                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.OriginalFileName')" title="@Localizer["Delete"]">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.OriginalFileName')" title="@Localizer["Delete"]">
                                     <i class="bi bi-trash"></i>
                                     @Localizer["Delete"]
                                 </button> *@
@@ -177,11 +177,11 @@
                             </td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-inline-flex flex-column gap-2">
-                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.OriginalFileName')">
+                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.OriginalFileName')">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer["Restore"]
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.OriginalFileName')">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.OriginalFileName')">
                                         <i class="bi bi-trash"></i>
                                         @Localizer["DeletePermanently"]
                                     </button>
