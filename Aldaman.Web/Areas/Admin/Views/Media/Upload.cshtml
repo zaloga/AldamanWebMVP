@@ -7,7 +7,7 @@
         <h2 class="h4 mb-0">@Localizer["UploadMedia"]</h2>
     </div>
     <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <i class="bi bi-arrow-left"></i>
         @Localizer["BackToList"]
     </a>
 </div>
@@ -20,7 +20,7 @@
                 
                 <div id="dropZone" class="py-5 border border-2 border-dashed rounded-4 bg-light cursor-pointer hover-bg-light transition-all d-flex flex-column align-items-center justify-content-center mb-4" style="min-height: 300px; border-color: #cbd5e1; transition: all 0.2s ease-in-out;">
                     <div class="mb-4 text-primary bg-primary bg-opacity-10 p-3 rounded-circle" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <i class="bi bi-cloud-arrow-up" style="font-size: 40px;"></i>
                     </div>
                     <h3 class="h5 fw-bold mb-2">@Localizer["ClickToUpload"]</h3>
                     <p class="text-muted small mb-0">@Localizer["MaxFileSizeInfo"]</p>
@@ -30,21 +30,21 @@
                 <div id="filePreview" class="d-none mb-4 p-3 bg-light rounded border border-primary border-opacity-25 text-start animate-fade-in">
                     <div class="d-flex align-items-center gap-3">
                         <div id="fileIcon" class="p-2 bg-primary text-white rounded">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            <i class="bi bi-file-earmark" style="font-size: 24px;"></i>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
                             <div id="fileName" class="fw-bold text-dark text-truncate">file-name.jpg</div>
                             <div id="fileSize" class="small text-muted">0 KB</div>
                         </div>
                         <button type="button" class="btn btn-link text-danger p-0" onclick="resetFile()">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <i class="bi bi-x" style="font-size: 20px;"></i>
                         </button>
                     </div>
                 </div>
 
                 <div class="d-grid">
                     <button type="submit" id="submitBtn" class="btn btn-primary py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" disabled>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        <i class="bi bi-upload"></i>
                         @Localizer["UploadMedia"]
                     </button>
                 </div>
