@@ -51,7 +51,7 @@
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 120px">@Localizer["Preview"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["FileName"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Dimensions"] / @Localizer["Size"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
             </thead>
@@ -150,7 +150,7 @@
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 100px">@Localizer["Preview"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["FileInfo"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Dimensions"] / @Localizer["Size"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
                 </thead>
@@ -181,18 +181,21 @@
                                 }
                                 <div class="small text-muted">@((item.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</div>
                             </td>
-                            <td class="py-3 text-muted small">
-                                <div>
-                                    <i class="bi bi-asterisk"></i>
-                                    @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                                </div>
-                                @if (item.UpdatedAtUtc.HasValue)
-                                {
-                                    <div class="text-secondary text-opacity-75 mt-2">
-                                        <i class="bi bi-pencil"></i>
-                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                            <td class="py-3">
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
+                                <div class="text-muted small mt-2">
+                                    <div>
+                                        <i class="bi bi-asterisk"></i>
+                                        @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                                     </div>
-                                }
+                                    @if (item.UpdatedAtUtc.HasValue)
+                                    {
+                                        <div class="text-secondary text-opacity-75 mt-2">
+                                            <i class="bi bi-pencil"></i>
+                                            @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                        </div>
+                                    }
+                                </div>
                             </td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-inline-flex flex-column gap-2">

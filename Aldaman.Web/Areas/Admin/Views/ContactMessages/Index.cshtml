@@ -42,8 +42,7 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%">@Localizer["Sender"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Subject"] / @Localizer["Message"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Status"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
             </thead>
@@ -51,7 +50,7 @@
                 @if (!Model.Items.Items.Any())
                 {
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="4" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items.Items)
@@ -64,7 +63,7 @@
                             <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                         </td>
-                        <td class="py-3 text-center">
+                        <td class="py-3">
                             @switch (item.State)
                             {
                                 case ContactMessageState.Pending:
@@ -77,11 +76,11 @@
                                     <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer["Failed"]</span>
                                     break;
                             }
-                        </td>
-                        <td class="py-3 text-muted small">
-                            <div>
-                                <i class="bi bi-asterisk"></i>
-                                @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                            <div class="text-muted small mt-2">
+                                <div>
+                                    <i class="bi bi-asterisk"></i>
+                                    @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                </div>
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
@@ -132,8 +131,7 @@
                     <tr>
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%">@Localizer["Sender"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Subject"] / @Localizer["Message"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Status"]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CreatedAt"] / @Localizer["UpdatedAt"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
                 </thead>
@@ -148,13 +146,13 @@
                                 <div class="fw-medium text-muted text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
                                 <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                             </td>
-                            <td class="py-3 text-center">
+                            <td class="py-3">
                                 <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
-                            </td>
-                            <td class="py-3 text-muted small">
-                                <div>
-                                    <i class="bi bi-asterisk"></i>
-                                    @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                <div class="text-muted small mt-2">
+                                    <div>
+                                        <i class="bi bi-asterisk"></i>
+                                        @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
                                 </div>
                             </td>
                             <td class="py-3 text-end pe-4">
