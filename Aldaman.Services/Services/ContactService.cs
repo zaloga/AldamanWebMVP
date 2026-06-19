@@ -163,8 +163,21 @@ public sealed class ContactService : IContactService
         var dbQuery = Context.ContactMessages
             .IgnoreQueryFilters()
             .Where(p => p.IsDeleted)
-            .OrderByDescending(p => p.DeletedAtUtc)
             .AsQueryable();
+
+        // Filtering
+        if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+        {
+            dbQuery = dbQuery.Where(p => p.EmailOrPhone.Contains(query.SearchTerm) || p.Message.Contains(query.SearchTerm));
+        }
+
+        // Sorting
+        dbQuery = query.SortBy switch
+        {
+            "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
+            "State" => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
+            _ => dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+        };
 
         var totalCount = await dbQuery.CountAsync();
         var items = await dbQuery

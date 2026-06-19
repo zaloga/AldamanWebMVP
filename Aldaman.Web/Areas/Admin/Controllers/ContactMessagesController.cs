@@ -18,17 +18,28 @@ public class ContactMessagesController : BaseAdminController
         [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
+        deletedItemsQuery.SearchTerm = query.SearchTerm;
+        if (Request.Query.ContainsKey("SortBy"))
+        {
+            deletedItemsQuery.SortBy = query.SortBy;
+            deletedItemsQuery.SortDescending = query.SortDescending;
+        }
+        else
+        {
+            deletedItemsQuery.SortBy = "CreatedAt";
+            deletedItemsQuery.SortDescending = true;
+        }
+
         PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query);
         PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedDeletedMessagesAsync(deletedItemsQuery);
+        deletedResult.PageParamName = "deleted.Page";
 
         var model = new PagedResultsDto<ContactMessageDto>
         {
             Items = result,
-            DeletedItems = deletedResult
+            DeletedItems = deletedResult,
+            Query = query
         };
-
-        ViewData["Query"] = query;
-        ViewData["DeletedQuery"] = deletedItemsQuery;
 
         return View(model);
     }

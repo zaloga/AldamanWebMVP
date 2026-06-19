@@ -2,8 +2,7 @@
 @model PagedResultsDto<MediaAssetDto>
 @{
     ViewData["Title"] = Localizer["MediaLibrary"];
-    var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
-    var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
+    var query = Model.Query;
 }
 
 @* commented out for now, can be added in the future when we have usecase for it
@@ -216,11 +215,7 @@
             </table>
         </div>
         <div class="px-4 pb-4">
-            @{
-                ViewData["PageParamName"] = "deleted.Page";
-                await Html.PartialAsync("_AdminPagination", Model.DeletedItems);
-                ViewData["PageParamName"] = null;
-            }
+            @await Html.PartialAsync("_AdminPagination", Model.DeletedItems)
         </div>
     </div>
 }

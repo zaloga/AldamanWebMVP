@@ -21,15 +21,14 @@ public class ContentPagesController : BaseAdminController
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture);
         PagedResultDto<ContentPageListItemDto> deletedResult = await ContentPageService.GetPagedDeletedContentPagesAsync(deletedItemsQuery, culture);
+        deletedResult.PageParamName = "deleted.Page";
 
         var model = new PagedResultsDto<ContentPageListItemDto>
         {
             Items = result,
-            DeletedItems = deletedResult
+            DeletedItems = deletedResult,
+            Query = query
         };
-
-        ViewData["Query"] = query;
-        ViewData["DeletedQuery"] = deletedItemsQuery;
 
         return View(model);
     }

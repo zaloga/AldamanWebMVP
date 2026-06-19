@@ -40,15 +40,14 @@ public class BlogController : BaseAdminController
 
         PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
         PagedResultDto<BlogPostListItemDto> deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
+        deletedResult.PageParamName = "deleted.Page"; // TODO constants...
 
         var model = new PagedResultsDto<BlogPostListItemDto>
         {
             Items = result,
-            DeletedItems = deletedResult
+            DeletedItems = deletedResult,
+            Query = query
         };
-
-        ViewData["Query"] = query;
-        ViewData["DeletedQuery"] = deletedItemsQuery;
 
         return View(model);
     }

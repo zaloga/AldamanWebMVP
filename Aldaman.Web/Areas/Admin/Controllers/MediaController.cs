@@ -20,15 +20,14 @@ public class MediaController : BaseAdminController
     {
         PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query);
         PagedResultDto<MediaAssetDto> deletedResult = await MediaService.GetPagedDeletedAssetsAsync(deletedItemsQuery);
+        deletedResult.PageParamName = "deleted.Page";
 
         var model = new PagedResultsDto<MediaAssetDto>
         {
             Items = result,
-            DeletedItems = deletedResult
+            DeletedItems = deletedResult,
+            Query = query
         };
-
-        ViewData["Query"] = query;
-        ViewData["DeletedQuery"] = deletedItemsQuery;
 
         return View(model);
     }

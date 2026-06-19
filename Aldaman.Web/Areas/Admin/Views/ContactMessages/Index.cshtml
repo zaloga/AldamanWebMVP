@@ -3,8 +3,7 @@
 @model PagedResultsDto<ContactMessageDto>
 @{
     ViewData["Title"] = Localizer["ContactMessages"];
-    var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
-    var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
+    var query = Model.Query;
 }
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
@@ -178,11 +177,7 @@
             </table>
         </div>
         <div class="px-4 pb-4">
-            @{
-                ViewData["PageParamName"] = "deleted.Page";
-                await Html.PartialAsync("_AdminPagination", Model.DeletedItems);
-                ViewData["PageParamName"] = null;
-            }
+            @await Html.PartialAsync("_AdminPagination", Model.DeletedItems)
         </div>
     </div>
 }
