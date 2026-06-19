@@ -119,13 +119,13 @@
                         @if (Model.IsDeleted)
                         {
                             <dt class="col-sm-6">@Localizer["DeletionDate"]</dt>
-                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToString("g")</dd>
+                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
                         @if (Model.IsPublished)
                         {
                             <dt class="col-sm-6">@Localizer["PublicationDate"]</dt>
-                            <dd class="col-sm-6 text-dark fw-medium">@Model.PublishedAtUtc?.ToString("g")</dd>
+                            <dd class="col-sm-6 text-dark fw-medium">@Model.PublishedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
                         <dt class="col-sm-6">@Localizer["CoverImage"]</dt>

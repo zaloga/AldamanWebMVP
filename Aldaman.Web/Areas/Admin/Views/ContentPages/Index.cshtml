@@ -67,7 +67,7 @@
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
                             <div class="fw-semibold text-dark">@item.Title</div>
-                            <div class="small text-muted">@Localizer["Created"]: @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy")</div>
+                            <div class="small text-muted">@Localizer["Created"]: @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateDot)</div>
                         </td>
                         <td class="py-3 text-center">
                             <div class="d-flex flex-wrap gap-1 justify-content-center">
@@ -145,7 +145,7 @@
                         <tr id="row-deleted-@item.Id">
                             <td class="ps-4 py-3">
                                 <div class="fw-semibold text-muted text-decoration-line-through">@item.Title</div>
-                                <div class="small text-muted">@Localizer["Created"]: @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy")</div>
+                                <div class="small text-muted">@Localizer["Created"]: @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateDot)</div>
                             </td>
                             <td class="py-3 text-center">
                                 <div class="d-flex flex-wrap gap-1 justify-content-center opacity-50">

@@ -68,7 +68,7 @@
             
             <div class="row mb-3">
                 <div class="col-sm-4 fw-bold text-muted">@Localizer["FileSize"]</div>
-                <div class="col-sm-8">@((Model.FileSize / 1024.0).ToString("N1")) KB</div>
+                <div class="col-sm-8">@((Model.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</div>
             </div>
             
             @if (Model.IsImage && Model.Width.HasValue && Model.Height.HasValue)
@@ -81,7 +81,7 @@
             
             <div class="row mb-3">
                 <div class="col-sm-4 fw-bold text-muted">@Localizer["Uploaded"]</div>
-                <div class="col-sm-8">@Model.UploadedAtUtc.ToLocalTime().ToString("g")</div>
+                <div class="col-sm-8">@Model.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.ShortDateTime)</div>
             </div>
 
             @* commented out for now, can be added in the future when we have usecase for it

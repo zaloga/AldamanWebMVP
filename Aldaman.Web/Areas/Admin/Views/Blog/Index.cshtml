@@ -90,17 +90,17 @@
                             }
                         </td>
                         <td class="py-3 text-muted small">
-                            @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
+                            @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                         </td>
                         <td class="py-3 text-muted small">
-                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "")
+                            @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot) : "")
                         </td>
                         <td class="py-3">
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
                             {
                                 <span class="d-flex align-items-center text-success small fw-medium">
                                     <span class="bg-success rounded-circle me-2" style="width: 8px; height: 8px;"></span>
-                                    @string.Format(Localizer["PublishedOnDate"].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy"))
+                                    @string.Format(Localizer["PublishedOnDate"].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
                                 </span>
                             }
                             else
@@ -185,15 +185,15 @@
                                 }
                             </td>
                             <td class="py-3 text-muted small">
-                                @item.CreatedAtUtc.ToLocalTime().ToString("d. M. yyyy HH:mm")
+                                @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                             </td>
                             <td class="py-3 text-muted small">
-                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy HH:mm") : "")
+                                @(item.UpdatedAtUtc.HasValue ? item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot) : "")
                             </td>
                             <td class="py-3">
                                 <span class="d-flex align-items-center text-danger small fw-medium">
                                     <span class="bg-danger rounded-circle me-2" style="width: 8px; height: 8px;"></span>
-                                    @string.Format(Localizer["DeletedOnDate"].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString("d. M. yyyy"))
+                                    @string.Format(Localizer["DeletedOnDate"].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
                                 </span>
                             </td>
                             <td class="py-3 text-end pe-4">

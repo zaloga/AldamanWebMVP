@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SentAtUtc"]</label>
-                    <div class="text-dark">@(Model.SentAtUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? Localizer["NotRecorded"].Value)</div>
+                    <div class="text-dark">@(Model.SentAtUtc?.ToString(FormatConstants.DateTimeIso) ?? Localizer["NotRecorded"].Value)</div>
                 </div>
                 <div class="col-12">
                     <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["UserAgent"]</label>
@@ -96,7 +96,7 @@
 
             <div class="mb-4">
                 <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Date"]</label>
-                <div class="fw-medium text-dark">@Model.CreatedAtUtc.ToString("f")</div>
+                <div class="fw-medium text-dark">@Model.CreatedAtUtc.ToString(FormatConstants.FullDateTime)</div>
             </div>
 
             <div class="mb-4">
@@ -112,7 +112,7 @@
                         <span class="fw-bold">@Localizer["DeletedMessage"]</span>
                     </div>
                     <div class="small">
-                        @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToString("f") ?? "---").
+                        @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToString(FormatConstants.FullDateTime) ?? "").
                     </div>
                 </div>
             }
