@@ -25,4 +25,13 @@ public sealed class WebUserContext : IUserContext
             return null;
         }
     }
+
+    public bool IsAdminOrSuperAdmin
+    {
+        get
+        {
+            var user = HttpContextAccessor.HttpContext?.User;
+            return user != null && (user.IsInRole("SuperAdmin") || user.IsInRole("Admin"));
+        }
+    }
 }

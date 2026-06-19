@@ -675,4 +675,13 @@
   <data name="Perex" xml:space="preserve">
     <value>Úvod</value>
   </data>
+  <data name="BlogPost" xml:space="preserve">
+    <value>Příspěvek</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Vyčistit</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Stránka</value>
+  </data>
 </root>

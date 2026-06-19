@@ -10,6 +10,7 @@ public class ContentPageListItemDto
     public Guid Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
     public PlaceToShowEnum PlaceToShow { get; set; }
     public int PageOrder { get; set; }
     public DateTime? UpdatedAtUtc { get; set; }

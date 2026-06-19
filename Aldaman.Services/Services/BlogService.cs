@@ -1,5 +1,6 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
@@ -21,13 +22,15 @@ public sealed class BlogService : IBlogService
     private IMediaService MediaService { get; }
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
+    private IUserContext UserContext { get; }
 
     public BlogService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
         IOptions<CacheSettings> cacheOptions,
         IMediaService mediaService,
-        IMemoryCache cache)
+        IMemoryCache cache,
+        IUserContext userContext)
     {
         Context = context;
         Localization = localizationOptions.Value;
@@ -36,6 +39,7 @@ public sealed class BlogService : IBlogService
         CacheOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.BlogExpirationHours))
                 .AddExpirationToken(new CancellationChangeToken(_blogCacheTokenSource.Token));
+        UserContext = userContext;
     }
 
     /// <summary>
@@ -451,15 +455,22 @@ public sealed class BlogService : IBlogService
 
     public async Task<BlogPostDetailDto?> GetBlogPostBySlugCachedAsync(string slug, string culture)
     {
-        string cacheKey = $"Blog:Slug:{culture}:{slug.ToLowerInvariant()}";
+        bool isAdmin = UserContext.IsAdminOrSuperAdmin;
+        string cacheKey = $"Blog:Slug:{culture}:{slug.ToLowerInvariant()}:{isAdmin}";
 
         if (!Cache.TryGetValue(cacheKey, out BlogPostDetailDto? result))
         {
-            var post = await Context.BlogPosts
+            var query = isAdmin
+                ? Context.BlogPosts.IgnoreQueryFilters()
+                : Context.BlogPosts.Where(p => p.IsPublished);
+
+            query = query
                 .Include(p => p.Translations)
                 .Include(p => p.CoverMediaAsset)
-                .Include(p => p.CreatedByUser)
-                .FirstOrDefaultAsync(p => p.IsPublished && p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
+                .Include(p => p.CreatedByUser);
+
+            var post = await
+                query.FirstOrDefaultAsync(p => p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture));
 
             if (post == null)
             {

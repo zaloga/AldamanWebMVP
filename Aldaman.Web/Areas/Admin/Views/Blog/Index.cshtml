@@ -49,7 +49,7 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["BlogPost"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -157,7 +157,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light">
                     <tr>
-                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["TitleAndPerex"]</th>
+                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["BlogPost"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                         <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -174,7 +174,7 @@
                                     @{
                                         var deletedPostUrl = Url.RouteUrl("blog_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
                                     }
-                                    <span class="text-decoration-none text-secondary">@deletedPostUrl</span>
+                                    <a href="@deletedPostUrl" target="_blank" class="text-decoration-none text-primary">@deletedPostUrl</a>
                                 </div>
                             </td>
                             <td class="py-3">

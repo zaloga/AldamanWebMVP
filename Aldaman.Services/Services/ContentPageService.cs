@@ -1,6 +1,7 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
+using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
@@ -22,13 +23,15 @@ public sealed class ContentPageService : IContentPageService
     private IMediaService MediaService { get; }
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
+    private IUserContext UserContext { get; }
 
     public ContentPageService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
         IOptions<CacheSettings> cacheOptions,
         IMediaService mediaService,
-        IMemoryCache cache)
+        IMemoryCache cache,
+        IUserContext userContext)
     {
         Context = context;
         Localization = localizationOptions.Value;
@@ -37,6 +40,7 @@ public sealed class ContentPageService : IContentPageService
         CacheOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentPageExpirationHours))
                 .AddExpirationToken(new CancellationChangeToken(_pageCacheTokenSource.Token));
+        UserContext = userContext;
     }
 
     /// <summary>
@@ -85,7 +89,10 @@ public sealed class ContentPageService : IContentPageService
                 Id = p.Id,
                 Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
                         ?? p.Translations.FirstOrDefault()!.Title
-                        ?? "-",
+                        ?? "",
+                Slug = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Slug
+                        ?? p.Translations.FirstOrDefault()!.Slug
+                        ?? "",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
                 UpdatedAtUtc = p.UpdatedAtUtc == null
@@ -300,7 +307,10 @@ public sealed class ContentPageService : IContentPageService
                 Id = p.Id,
                 Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
                         ?? p.Translations.FirstOrDefault()!.Title
-                        ?? "-",
+                        ?? "",
+                Slug = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Slug
+                        ?? p.Translations.FirstOrDefault()!.Slug
+                        ?? "",
                 PlaceToShow = p.PlaceToShow,
                 PageOrder = p.PageOrder,
                 UpdatedAtUtc = p.UpdatedAtUtc == null
@@ -386,12 +396,19 @@ public sealed class ContentPageService : IContentPageService
 
     public async Task<ContentPageDetailDto?> GetContentPageBySlugCachedAsync(string slug, string culture)
     {
-        string cacheKey = $"Page:Slug:{culture}:{slug.ToLowerInvariant()}";
+        bool isAdmin = UserContext.IsAdminOrSuperAdmin;
+        string cacheKey = $"Page:Slug:{culture}:{slug.ToLowerInvariant()}:{isAdmin}";
 
         if (!Cache.TryGetValue(cacheKey, out ContentPageDetailDto? result))
         {
-            var page = await Context.ContentPages
-                .Include(p => p.Translations)
+            var query = isAdmin
+                ? Context.ContentPages.IgnoreQueryFilters()
+                : Context.ContentPages;
+
+            query = query
+                .Include(p => p.Translations);
+
+            var page = await query
                 .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture));
 
             if (page == null)

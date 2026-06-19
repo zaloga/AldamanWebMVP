@@ -675,4 +675,13 @@
   <data name="Perex" xml:space="preserve">
     <value>Perex</value>
   </data>
+  <data name="BlogPost" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
 </root>
