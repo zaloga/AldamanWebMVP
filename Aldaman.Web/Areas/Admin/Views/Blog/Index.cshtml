@@ -1,9 +1,9 @@
+@using Aldaman.Services.Dtos.General
 @using Aldaman.Services.Dtos.Blog
-@model PagedResultDto<BlogPostListItemDto>
+@model PagedResultsDto<BlogPostListItemDto>
 @{
     ViewData["Title"] = Localizer["BlogPosts"];
     var query = ViewData["Query"] as PaginationQuery ?? new PaginationQuery();
-    var deletedItems = ViewBag.DeletedItems as PagedResultDto<BlogPostListItemDto>;
     var deletedQuery = ViewData["DeletedQuery"] as PaginationQuery ?? new PaginationQuery();
 }
 
@@ -59,13 +59,13 @@
                 </tr>
             </thead>
             <tbody class="border-top-0">
-                @if (!Model.Items.Any())
+                @if (!Model.Items.Items.Any())
                 {
                     <tr>
                         <td colspan="7" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
-                @foreach (var item in Model.Items)
+                @foreach (var item in Model.Items.Items)
                 {
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
@@ -134,11 +134,11 @@
     </div>
 
     <div class="px-4 pb-4">
-        @await Html.PartialAsync("_AdminPagination", Model)
+        @await Html.PartialAsync("_AdminPagination", Model.Items)
     </div>
 </div>
 
-@if (deletedItems != null && deletedItems.TotalCount > 0)
+@if (Model.DeletedItems != null && Model.DeletedItems.TotalCount > 0)
 {
     <div class="mt-5 mb-4">
         <h3 class="h5 text-danger d-flex align-items-center gap-2">
@@ -162,7 +162,7 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @foreach (var item in deletedItems.Items)
+                    @foreach (var item in Model.DeletedItems.Items)
                     {
                         <tr id="row-deleted-@item.Id">
                             <td class="ps-4 py-3">
@@ -220,7 +220,7 @@
         <div class="px-4 pb-4">
             @{
                 ViewData["PageParamName"] = "deleted.Page";
-                await Html.PartialAsync("_AdminPagination", deletedItems);
+                await Html.PartialAsync("_AdminPagination", Model.DeletedItems);
                 ViewData["PageParamName"] = null;
             }
         </div>

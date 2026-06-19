@@ -1,3 +1,4 @@
+using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -40,11 +41,16 @@ public class BlogController : BaseAdminController
         var result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
         var deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
         
+        var model = new PagedResultsDto<BlogPostListItemDto>
+        {
+            Items = result,
+            DeletedItems = deletedResult
+        };
+        
         ViewData["Query"] = query;
         ViewData["DeletedQuery"] = deletedItemsQuery;
-        ViewBag.DeletedItems = deletedResult;
         
-        return View(result);
+        return View(model);
     }
 
     [HttpGet]
