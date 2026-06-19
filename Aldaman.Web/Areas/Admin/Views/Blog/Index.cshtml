@@ -112,7 +112,7 @@
                             }
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
+                            <div class="d-inline-flex flex-column gap-2">
                                 <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer["Edit"]
@@ -197,7 +197,7 @@
                                 </span>
                             </td>
                             <td class="py-3 text-end pe-4">
-                                <div class="d-flex justify-content-end gap-2">
+                                <div class="d-inline-flex flex-column gap-2">
                                     <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Title')">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer["Restore"]

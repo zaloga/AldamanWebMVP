@@ -93,7 +93,7 @@
                             <div class="text-muted" style="font-size: 0.75rem;">@item.UploadedAtUtc.ToLocalTime().ToString("HH:mm")</div>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
+                            <div class="d-inline-flex flex-column gap-2">
                                 <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer["Edit"]">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer["Edit"]
@@ -176,7 +176,7 @@
                                 <div class="small text-muted">@Localizer["Uploaded"]: @item.UploadedAtUtc.ToLocalTime().ToString("d. M. yyyy")</div>
                             </td>
                             <td class="py-3 text-end pe-4">
-                                <div class="d-flex justify-content-end gap-2">
+                                <div class="d-inline-flex flex-column gap-2">
                                     <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.OriginalFileName')">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer["Restore"]
