@@ -52,7 +52,14 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["ClientIp"]</label>
-                    <div class="font-monospace text-dark">@(Model.ClientIp ?? "---")</div>
+                    @if (string.IsNullOrWhiteSpace(Model.ClientIp))
+                    {
+                        <span class="text-muted">@Localizer["None"]</span>
+                    }
+                    else
+                    {
+                        <div class="font-monospace text-dark">@Model.ClientIp</div>
+                    }
                 </div>
                 <div class="col-md-6">
                     <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SentAtUtc"]</label>
@@ -60,7 +67,14 @@
                 </div>
                 <div class="col-12">
                     <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["UserAgent"]</label>
-                    <div class="font-monospace small p-2 bg-light border rounded text-muted">@(Model.UserAgent ?? "---")</div>
+                    @if (string.IsNullOrWhiteSpace(Model.UserAgent))
+                    {
+                        <span class="text-muted">@Localizer["None"]</span>
+                    }
+                    else
+                    {
+                        <div class="font-monospace small p-2 bg-light border rounded text-muted">@Model.UserAgent</div>
+                    }
                 </div>
                 @if (!string.IsNullOrEmpty(Model.FailureReason))
                 {
