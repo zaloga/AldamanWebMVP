@@ -10,24 +10,124 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-        <div>
-            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["Edit"]</a>
-            <a asp-action="Index" class="btn btn-secondary ms-2">@Localizer["BackToList"]</a>
-        </div>
-    </div>
-
     <div class="row">
+
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Translations"]</h6>
+                </div>
+                <div class="card-body">
+                    @{
+                        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                        var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture) 
+                            ? currentCulture 
+                            : Model.Translations.FirstOrDefault()?.CultureCode;
+                    }
+                    <ul class="nav nav-tabs mb-3" id="detailsTabs" role="tablist">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var culture = Model.Translations[i].CultureCode;
+                            var isActive = culture == activeCulture;
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link @(isActive ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(isActive ? "true" : "false")">
+                                    @culture.ToUpper()
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <div class="tab-content" id="detailsTabsContent">
+                        @for (int i = 0; i < Model.Translations.Count; i++)
+                        {
+                            var translation = Model.Translations[i];
+                            var culture = translation.CultureCode;
+                            var isActive = culture == activeCulture;
+                            <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
+                                <dl class="row">
+                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
+                                    <dd class="col-sm-10 fw-bold text-dark">
+                                        @if (string.IsNullOrWhiteSpace(translation.Title))
+                                        {
+                                            <span class="text-muted">@Localizer["None"]</span>
+                                        }
+                                        else
+                                        {
+                                            @translation.Title
+                                        }
+                                    </dd>
+
+                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">URL</dt>
+                                    <dd class="col-sm-10 font-monospace small">
+                                        @if (string.IsNullOrWhiteSpace(translation.Slug))
+                                        {
+                                            <span class="text-muted">@Localizer["None"]</span>
+                                        }
+                                        else
+                                        {
+                                            var url = Url.Action("Detail", "ContentPage", new { area = "", culture = translation.CultureCode, slug = translation.Slug });
+                                            <a href="@url" target="_blank">@url</a>
+                                        }
+                                    </dd>
+
+                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer["Content"]</dt>
+                                    <dd class="col-sm-12">
+                                        @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
+                                        {
+                                            <div class="px-3 border rounded bg-white ql-snow mb-3">
+                                                <div class="ql-editor p-0">
+                                                    @Html.Raw(translation.BodyHtml)
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="p-3 border rounded mb-3 text-muted">
+                                                @Localizer["NoHtmlContent"]
+                                            </div>
+                                        }
+                                    </dd>
+
+                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer["AdditionalInfo"]</dt>
+                                    <dd class="col-sm-12">
+                                        <div class="accordion" id="accordionPlainText-@culture">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingPlainText-@culture">
+                                                    <button class="accordion-button collapsed text-uppercase fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
+                                                        @Localizer["PlainText"]
+                                                    </button>
+                                                </h2>
+                                                <div id="collapsePlainText-@culture" class="accordion-collapse collapse" aria-labelledby="headingPlainText-@culture" data-bs-parent="#accordionPlainText-@culture">
+                                                    <div class="accordion-body">
+                                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
+                                                        {
+                                                            <div style="white-space: pre-wrap;">@translation.PlainText</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted italic">@Localizer["NoPlainText"]</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-4">
-            <div class="card shadow mb-4 border-0">
-                <div class="card-header py-3 bg-white border-0">
-                    <h6 class="m-0 fw-bold text-primary">@Localizer["Settings"]</h6>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Settings"]</h6>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Locations"]</dt>
-                        <dd class="col-sm-7">
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["Locations"]</dt>
+                        <dd class="col-sm-6">
                             <div class="d-flex flex-wrap gap-1">
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
@@ -48,90 +148,19 @@
                             </div>
                         </dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Order"]</dt>
-                        <dd class="col-sm-7 text-primary fw-medium">@Model.PageOrder</dd>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["Order"]</dt>
+                        <dd class="col-sm-6 text-primary fw-medium">@Model.PageOrder</dd>
                     </dl>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-8">
-            <div class="card shadow mb-4 border-0">
-                <div class="card-header py-3 bg-white border-0">
-                    <h6 class="m-0 fw-bold text-primary">@Localizer["Translations"]</h6>
-                </div>
-                <div class="card-body">
-                    @{
-                        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                        var activeCulture = Model.Translations.Any(t => t.CultureCode == currentCulture) 
-                            ? currentCulture 
-                            : Model.Translations.FirstOrDefault()?.CultureCode;
-                    }
-                    <ul class="nav nav-tabs mb-4" id="detailsTabs" role="tablist">
-                        @for (int i = 0; i < Model.Translations.Count; i++)
-                        {
-                            var culture = Model.Translations[i].CultureCode;
-                            var isActive = culture == activeCulture;
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fw-semibold @(isActive ? "active" : "")" id="tab-@culture" data-bs-toggle="tab" data-bs-target="#content-@culture" type="button" role="tab" aria-controls="content-@culture" aria-selected="@(isActive ? "true" : "false")">
-                                    @culture.ToUpper()
-                                </button>
-                            </li>
-                        }
-                    </ul>
-                    <div class="tab-content" id="detailsTabsContent">
-                        @for (int i = 0; i < Model.Translations.Count; i++)
-                        {
-                            var translation = Model.Translations[i];
-                            var culture = translation.CultureCode;
-                            var isActive = culture == activeCulture;
-                            <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
-                                <dl class="row">
-                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
-                                    <dd class="col-sm-10 fw-bold text-dark">@(string.IsNullOrWhiteSpace(translation.Title) ? Localizer["NotProvided"].Value : translation.Title)</dd>
+                    <hr />
 
-                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Slug"]</dt>
-                                    <dd class="col-sm-10 font-monospace small">@(string.IsNullOrWhiteSpace(translation.Slug) ? Localizer["NotProvided"].Value : translation.Slug)</dd>
-
-                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-4 mb-2">@Localizer["Content"]</dt>
-                                    <dd class="col-sm-12">
-                                        @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
-                                        {
-                                            <div class="p-4 border rounded bg-white shadow-sm ql-snow mb-3" style="max-height: 500px; overflow-y: auto;">
-                                                <div class="ql-editor p-0">
-                                                    @Html.Raw(translation.BodyHtml)
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="p-3 border rounded bg-light mb-3 text-muted fst-italic">
-                                                @Localizer["NoHtmlContent"]
-                                            </div>
-                                        }
-                                    </dd>
-
-                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer["PlainText"]</dt>
-                                    <dd class="col-sm-12">
-                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
-                                        {
-                                            <div class="p-3 border rounded bg-light" style="max-height: 200px; overflow-y: auto;">
-                                                <pre class="mb-0 text-muted" style="white-space: pre-wrap; font-family: inherit; font-size: 0.875rem;">@translation.PlainText</pre>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="p-3 border rounded bg-light text-muted fst-italic">
-                                                @Localizer["NoPlainText"]
-                                            </div>
-                                        }
-                                    </dd>
-                                </dl>
-                            </div>
-                        }
+                    <div class="d-grid">
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
