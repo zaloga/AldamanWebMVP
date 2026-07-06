@@ -84,7 +84,7 @@
                                     <dd class="col-sm-12">
                                         @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))
                                         {
-                                            <div class="p-4 border rounded bg-white shadow-sm ql-snow mb-3" style="max-height: 500px; overflow-y: auto;">
+                                            <div class="px-3 border rounded bg-white ql-snow mb-3">
                                                 <div class="ql-editor p-0">
                                                     @Html.Raw(translation.BodyHtml)
                                                 </div>
@@ -92,26 +92,35 @@
                                         }
                                         else
                                         {
-                                            <div class="p-3 border rounded bg-light mb-3 text-muted">
+                                            <div class="p-3 border rounded mb-3 text-muted">
                                                 @Localizer["NoHtmlContent"]
                                             </div>
                                         }
                                     </dd>
 
-                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer["PlainText"]</dt>
+                                    <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer["AdditionalInfo"]</dt>
                                     <dd class="col-sm-12">
-                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
-                                        {
-                                            <div class="p-3 border rounded bg-light" style="max-height: 200px; overflow-y: auto;">
-                                                <pre class="mb-0 text-muted" style="white-space: pre-wrap; font-family: inherit; font-size: 0.875rem;">@translation.PlainText</pre>
+                                        <div class="accordion" id="accordionPlainText-@culture">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingPlainText-@culture">
+                                                    <button class="accordion-button collapsed text-uppercase fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
+                                                        @Localizer["PlainText"]
+                                                    </button>
+                                                </h2>
+                                                <div id="collapsePlainText-@culture" class="accordion-collapse collapse" aria-labelledby="headingPlainText-@culture" data-bs-parent="#accordionPlainText-@culture">
+                                                    <div class="accordion-body">
+                                                        @if (!string.IsNullOrWhiteSpace(translation.PlainText))
+                                                        {
+                                                            <div style="white-space: pre-wrap;">@translation.PlainText</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-muted italic">@Localizer["NoPlainText"]</span>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="p-3 border rounded bg-light text-muted italic">
-                                                @Localizer["NoPlainText"]
-                                            </div>
-                                        }
+                                        </div>
                                     </dd>
                                 </dl>
                             </div>
