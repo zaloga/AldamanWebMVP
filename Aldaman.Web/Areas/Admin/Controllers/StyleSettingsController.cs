@@ -7,7 +7,7 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]
-public class StyleSettingsController : Controller
+public class StyleSettingsController : Controller // TODO refaktornout do BaseAdminController a přesunout logiku do services
 {
     private readonly IStyleService _styleService;
 
@@ -57,9 +57,9 @@ public class StyleSettingsController : Controller
 
         bool isEdit = dto.Id.HasValue && dto.Id != Guid.Empty;
         await _styleService.UpdateSettingAsync(dto);
-        
-        TempData["SuccessMessage"] = isEdit 
-            ? "Style setting updated successfully." 
+
+        TempData["SuccessMessage"] = isEdit
+            ? "Style setting updated successfully."
             : "Style setting created successfully.";
 
         return RedirectToAction(nameof(Index));
@@ -76,9 +76,9 @@ public class StyleSettingsController : Controller
         };
 
         await _styleService.UpdateSettingAsync(dto);
-        
+
         TempData["SuccessMessage"] = "Style setting updated successfully.";
-        
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -87,7 +87,7 @@ public class StyleSettingsController : Controller
     public async Task<IActionResult> ResetToDefault(Guid id)
     {
         await _styleService.ResetToDefaultSettingAsync(id);
-        
+
         return Json(new { success = true, message = "Style setting reset to default successfully." });
     }
 

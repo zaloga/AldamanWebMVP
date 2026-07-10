@@ -26,6 +26,7 @@ public class BlogController : BaseAdminController
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
 
+        // TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
         deletedItemsQuery.SearchTerm = query.SearchTerm;
         if (Request.Query.ContainsKey("SortBy"))
         {

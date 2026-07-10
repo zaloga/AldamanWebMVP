@@ -19,10 +19,11 @@ public sealed class MediaService : IMediaService
         WebRootPath = webRootPath;
     }
 
-    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query)
+    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false)
     {
-        var dbQuery = Context.MediaAssets
-            .AsQueryable();
+        var dbQuery = filterDeleted
+            ? Context.MediaAssets.IgnoreQueryFilters().Where(p => p.IsDeleted)
+            : Context.MediaAssets.AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
@@ -37,7 +38,10 @@ public sealed class MediaService : IMediaService
             "UploadedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "Size" => query.SortDescending ? dbQuery.OrderByDescending(p => p.FileSize) : dbQuery.OrderBy(p => p.FileSize),
-            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+            "DeletedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            _ => filterDeleted
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -149,29 +153,6 @@ public sealed class MediaService : IMediaService
         }
     }
 
-    public async Task<PagedResultDto<MediaAssetDto>> GetPagedDeletedAssetsAsync(PaginationQuery query)
-    {
-        var dbQuery = Context.MediaAssets
-            .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted)
-            .OrderByDescending(p => p.DeletedAtUtc)
-            .AsQueryable();
-
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .Select(p => Map(p))
-            .ToListAsync();
-
-        return new PagedResultDto<MediaAssetDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = query.Page,
-            PageSize = query.PageSize
-        };
-    }
 
     public async Task RestoreAssetAsync(Guid id)
     {

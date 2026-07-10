@@ -16,7 +16,7 @@ public interface IMediaService
     /// <summary>
     /// Lists all media assets with pagination and filtering.
     /// </summary>
-    Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query);
+    Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false);
 
     /// <summary>
     /// Gets a media asset's metadata by its ID.
@@ -32,11 +32,6 @@ public interface IMediaService
     /// Deletes a media asset from the system.
     /// </summary>
     Task DeleteAssetAsync(Guid id);
-
-    /// <summary>
-    /// Gets a paged list of deleted media assets.
-    /// </summary>
-    Task<PagedResultDto<MediaAssetDto>> GetPagedDeletedAssetsAsync(PaginationQuery query);
 
     /// <summary>
     /// Restores a soft-deleted media asset.

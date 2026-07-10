@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
+// TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
 public class ToolsController : BaseAdminController
 {
     [HttpGet]

@@ -18,6 +18,7 @@ public class ContactMessagesController : BaseAdminController
         [FromQuery] PaginationQuery query,
         [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
     {
+        // TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
         deletedItemsQuery.SearchTerm = query.SearchTerm;
         if (Request.Query.ContainsKey("SortBy"))
         {
