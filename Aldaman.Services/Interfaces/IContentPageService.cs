@@ -64,10 +64,7 @@ public interface IContentPageService
     /// </summary>
     Task SoftDeleteContentPageAsync(Guid id);
 
-    /// <summary>
-    /// Gets a paged list of deleted pages.
-    /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query, string? culture = null);
+
 
     /// <summary>
     /// Restores a soft-deleted page.
@@ -92,5 +89,5 @@ public interface IContentPageService
     /// <summary>
     /// Gets a paged list of content pages for admin listing with pagination, sorting and filtering, without caching.
     /// </summary>
-    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null);
+    Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false);
 }

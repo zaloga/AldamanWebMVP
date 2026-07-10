@@ -57,9 +57,13 @@ public sealed class ContentPageService : IContentPageService
 
     #region Admin web part methods
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false)
     {
-        var dbQuery = Context.ContentPages
+        var dbQuery = filterDeleted
+            ? Context.ContentPages.IgnoreQueryFilters().Where(p => p.IsDeleted)
+            : Context.ContentPages;
+
+        dbQuery = dbQuery
             .Include(p => p.Translations)
             .AsQueryable();
 
@@ -77,7 +81,10 @@ public sealed class ContentPageService : IContentPageService
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
-            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+            "DeletedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            _ => filterDeleted
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -289,47 +296,7 @@ public sealed class ContentPageService : IContentPageService
         }
     }
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedDeletedContentPagesAsync(PaginationQuery query, string? culture = null)
-    {
-        var dbQuery = Context.ContentPages
-            .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted)
-            .Include(p => p.Translations)
-            .OrderByDescending(p => p.DeletedAtUtc)
-            .AsQueryable();
 
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .Select(p => new ContentPageListItemDto
-            {
-                Id = p.Id,
-                Title = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
-                        ?? p.Translations.FirstOrDefault()!.Title
-                        ?? "",
-                Slug = p.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Slug
-                        ?? p.Translations.FirstOrDefault()!.Slug
-                        ?? "",
-                PlaceToShow = p.PlaceToShow,
-                PageOrder = p.PageOrder,
-                UpdatedAtUtc = p.UpdatedAtUtc == null
-                    ? p.Translations.Max(t => t.UpdatedAtUtc)
-                    : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
-                        ? p.Translations.Max(t => t.UpdatedAtUtc)
-                        : p.UpdatedAtUtc),
-                CreatedAtUtc = p.CreatedAtUtc
-            })
-            .ToListAsync();
-
-        return new PagedResultDto<ContentPageListItemDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = query.Page,
-            PageSize = query.PageSize
-        };
-    }
 
     public async Task RestoreContentPageAsync(Guid id)
     {
