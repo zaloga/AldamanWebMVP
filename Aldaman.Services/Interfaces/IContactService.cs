@@ -16,7 +16,7 @@ public interface IContactService
     /// <summary>
     /// Lists messages with pagination, sorting and filtering.
     /// </summary>
-    Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query);
+    Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query, bool filterDeleted = false);
 
     /// <summary>
     /// Marks a message as handled.
@@ -37,11 +37,6 @@ public interface IContactService
     /// Permanently deletes a message from the system.
     /// </summary>
     Task HardDeleteMessageAsync(Guid id);
-
-    /// <summary>
-    /// Gets paged soft-deleted messages.
-    /// </summary>
-    Task<PagedResultDto<ContactMessageDto>> GetPagedDeletedMessagesAsync(PaginationQuery query);
 
     /// <summary>
     /// Gets a contact message by its ID.

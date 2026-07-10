@@ -30,8 +30,8 @@ public class ContactMessagesController : BaseAdminController
             deletedItemsQuery.SortDescending = true;
         }
 
-        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query);
-        PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedDeletedMessagesAsync(deletedItemsQuery);
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false);
+        PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedMessagesAsync(deletedItemsQuery, filterDeleted: true);
         deletedResult.PageParamName = "deleted.Page";
 
         var model = new PagedResultsDto<ContactMessageDto>

@@ -27,9 +27,11 @@ public sealed class ContactService : IContactService
         EmailOptions = emailOptions.Value;
     }
 
-    public async Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query)
+    public async Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query, bool filterDeleted = false)
     {
-        var dbQuery = Context.ContactMessages.AsQueryable();
+        var dbQuery = filterDeleted
+            ? Context.ContactMessages.IgnoreQueryFilters().Where(p => p.IsDeleted)
+            : Context.ContactMessages.AsQueryable();
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
@@ -42,7 +44,10 @@ public sealed class ContactService : IContactService
         {
             "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             "State" => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
-            _ => dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+            "DeletedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            _ => filterDeleted
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
         var totalCount = await dbQuery.CountAsync();
@@ -158,51 +163,7 @@ public sealed class ContactService : IContactService
         }
     }
 
-    public async Task<PagedResultDto<ContactMessageDto>> GetPagedDeletedMessagesAsync(PaginationQuery query)
-    {
-        var dbQuery = Context.ContactMessages
-            .IgnoreQueryFilters()
-            .Where(p => p.IsDeleted)
-            .AsQueryable();
 
-        // Filtering
-        if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-        {
-            dbQuery = dbQuery.Where(p => p.EmailOrPhone.Contains(query.SearchTerm) || p.Message.Contains(query.SearchTerm));
-        }
-
-        // Sorting
-        dbQuery = query.SortBy switch
-        {
-            "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "State" => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
-            _ => dbQuery.OrderByDescending(p => p.DeletedAtUtc)
-        };
-
-        var totalCount = await dbQuery.CountAsync();
-        var items = await dbQuery
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .Select(p => new ContactMessageDto
-            {
-                Id = p.Id,
-                EmailOrPhone = p.EmailOrPhone,
-                Subject = p.Subject,
-                Message = p.Message,
-                CreatedAtUtc = p.CreatedAtUtc,
-                SentAtUtc = p.SentAtUtc,
-                State = p.State
-            })
-            .ToListAsync();
-
-        return new PagedResultDto<ContactMessageDto>
-        {
-            Items = items,
-            TotalCount = totalCount,
-            Page = query.Page,
-            PageSize = query.PageSize
-        };
-    }
 
     public async Task<ContactMessageDto?> GetMessageByIdAsync(Guid id)
     {

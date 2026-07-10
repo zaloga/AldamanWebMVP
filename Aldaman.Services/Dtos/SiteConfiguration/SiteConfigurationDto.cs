@@ -3,7 +3,7 @@ namespace Aldaman.Services.Dtos.SiteConfiguration;
 /// <summary>
 /// General site-wide settings.
 /// </summary>
-public class SiteConfigurationDto // TODO use it and delete iunneeded properties
+public class SiteConfigurationDto // TODO use it or delete including dependencies
 {
     public string SiteName { get; set; } = string.Empty;
     public string SiteTitlePrefix { get; set; } = string.Empty;
