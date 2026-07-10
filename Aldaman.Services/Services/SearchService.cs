@@ -1,16 +1,19 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Enums;
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Search;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Aldaman.Services.Configuration;
 
 namespace Aldaman.Services.Services;
 
 public sealed class SearchService : ISearchService
 {
+    private const int MaxItemsForSearch = 20;
+    private const int MaxItemsForAutocomplete = 10;
+
     private AppDbContext Context { get; }
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
@@ -38,7 +41,7 @@ public sealed class SearchService : ISearchService
         {
             // 1. Search Blog Posts
             var blogResults = await SearchBlogResultsInternal(query, cultureCode)
-                .Take(20)
+                .Take(MaxItemsForSearch)
                 .Select(t => new SearchResultDto
                 {
                     Title = t.Title,
@@ -50,7 +53,7 @@ public sealed class SearchService : ISearchService
 
             // 2. Search Content Pages
             var pageResults = await SearchContentPagesInternal(query, cultureCode)
-                .Take(20)
+                .Take(MaxItemsForSearch)
                 .Select(t => new SearchResultDto
                 {
                     Title = t.Title,
@@ -63,6 +66,7 @@ public sealed class SearchService : ISearchService
             // Combine and return
             cachedResults = blogResults.Concat(pageResults)
                 .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase)) // Very basic relevance: title matches first
+                .Take(MaxItemsForSearch)
                 .ToList();
 
             Cache.Set(cacheKey, cachedResults, CacheOptions);
@@ -87,7 +91,7 @@ public sealed class SearchService : ISearchService
         {
             // 1. Search Blog Posts
             List<AutocompleteResultDto> blogResults = await SearchBlogResultsInternal(query, cultureCode)
-                .Take(10)
+                .Take(MaxItemsForAutocomplete)
                 .Select(t => new AutocompleteResultDto
                 {
                     Title = t.Title,
@@ -97,7 +101,7 @@ public sealed class SearchService : ISearchService
 
             // 2. Search Content Pages
             List<AutocompleteResultDto> pageResults = await SearchContentPagesInternal(query, cultureCode)
-                .Take(10)
+                .Take(MaxItemsForAutocomplete)
                 .Select(t => new AutocompleteResultDto
                 {
                     Title = t.Title,
@@ -110,7 +114,7 @@ public sealed class SearchService : ISearchService
             // Combine and return
             cachedResults = [.. blogResults.Concat(pageResults)
                 .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
-                .Take(10)];
+                .Take(MaxItemsForAutocomplete)];
 
             Cache.Set(cacheKey, cachedResults, CacheOptions);
         }
