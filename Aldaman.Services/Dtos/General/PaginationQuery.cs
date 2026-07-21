@@ -1,3 +1,5 @@
+using Aldaman.Services.Constants;
+
 namespace Aldaman.Services.Dtos.General;
 
 /// <summary>
@@ -7,7 +9,7 @@ public class PaginationQuery
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;
-    public string? SortBy { get; set; } = "CreatedAt";
+    public string? SortBy { get; set; } = SortByConstants.CreatedAt;
     public bool SortDescending { get; set; } = true;
     public string? SearchTerm { get; set; }
 }

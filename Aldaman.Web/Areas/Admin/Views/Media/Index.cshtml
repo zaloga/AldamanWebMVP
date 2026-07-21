@@ -25,9 +25,9 @@
         </div>
         <div class="col-md-4">
             <select name="SortBy" class="form-select">
-                <option value="UploadedAt" selected="@(query.SortBy == "UploadedAt")">@Localizer["SortByUploadDate"]</option>
-                <option value="FileName" selected="@(query.SortBy == "FileName")">@Localizer["SortByFilename"]</option>
-                <option value="Size" selected="@(query.SortBy == "Size")">@Localizer["SortBySize"]</option>
+                <option value="@SortByConstants.UploadedAt" selected="@(query.SortBy == SortByConstants.UploadedAt)">@Localizer["SortByUploadDate"]</option>
+                <option value="@SortByConstants.FileName" selected="@(query.SortBy == SortByConstants.FileName)">@Localizer["SortByFilename"]</option>
+                <option value="@SortByConstants.Size" selected="@(query.SortBy == SortByConstants.Size)">@Localizer["SortBySize"]</option>
             </select>
         </div>
         <div class="col-md-3">
@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-2 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
-            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='UploadedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
+            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.UploadedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
         </div>
     </form>
 </div>

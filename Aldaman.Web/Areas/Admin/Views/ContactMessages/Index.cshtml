@@ -18,8 +18,8 @@
         </div>
         <div class="col-md-4">
             <select name="SortBy" class="form-select">
-                <option value="CreatedAt" selected="@(query.SortBy == "CreatedAt")">@Localizer["SortByDate"]</option>
-                <option value="State" selected="@(query.SortBy == "State")">@Localizer["SortByStatus"]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(query.SortBy == SortByConstants.CreatedAt)">@Localizer["SortByDate"]</option>
+                <option value="@SortByConstants.State" selected="@(query.SortBy == SortByConstants.State)">@Localizer["SortByStatus"]</option>
             </select>
         </div>
         <div class="col-md-3">
@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-2 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
-            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
+            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
         </div>
     </form>
 </div>

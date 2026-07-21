@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Services.Constants;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Persistence.Interfaces;
@@ -76,12 +77,12 @@ public sealed class ContentPageService : IContentPageService
         // Sorting
         dbQuery = query.SortBy switch
         {
-            "Title" => query.SortDescending
+            SortByConstants.Title => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
-            "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "PageOrder" => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
-            "DeletedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            SortByConstants.CreatedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
+            SortByConstants.PageOrder => query.SortDescending ? dbQuery.OrderByDescending(p => p.PageOrder) : dbQuery.OrderBy(p => p.PageOrder),
+            SortByConstants.DeletedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
             _ => filterDeleted
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)

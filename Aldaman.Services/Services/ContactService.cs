@@ -1,4 +1,5 @@
 using Aldaman.Integrations.Email.Options;
+using Aldaman.Services.Constants;
 using Aldaman.Integrations.Email.Services;
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
@@ -42,9 +43,9 @@ public sealed class ContactService : IContactService
         // Sorting
         dbQuery = query.SortBy switch
         {
-            "CreatedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "State" => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
-            "DeletedAt" => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            SortByConstants.CreatedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
+            SortByConstants.State => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
+            SortByConstants.DeletedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
             _ => filterDeleted
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)

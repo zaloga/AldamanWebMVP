@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Services.Constants;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
@@ -79,16 +80,16 @@ public sealed class BlogService : IBlogService
         // Sorting
         dbQuery = query.SortBy switch
         {
-            "Title" => query.SortDescending
+            SortByConstants.Title => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
-            "CreatedAt" => query.SortDescending
+            SortByConstants.CreatedAt => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
                 : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            "PublishedAt" => query.SortDescending
+            SortByConstants.PublishedAt => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.PublishedAtUtc)
                 : dbQuery.OrderBy(p => p.PublishedAtUtc),
-            "DeletedAt" => query.SortDescending
+            SortByConstants.DeletedAt => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderBy(p => p.DeletedAtUtc),
             _ => filterDeleted
