@@ -1,7 +1,6 @@
-@using System.Net
 @model PagedResultBase
 @{
-    var pageParamName = Model.PageParamName;
+    var queryParams = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
 }
 
 <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center mt-4">
@@ -14,16 +13,20 @@
     @if (Model.TotalPages > 1)
     {
         <ul class="pagination pagination-sm mb-0">
+            @{
+                var prevParams = new Dictionary<string, string>(queryParams) { ["Page"] = (Model.Page - 1).ToString() };
+            }
             <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
-                <a class="page-link" href="@GetPageUrl(Model.Page - 1)" tabindex="-1">@Localizer["Previous"]</a>
+                <a class="page-link" asp-all-route-data="prevParams" tabindex="-1">@Localizer["Previous"]</a>
             </li>
 
             @for (int i = 1; i <= Model.TotalPages; i++)
             {
                 if (i == 1 || i == Model.TotalPages || (i >= Model.Page - 2 && i <= Model.Page + 2))
                 {
+                    var pageParams = new Dictionary<string, string>(queryParams) { ["Page"] = i.ToString() };
                     <li class="page-item @(i == Model.Page ? "active" : "")">
-                        <a class="page-link" href="@GetPageUrl(i)">@i</a>
+                        <a class="page-link" asp-all-route-data="pageParams">@i</a>
                     </li>
                 }
                 else if (i == 2 || i == Model.TotalPages - 1)
@@ -32,20 +35,12 @@
                 }
             }
 
+            @{
+                var nextParams = new Dictionary<string, string>(queryParams) { ["Page"] = (Model.Page + 1).ToString() };
+            }
             <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
-                <a class="page-link" href="@GetPageUrl(Model.Page + 1)">@Localizer["Next"]</a>
+                <a class="page-link" asp-all-route-data="nextParams">@Localizer["Next"]</a>
             </li>
         </ul>
     }
 </nav>
-
-@functions {
-    string GetPageUrl(int page)
-    {
-        var pageParamName = Model.PageParamName;
-        var queryParams = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
-        queryParams[pageParamName] = page.ToString();
-        var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={WebUtility.UrlEncode(x.Value)}"));
-        return $"{Context.Request.Path}?{queryString}";
-    }
-}

@@ -22,32 +22,19 @@ public class BlogController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
+        [FromQuery] PaginationQuery deletedQuery)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
 
-        // TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
-        deletedItemsQuery.SearchTerm = query.SearchTerm;
-        if (Request.Query.ContainsKey("SortBy"))
-        {
-            deletedItemsQuery.SortBy = query.SortBy;
-            deletedItemsQuery.SortDescending = query.SortDescending;
-        }
-        else
-        {
-            deletedItemsQuery.SortBy = "DeletedAt";
-            deletedItemsQuery.SortDescending = true;
-        }
-
         PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
-        PagedResultDto<BlogPostListItemDto> deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedItemsQuery, culture, filterDeleted: true);
-        deletedResult.PageParamName = "deleted.Page"; // TODO constants...
+        PagedResultDto<BlogPostListItemDto> deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedQuery, culture, filterDeleted: true);
 
         var model = new PagedResultsDto<BlogPostListItemDto>
         {
+            Query = query,
             Items = result,
-            DeletedItems = deletedResult,
-            Query = query
+            DeletedQuery = deletedQuery,
+            DeletedItems = deletedResult
         };
 
         return View(model);

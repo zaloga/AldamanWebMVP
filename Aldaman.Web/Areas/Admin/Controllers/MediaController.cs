@@ -16,30 +16,17 @@ public class MediaController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery)
+        [FromQuery] PaginationQuery deletedQuery)
     {
-        // TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
-        deletedItemsQuery.SearchTerm = query.SearchTerm;
-        if (Request.Query.ContainsKey("SortBy"))
-        {
-            deletedItemsQuery.SortBy = query.SortBy;
-            deletedItemsQuery.SortDescending = query.SortDescending;
-        }
-        else
-        {
-            deletedItemsQuery.SortBy = "DeletedAt";
-            deletedItemsQuery.SortDescending = true;
-        }
-
         PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: false);
-        PagedResultDto<MediaAssetDto> deletedResult = await MediaService.ListAssetsAsync(deletedItemsQuery, filterDeleted: true);
-        deletedResult.PageParamName = "deleted.Page";
+        PagedResultDto<MediaAssetDto> deletedResult = await MediaService.ListAssetsAsync(deletedQuery, filterDeleted: true);
 
         var model = new PagedResultsDto<MediaAssetDto>
         {
+            Query = query,
             Items = result,
+            DeletedQuery = deletedQuery,
             DeletedItems = deletedResult,
-            Query = query
         };
 
         return View(model);

@@ -16,18 +16,19 @@ public class ContentPagesController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedItemsQuery) // TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
+        [FromQuery] PaginationQuery deletedQuery)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+
         PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: false);
-        PagedResultDto<ContentPageListItemDto> deletedResult = await ContentPageService.GetPagedContentPagesAsync(deletedItemsQuery, culture, filterDeleted: true);
-        deletedResult.PageParamName = "deleted.Page";
+        PagedResultDto<ContentPageListItemDto> deletedResult = await ContentPageService.GetPagedContentPagesAsync(deletedQuery, culture, filterDeleted: true);
 
         var model = new PagedResultsDto<ContentPageListItemDto>
         {
+            Query = query,
             Items = result,
-            DeletedItems = deletedResult,
-            Query = query
+            DeletedQuery = deletedQuery,
+            DeletedItems = deletedResult
         };
 
         return View(model);

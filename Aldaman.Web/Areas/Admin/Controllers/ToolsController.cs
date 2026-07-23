@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
-// TODO zkontrolovat jestli je potřeba a kdyžtak vyhodit
+/// <summary>
+/// Used from Generate Slug button.
+/// </summary>
 public class ToolsController : BaseAdminController
 {
     [HttpGet]
