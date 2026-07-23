@@ -14,22 +14,16 @@ public class MediaController : BaseAdminController
         MediaService = mediaService;
     }
 
-    public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
     {
         PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: false);
-        PagedResultDto<MediaAssetDto> deletedResult = await MediaService.ListAssetsAsync(deletedQuery, filterDeleted: true);
+        return View(result);
+    }
 
-        var model = new PagedResultsDto<MediaAssetDto>
-        {
-            Query = query,
-            Items = result,
-            DeletedQuery = deletedQuery,
-            DeletedItems = deletedResult,
-        };
-
-        return View(model);
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    {
+        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: true);
+        return View(result);
     }
 
     [HttpGet]

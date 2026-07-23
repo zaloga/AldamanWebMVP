@@ -20,24 +20,18 @@ public class BlogController : BaseAdminController
         Localizer = localizer;
     }
 
-    public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-
         PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
-        PagedResultDto<BlogPostListItemDto> deletedResult = await BlogService.GetPagedBlogPostsAdminAsync(deletedQuery, culture, filterDeleted: true);
+        return View(result);
+    }
 
-        var model = new PagedResultsDto<BlogPostListItemDto>
-        {
-            Query = query,
-            Items = result,
-            DeletedQuery = deletedQuery,
-            DeletedItems = deletedResult
-        };
-
-        return View(model);
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    {
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture, filterDeleted: true);
+        return View(result);
     }
 
     [HttpGet]

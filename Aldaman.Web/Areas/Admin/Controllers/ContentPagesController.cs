@@ -14,24 +14,18 @@ public class ContentPagesController : BaseAdminController
         ContentPageService = contentPageService;
     }
 
-    public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-
         PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: false);
-        PagedResultDto<ContentPageListItemDto> deletedResult = await ContentPageService.GetPagedContentPagesAsync(deletedQuery, culture, filterDeleted: true);
+        return View(result);
+    }
 
-        var model = new PagedResultsDto<ContentPageListItemDto>
-        {
-            Query = query,
-            Items = result,
-            DeletedQuery = deletedQuery,
-            DeletedItems = deletedResult
-        };
-
-        return View(model);
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    {
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: true);
+        return View(result);
     }
 
     [HttpPost]

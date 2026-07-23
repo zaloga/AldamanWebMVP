@@ -14,22 +14,16 @@ public class ContactMessagesController : BaseAdminController
         ContactService = contactService;
     }
 
-    public async Task<IActionResult> Index(
-        [FromQuery] PaginationQuery query,
-        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
     {
         PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false);
-        PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedMessagesAsync(deletedQuery, filterDeleted: true);
+        return View(result);
+    }
 
-        var model = new PagedResultsDto<ContactMessageDto>
-        {
-            Query = query,
-            Items = result,
-            DeletedQuery = deletedQuery,
-            DeletedItems = deletedResult,
-        };
-
-        return View(model);
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    {
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: true);
+        return View(result);
     }
 
     public async Task<IActionResult> Details(Guid id)

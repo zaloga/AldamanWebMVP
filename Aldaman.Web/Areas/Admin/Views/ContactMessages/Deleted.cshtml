@@ -2,14 +2,17 @@
 @using Aldaman.Services.Dtos.ContactMessage
 @model PagedResultDto<ContactMessageDto>
 @{
-    ViewData["Title"] = Localizer["ContactMessages"];
+    ViewData["Title"] = Localizer["DeletedMessages"];
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0">@Localizer["ContactMessages"]</h2>
-    <a asp-action="Deleted" class="btn btn-outline-danger">
-        <i class="bi bi-trash"></i>
+    <h2 class="h3 mb-0 text-danger d-flex align-items-center gap-2">
+        <i class="bi bi-trash fs-4"></i>
         @Localizer["DeletedMessages"]
+    </h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        @Localizer["BackToList"]
     </a>
 </div>
 
@@ -62,27 +65,16 @@
                 }
                 @foreach (var item in Model.Items)
                 {
-                    <tr id="row-@item.Id">
+                    <tr id="row-deleted-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="fw-semibold text-dark">@item.EmailOrPhone</div>
+                            <div class="fw-semibold text-muted">@item.EmailOrPhone</div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
+                            <div class="fw-medium text-muted text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                         </td>
                         <td class="py-3">
-                            @switch (item.State)
-                            {
-                                case ContactMessageState.Pending:
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer["Pending"]</span>
-                                    break;
-                                case ContactMessageState.Sent:
-                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer["Handled"]</span>
-                                    break;
-                                case ContactMessageState.Failed:
-                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer["Failed"]</span>
-                                    break;
-                            }
+                            <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
                             <div class="text-muted small mt-2">
                                 <div>
                                     <i class="bi bi-asterisk"></i>
@@ -92,22 +84,17 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.EmailOrPhone')">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    @Localizer["Restore"]
+                                </button>
+                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer["View"]">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer["Details"]
                                 </a>
-                                @if (item.State == ContactMessageState.Pending)
-                                {
-                                    <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-flex w-100 m-0">
-                                        <button type="submit" class="btn btn-outline-success btn-sm d-inline align-items-center gap-1 w-100">
-                                            <i class="bi bi-check-lg"></i>
-                                            @Localizer["Handle"]
-                                        </button>
-                                    </form>
-                                }
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.EmailOrPhone')">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.EmailOrPhone')">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer["Delete"]
+                                    @Localizer["DeletePermanently"]
                                 </button>
                             </div>
                         </td>
@@ -116,7 +103,6 @@
             </tbody>
         </table>
     </div>
-    
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
@@ -127,20 +113,43 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function deleteItem(id, title) {
+        function restoreItem(id, title) {
+            $.ajax({
+                url: '@Url.Action("Restore")',
+                type: 'POST',
+                data: { 
+                    id: id,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('@Localizer["RestoredSuccessfully"]', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('@Localizer["Error"]', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
+                }
+            });
+        }
+
+        function hardDeleteItem(id, title) {
             Swal.fire({
                 title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeleteMessageText"]'.replace('{0}', title),
-                icon: 'warning',
+                text: '@Localizer["ConfirmDeletePermanentlyMessageText"]'.replace('{0}', title),
+                icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["YesDeleteIt"]',
+                confirmButtonText: '@Localizer["DeletePermanentlyButton"]',
                 cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("Delete")',
+                        url: '@Url.Action("HardDelete")',
                         type: 'POST',
                         data: { 
                             id: id,

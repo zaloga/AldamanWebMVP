@@ -1,15 +1,18 @@
-@using Aldaman.Persistence.Enums
-@using Aldaman.Services.Dtos.ContactMessage
-@model PagedResultDto<ContactMessageDto>
+@using Aldaman.Services.Dtos.General
+@using Aldaman.Services.Dtos.Blog
+@model PagedResultDto<BlogPostListItemDto>
 @{
-    ViewData["Title"] = Localizer["ContactMessages"];
+    ViewData["Title"] = Localizer["DeletedPosts"];
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0">@Localizer["ContactMessages"]</h2>
-    <a asp-action="Deleted" class="btn btn-outline-danger">
-        <i class="bi bi-trash"></i>
-        @Localizer["DeletedMessages"]
+    <h2 class="h3 mb-0 text-danger d-flex align-items-center gap-2">
+        <i class="bi bi-trash fs-4"></i>
+        @Localizer["DeletedPosts"]
+    </h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        @Localizer["BackToList"]
     </a>
 </div>
 
@@ -25,8 +28,9 @@
         </div>
         <div class="col-md-4">
             <select name="SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer["SortByDate"]</option>
-                <option value="@SortByConstants.State" selected="@(Context.Request.Query["SortBy"] == SortByConstants.State)">@Localizer["SortByStatus"]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer["SortByCreatedDate"]</option>
+                <option value="@SortByConstants.Title" selected="@(Context.Request.Query["SortBy"] == SortByConstants.Title)">@Localizer["SortByTitle"]</option>
+                <option value="@SortByConstants.PublishedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.PublishedAt)">@Localizer["SortByPublishDate"]</option>
             </select>
         </div>
         <div class="col-md-3">
@@ -47,8 +51,8 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%">@Localizer["Sender"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Subject"] / @Localizer["Message"]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["BlogPost"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
@@ -62,52 +66,60 @@
                 }
                 @foreach (var item in Model.Items)
                 {
-                    <tr id="row-@item.Id">
+                    <tr id="row-deleted-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="fw-semibold text-dark">@item.EmailOrPhone</div>
+                            <div class="fw-semibold text-dark">@item.Title</div>
+                            <div class="small text-muted text-truncate mt-2" style="max-width: 300px;">@item.Perex</div>
+                            <div class="text-muted small mt-2">
+                                @{
+                                    var deletedPostUrl = Url.RouteUrl("blog_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                }
+                                <a href="@deletedPostUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@deletedPostUrl</a>
+                            </div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
-                            <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
-                        </td>
-                        <td class="py-3">
-                            @switch (item.State)
+                            @if (!string.IsNullOrEmpty(item.CoverImageRelativePath))
                             {
-                                case ContactMessageState.Pending:
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer["Pending"]</span>
-                                    break;
-                                case ContactMessageState.Sent:
-                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer["Handled"]</span>
-                                    break;
-                                case ContactMessageState.Failed:
-                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer["Failed"]</span>
-                                    break;
+                                <img src="@item.CoverImageRelativePath" alt="@item.Title" class="img-thumbnail opacity-50" style="width: 60px; height: 60px; object-fit: cover;" />
                             }
+                            else
+                            {
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center text-muted opacity-50" style="width: 60px; height: 60px;">
+                                    <i class="bi bi-image" style="font-size: 20px;"></i>
+                                </div>
+                            }
+                        </td>
+                        <td class="py-3">
+                            <span class="text-danger small fw-medium">
+                                @string.Format(Localizer["DeletedOnDate"].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                            </span>
                             <div class="text-muted small mt-2">
                                 <div>
                                     <i class="bi bi-asterisk"></i>
                                     @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                                 </div>
+                                @if (item.UpdatedAtUtc.HasValue)
+                                {
+                                    <div class="text-secondary text-opacity-75 mt-2">
+                                        <i class="bi bi-pencil"></i>
+                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                                }
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
+                                <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Title')">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    @Localizer["Restore"]
+                                </button>
                                 <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer["Details"]
                                 </a>
-                                @if (item.State == ContactMessageState.Pending)
-                                {
-                                    <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-flex w-100 m-0">
-                                        <button type="submit" class="btn btn-outline-success btn-sm d-inline align-items-center gap-1 w-100">
-                                            <i class="bi bi-check-lg"></i>
-                                            @Localizer["Handle"]
-                                        </button>
-                                    </form>
-                                }
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.EmailOrPhone')">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.Title')">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer["Delete"]
+                                    @Localizer["DeletePermanently"]
                                 </button>
                             </div>
                         </td>
@@ -116,7 +128,6 @@
             </tbody>
         </table>
     </div>
-    
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
@@ -127,22 +138,45 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function deleteItem(id, title) {
+        function restoreItem(id, title) {
+            $.ajax({
+                url: '@Url.Action("Restore")',
+                type: 'POST',
+                data: {
+                    id: id,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('@Localizer["RestoredSuccessfully"]', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('@Localizer["Error"]', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
+                }
+            });
+        }
+
+        function hardDeleteItem(id, title) {
             Swal.fire({
                 title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeleteMessageText"]'.replace('{0}', title),
-                icon: 'warning',
+                text: '@Localizer["ConfirmDeletePermanentlyText"]'.replace('{0}', title),
+                icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["YesDeleteIt"]',
+                confirmButtonText: '@Localizer["DeletePermanentlyButton"]',
                 cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("Delete")',
+                        url: '@Url.Action("HardDelete")',
                         type: 'POST',
-                        data: { 
+                        data: {
                             id: id,
                             __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                         },

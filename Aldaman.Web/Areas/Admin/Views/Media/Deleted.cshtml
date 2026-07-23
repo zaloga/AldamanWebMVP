@@ -2,22 +2,18 @@
 @using Aldaman.Services.Constants
 @model PagedResultDto<MediaAssetDto>
 @{
-    ViewData["Title"] = Localizer["MediaLibrary"];
+    ViewData["Title"] = Localizer["DeletedAssets"];
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0">@Localizer["MediaLibrary"]</h2>
-    <div class="d-flex gap-2">
-        @* commented out for now, can be added in the future when we have usecase for it
-        <a asp-action="Upload" class="btn btn-success">
-            <i class="bi bi-upload"></i>
-            @Localizer["UploadMedia"]
-        </a> *@
-        <a asp-action="Deleted" class="btn btn-outline-danger">
-            <i class="bi bi-trash"></i>
-            @Localizer["DeletedAssets"]
-        </a>
-    </div>
+    <h2 class="h3 mb-0 text-danger d-flex align-items-center gap-2">
+        <i class="bi bi-trash fs-4"></i>
+        @Localizer["DeletedAssets"]
+    </h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        @Localizer["BackToList"]
+    </a>
 </div>
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
@@ -55,8 +51,8 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 120px">@Localizer["Preview"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["FileName"]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 100px">@Localizer["Preview"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["FileInfo"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Dimensions"] / @Localizer["Size"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -71,12 +67,12 @@
                 }
                 @foreach (var item in Model.Items)
                 {
-                    <tr id="row-@item.Id">
+                    <tr id="row-deleted-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="bg-light rounded border d-flex align-items-center justify-content-center overflow-hidden shadow-sm" style="width: 64px; height: 64px;">
+                            <div class="bg-light rounded border d-flex align-items-center justify-content-center overflow-hidden shadow-sm opacity-50" style="width: 64px; height: 64px;">
                                 @if (item.IsImage)
                                 {
-                                    <img src="@item.RelativePath" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;" alt="@item.AltText">
+                                    <img src="@item.RelativePath" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(100%);" alt="@item.AltText">
                                 }
                                 else
                                 {
@@ -85,48 +81,42 @@
                             </div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-semibold text-dark text-truncate" style="max-width: 250px;">@item.OriginalFileName</div>
+                            <div class="fw-semibold text-muted text-truncate" style="max-width: 250px;">@item.OriginalFileName</div>
                             <div class="small text-muted">@item.ContentType</div>
                         </td>
                         <td class="py-3">
                             @if (item.IsImage && item.Width.HasValue && item.Height.HasValue)
                             {
-                                <div class="small fw-medium">@item.Width x @item.Height px</div>
+                                <div class="small text-muted">@item.Width x @item.Height px</div>
                             }
                             <div class="small text-muted">@((item.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</div>
                         </td>
-                        <td class="py-3 text-muted small">
-                            <div>
-                                <i class="bi bi-asterisk"></i>
-                                @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                            </div>
-                            @if (item.UpdatedAtUtc.HasValue)
-                            {
-                                <div class="text-secondary text-opacity-75 mt-2">
-                                    <i class="bi bi-pencil"></i>
-                                    @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                        <td class="py-3">
+                            <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
+                            <div class="text-muted small mt-2">
+                                <div>
+                                    <i class="bi bi-asterisk"></i>
+                                    @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                                 </div>
-                            }
+                                @if (item.UpdatedAtUtc.HasValue)
+                                {
+                                    <div class="text-secondary text-opacity-75 mt-2">
+                                        <i class="bi bi-pencil"></i>
+                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                                }
+                            </div>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer["Edit"]">
-                                    <i class="bi bi-pencil-square"></i>
-                                    @Localizer["Edit"]
-                                </a>
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer["Details"]">
-                                    <i class="bi bi-info-circle"></i>
-                                    @Localizer["Details"]
-                                </a>
-                                <a class="btn btn-outline-secondary btn-sm d-inline align-items-center gap-1" href="@item.RelativePath" target="_blank" title="@Localizer["View"]">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                    @Localizer["View"]
-                                </a>
-                                @* commented out for now, can be added in the future when we have usecase for it
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.OriginalFileName')" title="@Localizer["Delete"]">
+                                <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.OriginalFileName')">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    @Localizer["Restore"]
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.OriginalFileName')">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer["Delete"]
-                                </button> *@
+                                    @Localizer["DeletePermanently"]
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -134,7 +124,6 @@
             </tbody>
         </table>
     </div>
-    
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
@@ -145,20 +134,43 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function deleteItem(id, title) {
+        function restoreItem(id, title) {
+            $.ajax({
+                url: '@Url.Action("Restore")',
+                type: 'POST',
+                data: { 
+                    id: id,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('@Localizer["RestoredSuccessfully"]', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('@Localizer["Error"]', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
+                }
+            });
+        }
+
+        function hardDeleteItem(id, title) {
             Swal.fire({
                 title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeleteText"]'.replace('{0}', title),
-                icon: 'warning',
+                text: '@Localizer["ConfirmDeletePermanentlyText"]'.replace('{0}', title),
+                icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["YesDeleteIt"]',
+                confirmButtonText: '@Localizer["DeletePermanentlyButton"]',
                 cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '@Url.Action("Delete")',
+                        url: '@Url.Action("HardDelete")',
                         type: 'POST',
                         data: { 
                             id: id,
