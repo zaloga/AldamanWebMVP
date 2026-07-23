@@ -20,4 +20,6 @@ public class MediaAssetDto
     public DateTime? UpdatedAtUtc { get; set; }
     public bool IsImage { get; set; }
     public bool IsVideo { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
 }

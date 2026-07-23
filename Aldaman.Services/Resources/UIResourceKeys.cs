@@ -57,4 +57,13 @@ public static class UIResourceKeys
     public const string SectionNoContent = nameof(SectionNoContent);
     public const string GenerateSlug = nameof(GenerateSlug);
     public const string TranslationMissing = nameof(TranslationMissing);
+
+    // Style Settings
+    public const string StyleSettings = nameof(StyleSettings);
+    public const string CustomizeThemeVariables = nameof(CustomizeThemeVariables);
+    public const string DeletedSettings = nameof(DeletedSettings);
+    public const string ChooseColor = nameof(ChooseColor);
+    public const string Key = nameof(Key);
+    public const string Type = nameof(Type);
+    public const string Value = nameof(Value);
 }

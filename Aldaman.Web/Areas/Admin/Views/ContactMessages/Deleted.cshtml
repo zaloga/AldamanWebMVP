@@ -74,7 +74,16 @@
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                         </td>
                         <td class="py-3">
-                            <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
+                            @if (item.DeletedAtUtc.HasValue)
+                            {
+                                <span class="text-danger small fw-medium">
+                                    @string.Format(Localizer["DeletedOnDate"].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer["Deleted"]</span>
+                            }
                             <div class="text-muted small mt-2">
                                 <div>
                                     <i class="bi bi-asterisk"></i>

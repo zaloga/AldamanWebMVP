@@ -126,7 +126,9 @@ public sealed class MediaService : IMediaService
 
     public async Task<MediaAssetDto?> GetAssetAsync(Guid id)
     {
-        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == id);
+        var asset = await Context.MediaAssets
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(p => p.Id == id);
         return asset != null ? Map(asset) : null;
     }
 
@@ -154,37 +156,34 @@ public sealed class MediaService : IMediaService
         }
     }
 
-
     public async Task RestoreAssetAsync(Guid id)
     {
-        var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        var asset = await Context.MediaAssets
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(p => p.Id == id);
+
         if (asset != null)
         {
             asset.IsDeleted = false;
             asset.DeletedAtUtc = null;
-            asset.DeletedByUserId = null;
             await Context.SaveChangesAsync();
         }
     }
 
     public async Task HardDeleteAssetAsync(Guid id)
     {
-        var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        var asset = await Context.MediaAssets
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(p => p.Id == id);
+
         if (asset != null)
         {
-            // Delete physical file
-            var physicalPath = Path.Combine(WebRootPath, asset.RelativePath.TrimStart('/'));
+            // Delete file from disk
+            var uploadsFolder = Path.Combine(WebRootPath, "uploads");
+            var physicalPath = Path.Combine(uploadsFolder, asset.StoredFileName);
             if (File.Exists(physicalPath))
             {
-                try
-                {
-                    File.Delete(physicalPath);
-                }
-                catch (Exception ex)
-                {
-                    // Log or handle file deletion error
-                    // We continue with DB deletion even if file deletion fails to avoid orphaned DB records
-                }
+                File.Delete(physicalPath);
             }
 
             Context.MediaAssets.Remove(asset);
@@ -196,7 +195,9 @@ public sealed class MediaService : IMediaService
     {
         foreach (var path in relativePaths.Distinct())
         {
-            var asset = await Context.MediaAssets.IgnoreQueryFilters().FirstOrDefaultAsync(a => a.RelativePath == path);
+            var asset = await Context.MediaAssets
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(a => a.RelativePath == path);
             if (asset != null)
             {
                 await HardDeleteAssetAsync(asset.Id);
@@ -220,7 +221,9 @@ public sealed class MediaService : IMediaService
             UploadedAtUtc = p.CreatedAtUtc,
             UpdatedAtUtc = p.UpdatedAtUtc,
             IsImage = p.IsImage,
-            IsVideo = p.IsVideo
+            IsVideo = p.IsVideo,
+            IsDeleted = p.IsDeleted,
+            DeletedAtUtc = p.DeletedAtUtc
         };
     }
 }

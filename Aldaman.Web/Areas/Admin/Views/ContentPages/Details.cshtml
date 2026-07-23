@@ -126,6 +126,24 @@
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["State"]</dt>
+                        <dd class="col-sm-6">
+                            @if (Model.IsDeleted)
+                            {
+                                <span class="badge bg-danger">@Localizer["Deleted"]</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">@Localizer["Active"]</span>
+                            }
+                        </dd>
+
+                        @if (Model.IsDeleted)
+                        {
+                            <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["DeletionDate"]</dt>
+                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
+                        }
+
                         <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["Locations"]</dt>
                         <dd class="col-sm-6">
                             <div class="d-flex flex-wrap gap-1">
@@ -155,7 +173,10 @@
                     <hr />
 
                     <div class="d-grid">
-                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                        @if (!Model.IsDeleted)
+                        {
+                            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                        }
                         <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
                     </div>
                 </div>

@@ -108,7 +108,8 @@ public sealed class ContentPageService : IContentPageService
                     : (p.Translations.Max(t => (DateTime?)t.UpdatedAtUtc) > p.UpdatedAtUtc
                         ? p.Translations.Max(t => t.UpdatedAtUtc)
                         : p.UpdatedAtUtc),
-                CreatedAtUtc = p.CreatedAtUtc
+                CreatedAtUtc = p.CreatedAtUtc,
+                DeletedAtUtc = p.DeletedAtUtc
             })
             .ToListAsync();
 
@@ -124,6 +125,7 @@ public sealed class ContentPageService : IContentPageService
     public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id)
     {
         var page = await Context.ContentPages
+            .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -134,6 +136,8 @@ public sealed class ContentPageService : IContentPageService
             Id = page.Id,
             PlaceToShow = page.PlaceToShow,
             PageOrder = page.PageOrder,
+            IsDeleted = page.IsDeleted,
+            DeletedAtUtc = page.DeletedAtUtc,
             Translations = Localization.SupportedCultures.Select(culture =>
             {
                 var translation = page.Translations.FirstOrDefault(t => t.CultureCode == culture);

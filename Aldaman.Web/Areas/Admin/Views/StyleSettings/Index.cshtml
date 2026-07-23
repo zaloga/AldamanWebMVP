@@ -2,29 +2,29 @@
 @using Aldaman.Persistence.Enums
 
 @{
-    ViewData["Title"] = "Style Settings";
+    ViewData["Title"] = Localizer["StyleSettings"];
     var deletedItems = ViewBag.DeletedItems as List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>;
 }
 
 <div class="mb-4">
     <a asp-action="Update" class="btn btn-success">
         <i class="bi bi-plus-lg me-1"></i>
-        Create New Setting
+        @Localizer["Create"]
     </a>
 </div>
 
 <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
     <div class="p-3 border-bottom bg-light">
-        <h6 class="m-0 fw-bold text-primary">Customize Theme Variables</h6>
+        <h6 class="m-0 fw-bold text-primary">@Localizer["CustomizeThemeVariables"]</h6>
     </div>
     <div class="table-responsive">
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Key</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">Type</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">Value</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Action</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["Key"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Type"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Value"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +39,7 @@
                                 
                                 @if (setting.Type == CssType.Color)
                                 {
-                                    <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="Choose color">
+                                    <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="@Localizer["ChooseColor"]">
                                     <input type="text" class="form-control" value="@setting.Value" disabled style="width: 100px;" />
                                 }
                                 else
@@ -48,20 +48,22 @@
                                 }
                                 
                                 <div class="btn-group btn-group-sm">
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault('@setting.Id', '@setting.Key', '@setting.DefaultValue')" title="Reset to default (@setting.DefaultValue)">
+                                    <button type="submit" class="btn btn-success">@Localizer["Save"]</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault('@setting.Id', '@setting.Key', '@setting.DefaultValue')" title="@Localizer["ResetToDefault"]">
                                         <i class="bi bi-arrow-counterclockwise" style="font-size: 14px;"></i>
                                     </button>
                                 </div>
                             </form>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-flex justify-content-end gap-1">
-                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm" title="Edit Full">
+                            <div class="d-inline-flex gap-1">
+                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" title="@Localizer["Edit"]">
                                     <i class="bi bi-pencil-square"></i>
+                                    @Localizer["Edit"]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm" onclick="deleteItem('@setting.Id', '@setting.Key')" title="Delete">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@setting.Id', '@setting.Key')" title="@Localizer["Delete"]">
                                     <i class="bi bi-trash"></i>
+                                    @Localizer["Delete"]
                                 </button>
                             </div>
                         </td>
@@ -77,19 +79,19 @@
     <div class="mt-5 mb-4">
         <h3 class="h5 text-danger d-flex align-items-center gap-2">
             <i class="bi bi-trash fs-5"></i>
-            Deleted Settings
+            @Localizer["DeletedSettings"]
         </h3>
     </div>
 
-    <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
+    <div class="bg-light border shadow rounded-4 overflow-hidden mb-5">
         <div class="table-responsive">
             <table class="table table-light table-hover align-middle mb-0">
                 <thead>
                     <tr>
-                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">Key</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">Type</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">Value</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">Actions</th>
+                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["Key"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Type"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Value"]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,12 +102,14 @@
                             <td class="py-3">@item.Type</td>
                             <td class="py-3"><span class="text-muted">@item.Value</span></td>
                             <td class="py-3 text-end pe-4">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-outline-success btn-sm" onclick="restoreItem('@item.Id', '@item.Key')">
-                                        Restore
+                                <div class="d-inline-flex gap-2">
+                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Key')">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        @Localizer["Restore"]
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm" onclick="hardDeleteItem('@item.Id', '@item.Key')">
-                                        Permanently Delete
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.Key')">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer["DeletePermanently"]
                                     </button>
                                 </div>
                             </td>
@@ -117,18 +121,21 @@
     </div>
 }
 
+@Html.AntiForgeryToken()
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function deleteItem(id, key) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: `Do you want to delete the setting ${key}?`,
+                title: '@Localizer["AreYouSure"]',
+                text: '@Localizer["ConfirmDeleteText"]'.replace('{0}', key),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: '@Localizer["YesDeleteIt"]',
+                cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -140,15 +147,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Deleted!', response.message, 'success').then(() => {
+                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire('Error!', response.message, 'error');
+                                Swal.fire('@Localizer["Error"]', response.message, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('Error!', 'An error occurred while deleting.', 'error');
+                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                         }
                     });
                 }
@@ -157,13 +164,14 @@
 
         function resetToDefault(id, key, defaultValue) {
             Swal.fire({
-                title: 'Reset to Default?',
-                text: `Do you want to reset the setting ${key} to its default value: ${defaultValue}?`,
+                title: '@Localizer["AreYouSure"]',
+                text: key + ' (' + defaultValue + ')',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#6366f1',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, reset it!'
+                confirmButtonText: '@Localizer["Yes"]',
+                cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -175,15 +183,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Reset!', response.message, 'success').then(() => {
+                                Swal.fire('@Localizer["UpdatedSuccessfully"]', response.message, 'success').then(() => {
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire('Error!', response.message, 'error');
+                                Swal.fire('@Localizer["Error"]', response.message, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('Error!', 'An error occurred while resetting.', 'error');
+                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                         }
                     });
                 }
@@ -200,28 +208,29 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        Swal.fire('Restored!', response.message, 'success').then(() => {
+                        Swal.fire('@Localizer["RestoredSuccessfully"]', response.message, 'success').then(() => {
                             location.reload();
                         });
                     } else {
-                        Swal.fire('Error!', response.message, 'error');
+                        Swal.fire('@Localizer["Error"]', response.message, 'error');
                     }
                 },
                 error: function() {
-                    Swal.fire('Error!', 'An error occurred while restoring.', 'error');
+                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                 }
             });
         }
 
         function hardDeleteItem(id, key) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: `Do you want to permanently delete the setting ${key}? This action cannot be undone.`,
+                title: '@Localizer["AreYouSure"]',
+                text: '@Localizer["ConfirmDeletePermanentlyText"]'.replace('{0}', key),
                 icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, delete permanently'
+                confirmButtonText: '@Localizer["DeletePermanentlyButton"]',
+                cancelButtonText: '@Localizer["Cancel"]'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -233,15 +242,15 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('Deleted!', response.message, 'success').then(() => {
+                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire('Error!', response.message, 'error');
+                                Swal.fire('@Localizer["Error"]', response.message, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('Error!', 'An error occurred while deleting permanently.', 'error');
+                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
                         }
                     });
                 }

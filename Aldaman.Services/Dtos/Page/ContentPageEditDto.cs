@@ -11,6 +11,8 @@ public class ContentPageEditDto
 
     public PlaceToShowEnum PlaceToShow { get; set; } = PlaceToShowEnum.None;
     public int PageOrder { get; set; } = 0;
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
 
     public List<ContentPageTranslationDto> Translations { get; set; } = new();
 }

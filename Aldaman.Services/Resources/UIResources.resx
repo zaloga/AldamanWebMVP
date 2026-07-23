@@ -687,4 +687,25 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>Další informace</value>
   </data>
+  <data name="StyleSettings" xml:space="preserve">
+    <value>Nastavení stylů</value>
+  </data>
+  <data name="CustomizeThemeVariables" xml:space="preserve">
+    <value>Úprava proměnných vzhledu</value>
+  </data>
+  <data name="DeletedSettings" xml:space="preserve">
+    <value>Smazaná nastavení</value>
+  </data>
+  <data name="ChooseColor" xml:space="preserve">
+    <value>Vybrat barvu</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Klíč</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Hodnota</value>
+  </data>
 </root>

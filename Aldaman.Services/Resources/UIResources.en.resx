@@ -685,6 +685,27 @@
     <value>Page</value>
   </data>
   <data name="AdditionalInfo" xml:space="preserve">
-    <value>additional information</value>
+    <value>Additional information</value>
+  </data>
+  <data name="StyleSettings" xml:space="preserve">
+    <value>Style Settings</value>
+  </data>
+  <data name="CustomizeThemeVariables" xml:space="preserve">
+    <value>Customize Theme Variables</value>
+  </data>
+  <data name="DeletedSettings" xml:space="preserve">
+    <value>Deleted Settings</value>
+  </data>
+  <data name="ChooseColor" xml:space="preserve">
+    <value>Choose color</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
   </data>
 </root>
