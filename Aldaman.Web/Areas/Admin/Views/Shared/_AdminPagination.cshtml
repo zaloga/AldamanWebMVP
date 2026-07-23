@@ -1,44 +1,46 @@
-@model PagedResultBase
+@model Aldaman.Web.Models.General.PaginationViewModel
 @{
+    var result = Model.Result;
+    var pageParamName = Model.PageParamName;
     var queryParams = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
 }
 
 <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center mt-4">
     <div class="text-muted small">
-        @Localizer["Showing"] <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> @Localizer["To"]
-        <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> @Localizer["Of"]
-        <span class="fw-semibold">@Model.TotalCount</span> @Localizer["Results"]
+        @Localizer["Showing"] <span class="fw-semibold">@((result.Page - 1) * result.PageSize + 1)</span> @Localizer["To"]
+        <span class="fw-semibold">@(Math.Min(result.Page * result.PageSize, result.TotalCount))</span> @Localizer["Of"]
+        <span class="fw-semibold">@result.TotalCount</span> @Localizer["Results"]
     </div>
 
-    @if (Model.TotalPages > 1)
+    @if (result.TotalPages > 1)
     {
         <ul class="pagination pagination-sm mb-0">
             @{
-                var prevParams = new Dictionary<string, string>(queryParams) { ["Page"] = (Model.Page - 1).ToString() };
+                var prevParams = new Dictionary<string, string>(queryParams) { [pageParamName] = (result.Page - 1).ToString() };
             }
-            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+            <li class="page-item @(!result.HasPreviousPage ? "disabled" : "")">
                 <a class="page-link" asp-all-route-data="prevParams" tabindex="-1">@Localizer["Previous"]</a>
             </li>
 
-            @for (int i = 1; i <= Model.TotalPages; i++)
+            @for (int i = 1; i <= result.TotalPages; i++)
             {
-                if (i == 1 || i == Model.TotalPages || (i >= Model.Page - 2 && i <= Model.Page + 2))
+                if (i == 1 || i == result.TotalPages || (i >= result.Page - 2 && i <= result.Page + 2))
                 {
-                    var pageParams = new Dictionary<string, string>(queryParams) { ["Page"] = i.ToString() };
-                    <li class="page-item @(i == Model.Page ? "active" : "")">
+                    var pageParams = new Dictionary<string, string>(queryParams) { [pageParamName] = i.ToString() };
+                    <li class="page-item @(i == result.Page ? "active" : "")">
                         <a class="page-link" asp-all-route-data="pageParams">@i</a>
                     </li>
                 }
-                else if (i == 2 || i == Model.TotalPages - 1)
+                else if (i == 2 || i == result.TotalPages - 1)
                 {
                     <li class="page-item disabled"><span class="page-link">...</span></li>
                 }
             }
 
             @{
-                var nextParams = new Dictionary<string, string>(queryParams) { ["Page"] = (Model.Page + 1).ToString() };
+                var nextParams = new Dictionary<string, string>(queryParams) { [pageParamName] = (result.Page + 1).ToString() };
             }
-            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+            <li class="page-item @(!result.HasNextPage ? "disabled" : "")">
                 <a class="page-link" asp-all-route-data="nextParams">@Localizer["Next"]</a>
             </li>
         </ul>

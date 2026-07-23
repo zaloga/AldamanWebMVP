@@ -16,7 +16,7 @@ public class MediaController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery] PaginationQuery deletedQuery)
+        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
     {
         PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: false);
         PagedResultDto<MediaAssetDto> deletedResult = await MediaService.ListAssetsAsync(deletedQuery, filterDeleted: true);

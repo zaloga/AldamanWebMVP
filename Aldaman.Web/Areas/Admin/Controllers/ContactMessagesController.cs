@@ -16,7 +16,7 @@ public class ContactMessagesController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery] PaginationQuery deletedQuery)
+        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
     {
         PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false);
         PagedResultDto<ContactMessageDto> deletedResult = await ContactService.GetPagedMessagesAsync(deletedQuery, filterDeleted: true);

@@ -1,5 +1,6 @@
 @using Aldaman.Services.Dtos.General
 @using Aldaman.Services.Dtos.Blog
+@using Aldaman.Web.Models.General
 @model PagedResultsDto<BlogPostListItemDto>
 @{
     ViewData["Title"] = Localizer["BlogPosts"];
@@ -138,7 +139,7 @@
     </div>
 
     <div class="px-4 pb-4">
-        @await Html.PartialAsync("_AdminPagination", Model.Items)
+        @await Html.PartialAsync("_AdminPagination", new PaginationViewModel(Model.Items))
     </div>
 </div>
 
@@ -228,7 +229,7 @@
             </table>
         </div>
         <div class="px-4 pb-4">
-            @await Html.PartialAsync("_AdminPagination", Model.DeletedItems)
+            @await Html.PartialAsync("_AdminPagination", new PaginationViewModel(Model.DeletedItems, "deleted.Page"))
         </div>
     </div>
 }

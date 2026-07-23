@@ -22,7 +22,7 @@ public class BlogController : BaseAdminController
 
     public async Task<IActionResult> Index(
         [FromQuery] PaginationQuery query,
-        [FromQuery] PaginationQuery deletedQuery)
+        [FromQuery(Name = "deleted")] PaginationQuery deletedQuery)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
 

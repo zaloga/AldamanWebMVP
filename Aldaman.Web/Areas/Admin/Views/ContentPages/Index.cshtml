@@ -1,6 +1,7 @@
 @using Aldaman.Services.Dtos.Page
 @using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
+@using Aldaman.Web.Models.General
 @model PagedResultsDto<ContentPageListItemDto>
 @{
     ViewData["Title"] = Localizer["Pages"];
@@ -134,7 +135,7 @@
     </div>
     
     <div class="px-4 pb-4">
-        @await Html.PartialAsync("_AdminPagination", Model.Items)
+        @await Html.PartialAsync("_AdminPagination", new PaginationViewModel(Model.Items))
     </div>
 </div>
 
@@ -225,7 +226,7 @@
             </table>
         </div>
         <div class="px-4 pb-4">
-            @await Html.PartialAsync("_AdminPagination", Model.DeletedItems)
+            @await Html.PartialAsync("_AdminPagination", new PaginationViewModel(Model.DeletedItems, "deleted.Page"))
         </div>
     </div>
 }
