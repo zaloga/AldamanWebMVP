@@ -55,8 +55,7 @@
             <thead>
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["Page"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Locations"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Order"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer["Locations"] / @Localizer["Order"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
                 </tr>
@@ -84,24 +83,22 @@
                             <div class="d-flex flex-wrap gap-1 justify-content-center">
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
-                                    <span class="badge bg-primary text-white">@Localizer["HomePage"]</span>
+                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer["HomePage"]"></i>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
                                 {
-                                    <span class="badge bg-info text-white">@Localizer["TopNavigation"]</span>
+                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer["TopNavigation"]"></i>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
-                                    <span class="badge bg-secondary text-white">@Localizer["Footer"]</span>
+                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer["Footer"]"></i>
                                 }
                                 @if (item.PlaceToShow == PlaceToShowEnum.None)
                                 {
-                                    <span class="text-muted small">@Localizer["None"]</span>
+                                   @* nothing... *@
                                 }
                             </div>
-                        </td>
-                        <td class="py-3 text-center">
-                            <span class="fw-medium text-primary">@item.PageOrder</span>
+                            <div class="fw-medium text-secondary pt-1">@item.PageOrder</div>
                         </td>
                         <td class="py-3 text-muted small">
                             <div>

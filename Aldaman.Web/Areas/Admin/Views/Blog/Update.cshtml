@@ -42,13 +42,13 @@
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Title" class="form-label">@Localizer["Title"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer["Title"] (@culture.ToUpper())</label>
                                         <input asp-for="Translations[i].Title" class="form-control" />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Slug" class="form-label">@Localizer["Slug"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer["Slug"] (@culture.ToUpper())</label>
                                         <div class="input-group">
                                             <input asp-for="Translations[i].Slug" class="form-control" placeholder="@culture.ToLower()/my-post" />
                                             <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer["GenerateSlug"]">
@@ -59,13 +59,13 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Perex" class="form-label">@Localizer["Perex"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Perex" class="form-label fw-medium">@Localizer["Perex"] (@culture.ToUpper())</label>
                                         <textarea asp-for="Translations[i].Perex" class="form-control" rows="3"></textarea>
                                         <span asp-validation-for="Translations[i].Perex" class="text-danger"></span>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].BodyHtml" class="form-label">@Localizer["Content"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer["Content"] (@culture.ToUpper())</label>
                                         <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
                                         <input type="hidden" asp-for="Translations[i].BodyHtml" />
                                         <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
@@ -87,6 +87,12 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
+                            <div>
+                                <label asp-for="PublishedAtUtc" class="form-label fw-medium">@Localizer["PublicationDate"]</label>
+                                <input asp-for="PublishedAtUtc" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="PublishedAtUtc" class="text-danger"></span>
+                                <small class="text-muted">@Localizer["PublishDateInfo"]</small>
+                            </div>
                             <div class="form-check form-switch">
                                 <input asp-for="IsPublished" class="form-check-input" type="checkbox" role="switch">
                                 <label asp-for="IsPublished" class="form-check-label">@Localizer["IsPublished"]</label>
@@ -94,14 +100,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="PublishedAtUtc" class="form-label">@Localizer["PublicationDate"]</label>
-                            <input asp-for="PublishedAtUtc" class="form-control" type="datetime-local" />
-                            <span asp-validation-for="PublishedAtUtc" class="text-danger"></span>
-                            <small class="text-muted">@Localizer["PublishDateInfo"]</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="CoverImageFile" class="form-label fw-bold">@Localizer["CoverImage"]</label>
+                            <label asp-for="CoverImageFile" class="form-label fw-medium">@Localizer["CoverImage"]</label>
                             @if (!string.IsNullOrEmpty(Model.CoverImageRelativePath))
                             {
                                 <div class="mb-2 position-relative d-inline-block">

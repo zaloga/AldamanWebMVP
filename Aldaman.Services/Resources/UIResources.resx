@@ -708,4 +708,7 @@
   <data name="Value" xml:space="preserve">
     <value>Hodnota</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktivní</value>
+  </data>
 </root>

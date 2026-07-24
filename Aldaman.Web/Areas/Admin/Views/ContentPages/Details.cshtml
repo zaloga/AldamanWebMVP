@@ -45,7 +45,7 @@
                             <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                 <dl class="row">
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
-                                    <dd class="col-sm-10 fw-bold text-dark">
+                                    <dd class="col-sm-10">
                                         @if (string.IsNullOrWhiteSpace(translation.Title))
                                         {
                                             <span class="text-muted">@Localizer["None"]</span>
@@ -57,7 +57,7 @@
                                     </dd>
 
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">URL</dt>
-                                    <dd class="col-sm-10 font-monospace small">
+                                    <dd class="col-sm-10 font-monospace">
                                         @if (string.IsNullOrWhiteSpace(translation.Slug))
                                         {
                                             <span class="text-muted">@Localizer["None"]</span>
@@ -92,7 +92,7 @@
                                         <div class="accordion" id="accordionPlainText-@culture">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingPlainText-@culture">
-                                                    <button class="accordion-button collapsed text-uppercase fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
+                                                    <button class="accordion-button collapsed text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
                                                         @Localizer["PlainText"]
                                                     </button>
                                                 </h2>
@@ -141,7 +141,7 @@
                         @if (Model.IsDeleted)
                         {
                             <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["DeletionDate"]</dt>
-                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
+                            <dd class="col-sm-6 text-danger">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
                         <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["Locations"]</dt>
@@ -149,25 +149,25 @@
                             <div class="d-flex flex-wrap gap-1">
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
-                                    <span class="badge bg-primary">@Localizer["HomePage"]</span>
+                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer["HomePage"]"></i>
                                 }
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
                                 {
-                                    <span class="badge bg-info">@Localizer["TopNavigation"]</span>
+                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer["TopNavigation"]"></i>
                                 }
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
-                                    <span class="badge bg-secondary">@Localizer["Footer"]</span>
+                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer["Footer"]"></i>
                                 }
                                 @if (Model.PlaceToShow == PlaceToShowEnum.None)
                                 {
-                                    <span class="text-muted fst-italic">@Localizer["None"]</span>
+                                    <span class="text-muted">@Localizer["None"]</span>
                                 }
                             </div>
                         </dd>
 
                         <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["Order"]</dt>
-                        <dd class="col-sm-6 text-primary fw-medium">@Model.PageOrder</dd>
+                        <dd class="col-sm-6 text-secondary fw-medium">@Model.PageOrder</dd>
                     </dl>
 
                     <hr />

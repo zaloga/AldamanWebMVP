@@ -11,13 +11,6 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
-        <a asp-action="Index" class="btn btn-secondary">
-            @Localizer["BackToList"]
-        </a>
-    </div>
-
     <form asp-action="@(isCreate ? "Create" : "Update")" method="post">
         @if (!isCreate)
         {
@@ -27,9 +20,9 @@
 
         <div class="row">
             <div class="col-lg-8">
-                <div class="card shadow mb-4 border-0">
-                    <div class="card-header py-3 bg-white border-0">
-                        <h6 class="m-0 fw-bold text-primary">@Localizer["Translations"]</h6>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer["Translations"]</h6>
                     </div>
                     <div class="card-body">
                         <partial name="_TranslationTabs" model="Model.Translations.Select(t => t.CultureCode)" />
@@ -48,13 +41,13 @@
                                 <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer["Title"] (@culture.ToUpper())</label>
                                         <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer["Title"] (@culture.ToUpper())..." />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer["Slug"] (@culture.ToUpper())</label>
                                         <div class="input-group">
                                             <input asp-for="Translations[i].Slug" class="form-control" placeholder="page-abc" />
@@ -82,12 +75,12 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="card shadow mb-4 border-0">
-                    <div class="card-header py-3 bg-white border-0">
-                        <h6 class="m-0 fw-bold text-primary">@Localizer["Settings"]</h6>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer["Settings"]</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label class="form-label d-block text-dark fw-bold">@Localizer["Locations"]</label>
                             <div class="p-3 border rounded bg-light">
                                 @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
@@ -105,16 +98,17 @@
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label asp-for="PageOrder" class="form-label fw-bold text-dark">@Localizer["Order"]</label>
                             <input asp-for="PageOrder" class="form-control" type="number" />
                             <span asp-validation-for="PageOrder" class="text-danger"></span>
                         </div>
 
-                        <hr class="my-4" />
+                        <hr />
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success py-2 fw-bold">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
+                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
                         </div>
                     </div>
                 </div>

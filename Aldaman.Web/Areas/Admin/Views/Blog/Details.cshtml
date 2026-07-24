@@ -44,7 +44,7 @@
                             <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                 <dl class="row">
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
-                                    <dd class="col-sm-10 fw-bold text-dark">
+                                    <dd class="col-sm-10">
                                         @if (string.IsNullOrWhiteSpace(translation.Title))
                                         {
                                             <span class="text-muted">@Localizer["None"]</span>
@@ -56,7 +56,7 @@
                                     </dd>
 
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">URL</dt>
-                                    <dd class="col-sm-10 font-monospace small">
+                                    <dd class="col-sm-10 font-monospace">
                                         @if (string.IsNullOrWhiteSpace(translation.Slug))
                                         {
                                             <span class="text-muted">@Localizer["None"]</span>
@@ -69,7 +69,7 @@
                                     </dd>
 
                                     <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer["Perex"]</dt>
-                                    <dd class="col-sm-10 text-muted italic">
+                                    <dd class="col-sm-10">
                                         @if (string.IsNullOrWhiteSpace(translation.Perex))
                                         {
                                             <span class="text-muted">@Localizer["None"]</span>
@@ -103,7 +103,7 @@
                                         <div class="accordion" id="accordionPlainText-@culture">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingPlainText-@culture">
-                                                    <button class="accordion-button collapsed text-uppercase fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
+                                                    <button class="accordion-button collapsed text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlainText-@culture" aria-expanded="false" aria-controls="collapsePlainText-@culture">
                                                         @Localizer["PlainText"]
                                                     </button>
                                                 </h2>
@@ -133,11 +133,11 @@
         <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["PostSettings"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Settings"]</h6>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-6">@Localizer["State"]</dt>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["State"]</dt>
                         <dd class="col-sm-6">
                             @if (Model.IsDeleted)
                             {
@@ -155,17 +155,17 @@
 
                         @if (Model.IsDeleted)
                         {
-                            <dt class="col-sm-6">@Localizer["DeletionDate"]</dt>
-                            <dd class="col-sm-6 text-dark fw-medium text-danger">@Model.DeletedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
+                            <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["DeletionDate"]</dt>
+                            <dd class="col-sm-6 text-danger">@Model.DeletedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
                         @if (Model.IsPublished)
                         {
-                            <dt class="col-sm-6">@Localizer["PublicationDate"]</dt>
-                            <dd class="col-sm-6 text-dark fw-medium">@Model.PublishedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
+                            <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["PublicationDate"]</dt>
+                            <dd class="col-sm-6">@Model.PublishedAtUtc?.ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
-                        <dt class="col-sm-6">@Localizer["CoverImage"]</dt>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer["CoverImage"]</dt>
                         <dd class="col-sm-6">
                             @if (!string.IsNullOrEmpty(Model.CoverImageRelativePath))
                             {

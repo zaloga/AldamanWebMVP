@@ -5,3 +5,7 @@
 .min-width-600 { 
     min-width: 600px;
 }
+
+.flip-y {
+    transform: scaleY(-1);
+}
