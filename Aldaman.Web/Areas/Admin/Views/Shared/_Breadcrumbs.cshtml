@@ -2,7 +2,18 @@
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var isIndex = action?.Equals("Index", StringComparison.OrdinalIgnoreCase) ?? false;
+    var isDeletedAction = action?.Equals("Deleted", StringComparison.OrdinalIgnoreCase) ?? false;
     var isHome = controller?.Equals("Home", StringComparison.OrdinalIgnoreCase) ?? false;
+
+    var isItemDeleted = (ViewData["IsDeleted"] as bool?) == true;
+    if (!isItemDeleted && ViewData.Model != null)
+    {
+        var prop = ViewData.Model.GetType().GetProperty("IsDeleted");
+        if (prop != null && prop.PropertyType == typeof(bool))
+        {
+            isItemDeleted = (bool)(prop.GetValue(ViewData.Model) ?? false);
+        }
+    }
 
     string listTitle = ViewData["ListTitle"]?.ToString();
     if (string.IsNullOrEmpty(listTitle))
@@ -16,6 +27,19 @@
             _ => controller
         };
     }
+
+    string deletedListTitle = ViewData["DeletedListTitle"]?.ToString();
+    if (string.IsNullOrEmpty(deletedListTitle))
+    {
+        deletedListTitle = controller switch
+        {
+            "Blog" => Localizer["DeletedPosts"].Value,
+            "ContentPages" => Localizer["DeletedPages"].Value,
+            "ContactMessages" => Localizer["DeletedMessages"].Value,
+            "Media" => Localizer["DeletedAssets"].Value,
+            _ => Localizer["Deleted"].Value
+        };
+    }
 }
 
 <nav aria-label="breadcrumb">
@@ -26,19 +50,47 @@
                 @Localizer["Dashboard"]
             </a>
         </li>
-        @if (!isHome && !isIndex)
+        @if (!isHome)
         {
-            <li class="breadcrumb-item">
-                <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+            @if (isIndex)
+            {
+                <li class="breadcrumb-item active" aria-current="page">
                     @listTitle
-                </a>
-            </li>
-        }
-        @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && ViewData["Title"].ToString() != Localizer["Dashboard"].Value && (!isHome || !isIndex))
-        {
-            <li class="breadcrumb-item active" aria-current="page">
-                @ViewData["Title"]
-            </li>
+                </li>
+            }
+            else if (isDeletedAction)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                        @listTitle
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    @deletedListTitle
+                </li>
+            }
+            else
+            {
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                        @listTitle
+                    </a>
+                </li>
+                @if (isItemDeleted)
+                {
+                    <li class="breadcrumb-item">
+                        <a asp-action="Deleted" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                            @deletedListTitle
+                        </a>
+                    </li>
+                }
+                @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && ViewData["Title"].ToString() != Localizer["Dashboard"].Value)
+                {
+                    <li class="breadcrumb-item active" aria-current="page">
+                        @ViewData["Title"]
+                    </li>
+                }
+            }
         }
     </ol>
 </nav>
