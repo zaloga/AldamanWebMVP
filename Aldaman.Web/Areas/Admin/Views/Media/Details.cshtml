@@ -17,7 +17,7 @@
                 @Localizer["Edit"]
             </a>
         }
-        <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
+        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
             <i class="bi bi-arrow-left"></i>
             @Localizer["BackToList"]
         </a>

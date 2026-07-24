@@ -8,14 +8,14 @@
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item"><a asp-action="Index">@Localizer["ContactMessages"]</a></li>
+                <li class="breadcrumb-item"><a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")">@(Model.IsDeleted ? Localizer["DeletedMessages"] : Localizer["ContactMessages"])</a></li>
                 <li class="breadcrumb-item active" aria-current="page">@Localizer["Details"]</li>
             </ol>
         </nav>
         <h2 class="h4 mb-0">@Localizer["Sender"]: @Model.EmailOrPhone</h2>
     </div>
     <div class="d-flex gap-2">
-        <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
+        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
             <i class="bi bi-arrow-left"></i>
             @Localizer["BackToList"]
         </a>
