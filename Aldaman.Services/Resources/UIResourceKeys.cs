@@ -57,6 +57,16 @@ public static class UIResourceKeys
     public const string SectionNoContent = nameof(SectionNoContent);
     public const string GenerateSlug = nameof(GenerateSlug);
     public const string TranslationMissing = nameof(TranslationMissing);
+    public const string CreatedSuccessfully = nameof(CreatedSuccessfully);
+    public const string ErrorCreating = nameof(ErrorCreating);
+    public const string UpdatedSuccessfully = nameof(UpdatedSuccessfully);
+    public const string ErrorUpdating = nameof(ErrorUpdating);
+    public const string DeletedSuccessfully = nameof(DeletedSuccessfully);
+    public const string ErrorDeleting = nameof(ErrorDeleting);
+    public const string RestoredSuccessfully = nameof(RestoredSuccessfully);
+    public const string ErrorRestoring = nameof(ErrorRestoring);
+    public const string PermanentlyDeleted = nameof(PermanentlyDeleted);
+    public const string ErrorPermanentlyDeleting = nameof(ErrorPermanentlyDeleting);
 
     // Style Settings
     public const string StyleSettings = nameof(StyleSettings);

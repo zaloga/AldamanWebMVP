@@ -1,7 +1,9 @@
 using Aldaman.Services.Dtos.StyleSettings;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
@@ -10,10 +12,12 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class StyleSettingsController : Controller // TODO refaktornout do BaseAdminController a přesunout logiku do services
 {
     private readonly IStyleService _styleService;
+    private IStringLocalizer<UIResources> Localizer { get; }
 
-    public StyleSettingsController(IStyleService styleService)
+    public StyleSettingsController(IStyleService styleService, IStringLocalizer<UIResources> localizer)
     {
         _styleService = styleService;
+        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index()
@@ -98,11 +102,11 @@ public class StyleSettingsController : Controller // TODO refaktornout do BaseAd
         try
         {
             await _styleService.SoftDeleteSettingAsync(id);
-            return Json(new { success = true, message = "Setting deleted successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting setting: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -113,11 +117,11 @@ public class StyleSettingsController : Controller // TODO refaktornout do BaseAd
         try
         {
             await _styleService.RestoreSettingAsync(id);
-            return Json(new { success = true, message = "Setting restored successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error restoring setting: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -128,11 +132,11 @@ public class StyleSettingsController : Controller // TODO refaktornout do BaseAd
         try
         {
             await _styleService.HardDeleteSettingAsync(id);
-            return Json(new { success = true, message = "Setting permanently deleted." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting setting: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

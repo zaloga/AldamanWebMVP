@@ -711,4 +711,34 @@
   <data name="Active" xml:space="preserve">
     <value>Aktivní</value>
   </data>
+  <data name="CreatedSuccessfully" xml:space="preserve">
+    <value>Vytvořeno úspěšně.</value>
+  </data>
+  <data name="ErrorCreating" xml:space="preserve">
+    <value>Chyba při vytváření: {0}</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Upraveno úspěšně.</value>
+  </data>
+  <data name="ErrorUpdating" xml:space="preserve">
+    <value>Chyba při úpravě: {0}</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Smazáno úspěšně.</value>
+  </data>
+  <data name="ErrorDeleting" xml:space="preserve">
+    <value>Chyba při mazání: {0}</value>
+  </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>Obnoveno úspěšně.</value>
+  </data>
+  <data name="ErrorRestoring" xml:space="preserve">
+    <value>Chyba při obnovování: {0}</value>
+  </data>
+  <data name="PermanentlyDeleted" xml:space="preserve">
+    <value>Trvale smazáno.</value>
+  </data>
+  <data name="ErrorPermanentlyDeleting" xml:space="preserve">
+    <value>Chyba při trvalém mazání: {0}</value>
+  </data>
 </root>

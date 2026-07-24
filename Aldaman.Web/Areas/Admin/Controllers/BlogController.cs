@@ -143,11 +143,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.SoftDeleteBlogPostAsync(id);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PostDeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeletingPost, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -158,11 +158,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.RestoreBlogPostAsync(id);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PostRestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoringPost, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -173,11 +173,11 @@ public class BlogController : BaseAdminController
         try
         {
             await BlogService.HardDeleteBlogPostAsync(id);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PostPermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeletingPost, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

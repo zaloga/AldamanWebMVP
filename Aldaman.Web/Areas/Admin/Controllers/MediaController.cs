@@ -1,17 +1,21 @@
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class MediaController : BaseAdminController
 {
     private IMediaService MediaService { get; }
+    private IStringLocalizer<UIResources> Localizer { get; }
 
-    public MediaController(IMediaService mediaService)
+    public MediaController(IMediaService mediaService, IStringLocalizer<UIResources> localizer)
     {
         MediaService = mediaService;
+        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
@@ -128,11 +132,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.DeleteAssetAsync(id);
-            return Json(new { success = true, message = "Media asset deleted successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting media: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -143,11 +147,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.RestoreAssetAsync(id);
-            return Json(new { success = true, message = "Media asset restored successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error restoring media: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -158,11 +162,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.HardDeleteAssetAsync(id);
-            return Json(new { success = true, message = "Media asset permanently deleted." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting media: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

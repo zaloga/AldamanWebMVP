@@ -1,17 +1,21 @@
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class ContentPagesController : BaseAdminController
 {
     private IContentPageService ContentPageService { get; }
+    private IStringLocalizer<UIResources> Localizer { get; }
 
-    public ContentPagesController(IContentPageService contentPageService)
+    public ContentPagesController(IContentPageService contentPageService, IStringLocalizer<UIResources> localizer)
     {
         ContentPageService = contentPageService;
+        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
@@ -35,11 +39,11 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.SoftDeleteContentPageAsync(id);
-            return Json(new { success = true, message = "Page deleted successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting page: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -50,11 +54,11 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.RestoreContentPageAsync(id);
-            return Json(new { success = true, message = "Page restored successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error restoring page: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -65,11 +69,11 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.HardDeleteContentPageAsync(id);
-            return Json(new { success = true, message = "Page permanently deleted." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting page: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 

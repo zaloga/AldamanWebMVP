@@ -1,17 +1,21 @@
 using Aldaman.Services.Dtos.ContactMessage;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
 public class ContactMessagesController : BaseAdminController
 {
     private IContactService ContactService { get; }
+    private IStringLocalizer<UIResources> Localizer { get; }
 
-    public ContactMessagesController(IContactService contactService)
+    public ContactMessagesController(IContactService contactService, IStringLocalizer<UIResources> localizer)
     {
         ContactService = contactService;
+        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
@@ -52,11 +56,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.DeleteMessageAsync(id);
-            return Json(new { success = true, message = "Message deleted successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting message: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -67,11 +71,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.RestoreMessageAsync(id);
-            return Json(new { success = true, message = "Message restored successfully." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error restoring message: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -82,11 +86,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.HardDeleteMessageAsync(id);
-            return Json(new { success = true, message = "Message permanently deleted." });
+            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "Error deleting message: " + ex.Message });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

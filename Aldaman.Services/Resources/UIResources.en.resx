@@ -711,4 +711,34 @@
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="CreatedSuccessfully" xml:space="preserve">
+    <value>Created successfully.</value>
+  </data>
+  <data name="ErrorCreating" xml:space="preserve">
+    <value>Error creating: {0}</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Updated successfully.</value>
+  </data>
+  <data name="ErrorUpdating" xml:space="preserve">
+    <value>Error updating: {0}</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deleted successfully.</value>
+  </data>
+  <data name="ErrorDeleting" xml:space="preserve">
+    <value>Error deleting: {0}</value>
+  </data>
+  <data name="RestoredSuccessfully" xml:space="preserve">
+    <value>Restored successfully.</value>
+  </data>
+  <data name="ErrorRestoring" xml:space="preserve">
+    <value>Error restoring: {0}</value>
+  </data>
+  <data name="PermanentlyDeleted" xml:space="preserve">
+    <value>Permanently deleted.</value>
+  </data>
+  <data name="ErrorPermanentlyDeleting" xml:space="preserve">
+    <value>Error permanently deleting: {0}</value>
+  </data>
 </root>
