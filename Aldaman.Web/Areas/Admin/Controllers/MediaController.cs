@@ -10,12 +10,11 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class MediaController : BaseAdminController
 {
     private IMediaService MediaService { get; }
-    private IStringLocalizer<UIResources> Localizer { get; }
 
     public MediaController(IMediaService mediaService, IStringLocalizer<UIResources> localizer)
+        : base(localizer)
     {
         MediaService = mediaService;
-        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)

@@ -10,12 +10,11 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class ContactMessagesController : BaseAdminController
 {
     private IContactService ContactService { get; }
-    private IStringLocalizer<UIResources> Localizer { get; }
 
     public ContactMessagesController(IContactService contactService, IStringLocalizer<UIResources> localizer)
+        : base(localizer)
     {
         ContactService = contactService;
-        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)

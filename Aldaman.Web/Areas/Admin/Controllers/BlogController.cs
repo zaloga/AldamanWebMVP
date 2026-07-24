@@ -11,13 +11,12 @@ public class BlogController : BaseAdminController
 {
     private IBlogService BlogService { get; }
     private IMediaService MediaService { get; }
-    private IStringLocalizer<UIResources> Localizer { get; }
 
     public BlogController(IBlogService blogService, IMediaService mediaService, IStringLocalizer<UIResources> localizer)
+        : base(localizer)
     {
         BlogService = blogService;
         MediaService = mediaService;
-        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)

@@ -1,5 +1,7 @@
 using Aldaman.Services.Helpers;
+using Aldaman.Services.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
@@ -8,6 +10,11 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 /// </summary>
 public class ToolsController : BaseAdminController
 {
+    public ToolsController(IStringLocalizer<UIResources> localizer)
+        : base(localizer)
+    {
+    }
+
     [HttpGet]
     public IActionResult GenerateSlug(string text)
     {

@@ -7,17 +7,14 @@ using Microsoft.Extensions.Localization;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize]
-public class StyleSettingsController : Controller // TODO refaktornout do BaseAdminController a přesunout logiku do services
+public class StyleSettingsController : BaseAdminController
 {
     private readonly IStyleService _styleService;
-    private IStringLocalizer<UIResources> Localizer { get; }
 
     public StyleSettingsController(IStyleService styleService, IStringLocalizer<UIResources> localizer)
+        : base(localizer)
     {
         _styleService = styleService;
-        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index()

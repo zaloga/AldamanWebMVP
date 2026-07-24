@@ -10,12 +10,11 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class ContentPagesController : BaseAdminController
 {
     private IContentPageService ContentPageService { get; }
-    private IStringLocalizer<UIResources> Localizer { get; }
 
     public ContentPagesController(IContentPageService contentPageService, IStringLocalizer<UIResources> localizer)
+        : base(localizer)
     {
         ContentPageService = contentPageService;
-        Localizer = localizer;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
