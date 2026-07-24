@@ -63,7 +63,7 @@
                                     @Localizer["Edit"]
                                 </a>
                                 @* commented out for now - TODO do as optionally visible by switch in appsettings.json
-                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@setting.Id', '@setting.Key')" title="@Localizer["Delete"]">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@setting.Id" data-title="@setting.Key" data-url="@Url.Action("Delete")" title="@Localizer["Delete"]">
                                     <i class="bi bi-trash"></i>
                                     @Localizer["Delete"]
                                 </button> *@
@@ -105,11 +105,11 @@
                             <td class="py-3"><span class="text-muted">@item.Value</span></td>
                             <td class="py-3 text-end pe-4">
                                 <div class="d-inline-flex gap-2">
-                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" onclick="restoreItem('@item.Id', '@item.Key')">
+                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" data-action="restore" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("Restore")">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer["Restore"]
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="hardDeleteItem('@item.Id', '@item.Key')">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="hard-delete" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("HardDelete")">
                                         <i class="bi bi-trash"></i>
                                         @Localizer["DeletePermanently"]
                                     </button>
@@ -126,54 +126,18 @@
 @Html.AntiForgeryToken()
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function deleteItem(id, key) {
-            Swal.fire({
-                title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeleteText"]'.replace('{0}', key),
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["YesDeleteIt"]',
-                cancelButtonText: '@Localizer["Cancel"]'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("Delete")',
-                        type: 'POST',
-                        data: { 
-                            id: id,
-                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire('@Localizer["Error"]', response.message, 'error');
-                            }
-                        },
-                        error: function() {
-                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
-                        }
-                    });
-                }
-            });
-        }
-
         function resetToDefault(id, key, defaultValue) {
+            const i18n = window.AdminI18n || {};
             Swal.fire({
-                title: '@Localizer["AreYouSure"]',
+                title: i18n.areYouSure || 'Jste si jistí?',
                 text: key + ' (' + defaultValue + ')',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#6366f1',
                 cancelButtonColor: '#64748b',
                 confirmButtonText: '@Localizer["Yes"]',
-                cancelButtonText: '@Localizer["Cancel"]'
+                cancelButtonText: i18n.cancel || 'Zrušit'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -184,75 +148,17 @@
                             __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                         },
                         success: function(response) {
-                            if (response.success) {
-                                Swal.fire('@Localizer["UpdatedSuccessfully"]', response.message, 'success').then(() => {
+                            if (response && response.success) {
+                                Swal.fire('@Localizer["UpdatedSuccessfully"]', response.message || '', 'success').then(() => {
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire('@Localizer["Error"]', response.message, 'error');
+                                const msg = (response && response.message) ? response.message : (i18n.errorOccurred || 'Chyba při provádění akce');
+                                Swal.fire(i18n.error || 'Chyba', msg, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
-                        }
-                    });
-                }
-            });
-        }
-
-        function restoreItem(id, key) {
-            $.ajax({
-                url: '@Url.Action("Restore")',
-                type: 'POST',
-                data: { 
-                    id: id,
-                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                },
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire('@Localizer["RestoredSuccessfully"]', response.message, 'success').then(() => {
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire('@Localizer["Error"]', response.message, 'error');
-                    }
-                },
-                error: function() {
-                    Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
-                }
-            });
-        }
-
-        function hardDeleteItem(id, key) {
-            Swal.fire({
-                title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeletePermanentlyText"]'.replace('{0}', key),
-                icon: 'error',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["DeletePermanentlyButton"]',
-                cancelButtonText: '@Localizer["Cancel"]'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("HardDelete")',
-                        type: 'POST',
-                        data: { 
-                            id: id,
-                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire('@Localizer["Error"]', response.message, 'error');
-                            }
-                        },
-                        error: function() {
-                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
+                            Swal.fire(i18n.error || 'Chyba', i18n.errorOccurred || 'Došlo k neočekávané chybě', 'error');
                         }
                     });
                 }

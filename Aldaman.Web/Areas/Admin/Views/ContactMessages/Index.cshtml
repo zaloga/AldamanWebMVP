@@ -105,7 +105,7 @@
                                         </button>
                                     </form>
                                 }
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" onclick="deleteItem('@item.Id', '@item.EmailOrPhone')">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer["ConfirmDeleteMessageText"].Value">
                                     <i class="bi bi-trash"></i>
                                     @Localizer["Delete"]
                                 </button>
@@ -123,44 +123,3 @@
 </div>
 
 @Html.AntiForgeryToken()
-
-@section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function deleteItem(id, title) {
-            Swal.fire({
-                title: '@Localizer["AreYouSure"]',
-                text: '@Localizer["ConfirmDeleteMessageText"]'.replace('{0}', title),
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["YesDeleteIt"]',
-                cancelButtonText: '@Localizer["Cancel"]'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("Delete")',
-                        type: 'POST',
-                        data: { 
-                            id: id,
-                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                Swal.fire('@Localizer["DeletedSuccessfully"]', response.message, 'success').then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire('@Localizer["Error"]', response.message, 'error');
-                            }
-                        },
-                        error: function() {
-                            Swal.fire('@Localizer["Error"]', '@Localizer["ErrorOccurred"]', 'error');
-                        }
-                    });
-                }
-            });
-        }
-    </script>
-}

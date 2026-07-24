@@ -62,6 +62,22 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.AdminI18n = {
+            areYouSure: @Html.Raw(Json.Serialize(Localizer["AreYouSure"].Value)),
+            confirmDeleteText: @Html.Raw(Json.Serialize(Localizer["ConfirmDeleteText"].Value)),
+            confirmDeletePermanentlyText: @Html.Raw(Json.Serialize(Localizer["ConfirmDeletePermanentlyText"].Value)),
+            yesDeleteIt: @Html.Raw(Json.Serialize(Localizer["YesDeleteIt"].Value)),
+            deletePermanentlyButton: @Html.Raw(Json.Serialize(Localizer["DeletePermanentlyButton"].Value)),
+            cancel: @Html.Raw(Json.Serialize(Localizer["Cancel"].Value)),
+            deletedSuccessfully: @Html.Raw(Json.Serialize(Localizer["DeletedSuccessfully"].Value)),
+            restoredSuccessfully: @Html.Raw(Json.Serialize(Localizer["RestoredSuccessfully"].Value)),
+            error: @Html.Raw(Json.Serialize(Localizer["Error"].Value)),
+            errorOccurred: @Html.Raw(Json.Serialize(Localizer["ErrorOccurred"].Value))
+        };
+    </script>
+    <script src="~/js/admin-actions.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
