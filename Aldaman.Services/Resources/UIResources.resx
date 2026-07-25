@@ -753,6 +753,9 @@
   <data name="StyleSettingResetSuccessfully" xml:space="preserve">
     <value>Nastavení stylu bylo úspěšně resetováno na výchozí.</value>
   </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Obnovit výchozí</value>
+  </data>
   <data name="PageCreatedSuccessfully" xml:space="preserve">
     <value>Stránka byla úspěšně vytvořena.</value>
   </data>

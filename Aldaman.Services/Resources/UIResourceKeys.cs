@@ -72,6 +72,11 @@ public static class UIResourceKeys
     public const string FileSizeExceedsLimit = nameof(FileSizeExceedsLimit);
     public const string ImageUploadFailed = nameof(ImageUploadFailed);
     public const string ErrorUploadingImage = nameof(ErrorUploadingImage);
+    public const string Save = nameof(Save);
+    public const string Edit = nameof(Edit);
+    public const string Actions = nameof(Actions);
+    public const string Restore = nameof(Restore);
+    public const string DeletePermanently = nameof(DeletePermanently);
 
     // Style Settings
     public const string StyleSettings = nameof(StyleSettings);
@@ -83,6 +88,7 @@ public static class UIResourceKeys
     public const string Value = nameof(Value);
     public const string StyleSettingUpdated = nameof(StyleSettingUpdated);
     public const string StyleSettingCreated = nameof(StyleSettingCreated);
+    public const string ResetToDefault = nameof(ResetToDefault);
     public const string StyleSettingResetSuccessfully = nameof(StyleSettingResetSuccessfully);
 
     // Pages & Media

@@ -753,6 +753,9 @@
   <data name="StyleSettingResetSuccessfully" xml:space="preserve">
     <value>Style setting reset to default successfully.</value>
   </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Reset to default</value>
+  </data>
   <data name="PageCreatedSuccessfully" xml:space="preserve">
     <value>Page created successfully.</value>
   </data>
