@@ -65,6 +65,7 @@ public static class UIResourceKeys
     public const string ErrorDeleting = nameof(ErrorDeleting);
     public const string RestoredSuccessfully = nameof(RestoredSuccessfully);
     public const string ErrorRestoring = nameof(ErrorRestoring);
+    public const string ConfirmRestoreText = nameof(ConfirmRestoreText);
     public const string PermanentlyDeleted = nameof(PermanentlyDeleted);
     public const string ErrorPermanentlyDeleting = nameof(ErrorPermanentlyDeleting);
     public const string Yes = nameof(Yes);

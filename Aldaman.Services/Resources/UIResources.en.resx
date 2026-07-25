@@ -462,6 +462,9 @@
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Are you sure you want to delete "{0}"? This item will be marked for permanent removal.</value>
   </data>
+  <data name="ConfirmRestoreText" xml:space="preserve">
+    <value>Are you sure you want to restore "{0}"?</value>
+  </data>
   <data name="ConfirmDeletePermanentlyText" xml:space="preserve">
     <value>Are you sure you want to PERMANENTLY delete "{0}"? This action cannot be undone!</value>
   </data>

@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Shared event delegation for buttons with data-action
     document.addEventListener('click', function (event) {
-        const button = event.target.closest('[data-action="delete"], [data-action="hard-delete"], [data-action="restore"]');
+        const button = event.target.closest('[data-action="delete"], [data-action="hard-delete"], [data-action="restore"], [data-action="renew"]');
         if (!button) return;
 
         event.preventDefault();
@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteItem(id, title, url, customConfirmText);
         } else if (action === 'hard-delete') {
             hardDeleteItem(id, title, url, customConfirmText);
-        } else if (action === 'restore') {
-            restoreItem(id, title, url);
+        } else if (action === 'restore' || action === 'renew') {
+            restoreItem(id, title, url, customConfirmText);
         }
     });
 });
@@ -78,11 +78,27 @@ function hardDeleteItem(id, title, url, customConfirmText) {
 }
 
 /**
- * Item restore handler via AJAX.
+ * Item restore/renew confirmation and AJAX handler.
  */
-function restoreItem(id, title, url) {
+function restoreItem(id, title, url, customConfirmText) {
     const i18n = window.AdminI18n || {};
-    executeAction(url, id, i18n.restoredSuccessfully);
+    const textTemplate = customConfirmText || i18n.confirmRestoreText;
+    const confirmText = textTemplate ? textTemplate.replace('{0}', title) : title;
+
+    Swal.fire({
+        title: i18n.areYouSure,
+        text: confirmText,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#16a34a',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: i18n.yes,
+        cancelButtonText: i18n.cancel
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeAction(url, id, i18n.restoredSuccessfully);
+        }
+    });
 }
 
 /**

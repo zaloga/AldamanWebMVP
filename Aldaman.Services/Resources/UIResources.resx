@@ -462,6 +462,9 @@
   <data name="ConfirmDeleteText" xml:space="preserve">
     <value>Opravdu chcete smazat „{0}“? Tato položka bude označena k trvalému odstranění.</value>
   </data>
+  <data name="ConfirmRestoreText" xml:space="preserve">
+    <value>Opravdu chcete obnovit „{0}“?</value>
+  </data>
   <data name="ConfirmDeletePermanentlyText" xml:space="preserve">
     <value>Opravdu chcete TRVALE smazat „{0}“? Tuto akci nelze vzít zpět!</value>
   </data>
