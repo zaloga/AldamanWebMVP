@@ -4,160 +4,142 @@
     ViewData["Title"] = $"{Localizer["ContactMessageDetails"]}";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item"><a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")">@(Model.IsDeleted ? Localizer["DeletedMessages"] : Localizer["ContactMessages"])</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@Localizer["Details"]</li>
-            </ol>
-        </nav>
-        <h2 class="h4 mb-0">@Localizer["Sender"]: @Model.EmailOrPhone</h2>
-    </div>
-    <div class="d-flex gap-2">
-        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
-            <i class="bi bi-arrow-left"></i>
-            @Localizer["BackToList"]
-        </a>
-        @if (!Model.IsDeleted && Model.State == ContactMessageState.Pending)
-        {
-            <form asp-action="MarkHandled" asp-route-id="@Model.Id" method="post">
-                <button type="submit" class="btn btn-success d-inline-flex align-items-center gap-2">
-                    <i class="bi bi-check-lg"></i>
-                    @Localizer["MarkHandled"]
-                </button>
-            </form>
-        }
-    </div>
-</div>
-
-<div class="row g-4">
-    <div class="col-lg-8">
-        <div class="bg-white shadow-sm border p-4 mb-4">
-            <div class="mb-4">
-                <h5 class="fw-bold mb-3 text-primary">@Localizer["Subject"]</h5>
-                <div class="p-3 bg-light rounded border fw-bold text-dark">
-                    @Model.Subject
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["MessageDetails"]</h6>
                 </div>
-            </div>
-
-            <div>
-                <h5 class="fw-bold mb-3 text-primary">@Localizer["Message"]</h5>
-                <div class="p-4 bg-light rounded border white-space-pre-wrap text-dark" style="line-height: 1.6;">@Model.Message</div>
-            </div>
-        </div>
-
-        <div class="bg-white shadow-sm border p-4">
-            <h5 class="fw-bold mb-4 text-primary">@Localizer["TechnicalDetails"]</h5>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["ClientIp"]</label>
-                    @if (string.IsNullOrWhiteSpace(Model.ClientIp))
-                    {
-                        <span class="text-muted">@Localizer["None"]</span>
-                    }
-                    else
-                    {
-                        <div class="font-monospace text-dark">@Model.ClientIp</div>
-                    }
-                </div>
-                <div class="col-md-6">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SentAtUtc"]</label>
-                    <div class="text-dark">@(Model.SentAtUtc?.ToString(FormatConstants.DateTimeIso) ?? Localizer["NotRecorded"].Value)</div>
-                </div>
-                <div class="col-12">
-                    <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["UserAgent"]</label>
-                    @if (string.IsNullOrWhiteSpace(Model.UserAgent))
-                    {
-                        <span class="text-muted">@Localizer["None"]</span>
-                    }
-                    else
-                    {
-                        <div class="font-monospace small p-2 bg-light border rounded text-muted">@Model.UserAgent</div>
-                    }
-                </div>
-                @if (!string.IsNullOrEmpty(Model.FailureReason))
-                {
-                    <div class="col-12">
-                        <label class="small text-danger text-uppercase fw-bold mb-1 d-block">@Localizer["FailureReason"]</label>
-                        <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small">
-                            @Model.FailureReason
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SenderContact"]</label>
+                        <div class="fw-bold fs-5">
+                            <a href="mailto:@Model.EmailOrPhone" class="text-primary text-decoration-none">
+                                <i class="bi bi-envelope me-1"></i>@Model.EmailOrPhone
+                            </a>
                         </div>
                     </div>
-                }
-            </div>
-        </div>
-    </div>
 
-    <div class="col-lg-4">
-        <div class="bg-white shadow-sm border p-4 mb-4">
-            <h5 class="fw-bold mb-4 text-primary">@Localizer["Status"]</h5>
-            
-            <div class="mb-4">
-                @switch (Model.State)
-                {
-                    case ContactMessageState.Pending:
-                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">@Localizer["Pending"]</span>
-                        break;
-                    case ContactMessageState.Sent:
-                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">@Localizer["Handled"]</span>
-                        break;
-                    case ContactMessageState.Failed:
-                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">@Localizer["Failed"]</span>
-                        break;
-                }
-            </div>
-
-            <div class="mb-4">
-                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Date"]</label>
-                <div class="fw-medium text-dark">@Model.CreatedAtUtc.ToString(FormatConstants.FullDateTime)</div>
-            </div>
-
-            <div class="mb-4">
-                <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SenderContact"]</label>
-                <div class="fw-bold text-primary">@Model.EmailOrPhone</div>
-            </div>
-
-            @if (Model.IsDeleted)
-            {
-                <div class="p-3 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded mb-4 shadow-sm">
-                    <div class="d-flex align-items-center gap-2 mb-1">
-                        <i class="bi bi-trash"></i>
-                        <span class="fw-bold">@Localizer["DeletedMessage"]</span>
+                    <div class="mb-4">
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Subject"]</label>
+                        <div class="p-3 bg-light rounded border fw-bold text-dark">
+                            @Model.Subject
+                        </div>
                     </div>
-                    <div class="small">
-                        @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToString(FormatConstants.FullDateTime) ?? "").
+
+                    <div>
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Message"]</label>
+                        <div class="p-3 bg-light rounded border white-space-pre-wrap text-dark" style="line-height: 1.6;">@Model.Message</div>
                     </div>
                 </div>
-            }
+            </div>
         </div>
 
-        <div class="bg-white shadow-sm border p-4">
-            <h5 class="fw-bold mb-4 text-primary">@Localizer["Actions"]</h5>
-            <div class="d-grid gap-2">
-                <a href="mailto:@Model.EmailOrPhone" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2 shadow-sm">
-                    <i class="bi bi-envelope"></i>
-                    @Localizer["ReplyViaEmail"]
-                </a>
-                
-                @if (Model.IsDeleted)
-                {
-                    <button class="btn btn-outline-success d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" data-action="restore" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Restore")">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                        @Localizer["RestoreMessage"]
-                    </button>
-                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" data-action="hard-delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("HardDelete")" data-confirm-text="@Localizer["ConfirmDeletePermanentlyMessageText"].Value">
-                        <i class="bi bi-trash"></i>
-                        @Localizer["DeletePermanently"]
-                    </button>
-                }
-                else
-                {
-                    <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" data-action="delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer["ConfirmDeleteMessageText"].Value">
-                        <i class="bi bi-trash"></i>
-                        @Localizer["DeleteMessage"]
-                    </button>
-                }
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Metadata"]</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Status"]</dt>
+                        <dd class="col-sm-7 mb-3">
+                            @switch (Model.State)
+                            {
+                                case ContactMessageState.Pending:
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">@Localizer["Pending"]</span>
+                                    break;
+                                case ContactMessageState.Sent:
+                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">@Localizer["Handled"]</span>
+                                    break;
+                                case ContactMessageState.Failed:
+                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">@Localizer["Failed"]</span>
+                                    break;
+                            }
+                        </dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Date"]</dt>
+                        <dd class="col-sm-7 mb-3 text-dark fw-medium">@Model.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.FullDateTime)</dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["ClientIp"]</dt>
+                        <dd class="col-sm-7 mb-3">
+                            @if (string.IsNullOrWhiteSpace(Model.ClientIp))
+                            {
+                                <span class="text-muted">@Localizer["None"]</span>
+                            }
+                            else
+                            {
+                                <span class="font-monospace text-dark">@Model.ClientIp</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["SentAtUtc"]</dt>
+                        <dd class="col-sm-7 mb-3 text-dark">@(Model.SentAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? Localizer["NotRecorded"].Value)</dd>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.UserAgent))
+                        {
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["UserAgent"]</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <div class="font-monospace small p-2 bg-light border rounded text-muted text-break">@Model.UserAgent</div>
+                            </dd>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.FailureReason))
+                        {
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer["FailureReason"]</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small text-break">
+                                    @Model.FailureReason
+                                </div>
+                            </dd>
+                        }
+
+                        @if (Model.IsDeleted)
+                        {
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer["DeletedMessage"]</dt>
+                            <dd class="col-sm-7 mb-3">
+                                <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small">
+                                    @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? "").
+                                </div>
+                            </dd>
+                        }
+                    </dl>
+
+                    <hr />
+
+                    <div class="d-grid gap-2">
+                        @if (!Model.IsDeleted && Model.State == ContactMessageState.Pending)
+                        {
+                            <form asp-action="MarkHandled" asp-route-id="@Model.Id" method="post" class="d-grid">
+                                <button type="submit" class="btn btn-success d-inline-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-check-lg"></i>
+                                    @Localizer["MarkHandled"]
+                                </button>
+                            </form>
+                        }
+
+                        @if (Model.IsDeleted)
+                        {
+                            <button class="btn btn-outline-success d-inline-flex align-items-center justify-content-center gap-2" data-action="restore" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Restore")">
+                                @Localizer["RestoreMessage"]
+                            </button>
+                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="hard-delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("HardDelete")" data-confirm-text="@Localizer["ConfirmDeletePermanentlyMessageText"].Value">
+                                @Localizer["DeletePermanently"]
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer["ConfirmDeleteMessageText"].Value">
+                                @Localizer["Delete"]
+                            </button>
+                        }
+
+                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center gap-2">
+                            @Localizer["Back"]
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -168,3 +150,4 @@
         white-space: pre-wrap;
     }
 </style>
+
