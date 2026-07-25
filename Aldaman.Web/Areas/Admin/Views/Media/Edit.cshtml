@@ -6,58 +6,63 @@
     var isImage = (bool)ViewData["IsImage"];
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="h4 mb-0">@Localizer["EditMedia"]</h2>
-        <p class="text-muted small mb-0">@Localizer["UpdateMediaInfo"]</p>
-    </div>
-    <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
-        <i class="bi bi-arrow-left"></i>
-        @Localizer["BackToList"]
-    </a>
-</div>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    @Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-md-5">
-        <div class="bg-white shadow-sm border p-4 rounded-3 text-center mb-4">
-            <h3 class="h6 fw-bold mb-3">@Localizer["AssetPreview"]</h3>
-            <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
-                @if (isImage)
-                {
-                    <img src="@relativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Localizer["AssetPreview"]">
-                }
-                else
-                {
-                    <i class="bi bi-file-earmark text-muted" style="font-size: 64px;"></i>
-                }
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["AssetPreview"]</h6>
+                </div>
+                <div class="card-body text-center">
+                    <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
+                        @if (isImage)
+                        {
+                            <img src="@relativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Localizer["AssetPreview"]">
+                        }
+                        else
+                        {
+                            <i class="bi bi-file-earmark text-muted" style="font-size: 64px;"></i>
+                        }
+                    </div>
+                    <div class="mt-3 text-break small font-monospace text-muted">@relativePath</div>
+                </div>
             </div>
-            <div class="mt-3 text-break small font-monospace text-muted">@relativePath</div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["EditMedia"]</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-medium">@Localizer["Title"]</label>
+                        <input asp-for="Title" class="form-control" placeholder="@Localizer["TitleInfo"]" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AltText" class="form-label fw-medium">@Localizer["AltText"]</label>
+                        <textarea asp-for="AltText" class="form-control" rows="3" placeholder="@Localizer["AltTextInfo"]"></textarea>
+                        <span asp-validation-for="AltText" class="text-danger"></span>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-block mb-2">@Localizer["Save"]</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-7">
-        <div class="bg-white shadow-sm border p-4 rounded-3">
-            <form asp-action="Edit" method="post">
-                <input type="hidden" asp-for="Id" />
-                @Html.AntiForgeryToken()
+</form>
 
-                <div class="mb-4">
-                    <label asp-for="Title" class="form-label fw-bold">@Localizer["Title"]</label>
-                    <input asp-for="Title" class="form-control py-2" placeholder="@Localizer["TitleInfo"]" />
-                    <span asp-validation-for="Title" class="text-danger small"></span>
-                </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 
-                <div class="mb-4">
-                    <label asp-for="AltText" class="form-label fw-bold">@Localizer["AltText"]</label>
-                    <textarea asp-for="AltText" class="form-control py-2" rows="3" placeholder="@Localizer["AltTextInfo"]"></textarea>
-                    <span asp-validation-for="AltText" class="text-danger small"></span>
-                </div>
-
-
-                <div class="d-flex justify-content-end gap-2 border-top pt-4">
-                    <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">@Localizer["Save"]</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary px-4">@Localizer["Cancel"]</a>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

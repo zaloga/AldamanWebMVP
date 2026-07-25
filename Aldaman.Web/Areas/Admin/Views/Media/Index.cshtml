@@ -6,7 +6,6 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0">@Localizer["MediaLibrary"]</h2>
     <div class="d-flex gap-2">
         @* commented out for now, can be added in the future when we have usecase for it
         <a asp-action="Upload" class="btn btn-success">
@@ -58,6 +57,7 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 120px">@Localizer["Preview"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["FileName"]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Title"] / @Localizer["AltText"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Dimensions"] / @Localizer["Size"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
@@ -67,7 +67,7 @@
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="6" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -88,6 +88,10 @@
                         <td class="py-3">
                             <div class="fw-semibold text-dark text-truncate" style="max-width: 250px;">@item.OriginalFileName</div>
                             <div class="small text-muted">@item.ContentType</div>
+                        </td>
+                        <td class="py-3">
+                            <div class="small fw-medium text-dark text-truncate" style="max-width: 200px;">@item.Title</div>
+                            <div class="small text-muted text-truncate" style="max-width: 200px;">@item.AltText</div>
                         </td>
                         <td class="py-3">
                             @if (item.IsImage && item.Width.HasValue && item.Height.HasValue)

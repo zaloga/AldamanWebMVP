@@ -4,101 +4,82 @@
     ViewData["Title"] = Localizer["MediaDetails"];
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="h4 mb-0">@Localizer["MediaDetails"]</h2>
-        <p class="text-muted small mb-0">@Localizer["MediaDetailsInfo"]</p>
-    </div>
-    <div class="d-flex gap-2">
-        @if (!Model.IsDeleted)
-        {
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm">
-                <i class="bi bi-pencil-square"></i>
-                @Localizer["Edit"]
-            </a>
-        }
-        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
-            <i class="bi bi-arrow-left"></i>
-            @Localizer["BackToList"]
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-5">
-        <div class="bg-white shadow-sm border p-4 rounded-3 text-center mb-4">
-            <h3 class="h6 fw-bold mb-3">@Localizer["AssetPreview"]</h3>
-            <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
-                @if (Model.IsImage)
-                {
-                    <img src="@Model.RelativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Model.AltText">
-                }
-                else if (Model.IsVideo)
-                {
-                    <video src="@Model.RelativePath" controls class="img-fluid" style="max-height: 350px;"></video>
-                }
-                else
-                {
-                    <i class="bi bi-file-earmark text-muted" style="font-size: 64px;"></i>
-                }
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["AssetPreview"]</h6>
+                </div>
+                <div class="card-body text-center">
+                    <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
+                        @if (Model.IsImage)
+                        {
+                            <img src="@Model.RelativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Model.AltText">
+                        }
+                        else if (Model.IsVideo)
+                        {
+                            <video src="@Model.RelativePath" controls class="img-fluid" style="max-height: 350px;"></video>
+                        }
+                        else
+                        {
+                            <i class="bi bi-file-earmark text-muted" style="font-size: 64px;"></i>
+                        }
+                    </div>
+                    <div class="mt-3 text-break small font-monospace text-muted">@Model.RelativePath</div>
+                </div>
             </div>
-            <div class="mt-3 text-break small font-monospace text-muted">@Model.RelativePath</div>
         </div>
-    </div>
-    <div class="col-md-7">
-        <div class="bg-white shadow-sm border p-4 rounded-3">
-            <h3 class="h6 fw-bold mb-4 border-bottom pb-2">@Localizer["Metadata"]</h3>
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["OriginalFileName"]</div>
-                <div class="col-sm-8">@Model.OriginalFileName</div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["Title"]</div>
-                <div class="col-sm-8">@(string.IsNullOrEmpty(Model.Title) ? "-" : Model.Title)</div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["AltText"]</div>
-                <div class="col-sm-8">@(string.IsNullOrEmpty(Model.AltText) ? "-" : Model.AltText)</div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["ContentType"]</div>
-                <div class="col-sm-8"><span class="badge bg-light text-dark border">@Model.ContentType</span></div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["FileSize"]</div>
-                <div class="col-sm-8">@((Model.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</div>
-            </div>
-            
-            @if (Model.IsImage && Model.Width.HasValue && Model.Height.HasValue)
-            {
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold text-muted">@Localizer["Dimensions"]</div>
-                    <div class="col-sm-8">@Model.Width x @Model.Height px</div>
-                </div>
-            }
-            
-            <div class="row mb-3">
-                <div class="col-sm-4 fw-bold text-muted">@Localizer["Uploaded"]</div>
-                <div class="col-sm-8">@Model.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.ShortDateTime)</div>
-            </div>
 
-            @if (Model.IsDeleted)
-            {
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold text-muted">@Localizer["DeletionDate"]</div>
-                    <div class="col-sm-8 text-danger fw-medium">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</div>
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Metadata"]</h6>
                 </div>
-            }
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["OriginalFileName"]</dt>
+                        <dd class="col-sm-7 text-break">@Model.OriginalFileName</dd>
 
-            @* commented out for now, can be added in the future when we have usecase for it
-                <div class="d-flex justify-content-end gap-2 border-top pt-4 mt-4">
-                 <button class="btn btn-outline-danger px-4" data-action="delete" data-id="@Model.Id" data-title="@Model.OriginalFileName" data-url="@Url.Action("Delete")">@Localizer["Delete"]</button>
-            </div> *@
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
+                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.Title) ? "-" : Model.Title)</dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["AltText"]</dt>
+                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.AltText) ? "-" : Model.AltText)</dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["ContentType"]</dt>
+                        <dd class="col-sm-7"><span class="badge bg-light text-dark border">@Model.ContentType</span></dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["FileSize"]</dt>
+                        <dd class="col-sm-7">@((Model.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</dd>
+
+                        @if (Model.IsImage && Model.Width.HasValue && Model.Height.HasValue)
+                        {
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Dimensions"]</dt>
+                            <dd class="col-sm-7">@Model.Width x @Model.Height px</dd>
+                        }
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Uploaded"]</dt>
+                        <dd class="col-sm-7">@Model.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
+
+                        @if (Model.IsDeleted)
+                        {
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["DeletionDate"]</dt>
+                            <dd class="col-sm-7 text-danger fw-medium">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
+                        }
+                    </dl>
+
+                    <hr />
+
+                    <div class="d-grid">
+                        @if (!Model.IsDeleted)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                        }
+                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -93,5 +93,6 @@ public static class UIResourceKeys
     public const string PleaseSelectFile = nameof(PleaseSelectFile);
     public const string FileUploadedSuccessfully = nameof(FileUploadedSuccessfully);
     public const string ErrorUploadingFile = nameof(ErrorUploadingFile);
+    public const string AltText = nameof(AltText);
     public const string MediaMetadataUpdated = nameof(MediaMetadataUpdated);
 }

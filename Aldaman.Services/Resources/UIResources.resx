@@ -382,10 +382,10 @@
     <value>Ano, smazat!</value>
   </data>
   <data name="DeletedSuccessfully" xml:space="preserve">
-    <value>Smazáno!</value>
+    <value>Smazáno úspěšně.</value>
   </data>
   <data name="RestoredSuccessfully" xml:space="preserve">
-    <value>Obnoveno!</value>
+    <value>Obnoveno úspěšně.</value>
   </data>
   <data name="TechnicalDetails" xml:space="preserve">
     <value>Technické detaily</value>
@@ -449,9 +449,6 @@
   </data>
   <data name="AssetPreview" xml:space="preserve">
     <value>Náhled souboru</value>
-  </data>
-  <data name="UpdateMediaInfo" xml:space="preserve">
-    <value>Aktualizujte alternativní text a název tohoto souboru.</value>
   </data>
   <data name="AltTextInfo" xml:space="preserve">
     <value>Alt text pro přístupnost...</value>
@@ -603,9 +600,6 @@
   <data name="MediaDetails" xml:space="preserve">
     <value>Detail média</value>
   </data>
-  <data name="MediaDetailsInfo" xml:space="preserve">
-    <value>Technické informace a metadata souboru.</value>
-  </data>
   <data name="Metadata" xml:space="preserve">
     <value>Metadata</value>
   </data>
@@ -726,14 +720,8 @@
   <data name="ErrorUpdating" xml:space="preserve">
     <value>Chyba při úpravě: {0}</value>
   </data>
-  <data name="DeletedSuccessfully" xml:space="preserve">
-    <value>Smazáno úspěšně.</value>
-  </data>
   <data name="ErrorDeleting" xml:space="preserve">
     <value>Chyba při mazání: {0}</value>
-  </data>
-  <data name="RestoredSuccessfully" xml:space="preserve">
-    <value>Obnoveno úspěšně.</value>
   </data>
   <data name="ErrorRestoring" xml:space="preserve">
     <value>Chyba při obnovování: {0}</value>
@@ -788,5 +776,8 @@
   </data>
   <data name="MediaMetadataUpdated" xml:space="preserve">
     <value>Metadata média byla upravena.</value>
+  </data>
+  <data name="AltText" xml:space="preserve">
+    <value>Alternativní text</value>
   </data>
 </root>
