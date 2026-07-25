@@ -30,7 +30,7 @@
                     }
                     else
                     {
-                        <p class="text-slate-400 italic">@Localizer["NoHtmlContent"]</p>
+                        <p class="text-slate-400 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
                     }
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     {
                         <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
                             <i class="bi bi-arrow-left mr-2"></i>
-                            @Localizer["PreviousPost"]
+                            @Localizer[UIResourceKeys.PreviousPost]
                         </a>
                     }
                 </div>
@@ -51,7 +51,7 @@
                     @if (Model.NextPost != null)
                     {
                         <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-                            @Localizer["NextPost"]
+                            @Localizer[UIResourceKeys.NextPost]
                             <i class="bi bi-arrow-right ml-2"></i>
                         </a>
                     }

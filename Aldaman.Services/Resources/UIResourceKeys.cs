@@ -28,6 +28,8 @@ public static class UIResourceKeys
     public const string Blog = nameof(Blog);
     public const string BlogSubtitle = nameof(BlogSubtitle);
     public const string AllArticles = nameof(AllArticles);
+    public const string PreviousPost = nameof(PreviousPost);
+    public const string NextPost = nameof(NextPost);
     public const string PostCreatedSuccessfully = nameof(PostCreatedSuccessfully);
     public const string ErrorCreatingPost = nameof(ErrorCreatingPost);
     public const string PostUpdatedSuccessfully = nameof(PostUpdatedSuccessfully);
