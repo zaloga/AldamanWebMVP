@@ -3,7 +3,7 @@
 
 @{
     var isCreate = Model.Id == null || Model.Id == Guid.Empty;
-    ViewData["Title"] = isCreate ? Localizer["CreatePage"] : Localizer["EditPage"];
+    ViewData["Title"] = isCreate ? Localizer[UIResourceKeys.CreatePage] : Localizer[UIResourceKeys.EditPage];
 }
 
 @section Styles {
@@ -22,7 +22,7 @@
             <div class="col-lg-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer["Translations"]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Translations]</h6>
                     </div>
                     <div class="card-body">
                         <partial name="_TranslationTabs" model="Model.Translations.Select(t => t.CultureCode)" />
@@ -42,16 +42,16 @@
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer["Title"] (@culture.ToUpper())</label>
-                                        <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer["Title"] (@culture.ToUpper())..." />
+                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title] (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer[UIResourceKeys.Title] (@culture.ToUpper())..." />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer["Slug"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer[UIResourceKeys.Slug] (@culture.ToUpper())</label>
                                         <div class="input-group">
                                             <input asp-for="Translations[i].Slug" class="form-control" placeholder="page-abc" />
-                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer["GenerateSlug"]">
+                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer[UIResourceKeys.GenerateSlug]">
                                                 <i class="bi bi-lightning-charge"></i>
                                             </button>
                                         </div>
@@ -59,7 +59,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer["Content"] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer[UIResourceKeys.Content] (@culture.ToUpper())</label>
                                         <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
                                         <input type="hidden" asp-for="Translations[i].BodyHtml" />
                                         <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
@@ -77,20 +77,20 @@
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer["Settings"]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Settings]</h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label d-block text-dark fw-bold">@Localizer["Locations"]</label>
+                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResourceKeys.Locations]</label>
                             <div class="p-3 border rounded bg-light">
                                 @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
                                 {
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
                                         <label class="form-check-label fw-medium" for="loc-@value">
-                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer["HomePage"]</text> }
-                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer["TopNavigation"]</text> }
-                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer["Footer"]</text> }
+                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResourceKeys.HomePage]</text> }
+                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResourceKeys.TopNavigation]</text> }
+                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResourceKeys.Footer]</text> }
                                             else { @value }
                                         </label>
                                     </div>
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="PageOrder" class="form-label fw-bold text-dark">@Localizer["Order"]</label>
+                            <label asp-for="PageOrder" class="form-label fw-bold text-dark">@Localizer[UIResourceKeys.Order]</label>
                             <input asp-for="PageOrder" class="form-control" type="number" />
                             <span asp-validation-for="PageOrder" class="text-danger"></span>
                         </div>
@@ -107,8 +107,8 @@
                         <hr />
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer["Create"] : Localizer["Save"])</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
+                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer[UIResourceKeys.Create] : Localizer[UIResourceKeys.Save])</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
                         </div>
                     </div>
                 </div>

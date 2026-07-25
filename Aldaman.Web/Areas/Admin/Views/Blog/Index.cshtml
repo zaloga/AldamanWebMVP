@@ -2,19 +2,19 @@
 @using Aldaman.Services.Dtos.Blog
 @model PagedResultDto<BlogPostListItemDto>
 @{
-    ViewData["Title"] = Localizer["BlogPosts"];
+    ViewData["Title"] = Localizer[UIResourceKeys.BlogPosts];
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex gap-2">
         <a asp-action="Create" class="btn btn-success">
             <i class="bi bi-plus-lg me-1"></i>
-            @Localizer["Create"]
+            @Localizer[UIResourceKeys.Create]
         </a>
     </div>
     <a asp-action="Deleted" class="btn btn-outline-danger">
         <i class="bi bi-trash"></i>
-        @Localizer["DeletedPosts"]
+        @Localizer[UIResourceKeys.DeletedPosts]
     </a>
 </div>
 
@@ -25,25 +25,25 @@
                 <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
                 </span>
-                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer["Search"]..." value="@Context.Request.Query["SearchTerm"]">
+                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResourceKeys.Search]..." value="@Context.Request.Query["SearchTerm"]">
             </div>
         </div>
         <div class="col-md-4">
             <select name="SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer["SortByCreatedDate"]</option>
-                <option value="@SortByConstants.Title" selected="@(Context.Request.Query["SortBy"] == SortByConstants.Title)">@Localizer["SortByTitle"]</option>
-                <option value="@SortByConstants.PublishedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.PublishedAt)">@Localizer["SortByPublishDate"]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer[UIResourceKeys.SortByCreatedDate]</option>
+                <option value="@SortByConstants.Title" selected="@(Context.Request.Query["SortBy"] == SortByConstants.Title)">@Localizer[UIResourceKeys.SortByTitle]</option>
+                <option value="@SortByConstants.PublishedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.PublishedAt)">@Localizer[UIResourceKeys.SortByPublishDate]</option>
             </select>
         </div>
         <div class="col-md-3">
             <select name="SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query["SortDescending"] == "true" || string.IsNullOrEmpty(Context.Request.Query["SortDescending"]))">@Localizer["Descending"]</option>
-                <option value="false" selected="@(Context.Request.Query["SortDescending"] == "false")">@Localizer["Ascending"]</option>
+                <option value="true" selected="@(Context.Request.Query["SortDescending"] == "true" || string.IsNullOrEmpty(Context.Request.Query["SortDescending"]))">@Localizer[UIResourceKeys.Descending]</option>
+                <option value="false" selected="@(Context.Request.Query["SortDescending"] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
-            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
+            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResourceKeys.Filter]</button>
+            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
         </div>
     </form>
 </div>
@@ -53,17 +53,17 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer["BlogPost"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["CoverImage"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.BlogPost]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.CoverImage]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.State]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="4" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -95,13 +95,13 @@
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
                             {
                                 <span class="text-success small fw-medium">
-                                    @string.Format(Localizer["PublishedOnDate"].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                    @string.Format(Localizer[UIResourceKeys.PublishedOnDate].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
                                 </span>
                             }
                             else
                             {
                                 <span class="text-warning small fw-medium">
-                                    @Localizer["Draft"]
+                                    @Localizer[UIResourceKeys.Draft]
                                 </span>
                             }
                             <div class="text-muted small mt-2">
@@ -122,15 +122,15 @@
                             <div class="d-inline-flex flex-column gap-2">
                                 <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
-                                    @Localizer["Edit"]
+                                    @Localizer[UIResourceKeys.Edit]
                                 </a>
                                 <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
-                                    @Localizer["Details"]
+                                    @Localizer[UIResourceKeys.Details]
                                 </a>
                                 <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer["Delete"]
+                                    @Localizer[UIResourceKeys.Delete]
                                 </button>
                             </div>
                         </td>

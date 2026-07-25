@@ -2,13 +2,13 @@
 @using Aldaman.Services.Dtos.ContactMessage
 @model PagedResultDto<ContactMessageDto>
 @{
-    ViewData["Title"] = Localizer["ContactMessages"];
+    ViewData["Title"] = Localizer[UIResourceKeys.ContactMessages];
 }
 
 <div class="d-flex justify-content-end mb-4">
     <a asp-action="Deleted" class="btn btn-outline-danger">
         <i class="bi bi-trash"></i>
-        @Localizer["DeletedMessages"]
+        @Localizer[UIResourceKeys.DeletedMessages]
     </a>
 </div>
 
@@ -19,24 +19,24 @@
                 <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
                 </span>
-                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer["Search"]..." value="@Context.Request.Query["SearchTerm"]">
+                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResourceKeys.Search]..." value="@Context.Request.Query["SearchTerm"]">
             </div>
         </div>
         <div class="col-md-4">
             <select name="SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer["SortByDate"]</option>
-                <option value="@SortByConstants.State" selected="@(Context.Request.Query["SortBy"] == SortByConstants.State)">@Localizer["SortByStatus"]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer[UIResourceKeys.SortByDate]</option>
+                <option value="@SortByConstants.State" selected="@(Context.Request.Query["SortBy"] == SortByConstants.State)">@Localizer[UIResourceKeys.SortByStatus]</option>
             </select>
         </div>
         <div class="col-md-3">
             <select name="SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query["SortDescending"] == "true" || string.IsNullOrEmpty(Context.Request.Query["SortDescending"]))">@Localizer["Descending"]</option>
-                <option value="false" selected="@(Context.Request.Query["SortDescending"] == "false")">@Localizer["Ascending"]</option>
+                <option value="true" selected="@(Context.Request.Query["SortDescending"] == "true" || string.IsNullOrEmpty(Context.Request.Query["SortDescending"]))">@Localizer[UIResourceKeys.Descending]</option>
+                <option value="false" selected="@(Context.Request.Query["SortDescending"] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer["Filter"]</button>
-            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer["Clear"]</button>
+            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResourceKeys.Filter]</button>
+            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.CreatedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
         </div>
     </form>
 </div>
@@ -46,17 +46,17 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%">@Localizer["Sender"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["Subject"] / @Localizer["Message"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer["State"]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer["Actions"]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 25%">@Localizer[UIResourceKeys.Sender]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Subject] / @Localizer[UIResourceKeys.Message]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.State]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">@Localizer["NoItemsFound"]</td>
+                        <td colspan="4" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -66,20 +66,20 @@
                             <div class="fw-semibold text-dark">@item.EmailOrPhone</div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer["NoSubject"].Value : item.Subject)</div>
+                            <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer[UIResourceKeys.NoSubject].Value : item.Subject)</div>
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                         </td>
                         <td class="py-3">
                             @switch (item.State)
                             {
                                 case ContactMessageState.Pending:
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer["Pending"]</span>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer[UIResourceKeys.Pending]</span>
                                     break;
                                 case ContactMessageState.Sent:
-                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer["Handled"]</span>
+                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer[UIResourceKeys.Handled]</span>
                                     break;
                                 case ContactMessageState.Failed:
-                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer["Failed"]</span>
+                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer[UIResourceKeys.Failed]</span>
                                     break;
                             }
                             <div class="text-muted small mt-2">
@@ -93,20 +93,20 @@
                             <div class="d-inline-flex flex-column gap-2">
                                 <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
-                                    @Localizer["Details"]
+                                    @Localizer[UIResourceKeys.Details]
                                 </a>
                                 @if (item.State == ContactMessageState.Pending)
                                 {
                                     <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-flex w-100 m-0">
                                         <button type="submit" class="btn btn-outline-success btn-sm d-inline align-items-center gap-1 w-100">
                                             <i class="bi bi-check-lg"></i>
-                                            @Localizer["Handle"]
+                                            @Localizer[UIResourceKeys.Handle]
                                         </button>
                                     </form>
                                 }
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer["ConfirmDeleteMessageText"].Value">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResourceKeys.ConfirmDeleteMessageText].Value">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer["Delete"]
+                                    @Localizer[UIResourceKeys.Delete]
                                 </button>
                             </div>
                         </td>

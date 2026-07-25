@@ -101,4 +101,157 @@ public static class UIResourceKeys
     public const string ErrorUploadingFile = nameof(ErrorUploadingFile);
     public const string AltText = nameof(AltText);
     public const string MediaMetadataUpdated = nameof(MediaMetadataUpdated);
+
+    // Admin Common & Layout
+    public const string Create = nameof(Create);
+    public const string Delete = nameof(Delete);
+    public const string Back = nameof(Back);
+    public const string BackToList = nameof(BackToList);
+    public const string Filter = nameof(Filter);
+    public const string Clear = nameof(Clear);
+    public const string Ascending = nameof(Ascending);
+    public const string Descending = nameof(Descending);
+    public const string Dashboard = nameof(Dashboard);
+    public const string GoToWeb = nameof(GoToWeb);
+    public const string AdminUser = nameof(AdminUser);
+    public const string SignOut = nameof(SignOut);
+    public const string Close = nameof(Close);
+    public const string Success = nameof(Success);
+    public const string Information = nameof(Information);
+    public const string PleaseCorrectErrors = nameof(PleaseCorrectErrors);
+    public const string Details = nameof(Details);
+    public const string State = nameof(State);
+    public const string NoItemsFound = nameof(NoItemsFound);
+    public const string None = nameof(None);
+    public const string Title = nameof(Title);
+    public const string Content = nameof(Content);
+    public const string Translations = nameof(Translations);
+    public const string Metadata = nameof(Metadata);
+    public const string SystemInformation = nameof(SystemInformation);
+    public const string Id = nameof(Id);
+    public const string Created = nameof(Created);
+    public const string LastModified = nameof(LastModified);
+    public const string DeletedOn = nameof(DeletedOn);
+    public const string Deleted = nameof(Deleted);
+    public const string Manage = nameof(Manage);
+    public const string Cancel = nameof(Cancel);
+
+    // Pagination
+    public const string Showing = nameof(Showing);
+    public const string To = nameof(To);
+    public const string Of = nameof(Of);
+    public const string Results = nameof(Results);
+    public const string Previous = nameof(Previous);
+    public const string Next = nameof(Next);
+
+    // Modals & Confirmations
+    public const string AreYouSure = nameof(AreYouSure);
+    public const string ConfirmDeleteText = nameof(ConfirmDeleteText);
+    public const string ConfirmDeletePermanentlyText = nameof(ConfirmDeletePermanentlyText);
+    public const string YesDeleteIt = nameof(YesDeleteIt);
+    public const string DeletePermanentlyButton = nameof(DeletePermanentlyButton);
+
+    // Admin Blog
+    public const string BlogPosts = nameof(BlogPosts);
+    public const string DeletedPosts = nameof(DeletedPosts);
+    public const string SortByCreatedDate = nameof(SortByCreatedDate);
+    public const string SortByTitle = nameof(SortByTitle);
+    public const string SortByPublishDate = nameof(SortByPublishDate);
+    public const string BlogPost = nameof(BlogPost);
+    public const string CoverImage = nameof(CoverImage);
+    public const string PublishedOnDate = nameof(PublishedOnDate);
+    public const string Draft = nameof(Draft);
+    public const string Published = nameof(Published);
+    public const string PublicationDate = nameof(PublicationDate);
+    public const string PublishDateInfo = nameof(PublishDateInfo);
+    public const string IsPublished = nameof(IsPublished);
+    public const string RemoveImage = nameof(RemoveImage);
+    public const string ChooseFile = nameof(ChooseFile);
+    public const string NoFileChosen = nameof(NoFileChosen);
+    public const string CoverImageInfo = nameof(CoverImageInfo);
+    public const string NoCoverImage = nameof(NoCoverImage);
+    public const string CreateBlogPost = nameof(CreateBlogPost);
+    public const string UpdateBlogPost = nameof(UpdateBlogPost);
+    public const string BlogPostDetails = nameof(BlogPostDetails);
+    public const string PostSettings = nameof(PostSettings);
+    public const string Perex = nameof(Perex);
+    public const string NoHtmlContent = nameof(NoHtmlContent);
+    public const string AdditionalInfo = nameof(AdditionalInfo);
+    public const string PlainText = nameof(PlainText);
+    public const string NoPlainText = nameof(NoPlainText);
+    public const string Slug = nameof(Slug);
+    public const string DeletedOnDate = nameof(DeletedOnDate);
+    public const string DeletionDate = nameof(DeletionDate);
+
+    // Admin Contact Messages
+    public const string ContactMessages = nameof(ContactMessages);
+    public const string DeletedMessages = nameof(DeletedMessages);
+    public const string SortByDate = nameof(SortByDate);
+    public const string SortByStatus = nameof(SortByStatus);
+    public const string Sender = nameof(Sender);
+    public const string NoSubject = nameof(NoSubject);
+    public const string Pending = nameof(Pending);
+    public const string Handled = nameof(Handled);
+    public const string Failed = nameof(Failed);
+    public const string Handle = nameof(Handle);
+    public const string MarkHandled = nameof(MarkHandled);
+    public const string ConfirmDeleteMessageText = nameof(ConfirmDeleteMessageText);
+    public const string ConfirmDeletePermanentlyMessageText = nameof(ConfirmDeletePermanentlyMessageText);
+    public const string ContactMessageDetails = nameof(ContactMessageDetails);
+    public const string MessageDetails = nameof(MessageDetails);
+    public const string SenderContact = nameof(SenderContact);
+    public const string Status = nameof(Status);
+    public const string Date = nameof(Date);
+    public const string ClientIp = nameof(ClientIp);
+    public const string SentAtUtc = nameof(SentAtUtc);
+    public const string NotRecorded = nameof(NotRecorded);
+    public const string UserAgent = nameof(UserAgent);
+    public const string FailureReason = nameof(FailureReason);
+    public const string DeletedMessage = nameof(DeletedMessage);
+    public const string MessageDeletedOn = nameof(MessageDeletedOn);
+    public const string RestoreMessage = nameof(RestoreMessage);
+
+    // Admin Content Pages
+    public const string Pages = nameof(Pages);
+    public const string DeletedPages = nameof(DeletedPages);
+    public const string SortByOrder = nameof(SortByOrder);
+    public const string Page = nameof(Page);
+    public const string Locations = nameof(Locations);
+    public const string Order = nameof(Order);
+    public const string HomePage = nameof(HomePage);
+    public const string TopNavigation = nameof(TopNavigation);
+    public const string Footer = nameof(Footer);
+    public const string PageDetails = nameof(PageDetails);
+    public const string NoLocationsSelected = nameof(NoLocationsSelected);
+    public const string NotSet = nameof(NotSet);
+    public const string CreatePage = nameof(CreatePage);
+    public const string EditPage = nameof(EditPage);
+    public const string Settings = nameof(Settings);
+
+    // Admin Media
+    public const string MediaLibrary = nameof(MediaLibrary);
+    public const string UploadMedia = nameof(UploadMedia);
+    public const string DeletedAssets = nameof(DeletedAssets);
+    public const string SortByUploadDate = nameof(SortByUploadDate);
+    public const string SortByFilename = nameof(SortByFilename);
+    public const string SortBySize = nameof(SortBySize);
+    public const string Preview = nameof(Preview);
+    public const string FileName = nameof(FileName);
+    public const string Dimensions = nameof(Dimensions);
+    public const string Size = nameof(Size);
+    public const string View = nameof(View);
+    public const string MediaDetails = nameof(MediaDetails);
+    public const string AssetPreview = nameof(AssetPreview);
+    public const string OriginalFileName = nameof(OriginalFileName);
+    public const string ContentType = nameof(ContentType);
+    public const string FileSize = nameof(FileSize);
+    public const string Active = nameof(Active);
+    public const string UploadedAtUtc = nameof(UploadedAtUtc);
+    public const string Uploaded = nameof(Uploaded);
+    public const string PublicPath = nameof(PublicPath);
+    public const string EditMedia = nameof(EditMedia);
+    public const string TitleInfo = nameof(TitleInfo);
+    public const string AltTextInfo = nameof(AltTextInfo);
+    public const string ClickToUpload = nameof(ClickToUpload);
+    public const string MaxFileSizeInfo = nameof(MaxFileSizeInfo);
 }

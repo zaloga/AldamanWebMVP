@@ -1,7 +1,7 @@
 @using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContactMessage.ContactMessageDto
 @{
-    ViewData["Title"] = $"{Localizer["ContactMessageDetails"]}";
+    ViewData["Title"] = $"{Localizer[UIResourceKeys.ContactMessageDetails]}";
 }
 
 <div class="container-fluid">
@@ -9,11 +9,11 @@
         <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["MessageDetails"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.MessageDetails]</h6>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["SenderContact"]</label>
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer[UIResourceKeys.SenderContact]</label>
                         <div class="fw-bold fs-5">
                             <a href="mailto:@Model.EmailOrPhone" class="text-primary text-decoration-none">
                                 <i class="bi bi-envelope me-1"></i>@Model.EmailOrPhone
@@ -22,14 +22,14 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Subject"]</label>
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer[UIResourceKeys.Subject]</label>
                         <div class="p-3 bg-light rounded border fw-bold text-dark">
                             @Model.Subject
                         </div>
                     </div>
 
                     <div>
-                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer["Message"]</label>
+                        <label class="small text-muted text-uppercase fw-bold mb-1 d-block">@Localizer[UIResourceKeys.Message]</label>
                         <div class="p-3 bg-light rounded border white-space-pre-wrap text-dark" style="line-height: 1.6;">@Model.Message</div>
                     </div>
                 </div>
@@ -39,34 +39,34 @@
         <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Metadata"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Metadata]</h6>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Status"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Status]</dt>
                         <dd class="col-sm-7 mb-3">
                             @switch (Model.State)
                             {
                                 case ContactMessageState.Pending:
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">@Localizer["Pending"]</span>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">@Localizer[UIResourceKeys.Pending]</span>
                                     break;
                                 case ContactMessageState.Sent:
-                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">@Localizer["Handled"]</span>
+                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle px-3 py-2">@Localizer[UIResourceKeys.Handled]</span>
                                     break;
                                 case ContactMessageState.Failed:
-                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">@Localizer["Failed"]</span>
+                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2">@Localizer[UIResourceKeys.Failed]</span>
                                     break;
                             }
                         </dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Date"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Date]</dt>
                         <dd class="col-sm-7 mb-3 text-dark fw-medium">@Model.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.FullDateTime)</dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["ClientIp"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.ClientIp]</dt>
                         <dd class="col-sm-7 mb-3">
                             @if (string.IsNullOrWhiteSpace(Model.ClientIp))
                             {
-                                <span class="text-muted">@Localizer["None"]</span>
+                                <span class="text-muted">@Localizer[UIResourceKeys.None]</span>
                             }
                             else
                             {
@@ -74,12 +74,12 @@
                             }
                         </dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["SentAtUtc"]</dt>
-                        <dd class="col-sm-7 mb-3 text-dark">@(Model.SentAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? Localizer["NotRecorded"].Value)</dd>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.SentAtUtc]</dt>
+                        <dd class="col-sm-7 mb-3 text-dark">@(Model.SentAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? Localizer[UIResourceKeys.NotRecorded].Value)</dd>
 
                         @if (!string.IsNullOrWhiteSpace(Model.UserAgent))
                         {
-                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["UserAgent"]</dt>
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.UserAgent]</dt>
                             <dd class="col-sm-7 mb-3">
                                 <div class="font-monospace small p-2 bg-light border rounded text-muted text-break">@Model.UserAgent</div>
                             </dd>
@@ -87,7 +87,7 @@
 
                         @if (!string.IsNullOrEmpty(Model.FailureReason))
                         {
-                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer["FailureReason"]</dt>
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer[UIResourceKeys.FailureReason]</dt>
                             <dd class="col-sm-7 mb-3">
                                 <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small text-break">
                                     @Model.FailureReason
@@ -97,10 +97,10 @@
 
                         @if (Model.IsDeleted)
                         {
-                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer["DeletedMessage"]</dt>
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold text-danger">@Localizer[UIResourceKeys.DeletedMessage]</dt>
                             <dd class="col-sm-7 mb-3">
                                 <div class="p-2 border border-danger-subtle bg-danger-subtle text-danger-emphasis rounded small">
-                                    @Localizer["MessageDeletedOn"] @(Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? "").
+                                    @Localizer[UIResourceKeys.MessageDeletedOn] @(Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.FullDateTime) ?? "").
                                 </div>
                             </dd>
                         }
@@ -114,7 +114,7 @@
                             <form asp-action="MarkHandled" asp-route-id="@Model.Id" method="post" class="d-grid">
                                 <button type="submit" class="btn btn-success d-inline-flex align-items-center justify-content-center gap-2">
                                     <i class="bi bi-check-lg"></i>
-                                    @Localizer["MarkHandled"]
+                                    @Localizer[UIResourceKeys.MarkHandled]
                                 </button>
                             </form>
                         }
@@ -122,21 +122,21 @@
                         @if (Model.IsDeleted)
                         {
                             <button class="btn btn-outline-success d-inline-flex align-items-center justify-content-center gap-2" data-action="restore" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Restore")">
-                                @Localizer["RestoreMessage"]
+                                @Localizer[UIResourceKeys.RestoreMessage]
                             </button>
-                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="hard-delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("HardDelete")" data-confirm-text="@Localizer["ConfirmDeletePermanentlyMessageText"].Value">
-                                @Localizer["DeletePermanently"]
+                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="hard-delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("HardDelete")" data-confirm-text="@Localizer[UIResourceKeys.ConfirmDeletePermanentlyMessageText].Value">
+                                @Localizer[UIResourceKeys.DeletePermanently]
                             </button>
                         }
                         else
                         {
-                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer["ConfirmDeleteMessageText"].Value">
-                                @Localizer["Delete"]
+                            <button class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center gap-2" data-action="delete" data-id="@Model.Id" data-title="@Model.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResourceKeys.ConfirmDeleteMessageText].Value">
+                                @Localizer[UIResourceKeys.Delete]
                             </button>
                         }
 
                         <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center gap-2">
-                            @Localizer["Back"]
+                            @Localizer[UIResourceKeys.Back]
                         </a>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 @using Aldaman.Services.Dtos.Media
 @model UpdateMediaAssetDto
 @{
-    ViewData["Title"] = Localizer["EditMedia"];
+    ViewData["Title"] = Localizer[UIResourceKeys.EditMedia];
     var relativePath = ViewData["RelativePath"] as string;
     var isImage = (bool)ViewData["IsImage"];
 }
@@ -14,13 +14,13 @@
         <div class="col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["AssetPreview"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssetPreview]</h6>
                 </div>
                 <div class="card-body text-center">
                     <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
                         @if (isImage)
                         {
-                            <img src="@relativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Localizer["AssetPreview"]">
+                            <img src="@relativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Localizer[UIResourceKeys.AssetPreview]">
                         }
                         else
                         {
@@ -35,26 +35,26 @@
         <div class="col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["EditMedia"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.EditMedia]</h6>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label asp-for="Title" class="form-label fw-medium">@Localizer["Title"]</label>
-                        <input asp-for="Title" class="form-control" placeholder="@Localizer["TitleInfo"]" />
+                        <label asp-for="Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title]</label>
+                        <input asp-for="Title" class="form-control" placeholder="@Localizer[UIResourceKeys.TitleInfo]" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="AltText" class="form-label fw-medium">@Localizer["AltText"]</label>
-                        <textarea asp-for="AltText" class="form-control" rows="3" placeholder="@Localizer["AltTextInfo"]"></textarea>
+                        <label asp-for="AltText" class="form-label fw-medium">@Localizer[UIResourceKeys.AltText]</label>
+                        <textarea asp-for="AltText" class="form-control" rows="3" placeholder="@Localizer[UIResourceKeys.AltTextInfo]"></textarea>
                         <span asp-validation-for="AltText" class="text-danger"></span>
                     </div>
 
                     <hr />
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-block mb-2">@Localizer["Save"]</button>
-                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
+                        <button type="submit" class="btn btn-success btn-block mb-2">@Localizer[UIResourceKeys.Save]</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
                     </div>
                 </div>
             </div>

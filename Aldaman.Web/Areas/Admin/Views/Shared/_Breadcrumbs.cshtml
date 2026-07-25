@@ -20,10 +20,10 @@
     {
         listTitle = controller switch
         {
-            "Blog" => Localizer["BlogPosts"].Value,
-            "ContentPages" => Localizer["Pages"].Value,
-            "ContactMessages" => Localizer["ContactMessages"].Value,
-            "Media" => Localizer["MediaLibrary"].Value,
+            "Blog" => Localizer[UIResourceKeys.BlogPosts].Value,
+            "ContentPages" => Localizer[UIResourceKeys.Pages].Value,
+            "ContactMessages" => Localizer[UIResourceKeys.ContactMessages].Value,
+            "Media" => Localizer[UIResourceKeys.MediaLibrary].Value,
             _ => controller
         };
     }
@@ -33,11 +33,11 @@
     {
         deletedListTitle = controller switch
         {
-            "Blog" => Localizer["DeletedPosts"].Value,
-            "ContentPages" => Localizer["DeletedPages"].Value,
-            "ContactMessages" => Localizer["DeletedMessages"].Value,
-            "Media" => Localizer["DeletedAssets"].Value,
-            _ => Localizer["Deleted"].Value
+            "Blog" => Localizer[UIResourceKeys.DeletedPosts].Value,
+            "ContentPages" => Localizer[UIResourceKeys.DeletedPages].Value,
+            "ContactMessages" => Localizer[UIResourceKeys.DeletedMessages].Value,
+            "Media" => Localizer[UIResourceKeys.DeletedAssets].Value,
+            _ => Localizer[UIResourceKeys.Deleted].Value
         };
     }
 }
@@ -47,7 +47,7 @@
         <li class="breadcrumb-item">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-inline-flex align-items-center">
                 <i class="bi bi-house-door-fill me-1"></i>
-                @Localizer["Dashboard"]
+                @Localizer[UIResourceKeys.Dashboard]
             </a>
         </li>
         @if (!isHome)
@@ -84,7 +84,7 @@
                         </a>
                     </li>
                 }
-                @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && ViewData["Title"].ToString() != Localizer["Dashboard"].Value)
+                @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && ViewData["Title"].ToString() != Localizer[UIResourceKeys.Dashboard].Value)
                 {
                     <li class="breadcrumb-item active" aria-current="page">
                         @ViewData["Title"]

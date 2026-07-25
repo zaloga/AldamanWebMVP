@@ -1,7 +1,7 @@
 @using Aldaman.Services.Dtos.Media
 @model MediaAssetDto
 @{
-    ViewData["Title"] = Localizer["MediaDetails"];
+    ViewData["Title"] = Localizer[UIResourceKeys.MediaDetails];
 }
 
 <div class="container-fluid">
@@ -9,7 +9,7 @@
         <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["AssetPreview"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssetPreview]</h6>
                 </div>
                 <div class="card-body text-center">
                     <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
@@ -34,37 +34,37 @@
         <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer["Metadata"]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Metadata]</h6>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["OriginalFileName"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.OriginalFileName]</dt>
                         <dd class="col-sm-7 text-break">@Model.OriginalFileName</dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Title"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Title]</dt>
                         <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.Title) ? "-" : Model.Title)</dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["AltText"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.AltText]</dt>
                         <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.AltText) ? "-" : Model.AltText)</dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["ContentType"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.ContentType]</dt>
                         <dd class="col-sm-7"><span class="badge bg-light text-dark border">@Model.ContentType</span></dd>
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["FileSize"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.FileSize]</dt>
                         <dd class="col-sm-7">@((Model.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</dd>
 
                         @if (Model.IsImage && Model.Width.HasValue && Model.Height.HasValue)
                         {
-                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Dimensions"]</dt>
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Dimensions]</dt>
                             <dd class="col-sm-7">@Model.Width x @Model.Height px</dd>
                         }
 
-                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["Uploaded"]</dt>
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Uploaded]</dt>
                         <dd class="col-sm-7">@Model.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
 
                         @if (Model.IsDeleted)
                         {
-                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer["DeletionDate"]</dt>
+                            <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.DeletionDate]</dt>
                             <dd class="col-sm-7 text-danger fw-medium">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
                         }
                     </dl>
@@ -74,9 +74,9 @@
                     <div class="d-grid">
                         @if (!Model.IsDeleted)
                         {
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer["Edit"]</a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer[UIResourceKeys.Edit]</a>
                         }
-                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer["Back"]</a>
+                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
                     </div>
                 </div>
             </div>

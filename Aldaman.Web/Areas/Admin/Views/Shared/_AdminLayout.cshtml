@@ -16,11 +16,11 @@
 
             <div class="d-flex align-items-center gap-4">
                 <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-flex align-items-center">
-                    <span class="h4 mb-0 fw-bold text-primary">@Localizer["Admin"]</span>
+                    <span class="h4 mb-0 fw-bold text-primary">@Localizer[UIResourceKeys.Admin]</span>
                 </a>
 
                 <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-outline-primary btn-md d-flex align-items-center gap-2">
-                    <i class="bi bi-box-arrow-up-right"></i> @Localizer["GoToWeb"]
+                    <i class="bi bi-box-arrow-up-right"></i> @Localizer[UIResourceKeys.GoToWeb]
                 </a>
             </div>
 
@@ -33,7 +33,7 @@
                         <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 32px; height: 32px; font-size: 14px;">
                             A
                         </div>
-                        <span class="fw-medium">@Localizer["AdminUser"]</span>
+                        <span class="fw-medium">@Localizer[UIResourceKeys.AdminUser]</span>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown">
@@ -41,7 +41,7 @@
                         <li>
                             <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@ViewContext.RouteData.Values["culture"]" method="post" class="m-0">
                                 <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                    <i class="bi bi-box-arrow-right"></i> @Localizer["SignOut"]
+                                    <i class="bi bi-box-arrow-right"></i> @Localizer[UIResourceKeys.SignOut]
                                 </button>
                             </form>
                         </li>
@@ -65,21 +65,21 @@
     <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
     <script>
         window.AdminI18n = {
-            areYouSure: @Html.Raw(Json.Serialize(Localizer["AreYouSure"].Value)),
-            confirmDeleteText: @Html.Raw(Json.Serialize(Localizer["ConfirmDeleteText"].Value)),
-            confirmDeletePermanentlyText: @Html.Raw(Json.Serialize(Localizer["ConfirmDeletePermanentlyText"].Value)),
-            confirmRestoreText: @Html.Raw(Json.Serialize(Localizer["ConfirmRestoreText"].Value)),
-            yesDeleteIt: @Html.Raw(Json.Serialize(Localizer["YesDeleteIt"].Value)),
-            deletePermanentlyButton: @Html.Raw(Json.Serialize(Localizer["DeletePermanentlyButton"].Value)),
-            cancel: @Html.Raw(Json.Serialize(Localizer["Cancel"].Value)),
-            deletedSuccessfully: @Html.Raw(Json.Serialize(Localizer["DeletedSuccessfully"].Value)),
-            restoredSuccessfully: @Html.Raw(Json.Serialize(Localizer["RestoredSuccessfully"].Value)),
-            yes: @Html.Raw(Json.Serialize(Localizer["Yes"].Value)),
-            fileSizeExceedsLimit: @Html.Raw(Json.Serialize(Localizer["FileSizeExceedsLimit"].Value)),
-            imageUploadFailed: @Html.Raw(Json.Serialize(Localizer["ImageUploadFailed"].Value)),
-            errorUploadingImage: @Html.Raw(Json.Serialize(Localizer["ErrorUploadingImage"].Value)),
-            error: @Html.Raw(Json.Serialize(Localizer["Error"].Value)),
-            errorOccurred: @Html.Raw(Json.Serialize(Localizer["ErrorOccurred"].Value))
+            areYouSure: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.AreYouSure].Value)),
+            confirmDeleteText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmDeleteText].Value)),
+            confirmDeletePermanentlyText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmDeletePermanentlyText].Value)),
+            confirmRestoreText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmRestoreText].Value)),
+            yesDeleteIt: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.YesDeleteIt].Value)),
+            deletePermanentlyButton: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.DeletePermanentlyButton].Value)),
+            cancel: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Cancel].Value)),
+            deletedSuccessfully: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.DeletedSuccessfully].Value)),
+            restoredSuccessfully: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RestoredSuccessfully].Value)),
+            yes: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Yes].Value)),
+            fileSizeExceedsLimit: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.FileSizeExceedsLimit].Value)),
+            imageUploadFailed: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ImageUploadFailed].Value)),
+            errorUploadingImage: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorUploadingImage].Value)),
+            error: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Error].Value)),
+            errorOccurred: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorOccurred].Value))
         };
     </script>
     <script src="~/js/admin-actions.js" asp-append-version="true"></script>
