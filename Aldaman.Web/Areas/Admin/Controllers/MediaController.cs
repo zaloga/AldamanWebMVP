@@ -1,3 +1,4 @@
+using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
@@ -41,7 +42,7 @@ public class MediaController : BaseAdminController
     {
         if (file == null || file.Length == 0)
         {
-            ModelState.AddModelError("file", "Please select a file to upload.");
+            ModelState.AddModelError("file", Localizer[UIResourceKeys.PleaseSelectFile].Value);
             return View();
         }
 
@@ -52,12 +53,12 @@ public class MediaController : BaseAdminController
                 await MediaService.UploadAsync(stream, file.FileName, file.ContentType);
             }
 
-            TempData["SuccessMessage"] = "File uploaded successfully.";
+            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.FileUploadedSuccessfully].Value;
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Error uploading file: " + ex.Message);
+            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorUploadingFile, ex.Message].Value);
             return View();
         }
     }
@@ -68,7 +69,7 @@ public class MediaController : BaseAdminController
     {
         if (file == null || file.Length == 0)
         {
-            return Json(new { success = false, message = "Please select a file to upload." });
+            return Json(new { success = false, message = Localizer[UIResourceKeys.PleaseSelectFile].Value });
         }
 
         try
@@ -120,7 +121,7 @@ public class MediaController : BaseAdminController
         if (!ModelState.IsValid) return View(model);
 
         await MediaService.UpdateAssetAsync(model);
-        TempData["SuccessMessage"] = "Media metadata updated.";
+        TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.MediaMetadataUpdated].Value;
         return RedirectToAction(nameof(Index));
     }
 

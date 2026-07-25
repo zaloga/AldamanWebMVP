@@ -756,4 +756,37 @@
   <data name="ErrorUploadingImage" xml:space="preserve">
     <value>Error uploading image.</value>
   </data>
+  <data name="StyleSettingUpdated" xml:space="preserve">
+    <value>Style setting updated successfully.</value>
+  </data>
+  <data name="StyleSettingCreated" xml:space="preserve">
+    <value>Style setting created successfully.</value>
+  </data>
+  <data name="StyleSettingResetSuccessfully" xml:space="preserve">
+    <value>Style setting reset to default successfully.</value>
+  </data>
+  <data name="PageCreatedSuccessfully" xml:space="preserve">
+    <value>Page created successfully.</value>
+  </data>
+  <data name="ErrorCreatingPage" xml:space="preserve">
+    <value>Error creating page: {0}</value>
+  </data>
+  <data name="PageUpdatedSuccessfully" xml:space="preserve">
+    <value>Page updated successfully.</value>
+  </data>
+  <data name="ErrorUpdatingPage" xml:space="preserve">
+    <value>Error updating page: {0}</value>
+  </data>
+  <data name="PleaseSelectFile" xml:space="preserve">
+    <value>Please select a file to upload.</value>
+  </data>
+  <data name="FileUploadedSuccessfully" xml:space="preserve">
+    <value>File uploaded successfully.</value>
+  </data>
+  <data name="ErrorUploadingFile" xml:space="preserve">
+    <value>Error uploading file: {0}</value>
+  </data>
+  <data name="MediaMetadataUpdated" xml:space="preserve">
+    <value>Media metadata updated.</value>
+  </data>
 </root>

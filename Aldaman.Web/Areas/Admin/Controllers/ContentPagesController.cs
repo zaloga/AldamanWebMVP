@@ -1,3 +1,4 @@
+using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
@@ -95,12 +96,12 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.CreateContentPageAsync(model);
-            TempData["SuccessMessage"] = "Page created successfully.";
+            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PageCreatedSuccessfully].Value;
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Error creating page: " + ex.Message);
+            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorCreatingPage, ex.Message].Value);
             return View("Update", model);
         }
     }
@@ -146,7 +147,7 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.UpdateContentPageAsync(id, model);
-            TempData["SuccessMessage"] = "Page updated successfully.";
+            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PageUpdatedSuccessfully].Value;
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)
@@ -155,7 +156,7 @@ public class ContentPagesController : BaseAdminController
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Error updating page: " + ex.Message);
+            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorUpdatingPage, ex.Message].Value);
             return View(model);
         }
     }

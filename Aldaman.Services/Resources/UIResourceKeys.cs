@@ -81,4 +81,17 @@ public static class UIResourceKeys
     public const string Key = nameof(Key);
     public const string Type = nameof(Type);
     public const string Value = nameof(Value);
+    public const string StyleSettingUpdated = nameof(StyleSettingUpdated);
+    public const string StyleSettingCreated = nameof(StyleSettingCreated);
+    public const string StyleSettingResetSuccessfully = nameof(StyleSettingResetSuccessfully);
+
+    // Pages & Media
+    public const string PageCreatedSuccessfully = nameof(PageCreatedSuccessfully);
+    public const string ErrorCreatingPage = nameof(ErrorCreatingPage);
+    public const string PageUpdatedSuccessfully = nameof(PageUpdatedSuccessfully);
+    public const string ErrorUpdatingPage = nameof(ErrorUpdatingPage);
+    public const string PleaseSelectFile = nameof(PleaseSelectFile);
+    public const string FileUploadedSuccessfully = nameof(FileUploadedSuccessfully);
+    public const string ErrorUploadingFile = nameof(ErrorUploadingFile);
+    public const string MediaMetadataUpdated = nameof(MediaMetadataUpdated);
 }

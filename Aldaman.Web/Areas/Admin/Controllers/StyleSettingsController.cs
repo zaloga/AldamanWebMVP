@@ -1,3 +1,4 @@
+using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.StyleSettings;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -59,9 +60,9 @@ public class StyleSettingsController : BaseAdminController
         bool isEdit = dto.Id.HasValue && dto.Id != Guid.Empty;
         await _styleService.UpdateSettingAsync(dto);
 
-        TempData["SuccessMessage"] = isEdit
-            ? "Style setting updated successfully."
-            : "Style setting created successfully.";
+        TempData[TempDataKeys.SuccessMessage] = isEdit
+            ? Localizer[UIResourceKeys.StyleSettingUpdated].Value
+            : Localizer[UIResourceKeys.StyleSettingCreated].Value;
 
         return RedirectToAction(nameof(Index));
     }
@@ -78,7 +79,7 @@ public class StyleSettingsController : BaseAdminController
 
         await _styleService.UpdateSettingAsync(dto);
 
-        TempData["SuccessMessage"] = "Style setting updated successfully.";
+        TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.StyleSettingUpdated].Value;
 
         return RedirectToAction(nameof(Index));
     }
@@ -89,7 +90,7 @@ public class StyleSettingsController : BaseAdminController
     {
         await _styleService.ResetToDefaultSettingAsync(id);
 
-        return Json(new { success = true, message = "Style setting reset to default successfully." });
+        return Json(new { success = true, message = Localizer[UIResourceKeys.StyleSettingResetSuccessfully].Value });
     }
 
     [HttpPost]

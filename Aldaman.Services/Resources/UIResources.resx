@@ -756,4 +756,37 @@
   <data name="ErrorUploadingImage" xml:space="preserve">
     <value>Chyba při nahrávání obrázku.</value>
   </data>
+  <data name="StyleSettingUpdated" xml:space="preserve">
+    <value>Nastavení stylu bylo úspěšně upraveno.</value>
+  </data>
+  <data name="StyleSettingCreated" xml:space="preserve">
+    <value>Nastavení stylu bylo úspěšně vytvořeno.</value>
+  </data>
+  <data name="StyleSettingResetSuccessfully" xml:space="preserve">
+    <value>Nastavení stylu bylo úspěšně resetováno na výchozí.</value>
+  </data>
+  <data name="PageCreatedSuccessfully" xml:space="preserve">
+    <value>Stránka byla úspěšně vytvořena.</value>
+  </data>
+  <data name="ErrorCreatingPage" xml:space="preserve">
+    <value>Chyba při vytváření stránky: {0}</value>
+  </data>
+  <data name="PageUpdatedSuccessfully" xml:space="preserve">
+    <value>Stránka byla úspěšně upravena.</value>
+  </data>
+  <data name="ErrorUpdatingPage" xml:space="preserve">
+    <value>Chyba při úpravě stránky: {0}</value>
+  </data>
+  <data name="PleaseSelectFile" xml:space="preserve">
+    <value>Vyberte prosím soubor ke stažení/nahrání.</value>
+  </data>
+  <data name="FileUploadedSuccessfully" xml:space="preserve">
+    <value>Soubor byl úspěšně nahrán.</value>
+  </data>
+  <data name="ErrorUploadingFile" xml:space="preserve">
+    <value>Chyba při nahrávání souboru: {0}</value>
+  </data>
+  <data name="MediaMetadataUpdated" xml:space="preserve">
+    <value>Metadata média byla upravena.</value>
+  </data>
 </root>
