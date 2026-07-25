@@ -741,4 +741,16 @@
   <data name="ErrorPermanentlyDeleting" xml:space="preserve">
     <value>Chyba při trvalém mazání: {0}</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="FileSizeExceedsLimit" xml:space="preserve">
+    <value>Velikost souboru přesahuje limit 1 MB.</value>
+  </data>
+  <data name="ImageUploadFailed" xml:space="preserve">
+    <value>Nahrávání obrázku selhalo.</value>
+  </data>
+  <data name="ErrorUploadingImage" xml:space="preserve">
+    <value>Chyba při nahrávání obrázku.</value>
+  </data>
 </root>

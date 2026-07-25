@@ -34,21 +34,21 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function deleteItem(id, title, url, customConfirmText) {
     const i18n = window.AdminI18n || {};
-    const textTemplate = customConfirmText || i18n.confirmDeleteText || 'Opravdu chcete smazat „{0}“?';
-    const confirmText = textTemplate.replace('{0}', title);
+    const textTemplate = customConfirmText || i18n.confirmDeleteText;
+    const confirmText = textTemplate ? textTemplate.replace('{0}', title) : title;
 
     Swal.fire({
-        title: i18n.areYouSure || 'Jste si jistí?',
+        title: i18n.areYouSure,
         text: confirmText,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#64748b',
-        confirmButtonText: i18n.yesDeleteIt || 'Ano, smazat!',
-        cancelButtonText: i18n.cancel || 'Zrušit'
+        confirmButtonText: i18n.yesDeleteIt,
+        cancelButtonText: i18n.cancel
     }).then((result) => {
         if (result.isConfirmed) {
-            executeAction(url, id, i18n.deletedSuccessfully || 'Úspěšně smazáno');
+            executeAction(url, id, i18n.deletedSuccessfully);
         }
     });
 }
@@ -58,21 +58,21 @@ function deleteItem(id, title, url, customConfirmText) {
  */
 function hardDeleteItem(id, title, url, customConfirmText) {
     const i18n = window.AdminI18n || {};
-    const textTemplate = customConfirmText || i18n.confirmDeletePermanentlyText || 'Opravdu chcete TRVALE smazat „{0}“?';
-    const confirmText = textTemplate.replace('{0}', title);
+    const textTemplate = customConfirmText || i18n.confirmDeletePermanentlyText;
+    const confirmText = textTemplate ? textTemplate.replace('{0}', title) : title;
 
     Swal.fire({
-        title: i18n.areYouSure || 'Jste si jistí?',
+        title: i18n.areYouSure,
         text: confirmText,
         icon: 'error',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#64748b',
-        confirmButtonText: i18n.deletePermanentlyButton || 'Ano, smazat navždy!',
-        cancelButtonText: i18n.cancel || 'Zrušit'
+        confirmButtonText: i18n.deletePermanentlyButton,
+        cancelButtonText: i18n.cancel
     }).then((result) => {
         if (result.isConfirmed) {
-            executeAction(url, id, i18n.deletedSuccessfully || 'Úspěšně smazáno');
+            executeAction(url, id, i18n.deletedSuccessfully);
         }
     });
 }
@@ -82,7 +82,7 @@ function hardDeleteItem(id, title, url, customConfirmText) {
  */
 function restoreItem(id, title, url) {
     const i18n = window.AdminI18n || {};
-    executeAction(url, id, i18n.restoredSuccessfully || 'Úspěšně obnoveno');
+    executeAction(url, id, i18n.restoredSuccessfully);
 }
 
 /**
@@ -101,16 +101,19 @@ function executeAction(url, id, defaultSuccessMsg) {
         },
         success: function (response) {
             if (response && response.success) {
-                Swal.fire(defaultSuccessMsg, response.message || '', 'success').then(() => {
+                Swal.fire({
+                    title: response.message || defaultSuccessMsg,
+                    icon: 'success'
+                }).then(() => {
                     location.reload();
                 });
             } else {
-                const msg = (response && response.message) ? response.message : (i18n.errorOccurred || 'Chyba při provádění akce');
-                Swal.fire(i18n.error || 'Chyba', msg, 'error');
+                const msg = (response && response.message) ? response.message : i18n.errorOccurred;
+                Swal.fire(i18n.error, msg, 'error');
             }
         },
         error: function () {
-            Swal.fire(i18n.error || 'Chyba', i18n.errorOccurred || 'Došlo k neočekávané chybě', 'error');
+            Swal.fire(i18n.error, i18n.errorOccurred, 'error');
         }
     });
 }

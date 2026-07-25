@@ -741,4 +741,16 @@
   <data name="ErrorPermanentlyDeleting" xml:space="preserve">
     <value>Error permanently deleting: {0}</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="FileSizeExceedsLimit" xml:space="preserve">
+    <value>File size exceeds the 1 MB limit.</value>
+  </data>
+  <data name="ImageUploadFailed" xml:space="preserve">
+    <value>Image upload failed.</value>
+  </data>
+  <data name="ErrorUploadingImage" xml:space="preserve">
+    <value>Error uploading image.</value>
+  </data>
 </root>

@@ -67,6 +67,10 @@ public static class UIResourceKeys
     public const string ErrorRestoring = nameof(ErrorRestoring);
     public const string PermanentlyDeleted = nameof(PermanentlyDeleted);
     public const string ErrorPermanentlyDeleting = nameof(ErrorPermanentlyDeleting);
+    public const string Yes = nameof(Yes);
+    public const string FileSizeExceedsLimit = nameof(FileSizeExceedsLimit);
+    public const string ImageUploadFailed = nameof(ImageUploadFailed);
+    public const string ErrorUploadingImage = nameof(ErrorUploadingImage);
 
     // Style Settings
     public const string StyleSettings = nameof(StyleSettings);

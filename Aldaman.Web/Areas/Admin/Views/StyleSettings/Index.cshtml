@@ -130,14 +130,14 @@
         function resetToDefault(id, key, defaultValue) {
             const i18n = window.AdminI18n || {};
             Swal.fire({
-                title: i18n.areYouSure || 'Jste si jistí?',
+                title: i18n.areYouSure,
                 text: key + ' (' + defaultValue + ')',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#6366f1',
                 cancelButtonColor: '#64748b',
-                confirmButtonText: '@Localizer["Yes"]',
-                cancelButtonText: i18n.cancel || 'Zrušit'
+                confirmButtonText: i18n.yes,
+                cancelButtonText: i18n.cancel
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -149,16 +149,19 @@
                         },
                         success: function(response) {
                             if (response && response.success) {
-                                Swal.fire('@Localizer["UpdatedSuccessfully"]', response.message || '', 'success').then(() => {
+                                Swal.fire({
+                                    title: response.message || '@Localizer["UpdatedSuccessfully"]',
+                                    icon: 'success'
+                                }).then(() => {
                                     location.reload();
                                 });
                             } else {
-                                const msg = (response && response.message) ? response.message : (i18n.errorOccurred || 'Chyba při provádění akce');
-                                Swal.fire(i18n.error || 'Chyba', msg, 'error');
+                                const msg = (response && response.message) ? response.message : i18n.errorOccurred;
+                                Swal.fire(i18n.error, msg, 'error');
                             }
                         },
                         error: function() {
-                            Swal.fire(i18n.error || 'Chyba', i18n.errorOccurred || 'Došlo k neočekávané chybě', 'error');
+                            Swal.fire(i18n.error, i18n.errorOccurred, 'error');
                         }
                     });
                 }

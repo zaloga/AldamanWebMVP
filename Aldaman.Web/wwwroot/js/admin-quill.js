@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Custom Image Handler for AJAX Upload
         const imageHandler = function() {
+            const i18n = window.AdminI18n || {};
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/*');
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!file) return;
 
                 if (file.size > 1024 * 1024) {
-                    alert('File size exceeds the 1 MB limit.');
+                    alert(i18n.fileSizeExceedsLimit);
                     return;
                 }
 
@@ -58,11 +59,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         quill.insertEmbed(range.index, 'image', result.url);
                         quill.setSelection(range.index + 1);
                     } else {
-                        alert(result.message || 'Image upload failed.');
+                        alert(result.message || i18n.imageUploadFailed);
                     }
                 } catch (error) {
                     console.error('Error uploading image:', error);
-                    alert('Error uploading image.');
+                    alert(i18n.errorUploadingImage);
                 }
             };
         };
