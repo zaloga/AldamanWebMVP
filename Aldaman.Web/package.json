@@ -8,7 +8,8 @@
     "watch:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css --watch",
     "copy:quill": "npx shx mkdir -p wwwroot/lib/quill && npx shx cp node_modules/quill/dist/quill.js wwwroot/lib/quill/ && npx shx cp node_modules/quill/dist/quill.snow.css wwwroot/lib/quill/",
     "copy:bootstrap-icons": "npx shx mkdir -p wwwroot/lib/bootstrap-icons && npx shx cp -r node_modules/bootstrap-icons/font wwwroot/lib/bootstrap-icons/",
-    "build": "npm run copy:quill && npm run copy:bootstrap-icons && npm run build:web"
+    "copy:sweetalert2": "npx shx mkdir -p wwwroot/lib/sweetalert2 && npx shx cp node_modules/sweetalert2/dist/sweetalert2.all.min.js wwwroot/lib/sweetalert2/",
+    "build": "npm run copy:quill && npm run copy:bootstrap-icons && npm run copy:sweetalert2 && npm run build:web"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "tailwindcss": "^4.2.2"
   },
   "dependencies": {
-    "quill": "^2.0.3"
+    "quill": "^2.0.3",
+    "sweetalert2": "^11.17.2"
   }
 }
