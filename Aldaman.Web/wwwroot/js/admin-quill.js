@@ -91,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // Apply localized tooltips to toolbar buttons and pickers
+        addQuillTooltips(quill);
+
         // Load initial content if available (prefer Delta, fallback to HTML)
         if (deltaInput.value) {
             try {
@@ -122,3 +125,41 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+/**
+ * Attaches localized title attributes to Quill toolbar controls.
+ */
+function addQuillTooltips(quill) {
+    const i18n = window.AdminI18n || {};
+    const tooltips = i18n.quillTooltips || {};
+    const toolbarModule = quill.getModule('toolbar');
+    if (!toolbarModule || !toolbarModule.container) return;
+
+    const toolbar = toolbarModule.container;
+
+    // Attach titles to standard toolbar buttons
+    toolbar.querySelectorAll('button').forEach(button => {
+        for (const [selector, text] of Object.entries(tooltips)) {
+            if (!text) continue;
+            if (button.classList.contains(`ql-${selector}`) || button.matches(`.ql-${selector}`)) {
+                button.setAttribute('title', text);
+                break;
+            }
+        }
+    });
+
+    // Attach titles to picker dropdowns (Font, Size, Align, Header)
+    toolbar.querySelectorAll('.ql-picker').forEach(picker => {
+        for (const [selector, text] of Object.entries(tooltips)) {
+            if (!text) continue;
+            if (picker.classList.contains(`ql-${selector}`)) {
+                const label = picker.querySelector('.ql-picker-label');
+                if (label) {
+                    label.setAttribute('title', text);
+                }
+                break;
+            }
+        }
+    });
+}
+

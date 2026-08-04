@@ -781,6 +781,87 @@
     <value>Media metadata updated.</value>
   </data>
   <data name="AltText" xml:space="preserve">
-    <value>Alt Text</value>
+    <value>Alternative Text</value>
+  </data>
+  <data name="RteBold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="RteItalic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="RteUnderline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="RteStrikethrough" xml:space="preserve">
+    <value>Strikethrough</value>
+  </data>
+  <data name="RteTextColor" xml:space="preserve">
+    <value>Text Color</value>
+  </data>
+  <data name="RteBackgroundColor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="RteSubscript" xml:space="preserve">
+    <value>Subscript</value>
+  </data>
+  <data name="RteSuperscript" xml:space="preserve">
+    <value>Superscript</value>
+  </data>
+  <data name="RteHeader1" xml:space="preserve">
+    <value>Heading 1</value>
+  </data>
+  <data name="RteHeader2" xml:space="preserve">
+    <value>Heading 2</value>
+  </data>
+  <data name="RteHeader3" xml:space="preserve">
+    <value>Heading 3</value>
+  </data>
+  <data name="RteHeader4" xml:space="preserve">
+    <value>Heading 4</value>
+  </data>
+  <data name="RteBlockquote" xml:space="preserve">
+    <value>Blockquote</value>
+  </data>
+  <data name="RteCodeBlock" xml:space="preserve">
+    <value>Code Block</value>
+  </data>
+  <data name="RteListOrdered" xml:space="preserve">
+    <value>Numbered List</value>
+  </data>
+  <data name="RteListBullet" xml:space="preserve">
+    <value>Bullet List</value>
+  </data>
+  <data name="RteIndentDecrease" xml:space="preserve">
+    <value>Decrease Indent</value>
+  </data>
+  <data name="RteIndentIncrease" xml:space="preserve">
+    <value>Increase Indent</value>
+  </data>
+  <data name="RteDirection" xml:space="preserve">
+    <value>Text Direction</value>
+  </data>
+  <data name="RteAlign" xml:space="preserve">
+    <value>Text Alignment</value>
+  </data>
+  <data name="RteLink" xml:space="preserve">
+    <value>Insert Link</value>
+  </data>
+  <data name="RteImage" xml:space="preserve">
+    <value>Insert Image</value>
+  </data>
+  <data name="RteVideo" xml:space="preserve">
+    <value>Insert Video</value>
+  </data>
+  <data name="RteFormula" xml:space="preserve">
+    <value>Insert Formula</value>
+  </data>
+  <data name="RteClean" xml:space="preserve">
+    <value>Clear Formatting</value>
+  </data>
+  <data name="RteFont" xml:space="preserve">
+    <value>Font Family</value>
+  </data>
+  <data name="RteSize" xml:space="preserve">
+    <value>Font Size</value>
   </data>
 </root>

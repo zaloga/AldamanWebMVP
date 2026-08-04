@@ -79,8 +79,38 @@
             imageUploadFailed: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ImageUploadFailed].Value)),
             errorUploadingImage: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorUploadingImage].Value)),
             error: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Error].Value)),
-            errorOccurred: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorOccurred].Value))
+            errorOccurred: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorOccurred].Value)),
+            quillTooltips: {
+                'bold': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBold].Value)),
+                'italic': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteItalic].Value)),
+                'underline': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteUnderline].Value)),
+                'strike': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteStrikethrough].Value)),
+                'color': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteTextColor].Value)),
+                'background': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBackgroundColor].Value)),
+                'script[value="sub"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSubscript].Value)),
+                'script[value="super"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSuperscript].Value)),
+                'header[value="1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader1].Value)),
+                'header[value="2"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader2].Value)),
+                'header[value="3"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader3].Value)),
+                'header[value="4"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader4].Value)),
+                'blockquote': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBlockquote].Value)),
+                'code-block': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteCodeBlock].Value)),
+                'list[value="ordered"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteListOrdered].Value)),
+                'list[value="bullet"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteListBullet].Value)),
+                'indent[value="-1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteIndentDecrease].Value)),
+                'indent[value="+1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteIndentIncrease].Value)),
+                'direction': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteDirection].Value)),
+                'align': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteAlign].Value)),
+                'link': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteLink].Value)),
+                'image': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteImage].Value)),
+                'video': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteVideo].Value)),
+                'formula': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFormula].Value)),
+                'clean': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteClean].Value)),
+                'font': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFont].Value)),
+                'size': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSize].Value))
+            }
         };
+
     </script>
     <script src="~/js/admin-actions.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
