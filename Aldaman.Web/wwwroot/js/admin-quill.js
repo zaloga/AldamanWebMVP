@@ -152,25 +152,73 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /**
- * Prompts the native HTML5 color picker placed in the center of the viewport.
+ * Prompts the native HTML5 color picker positioned directly over the ql-picker-label button.
  */
 function openNativeColorPicker(format, quill, event) {
     const input = document.createElement('input');
     input.type = 'color';
-    input.value = '#000000';
     
-    // Position fixed in center of viewport so popup opens centered
+    // Determine initial color from current selection format if available
+    let initialColor = format === 'background' ? '#ffffff' : '#000000';
+    if (quill) {
+        const formatState = quill.getFormat();
+        const activeColor = formatState[format];
+        if (typeof activeColor === 'string' && activeColor.trim().length > 0) {
+            initialColor = formatColorToHex(activeColor, initialColor);
+        }
+    }
+    input.value = initialColor;
+    
+    // Locate the .ql-picker-label button on the toolbar to position picker underneath it
+    let pickerLabel = null;
+    if (event && event.target && typeof event.target.closest === 'function') {
+        const pickerElem = event.target.closest('.ql-picker');
+        if (pickerElem) {
+            pickerLabel = pickerElem.querySelector('.ql-picker-label') || pickerElem;
+        }
+    }
+    if (!pickerLabel && quill) {
+        const toolbarModule = typeof quill.getModule === 'function' ? quill.getModule('toolbar') : null;
+        const toolbar = (toolbarModule && toolbarModule.container) || 
+                        (quill.container && quill.container.parentElement && quill.container.parentElement.querySelector('.ql-toolbar'));
+        if (toolbar) {
+            const pickerElem = toolbar.querySelector(`.ql-picker.ql-${format}`);
+            if (pickerElem) {
+                pickerLabel = pickerElem.querySelector('.ql-picker-label') || pickerElem;
+            }
+        }
+    }
+
     input.style.position = 'fixed';
-    input.style.top = '50%';
-    input.style.left = '50%';
-    input.style.transform = 'translate(-50%, -50%)';
-    input.style.width = '1px';
-    input.style.height = '1px';
-    input.style.opacity = '0';
-    input.style.pointerEvents = 'none';
+    if (pickerLabel) {
+        const rect = pickerLabel.getBoundingClientRect();
+        input.style.left = `${Math.round(rect.left)}px`;
+        input.style.top = `${Math.round(rect.top)}px`;
+        input.style.width = `${Math.max(Math.round(rect.width), 28)}px`;
+        input.style.height = `${Math.max(Math.round(rect.height), 24)}px`;
+        input.style.transform = 'none';
+    } else {
+        input.style.top = '50%';
+        input.style.left = '50%';
+        input.style.transform = 'translate(-50%, -50%)';
+        input.style.width = '40px';
+        input.style.height = '40px';
+    }
+
+    input.style.opacity = '0.01';
+    input.style.margin = '0';
+    input.style.padding = '0';
+    input.style.border = 'none';
+    input.style.outline = 'none';
+    input.style.boxSizing = 'border-box';
+    input.style.pointerEvents = 'auto';
     input.style.zIndex = '999999';
 
     document.body.appendChild(input);
+
+    // Force reflow so Chrome layout engine calculates bounds before opening color chooser popup
+    void input.offsetWidth;
+    void input.getBoundingClientRect();
 
     const cleanup = () => {
         if (input.parentNode) {
@@ -190,6 +238,28 @@ function openNativeColorPicker(format, quill, event) {
     } else {
         input.click();
     }
+}
+
+/**
+ * Converts a color string (HEX or RGB) into standard 7-character #RRGGBB format for <input type="color">.
+ */
+function formatColorToHex(colorStr, fallbackHex) {
+    if (!colorStr) return fallbackHex;
+    colorStr = colorStr.trim();
+    if (/^#[0-9A-Fa-f]{6}$/.test(colorStr)) {
+        return colorStr;
+    }
+    if (/^#[0-9A-Fa-f]{3}$/.test(colorStr)) {
+        return '#' + colorStr[1] + colorStr[1] + colorStr[2] + colorStr[2] + colorStr[3] + colorStr[3];
+    }
+    const rgbMatch = colorStr.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (rgbMatch) {
+        const r = parseInt(rgbMatch[1], 10).toString(16).padStart(2, '0');
+        const g = parseInt(rgbMatch[2], 10).toString(16).padStart(2, '0');
+        const b = parseInt(rgbMatch[3], 10).toString(16).padStart(2, '0');
+        return `#${r}${g}${b}`;
+    }
+    return fallbackHex;
 }
 
 /**
