@@ -68,6 +68,17 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
 
+        // Helper to prompt native HTML5 color picker
+        const customColorHandler = function(format) {
+            const input = document.createElement('input');
+            input.type = 'color';
+            input.value = '#000000';
+            input.click();
+            input.onchange = () => {
+                quill.format(format, input.value);
+            };
+        };
+
         // Initialize Quill
         const quill = new Quill(container, {
             theme: 'snow',
@@ -85,7 +96,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         ['clean']
                     ],
                     handlers: {
-                        image: imageHandler
+                        image: imageHandler,
+                        color: function(value) {
+                            if (value === 'custom') {
+                                openNativeColorPicker('color', this.quill);
+                            } else {
+                                this.quill.format('color', value);
+                            }
+                        },
+                        background: function(value) {
+                            if (value === 'custom') {
+                                openNativeColorPicker('background', this.quill);
+                            } else {
+                                this.quill.format('background', value);
+                            }
+                        }
                     }
                 }
             }
@@ -127,6 +152,47 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /**
+ * Prompts the native HTML5 color picker placed in the center of the viewport.
+ */
+function openNativeColorPicker(format, quill, event) {
+    const input = document.createElement('input');
+    input.type = 'color';
+    input.value = '#000000';
+    
+    // Position fixed in center of viewport so popup opens centered
+    input.style.position = 'fixed';
+    input.style.top = '50%';
+    input.style.left = '50%';
+    input.style.transform = 'translate(-50%, -50%)';
+    input.style.width = '1px';
+    input.style.height = '1px';
+    input.style.opacity = '0';
+    input.style.pointerEvents = 'none';
+    input.style.zIndex = '999999';
+
+    document.body.appendChild(input);
+
+    const cleanup = () => {
+        if (input.parentNode) {
+            input.parentNode.removeChild(input);
+        }
+    };
+
+    input.onchange = () => {
+        quill.format(format, input.value);
+        cleanup();
+    };
+
+    input.onblur = cleanup;
+
+    if (typeof input.showPicker === 'function') {
+        input.showPicker();
+    } else {
+        input.click();
+    }
+}
+
+/**
  * Attaches localized title attributes to Quill toolbar controls.
  */
 function addQuillTooltips(quill) {
@@ -148,7 +214,7 @@ function addQuillTooltips(quill) {
         }
     });
 
-    // Attach titles to picker dropdowns (Font, Size, Align, Header)
+    // Attach titles to picker dropdowns (Font, Size, Align, Header, Color, Background)
     toolbar.querySelectorAll('.ql-picker').forEach(picker => {
         for (const [selector, text] of Object.entries(tooltips)) {
             if (!text) continue;
@@ -160,6 +226,76 @@ function addQuillTooltips(quill) {
                 break;
             }
         }
+    });
+
+    // Add custom color picker swatch button to color and background pickers
+    setupCustomColorPickerSwatches(quill, toolbar);
+}
+
+/**
+ * Appends a styled custom color button to color & background picker dropdowns.
+ */
+function setupCustomColorPickerSwatches(quill, toolbar) {
+    const i18n = window.AdminI18n || {};
+    const labelText = (i18n.quillTooltips && i18n.quillTooltips.customColor) || 'Vlastní barva';
+
+    ['color', 'background'].forEach(format => {
+        const picker = toolbar.querySelector(`.ql-picker.ql-${format}`);
+        if (!picker) return;
+
+        const optionsContainer = picker.querySelector('.ql-picker-options');
+        if (!optionsContainer || optionsContainer.querySelector('.ql-custom-color-btn')) return;
+
+        // Create custom button inside dropdown (cleared below grid floats)
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ql-custom-color-btn';
+        btn.setAttribute('title', labelText);
+        
+        btn.style.clear = 'both';
+        btn.style.display = 'flex';
+        btn.style.alignItems = 'center';
+        btn.style.justifyContent = 'center';
+        btn.style.gap = '6px';
+        btn.style.width = '100%';
+        btn.style.height = '28px';
+        btn.style.marginTop = '6px';
+        btn.style.padding = '0 8px';
+        btn.style.boxSizing = 'border-box';
+        btn.style.border = '1px solid #ced4da';
+        btn.style.borderRadius = '4px';
+        btn.style.background = '#f8f9fa';
+        btn.style.cursor = 'pointer';
+        btn.style.fontSize = '12px';
+        btn.style.lineHeight = '1';
+        btn.style.color = '#333';
+        btn.style.fontWeight = '500';
+        btn.style.outline = 'none';
+
+        btn.innerHTML = `<span style="display:inline-block; width:12px; height:12px; border-radius:50%; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); flex-shrink:0;"></span>
+                         <span>${labelText}</span>`;
+
+        btn.addEventListener('mouseenter', () => {
+            btn.style.background = '#e9ecef';
+            btn.style.borderColor = '#adb5bd';
+            btn.style.color = '#0d6efd';
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.background = '#f8f9fa';
+            btn.style.borderColor = '#ced4da';
+            btn.style.color = '#333';
+        });
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close picker dropdown
+            picker.classList.remove('ql-expanded');
+            openNativeColorPicker(format, quill, e);
+        });
+
+        optionsContainer.appendChild(btn);
     });
 }
 

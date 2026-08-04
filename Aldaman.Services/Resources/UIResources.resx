@@ -864,4 +864,8 @@
   <data name="RteSize" xml:space="preserve">
     <value>Velikost písma</value>
   </data>
-</root>
+  <data name="RteCustomColor" xml:space="preserve">
+    <value>Vlastní barva</value>
+  </data>
+</root>
+

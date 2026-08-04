@@ -285,5 +285,7 @@ public static class UIResourceKeys
     public const string RteClean = nameof(RteClean);
     public const string RteFont = nameof(RteFont);
     public const string RteSize = nameof(RteSize);
+    public const string RteCustomColor = nameof(RteCustomColor);
 }
+
 

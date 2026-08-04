@@ -864,4 +864,7 @@
   <data name="RteSize" xml:space="preserve">
     <value>Font Size</value>
   </data>
-</root>
+  <data name="RteCustomColor" xml:space="preserve">
+    <value>Custom Color</value>
+  </data>
+</root>

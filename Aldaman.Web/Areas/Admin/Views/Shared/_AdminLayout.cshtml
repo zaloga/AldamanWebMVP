@@ -107,9 +107,11 @@
                 'formula': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFormula].Value)),
                 'clean': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteClean].Value)),
                 'font': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFont].Value)),
-                'size': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSize].Value))
+                'size': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSize].Value)),
+                'customColor': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteCustomColor].Value))
             }
         };
+
 
     </script>
     <script src="~/js/admin-actions.js" asp-append-version="true"></script>
