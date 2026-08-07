@@ -45,26 +45,28 @@
         @foreach (var post in Model.Posts.Items)
         {
             <article class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800/60 p-6 shadow-sm transition-all duration-300 hover:shadow-xl dark:hover:bg-slate-800 dark:hover:border-white/20" data-slug="@post.Slug">
-                <div class="flex items-center gap-4 sm:gap-5 mb-5">
-                    <a href="/blog/@post.Slug" class="shrink-0">
-                        <img class="h-22 w-22 rounded-full object-cover shrink-0 border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-900/50 transition-transform duration-200 group-hover:scale-105"
+                <div class="flex items-center justify-between gap-4 sm:gap-5 mb-5">
+                    <div class="flex items-center gap-4 sm:gap-5">
+                        <img class="h-22 w-22 rounded-full object-cover shrink-0 border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-900/50"
                              src="@(post.CoverImageRelativePath ?? "/images/placeholder.jpg")"
                              alt="@post.Title">
-                    </a>
-                    <div class="flex flex-col">
-                        <a href="/blog/@post.Slug" class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug hover:text-brand-primary dark:hover:text-brand-accent transition-colors">Alda Man</a>
-                        <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-slate-500 dark:text-slate-400">
-                            @post.PublishedAtUtc?.ToString(FormatConstants.DateDot)
-                        </time>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">Alda Man</span>
+                            <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-slate-500 dark:text-slate-400">
+                                @post.PublishedAtUtc?.ToString(FormatConstants.DateDot)
+                            </time>
+                        </div>
                     </div>
+                    <a href="/blog/@post.Slug" class="shrink-0 inline-flex items-center gap-1 text-sm sm:text-base font-semibold text-brand-primary dark:text-brand-accent hover:underline">
+                        <span>@Localizer[UIResourceKeys.ViewDetail]</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
 
                 <div class="flex flex-1 flex-col justify-between">
                     <div class="flex-1">
                         <h3 class="line-clamp-2 text-xl font-bold text-slate-900 dark:text-white">
-                            <a href="/blog/@post.Slug" class="transition-colors hover:text-brand-primary dark:hover:text-brand-accent">
-                                @post.Title
-                            </a>
+                            @post.Title
                         </h3>
 
                         <div class="mt-3">

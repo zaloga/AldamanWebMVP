@@ -879,10 +879,13 @@
   <data name="RteCustomColor" xml:space="preserve">
     <value>Custom Color</value>
   </data>
+  <data name="ViewDetail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
   <data name="ShowMore" xml:space="preserve">
     <value>Show more</value>
   </data>
   <data name="ShowLess" xml:space="preserve">
     <value>Show less</value>
   </data>
-</root>
+</root>
