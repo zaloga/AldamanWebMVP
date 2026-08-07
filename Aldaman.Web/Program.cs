@@ -151,6 +151,12 @@ public class Program
             .WithStaticAssets();
 
         app.MapControllerRoute(
+            name: "blog_content",
+            pattern: $"{culturePattern}/blog/content/{{slug}}",
+            defaults: new { controller = "Blog", action = "GetContentBySlug" })
+            .WithStaticAssets();
+
+        app.MapControllerRoute(
             name: "blog_detail",
             pattern: $"{culturePattern}/blog/{{slug}}",
             defaults: new { controller = "Blog", action = "Detail" })

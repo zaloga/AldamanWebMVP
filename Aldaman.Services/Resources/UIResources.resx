@@ -879,5 +879,8 @@
   <data name="RteCustomColor" xml:space="preserve">
     <value>Vlastní barva</value>
   </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Zobrazit více</value>
+  </data>
 </root>
 

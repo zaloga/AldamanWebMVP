@@ -87,4 +87,23 @@ public sealed class BlogController : Controller
             NextPost = navigation.Next
         });
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetContentBySlug(string slug, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return BadRequest();
+        }
+
+        string cultureCode = CultureInfo.CurrentUICulture.Name;
+        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugCachedAsync(slug, cultureCode);
+
+        if (postDetail is null)
+        {
+            return NotFound();
+        }
+
+        return Json(new { bodyHtml = postDetail.BodyHtml ?? string.Empty });
+    }
 }
