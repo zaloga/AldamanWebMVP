@@ -14,7 +14,6 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
 
     [Theory]
     [InlineData("/cs")]
-    [InlineData("/cs/blog")]
     [InlineData("/cs/contact")]
     public async Task Get_EndpointsReturnSuccessAndHtmlContentType(string url)
     {
@@ -27,6 +26,22 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType?.ToString());
+    }
+
+    [Fact]
+    public async Task Get_BlogIndex_RedirectsToHomePage()
+    {
+        // Arrange
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+
+        // Act
+        var response = await client.GetAsync("/cs/blog");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
     }
 
     [Theory]

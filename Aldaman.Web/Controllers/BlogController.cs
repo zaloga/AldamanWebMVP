@@ -1,7 +1,6 @@
 using System.Globalization;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
-using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +10,6 @@ namespace Aldaman.Web.Controllers;
 
 public sealed class BlogController : Controller
 {
-    private const int DefaultPageSize = 10;
-
     private IBlogService BlogService { get; }
     private LocalizationSettings LocalizationSettings { get; }
     private ILogger<BlogController> Logger { get; }
@@ -25,22 +22,9 @@ public sealed class BlogController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] int p = 1, CancellationToken cancellationToken = default)
+    public IActionResult Index()
     {
-        string cultureCode = CultureInfo.CurrentUICulture.Name;
-
-        PagedResultDto<BlogPostListItemDto> pagedPosts = await BlogService.GetPagedBlogPostsCachedAsync(
-            p,
-            DefaultPageSize,
-            cultureCode
-            /*cancellationToken*/);
-
-        var viewModel = new BlogListViewModel
-        {
-            Posts = pagedPosts
-        };
-
-        return View(viewModel);
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
