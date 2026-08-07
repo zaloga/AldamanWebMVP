@@ -41,6 +41,7 @@ public static class UIResourceKeys
     public const string PostPermanentlyDeleted = nameof(PostPermanentlyDeleted);
     public const string ErrorPermanentlyDeletingPost = nameof(ErrorPermanentlyDeletingPost);
     public const string ShowMore = nameof(ShowMore);
+    public const string ShowLess = nameof(ShowLess);
 
     // Contact
     public const string Contact = nameof(Contact);

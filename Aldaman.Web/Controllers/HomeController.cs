@@ -8,19 +8,30 @@ namespace Aldaman.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private IContentPageService ContentPageService { get; }
+    private const int DefaultPageSize = 10;
 
-    public HomeController(IContentPageService contentPageService)
+    private IContentPageService ContentPageService { get; }
+    private IBlogService BlogService { get; }
+
+    public HomeController(IContentPageService contentPageService, IBlogService blogService)
     {
         ContentPageService = contentPageService;
+        BlogService = blogService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery] int p = 1)
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
         var homePages = await ContentPageService.GetHomePageCachedAsync(cultureCode);
+        var blogPosts = await BlogService.GetPagedBlogPostsCachedAsync(p, DefaultPageSize, cultureCode);
 
-        return View(homePages);
+        var viewModel = new HomeIndexViewModel
+        {
+            HomePages = homePages,
+            Posts = blogPosts
+        };
+
+        return View(viewModel);
     }
 
     public IActionResult Mcp()

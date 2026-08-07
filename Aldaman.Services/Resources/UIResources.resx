@@ -882,5 +882,8 @@
   <data name="ShowMore" xml:space="preserve">
     <value>Zobrazit více</value>
   </data>
+  <data name="ShowLess" xml:space="preserve">
+    <value>Zobrazit méně</value>
+  </data>
 </root>
 

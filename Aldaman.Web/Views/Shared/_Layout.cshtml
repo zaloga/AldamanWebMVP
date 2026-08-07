@@ -41,13 +41,17 @@
     <header class="glass sticky top-0 z-50 transition-colors duration-300">
         <nav class="container flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4 lg:py-0 lg:h-16">
             <div class="flex items-center justify-between w-full lg:w-auto">
-                @await Component.InvokeAsync("Brand")
+                @* TODO - refactor and use it or delete it including dependencies *@
+                @* @await Component.InvokeAsync("Brand") *@
+                <a id="brand-nav-link"
+                   class="text-xl font-bold tracking-tight text-slate-900 dark:text-white cursor-pointer select-none flex items-center gap-1"
+                   asp-area="" asp-controller="Home" asp-action="Index">
+                    Aldaman
+                </a>
             </div>
 
             <div class="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-2">
                 @await Component.InvokeAsync("TopNavigation")
-
-                <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" asp-area="" asp-controller="Blog" asp-action="Index">@Localizer[UIResourceKeys.Blog]</a>
 
                 <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
             </div>
