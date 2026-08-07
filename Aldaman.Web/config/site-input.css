@@ -10,7 +10,7 @@
   /* Earthy dark brown */
   --color-brand-accent: var(--brand-accent, #ffb100);
   /* Amber Yellow */
-  --color-brand-bg-light: var(--brand-bg-light, #ffb30a);
+  --color-brand-bg-light: var(--brand-bg-light, #ffa000);
   /* Golden Amber Yellow */
   --color-brand-bg-dark: var(--brand-bg-dark, #1b1816);
   /* Very dark warm slate/brown */
@@ -42,7 +42,7 @@
   }
 
   .glass {
-    @apply bg-amber-500/10 backdrop-blur-lg border border-amber-900/10 shadow-sm dark:bg-slate-900/60 dark:border-white/10;
+    @apply bg-brand-primary/65 backdrop-blur-lg border border-brand-primary/45 shadow-sm dark:bg-brand-primary/50 dark:border-brand-primary/40;
   }
 
   .container {

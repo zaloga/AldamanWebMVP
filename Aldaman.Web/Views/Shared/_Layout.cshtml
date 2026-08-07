@@ -84,13 +84,13 @@
         </nav>
     </header>
 
-    <main role="main" class="flex-grow bg-brand-bg-light dark:bg-brand-bg-dark">
+    <main role="main" class="flex-grow bg-gradient-to-b from-orange-500/30 via-amber-500/25 to-orange-500/30 dark:bg-brand-bg-dark">
         <div class="container">
             @RenderBody()
         </div>
     </main>
 
-    <footer class="bg-amber-950/10 dark:bg-slate-900/50 border-t border-amber-950/15 dark:border-white/10 py-10">
+    <footer class="glass border-x-0 border-b-0 py-10">
         <div class="container flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
                 @await Component.InvokeAsync("FooterNavigation")

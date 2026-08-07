@@ -70,7 +70,7 @@ public static class DbSeeder
                 new() { Key = "--brand-primary", Value = "#cc3300", DefaultValue = "#cc3300", Type = Enums.CssType.Color },
                 new() { Key = "--brand-secondary", Value = "#4a332a", DefaultValue = "#4a332a", Type = Enums.CssType.Color },
                 new() { Key = "--brand-accent", Value = "#ffb100", DefaultValue = "#ffb100", Type = Enums.CssType.Color },
-                new() { Key = "--brand-bg-light", Value = "#ffb30a", DefaultValue = "#ffb30a", Type = Enums.CssType.Color },
+                new() { Key = "--brand-bg-light", Value = "#ffa000", DefaultValue = "#ffa000", Type = Enums.CssType.Color },
                 new() { Key = "--brand-bg-dark", Value = "#1b1816", DefaultValue = "#1b1816", Type = Enums.CssType.Color }
             };
 

@@ -44,7 +44,7 @@
     <div class="grid gap-6 grid-cols-1 mt-8">
         @foreach (var post in Model.Posts.Items)
         {
-            <article class="group flex flex-col overflow-hidden rounded-xl border border-amber-900/15 dark:border-white/10 bg-white/90 dark:bg-slate-800/60 p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:bg-white dark:hover:bg-slate-800 dark:hover:border-white/20" data-slug="@post.Slug">
+            <article class="flex flex-col overflow-hidden rounded-xl border border-amber-900/15 dark:border-white/10 bg-gradient-to-b from-amber-500/20 via-amber-400/15 to-amber-500/20 dark:bg-slate-800/60 p-6 shadow-sm" data-slug="@post.Slug">
                 <div class="flex items-center gap-4 sm:gap-5 mb-5">
                     <img class="h-22 w-22 rounded-full object-cover shrink-0 border-2 border-[#EDBD00] dark:border-white/10 bg-amber-100 dark:bg-slate-900/50"
                          src="@(post.CoverImageRelativePath ?? "/images/placeholder.jpg")"
