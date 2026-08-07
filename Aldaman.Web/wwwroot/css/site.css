@@ -730,9 +730,16 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .border-b-2 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
+  }
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
+  }
+  .border-brand-primary {
+    border-color: var(--color-brand-primary);
   }
   .border-brand-primary\/20 {
     border-color: var(--color-brand-primary);
@@ -964,6 +971,9 @@
   }
   .pr-10 {
     padding-right: calc(var(--spacing) * 10);
+  }
+  .pb-0\.5 {
+    padding-bottom: calc(var(--spacing) * 0.5);
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
@@ -1597,6 +1607,11 @@
           border-color: color-mix(in oklab, var(--color-white) 5%, transparent);
         }
       }
+    }
+  }
+  .dark\:border-brand-accent {
+    &:where(.dark, .dark *) {
+      border-color: var(--color-brand-accent);
     }
   }
   .dark\:border-slate-700 {

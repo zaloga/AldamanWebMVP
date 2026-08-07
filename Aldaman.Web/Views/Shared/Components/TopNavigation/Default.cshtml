@@ -1,14 +1,17 @@
 @using Aldaman.Web.ViewModels
+@using Aldaman.Web.Extensions
 @model TopNavigationViewModel
 
-    @foreach (var navigation in Model.NavigationPages)
-    {
-        <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors" 
-           asp-area="" 
-           asp-controller="ContentPage" 
-           asp-action="Detail" 
-           asp-route-slug="@navigation.Slug">
-            @navigation.Title
-        </a>
-    }
+@foreach (var navigation in Model.NavigationPages)
+{
+    var isActive = ViewContext.IsNavActive("ContentPage", "Detail", navigation.Slug);
+    <a class="@(isActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" 
+       asp-area="" 
+       asp-controller="ContentPage" 
+       asp-action="Detail" 
+       asp-route-slug="@navigation.Slug">
+        @navigation.Title
+    </a>
+}
+
 

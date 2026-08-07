@@ -1,4 +1,5 @@
 @inject Aldaman.Services.Interfaces.IStyleService StyleService
+@using Aldaman.Web.Extensions
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
@@ -53,8 +54,12 @@
             <div class="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-2">
                 @await Component.InvokeAsync("TopNavigation")
 
-                <a class="text-xl font-bold text-brand-primary dark:text-brand-accent hover:underline decoration-2 underline-offset-4 transition-all" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+                @{
+                    var isContactActive = ViewContext.IsNavActive("Contact");
+                }
+                <a class="@(isContactActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
             </div>
+
 
             <div class="flex items-center justify-center w-full lg:w-auto gap-4">
                 <div class="relative group w-full max-w-[200px] lg:max-w-none">
@@ -95,8 +100,9 @@
                     &copy; @DateTime.Today.Year Aldaman.
                 </p>
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                    <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link">MCP API for AI</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link">Search API for AI</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link @(ViewContext.IsNavActive("Home", "Mcp") ? "text-brand-primary dark:text-brand-accent font-semibold underline" : "")">MCP API for AI</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "text-brand-primary dark:text-brand-accent font-semibold underline" : "")">Search API for AI</a>
+
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="footer-link">@Localizer[UIResourceKeys.Admin]</a>
