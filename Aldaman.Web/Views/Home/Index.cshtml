@@ -50,7 +50,7 @@
                          src="@(post.CoverImageRelativePath ?? "/images/placeholder.jpg")"
                          alt="@post.Title">
                     <div class="flex flex-col">
-                        <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">Alda Man</span>
+                        <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">@post.Title</span>
                         <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-amber-950/70 dark:text-slate-400">
                             @post.PublishedAtUtc?.ToString(FormatConstants.DateDot)
                         </time>
@@ -59,10 +59,6 @@
 
                 <div class="flex flex-1 flex-col justify-between">
                     <div class="flex-1">
-                        <h3 class="line-clamp-2 text-xl font-bold text-slate-900 dark:text-white">
-                            @post.Title
-                        </h3>
-
                         <div class="mt-3">
                             <p class="js-perex-text text-sm/relaxed text-slate-800 dark:text-slate-400 line-clamp-3">
                                 @post.Perex
