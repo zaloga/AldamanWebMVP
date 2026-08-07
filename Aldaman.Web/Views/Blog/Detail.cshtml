@@ -7,37 +7,40 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<div class="py-8 md:py-12">
-    <div class="mb-8">
-        <a asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-            <i class="bi bi-arrow-left mr-2"></i>
-            @Localizer[UIResourceKeys.AllArticles]
-        </a>
-    </div>
+<article id="@Model.Post.Slug" class="border-b border-slate-200 dark:border-white/5 last:border-0">
+    <div class="flex flex-col">
+        <div class="mb-6">
+            <a asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all mb-4">
+                <i class="bi bi-arrow-left mr-2"></i>
+                @Localizer[UIResourceKeys.AllArticles]
+            </a>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+                @Model.Post.Title
+            </h1>
+            <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mb-4"></div>
+            @if (!string.IsNullOrWhiteSpace(Model.Post.Perex))
+            {
+                <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed">@Model.Post.Perex</p>
+            }
+        </div>
 
-    <article class="max-w-4xl mx-auto">
-        <header class="text-center border-b border-slate-200 dark:border-white/10 pb-8 mb-8">
-            <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight sm:text-5xl mb-4">@Model.Post.Title</h1>
-            <p class="text-xl text-slate-500 dark:text-slate-400">@Model.Post.Perex</p>
-        </header>
-
-        <div class="prose prose-lg dark:prose-invert prose-slate text-slate-700 dark:text-slate-300 mx-auto">
+        @if (!string.IsNullOrEmpty(Model.Post.BodyHtml))
+        {
             <div class="ql-snow">
-                <div class="ql-editor p-0">
-                    @if (!string.IsNullOrEmpty(Model.Post.BodyHtml))
-                    {
-                        @Html.Raw(Model.Post.BodyHtml)
-                    }
-                    else
-                    {
-                        <p class="text-slate-400 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
-                    }
+                <div class="ql-editor">
+                    @Html.Raw(Model.Post.BodyHtml)
                 </div>
             </div>
-        </div>
-        
-        <footer>
-            <div class="flex flex-row justify-between items-center gap-4 mt-8 pt-8 border-t border-slate-200 dark:border-white/10">
+        }
+        else
+        {
+            <div class="text-center py-12 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                <p class="text-slate-400 dark:text-slate-500 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
+            </div>
+        }
+
+        <footer class="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
+            <div class="flex flex-row justify-between items-center gap-4">
                 <div>
                     @if (Model.PreviousPost != null)
                     {
@@ -58,5 +61,6 @@
                 </div>
             </div>
         </footer>
-    </article>
-</div>
+    </div>
+</article>
+
