@@ -4,14 +4,14 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-primary: var(--brand-primary, #a83f23);
-  /* Terracotta Orange */
+  --color-brand-primary: var(--brand-primary, #cc3300);
+  /* Burnt Red-Orange */
   --color-brand-secondary: var(--brand-secondary, #4a332a);
   /* Earthy dark brown */
   --color-brand-accent: var(--brand-accent, #ffb100);
   /* Amber Yellow */
-  --color-brand-bg-light: var(--brand-bg-light, #fdfaf6);
-  /* Warm off-white / cream */
+  --color-brand-bg-light: var(--brand-bg-light, #ffb30a);
+  /* Golden Amber Yellow */
   --color-brand-bg-dark: var(--brand-bg-dark, #1b1816);
   /* Very dark warm slate/brown */
 
@@ -23,7 +23,7 @@
 /* Custom styles for the public site */
 @layer base {
   body {
-    @apply font-sans h-full text-slate-800 bg-brand-bg-light dark:bg-brand-bg-dark dark:text-slate-200 transition-colors duration-300 antialiased;
+    @apply font-sans h-full text-slate-900 bg-brand-bg-light dark:bg-brand-bg-dark dark:text-slate-200 transition-colors duration-300 antialiased;
   }
 
   h1,
@@ -42,7 +42,7 @@
   }
 
   .glass {
-    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-sm dark:bg-slate-900/60 dark:border-white/10;
+    @apply bg-amber-500/10 backdrop-blur-lg border border-amber-900/10 shadow-sm dark:bg-slate-900/60 dark:border-white/10;
   }
 
   .container {
@@ -50,7 +50,7 @@
   }
 
   .footer-link {
-    @apply text-xs text-slate-400 dark:text-slate-500 hover:text-brand-primary transition-colors;
+    @apply text-xs text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors font-medium;
   }
 }
 

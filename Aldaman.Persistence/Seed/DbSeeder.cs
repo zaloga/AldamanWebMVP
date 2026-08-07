@@ -67,10 +67,10 @@ public static class DbSeeder
             // Seed Default CSS Style Settings
             var defaultStyles = new List<StyleSettingEntity>
             {
-                new() { Key = "--brand-primary", Value = "#a83f23", DefaultValue = "#a83f23", Type = Enums.CssType.Color },
+                new() { Key = "--brand-primary", Value = "#cc3300", DefaultValue = "#cc3300", Type = Enums.CssType.Color },
                 new() { Key = "--brand-secondary", Value = "#4a332a", DefaultValue = "#4a332a", Type = Enums.CssType.Color },
                 new() { Key = "--brand-accent", Value = "#ffb100", DefaultValue = "#ffb100", Type = Enums.CssType.Color },
-                new() { Key = "--brand-bg-light", Value = "#fdfaf6", DefaultValue = "#fdfaf6", Type = Enums.CssType.Color },
+                new() { Key = "--brand-bg-light", Value = "#ffb30a", DefaultValue = "#ffb30a", Type = Enums.CssType.Color },
                 new() { Key = "--brand-bg-dark", Value = "#1b1816", DefaultValue = "#1b1816", Type = Enums.CssType.Color }
             };
 

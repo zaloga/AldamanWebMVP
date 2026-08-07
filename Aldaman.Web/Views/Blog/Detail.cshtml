@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-<article id="@Model.Post.Slug" class="border-b border-slate-200 dark:border-white/5 last:border-0">
+<article id="@Model.Post.Slug" class="border-b border-amber-900/15 dark:border-white/5 last:border-0">
     <div class="flex flex-col">
         <div class="mb-6">
-            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all mb-4">
+            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all mb-4">
                 <i class="bi bi-arrow-left mr-2"></i>
                 @Localizer[UIResourceKeys.AllArticles]
             </a>
@@ -20,7 +20,7 @@
             <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mb-4"></div>
             @if (!string.IsNullOrWhiteSpace(Model.Post.Perex))
             {
-                <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-400 font-medium leading-relaxed">@Model.Post.Perex</p>
+                <p class="text-lg sm:text-xl text-slate-800 dark:text-slate-400 font-medium leading-relaxed">@Model.Post.Perex</p>
             }
         </div>
 
@@ -34,17 +34,17 @@
         }
         else
         {
-            <div class="text-center py-12 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-                <p class="text-slate-400 dark:text-slate-500 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
+            <div class="text-center py-12 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700">
+                <p class="text-amber-950/70 dark:text-slate-500 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
             </div>
         }
 
-        <footer class="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
+        <footer class="mt-8 pt-6 border-t border-amber-900/15 dark:border-white/10">
             <div class="flex flex-row justify-between items-center gap-4">
                 <div>
                     @if (Model.PreviousPost != null)
                     {
-                        <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+                        <a asp-action="Detail" asp-route-slug="@Model.PreviousPost.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
                             <i class="bi bi-arrow-left mr-2"></i>
                             @Localizer[UIResourceKeys.PreviousPost]
                         </a>
@@ -53,7 +53,7 @@
                 <div>
                     @if (Model.NextPost != null)
                     {
-                        <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+                        <a asp-action="Detail" asp-route-slug="@Model.NextPost.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
                             @Localizer[UIResourceKeys.NextPost]
                             <i class="bi bi-arrow-right ml-2"></i>
                         </a>

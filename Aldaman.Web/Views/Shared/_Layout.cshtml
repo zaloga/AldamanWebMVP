@@ -57,7 +57,7 @@
                 @{
                     var isContactActive = ViewContext.IsNavActive("Contact");
                 }
-                <a class="@(isContactActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+                <a class="@(isContactActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-800 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
             </div>
 
 
@@ -76,7 +76,7 @@
             <div class="flex items-center justify-center gap-4">
                 @await Component.InvokeAsync("LanguageSwitcher")
 
-                <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700 rounded-lg text-sm p-2 transition-all">
+                <button id="theme-toggle" type="button" class="text-amber-950/80 dark:text-slate-400 hover:bg-amber-500/20 dark:hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-amber-900/20 dark:focus:ring-slate-700 rounded-lg text-sm p-2 transition-all">
                     <i id="theme-toggle-dark-icon" class="bi bi-moon-fill hidden text-xl"></i>
                     <i id="theme-toggle-light-icon" class="bi bi-sun-fill hidden text-xl"></i>
                 </button>
@@ -90,13 +90,13 @@
         </div>
     </main>
 
-    <footer class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/10 py-10">
+    <footer class="bg-amber-950/10 dark:bg-slate-900/50 border-t border-amber-950/15 dark:border-white/10 py-10">
         <div class="container flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
                 @await Component.InvokeAsync("FooterNavigation")
             </div>
             <div class="flex flex-col items-center md:items-start gap-1">
-                <p class="text-sm text-slate-500 dark:text-slate-400">
+                <p class="text-sm text-amber-950/80 dark:text-slate-400">
                     &copy; @DateTime.Today.Year Aldaman.
                 </p>
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
