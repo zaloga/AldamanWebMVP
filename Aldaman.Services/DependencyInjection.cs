@@ -16,6 +16,7 @@ public static class DependencyInjection
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
         services.AddScoped<IStyleService, StyleService>();
         services.AddScoped<ISearchService, SearchService>();
+        services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();
 
         // Register other services here as they are implemented
 

@@ -855,6 +855,18 @@
   <data name="RteFormula" xml:space="preserve">
     <value>Insert Formula</value>
   </data>
+  <data name="RteTable" xml:space="preserve">
+    <value>Insert Table</value>
+  </data>
+  <data name="RteRows" xml:space="preserve">
+    <value>Rows</value>
+  </data>
+  <data name="RteColumns" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="RteInsert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
   <data name="RteClean" xml:space="preserve">
     <value>Clear Formatting</value>
   </data>

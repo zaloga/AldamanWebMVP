@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     editors.forEach(container => {
         const culture = container.getAttribute('data-culture');
         const index = container.getAttribute('data-index');
-        
+
         // Find the hidden fields by their generated IDs or names
         // ASP.NET Core generates IDs like: Translations_0__BodyHtml, Translations_0__BodyDeltaJson, Translations_0__PlainText
         const htmlInput = document.querySelector(`#Translations_${index}__BodyHtml`);
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!htmlInput || !deltaInput) return;
 
         // Custom Image Handler for AJAX Upload
-        const imageHandler = function() {
+        const imageHandler = function () {
             const i18n = window.AdminI18n || {};
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
@@ -47,13 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             'RequestVerificationToken': token
                         }
                     });
-                    
+
                     if (!response.ok) {
                         throw new Error(`Server returned ${response.status}: ${response.statusText}`);
                     }
-                    
+
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         const range = quill.getSelection(true);
                         quill.insertEmbed(range.index, 'image', result.url);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Helper to prompt native HTML5 color picker
-        const customColorHandler = function(format) {
+        const customColorHandler = function (format) {
             const input = document.createElement('input');
             input.type = 'color';
             input.value = '#000000';
@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const quill = new Quill(container, {
             theme: 'snow',
             modules: {
+                table: true,
                 toolbar: {
                     container: [
                         [{ 'font': [] }, { 'size': [] }],
@@ -92,19 +93,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }, { 'header': 4 }, 'blockquote', 'code-block'],
                         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
                         [{ 'direction': 'rtl' }, { 'align': [] }],
-                        ['link', 'image', 'video', 'formula'],
+                        ['link', 'image', 'video', 'formula', 'table'],
                         ['clean']
                     ],
                     handlers: {
                         image: imageHandler,
-                        color: function(value) {
+                        table: function () {
+                            promptInsertTable(this.quill);
+                        },
+                        color: function (value) {
                             if (value === 'custom') {
                                 openNativeColorPicker('color', this.quill);
                             } else {
                                 this.quill.format('color', value);
                             }
                         },
-                        background: function(value) {
+                        background: function (value) {
                             if (value === 'custom') {
                                 openNativeColorPicker('background', this.quill);
                             } else {
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Only sync if content is not just a single newline (default empty state of Quill)
             const isEmpty = quill.getText().trim().length === 0 && quill.root.innerHTML === '<p><br></p>';
-            
+
             htmlInput.value = isEmpty ? '' : html;
             deltaInput.value = isEmpty ? '' : delta;
             if (plainTextInput) {
@@ -157,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function openNativeColorPicker(format, quill, event) {
     const input = document.createElement('input');
     input.type = 'color';
-    
+
     // Determine initial color from current selection format if available
     let initialColor = format === 'background' ? '#ffffff' : '#000000';
     if (quill) {
@@ -168,7 +172,7 @@ function openNativeColorPicker(format, quill, event) {
         }
     }
     input.value = initialColor;
-    
+
     // Locate the .ql-picker-label button on the toolbar to position picker underneath it
     let pickerLabel = null;
     if (event && event.target && typeof event.target.closest === 'function') {
@@ -179,8 +183,8 @@ function openNativeColorPicker(format, quill, event) {
     }
     if (!pickerLabel && quill) {
         const toolbarModule = typeof quill.getModule === 'function' ? quill.getModule('toolbar') : null;
-        const toolbar = (toolbarModule && toolbarModule.container) || 
-                        (quill.container && quill.container.parentElement && quill.container.parentElement.querySelector('.ql-toolbar'));
+        const toolbar = (toolbarModule && toolbarModule.container) ||
+            (quill.container && quill.container.parentElement && quill.container.parentElement.querySelector('.ql-toolbar'));
         if (toolbar) {
             const pickerElem = toolbar.querySelector(`.ql-picker.ql-${format}`);
             if (pickerElem) {
@@ -273,6 +277,17 @@ function addQuillTooltips(quill) {
 
     const toolbar = toolbarModule.container;
 
+    // Ensure table button has visual icon if missing
+    const tableBtn = toolbar.querySelector('.ql-table');
+    if (tableBtn) {
+        if (!tableBtn.innerHTML || tableBtn.innerHTML.trim() === '') {
+            tableBtn.innerHTML = '<svg viewBox="0 0 18 18"><rect class="ql-stroke" height="12" width="12" x="3" y="3" fill="none" stroke="currentColor" stroke-width="1.5"></rect><line class="ql-stroke" x1="3" x2="15" y1="9" y2="9" stroke="currentColor" stroke-width="1.5"></line><line class="ql-stroke" x1="9" x2="9" y1="3" y2="15" stroke="currentColor" stroke-width="1.5"></line></svg>';
+        }
+        if (!tableBtn.hasAttribute('title') && tooltips.table) {
+            tableBtn.setAttribute('title', tooltips.table);
+        }
+    }
+
     // Attach titles to standard toolbar buttons
     toolbar.querySelectorAll('button').forEach(button => {
         for (const [selector, text] of Object.entries(tooltips)) {
@@ -307,7 +322,7 @@ function addQuillTooltips(quill) {
  */
 function setupCustomColorPickerSwatches(quill, toolbar) {
     const i18n = window.AdminI18n || {};
-    const labelText = (i18n.quillTooltips && i18n.quillTooltips.customColor) || 'Vlastní barva';
+    const labelText = (i18n.quillTooltips && i18n.quillTooltips.customColor);
 
     ['color', 'background'].forEach(format => {
         const picker = toolbar.querySelector(`.ql-picker.ql-${format}`);
@@ -321,7 +336,7 @@ function setupCustomColorPickerSwatches(quill, toolbar) {
         btn.type = 'button';
         btn.className = 'ql-custom-color-btn';
         btn.setAttribute('title', labelText);
-        
+
         btn.style.clear = 'both';
         btn.style.display = 'flex';
         btn.style.alignItems = 'center';
@@ -367,5 +382,83 @@ function setupCustomColorPickerSwatches(quill, toolbar) {
 
         optionsContainer.appendChild(btn);
     });
+}
+
+/**
+ * Prompts user for custom table rows and columns before insertion.
+ */
+function promptInsertTable(quill) {
+    const tableModule = quill.getModule('table');
+    if (!tableModule) return;
+
+    let range = quill.getSelection();
+    if (!range) {
+        quill.focus();
+        range = quill.getSelection(true);
+    }
+
+    const i18n = window.AdminI18n || {};
+    const tooltips = i18n.quillTooltips || {};
+    const title = tooltips.table;
+    const rowsLabel = tooltips.tableRows;
+    const colsLabel = tooltips.tableColumns;
+    const insertBtnText = tooltips.tableInsert;
+    const cancelBtnText = i18n.cancel;
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: title,
+            html: `
+                <div class="text-start mb-3">
+                    <label for="swal-table-rows" class="form-label fw-medium mb-1">${rowsLabel}</label>
+                    <input id="swal-table-rows" type="number" min="1" max="50" value="2" class="form-control" />
+                </div>
+                <div class="text-start">
+                    <label for="swal-table-cols" class="form-label fw-medium mb-1">${colsLabel}</label>
+                    <input id="swal-table-cols" type="number" min="1" max="50" value="2" class="form-control" />
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: insertBtnText,
+            cancelButtonText: cancelBtnText,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#64748b',
+            preConfirm: () => {
+                const rowsInput = document.getElementById('swal-table-rows');
+                const colsInput = document.getElementById('swal-table-cols');
+                const rows = parseInt(rowsInput ? rowsInput.value : '2', 10);
+                const cols = parseInt(colsInput ? colsInput.value : '2', 10);
+
+                if (isNaN(rows) || rows < 1 || rows > 50) {
+                    Swal.showValidationMessage(`${rowsLabel}: 1 - 50`);
+                    return false;
+                }
+                if (isNaN(cols) || cols < 1 || cols > 50) {
+                    Swal.showValidationMessage(`${colsLabel}: 1 - 50`);
+                    return false;
+                }
+                return { rows, cols };
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                quill.focus();
+                if (range) {
+                    quill.setSelection(range.index, range.length);
+                }
+                tableModule.insertTable(result.value.rows, result.value.cols);
+            }
+        });
+    } else {
+        const rows = parseInt(prompt(`${rowsLabel}:`, '2'), 10);
+        const cols = parseInt(prompt(`${colsLabel}:`, '2'), 10);
+        if (rows > 0 && cols > 0) {
+            quill.focus();
+            if (range) {
+                quill.setSelection(range.index, range.length);
+            }
+            tableModule.insertTable(rows, cols);
+        }
+    }
 }
 

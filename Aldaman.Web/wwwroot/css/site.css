@@ -414,6 +414,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .table {
+    display: table;
+  }
   .h-1 {
     height: calc(var(--spacing) * 1);
   }
@@ -985,6 +988,9 @@
   }
   .text-right {
     text-align: right;
+  }
+  .text-start {
+    text-align: start;
   }
   .font-mono {
     font-family: var(--font-mono);
@@ -2018,6 +2024,54 @@
 }
 .ql-snow .ql-editor p {
   margin: 0;
+}
+.ql-editor img[style*="float: left"], .ql-editor img.align-left, .ql-editor img.ql-align-left {
+  float: left;
+  margin: 0 1.25rem 0.75rem 0;
+  max-width: 100%;
+  height: auto;
+}
+.ql-editor img[style*="float: right"], .ql-editor img.align-right, .ql-editor img.ql-align-right {
+  float: right;
+  margin: 0 0 0.75rem 1.25rem;
+  max-width: 100%;
+  height: auto;
+}
+.ql-editor img[style*="margin: 0 auto"], .ql-editor img[style*="margin: auto"], .ql-editor img.align-center, .ql-editor img.ql-align-center {
+  display: block;
+  margin: 1rem auto;
+  float: none;
+  max-width: 100%;
+  height: auto;
+}
+.ql-editor::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.ql-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  table-layout: fixed;
+}
+.ql-editor table td, .ql-editor table th {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  word-break: break-word;
+}
+.ql-editor table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  text-align: left;
+}
+.dark .ql-editor table td, .dark .ql-editor table th {
+  border-color: #475569;
+}
+.dark .ql-editor table th {
+  background-color: #1e293b;
 }
 @property --tw-translate-x {
   syntax: "*";

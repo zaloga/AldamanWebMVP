@@ -4,11 +4,16 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-primary: var(--brand-primary, #a83f23); /* Terracotta Orange */
-  --color-brand-secondary: var(--brand-secondary, #4a332a); /* Earthy dark brown */
-  --color-brand-accent: var(--brand-accent, #ffb100); /* Amber Yellow */
-  --color-brand-bg-light: var(--brand-bg-light, #fdfaf6); /* Warm off-white / cream */
-  --color-brand-bg-dark: var(--brand-bg-dark, #1b1816); /* Very dark warm slate/brown */
+  --color-brand-primary: var(--brand-primary, #a83f23);
+  /* Terracotta Orange */
+  --color-brand-secondary: var(--brand-secondary, #4a332a);
+  /* Earthy dark brown */
+  --color-brand-accent: var(--brand-accent, #ffb100);
+  /* Amber Yellow */
+  --color-brand-bg-light: var(--brand-bg-light, #fdfaf6);
+  /* Warm off-white / cream */
+  --color-brand-bg-dark: var(--brand-bg-dark, #1b1816);
+  /* Very dark warm slate/brown */
 
   /* Minimal dependencies: Use built-in system fonts */
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -20,8 +25,13 @@
   body {
     @apply font-sans h-full text-slate-800 bg-brand-bg-light dark:bg-brand-bg-dark dark:text-slate-200 transition-colors duration-300 antialiased;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif tracking-tight text-slate-900 dark:text-white;
   }
 }
@@ -30,7 +40,7 @@
   .btn-primary {
     @apply inline-flex items-center rounded-sm bg-brand-primary px-6 py-2.5 text-sm font-semibold tracking-wide text-white shadow-sm hover:bg-brand-accent hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent transition-all duration-300 uppercase;
   }
-  
+
   .glass {
     @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-sm dark:bg-slate-900/60 dark:border-white/10;
   }
@@ -46,10 +56,84 @@
 
 /* Quill editor spacing resets */
 .ql-snow .ql-editor {
-    padding: 0 !important; /* Force removal of default padding 12px 15px */
-    white-space: normal !important;
+  padding: 0 !important;
+  /* Force removal of default padding 12px 15px */
+  white-space: normal !important;
 }
 
 .ql-snow .ql-editor p {
-    margin: 0; /* Remove vertical margins from paragraphs */
+  margin: 0;
+  /* Remove vertical margins from paragraphs */
+}
+
+/* Quill Floated Images & Image Wrapping */
+.ql-editor img[style*="float: left"],
+.ql-editor img.align-left,
+.ql-editor img.ql-align-left {
+  float: left;
+  margin: 0 1.25rem 0.75rem 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.ql-editor img[style*="float: right"],
+.ql-editor img.align-right,
+.ql-editor img.ql-align-right {
+  float: right;
+  margin: 0 0 0.75rem 1.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.ql-editor img[style*="margin: 0 auto"],
+.ql-editor img[style*="margin: auto"],
+.ql-editor img.align-center,
+.ql-editor img.ql-align-center {
+  display: block;
+  margin: 1rem auto;
+  float: none;
+  max-width: 100%;
+  height: auto;
+}
+
+.ql-editor::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Quill Native Table Layouts & Formatting */
+.ql-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  table-layout: fixed;
+}
+
+.ql-editor table td,
+.ql-editor table th {
+  border: 1px solid #cbd5e1;
+  /* slate-300 */
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  word-break: break-word;
+}
+
+.ql-editor table th {
+  background-color: #f8fafc;
+  /* slate-50 */
+  font-weight: 600;
+  text-align: left;
+}
+
+.dark .ql-editor table td,
+.dark .ql-editor table th {
+  border-color: #475569;
+  /* slate-600 */
+}
+
+.dark .ql-editor table th {
+  background-color: #1e293b;
+  /* slate-800 */
 }

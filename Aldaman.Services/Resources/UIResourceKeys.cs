@@ -282,6 +282,10 @@ public static class UIResourceKeys
     public const string RteImage = nameof(RteImage);
     public const string RteVideo = nameof(RteVideo);
     public const string RteFormula = nameof(RteFormula);
+    public const string RteTable = nameof(RteTable);
+    public const string RteRows = nameof(RteRows);
+    public const string RteColumns = nameof(RteColumns);
+    public const string RteInsert = nameof(RteInsert);
     public const string RteClean = nameof(RteClean);
     public const string RteFont = nameof(RteFont);
     public const string RteSize = nameof(RteSize);

@@ -855,6 +855,18 @@
   <data name="RteFormula" xml:space="preserve">
     <value>Vložit vzorec</value>
   </data>
+  <data name="RteTable" xml:space="preserve">
+    <value>Vložit tabulku</value>
+  </data>
+  <data name="RteRows" xml:space="preserve">
+    <value>Řádky</value>
+  </data>
+  <data name="RteColumns" xml:space="preserve">
+    <value>Sloupce</value>
+  </data>
+  <data name="RteInsert" xml:space="preserve">
+    <value>Vložit</value>
+  </data>
   <data name="RteClean" xml:space="preserve">
     <value>Vymazat formátování</value>
   </data>
