@@ -2,7 +2,7 @@
 @using Aldaman.Services.Dtos.ContactMessage
 @model PagedResultDto<ContactMessageDto>
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.ContactMessages];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.ContactMessages]);
 }
 
 <div class="d-flex justify-content-end mb-4">

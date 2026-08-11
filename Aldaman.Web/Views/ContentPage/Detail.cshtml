@@ -1,6 +1,6 @@
 @model Aldaman.Web.ViewModels.ContentPageViewModel
 @{
-    ViewData["Title"] = Model.Page.Title;
+    ViewData.SetPageTitle(Model.Page.Title);
 }
 
 @section Styles {

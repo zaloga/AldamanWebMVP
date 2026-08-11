@@ -1,7 +1,7 @@
 @using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContactMessage.ContactMessageDto
 @{
-    ViewData["Title"] = $"{Localizer[UIResourceKeys.ContactMessageDetails]}";
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.ContactMessageDetails]);
 }
 
 <div class="container-fluid">

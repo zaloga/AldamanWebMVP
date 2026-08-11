@@ -5,7 +5,7 @@
     var isDeletedAction = action?.Equals("Deleted", StringComparison.OrdinalIgnoreCase) ?? false;
     var isHome = controller?.Equals("Home", StringComparison.OrdinalIgnoreCase) ?? false;
 
-    var isItemDeleted = (ViewData["IsDeleted"] as bool?) == true;
+    var isItemDeleted = ViewData.GetIsDeleted() == true;
     if (!isItemDeleted && ViewData.Model != null)
     {
         var prop = ViewData.Model.GetType().GetProperty("IsDeleted");
@@ -15,7 +15,7 @@
         }
     }
 
-    string listTitle = ViewData["ListTitle"]?.ToString();
+    string? listTitle = ViewData.GetBreadcrumbListTitle();
     if (string.IsNullOrEmpty(listTitle))
     {
         listTitle = controller switch
@@ -28,7 +28,7 @@
         };
     }
 
-    string deletedListTitle = ViewData["DeletedListTitle"]?.ToString();
+    string? deletedListTitle = ViewData.GetBreadcrumbDeletedListTitle();
     if (string.IsNullOrEmpty(deletedListTitle))
     {
         deletedListTitle = controller switch
@@ -40,6 +40,8 @@
             _ => Localizer[UIResourceKeys.Deleted].Value
         };
     }
+
+    var pageTitle = ViewData.GetPageTitle();
 }
 
 <nav aria-label="breadcrumb">
@@ -84,10 +86,10 @@
                         </a>
                     </li>
                 }
-                @if (ViewData["Title"] != null && ViewData["Title"].ToString() != "Dashboard" && ViewData["Title"].ToString() != Localizer[UIResourceKeys.Dashboard].Value)
+                @if (!string.IsNullOrEmpty(pageTitle) && pageTitle != "Dashboard" && pageTitle != Localizer[UIResourceKeys.Dashboard].Value)
                 {
                     <li class="breadcrumb-item active" aria-current="page">
-                        @ViewData["Title"]
+                        @pageTitle
                     </li>
                 }
             }

@@ -1,6 +1,6 @@
 @model Aldaman.Web.ViewModels.BlogPostViewModel
 @{
-    ViewData["Title"] = Model.Post.Title;
+    ViewData.SetPageTitle(Model.Post.Title);
 }
 
 @section Styles {

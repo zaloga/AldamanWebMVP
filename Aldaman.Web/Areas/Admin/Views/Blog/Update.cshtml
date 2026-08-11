@@ -2,7 +2,7 @@
 
 @{
     var isCreate = Model.Id == null || Model.Id == Guid.Empty;
-    ViewData["Title"] = isCreate ? Localizer[UIResourceKeys.CreateBlogPost] : Localizer[UIResourceKeys.UpdateBlogPost];
+    ViewData.SetPageTitle(isCreate ? Localizer[UIResourceKeys.CreateBlogPost] : Localizer[UIResourceKeys.UpdateBlogPost]);
 }
 
 @section Styles {

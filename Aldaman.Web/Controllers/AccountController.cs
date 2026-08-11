@@ -23,8 +23,7 @@ public class AccountController : Controller
             return RedirectToLocal(returnUrl);
         }
 
-        ViewData["ReturnUrl"] = returnUrl;
-        return View();
+        return View(new LoginRequest { ReturnUrl = returnUrl });
     }
 
     [HttpPost]
@@ -32,8 +31,6 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        ViewData["ReturnUrl"] = request.ReturnUrl;
-
         if (!ModelState.IsValid)
         {
             return View(request);

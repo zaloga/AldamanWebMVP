@@ -3,7 +3,7 @@
 @using Aldaman.Services.Dtos.General
 @model PagedResultDto<ContentPageListItemDto>
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.DeletedPages];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.DeletedPages]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">

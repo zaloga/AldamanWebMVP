@@ -2,6 +2,7 @@ using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.StyleSettings;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
+using Aldaman.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -60,9 +61,9 @@ public class StyleSettingsController : BaseAdminController
         bool isEdit = dto.Id.HasValue && dto.Id != Guid.Empty;
         await _styleService.UpdateSettingAsync(dto);
 
-        TempData[TempDataKeys.SuccessMessage] = isEdit
+        TempData.SetSuccessMessage(isEdit
             ? Localizer[UIResourceKeys.StyleSettingUpdated].Value
-            : Localizer[UIResourceKeys.StyleSettingCreated].Value;
+            : Localizer[UIResourceKeys.StyleSettingCreated].Value);
 
         return RedirectToAction(nameof(Index));
     }
@@ -79,7 +80,7 @@ public class StyleSettingsController : BaseAdminController
 
         await _styleService.UpdateSettingAsync(dto);
 
-        TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.StyleSettingUpdated].Value;
+        TempData.SetSuccessMessage(Localizer[UIResourceKeys.StyleSettingUpdated].Value);
 
         return RedirectToAction(nameof(Index));
     }

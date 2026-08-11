@@ -1,8 +1,8 @@
-using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
+using Aldaman.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -62,7 +62,7 @@ public class BlogController : BaseAdminController
             }
 
             await BlogService.CreateBlogPostAsync(model);
-            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PostCreatedSuccessfully].Value;
+            TempData.SetSuccessMessage(Localizer[UIResourceKeys.PostCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -122,7 +122,7 @@ public class BlogController : BaseAdminController
             }
 
             await BlogService.UpdateBlogPostAsync(id, model);
-            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PostUpdatedSuccessfully].Value;
+            TempData.SetSuccessMessage(Localizer[UIResourceKeys.PostUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)

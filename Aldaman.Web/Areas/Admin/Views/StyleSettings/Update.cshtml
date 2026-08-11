@@ -3,7 +3,7 @@
 
 @{
     bool isEdit = Model.Id.HasValue && Model.Id != Guid.Empty;
-    ViewData["Title"] = isEdit ? "Update Style Setting" : "Create Style Setting";
+    ViewData.SetPageTitle(isEdit ? "Update Style Setting" : "Create Style Setting");
 }
 
 <div class="mb-4">

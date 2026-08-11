@@ -1,8 +1,7 @@
-@using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.ContactMessage
 @model PagedResultDto<ContactMessageDto>
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.DeletedMessages];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.DeletedMessages]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">

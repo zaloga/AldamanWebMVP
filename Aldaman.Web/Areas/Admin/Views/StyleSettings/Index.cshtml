@@ -2,7 +2,7 @@
 @using Aldaman.Persistence.Enums
 
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.StyleSettings];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.StyleSettings]);
     var deletedItems = ViewBag.DeletedItems as List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>;
 }
 

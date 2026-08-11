@@ -1,9 +1,8 @@
 @using Aldaman.Services.Dtos.Media
 @model UpdateMediaAssetDto
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.EditMedia];
-    var relativePath = ViewData["RelativePath"] as string;
-    var isImage = (bool)ViewData["IsImage"];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.EditMedia]);
+    var (relativePath, isImage) = ViewData.GetMediaPreview();
 }
 
 <form asp-action="Edit" method="post">

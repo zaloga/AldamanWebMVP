@@ -1,6 +1,6 @@
 @model ErrorViewModel
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.Error];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.Error]);
 }
 
 <h1 class="text-red-600 dark:text-red-400 font-bold text-3xl mb-2">@Localizer[UIResourceKeys.Error].</h1>

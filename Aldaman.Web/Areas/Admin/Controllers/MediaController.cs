@@ -1,8 +1,8 @@
-using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
+using Aldaman.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -53,7 +53,7 @@ public class MediaController : BaseAdminController
                 await MediaService.UploadAsync(stream, file.FileName, file.ContentType);
             }
 
-            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.FileUploadedSuccessfully].Value;
+            TempData.SetSuccessMessage(Localizer[UIResourceKeys.FileUploadedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -108,8 +108,7 @@ public class MediaController : BaseAdminController
             Title = asset.Title
         };
 
-        ViewData["RelativePath"] = asset.RelativePath;
-        ViewData["IsImage"] = asset.IsImage;
+        ViewData.SetMediaPreview(asset.RelativePath, asset.IsImage);
 
         return View(model);
     }
@@ -121,7 +120,7 @@ public class MediaController : BaseAdminController
         if (!ModelState.IsValid) return View(model);
 
         await MediaService.UpdateAssetAsync(model);
-        TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.MediaMetadataUpdated].Value;
+        TempData.SetSuccessMessage(Localizer[UIResourceKeys.MediaMetadataUpdated].Value);
         return RedirectToAction(nameof(Index));
     }
 

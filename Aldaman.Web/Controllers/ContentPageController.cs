@@ -2,6 +2,7 @@ using System.Globalization;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
+using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,7 @@ public sealed class ContentPageController : Controller
     [HttpGet]
     public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken)
     {
-        string cultureCode = CultureInfo.CurrentUICulture.Name;
+        string cultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
         ContentPageDetailDto? pageDetail = await ContentPageService.GetContentPageBySlugCachedAsync(
             slug,
@@ -39,7 +40,7 @@ public sealed class ContentPageController : Controller
                 var fallbackSlug = await ContentPageService.GetRedirectSlugCachedAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
-                    TempData["ShowTranslationMissingToast"] = true;
+                    TempData.SetShowTranslationMissingToast(true);
                     return RedirectToAction("Detail", "ContentPage", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
@@ -53,7 +54,7 @@ public sealed class ContentPageController : Controller
         {
             alternatives[slugEntry.Key] = Url.Action("Detail", "ContentPage", new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
         }
-        ViewData["LanguageAlternatives"] = alternatives;
+        ViewData.SetLanguageAlternatives(alternatives);
 
         ContentPageViewModel viewModel = new()
         {

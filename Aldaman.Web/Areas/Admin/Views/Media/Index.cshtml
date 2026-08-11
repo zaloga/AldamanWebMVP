@@ -2,7 +2,7 @@
 @using Aldaman.Services.Constants
 @model PagedResultDto<MediaAssetDto>
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.MediaLibrary];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.MediaLibrary]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">

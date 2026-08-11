@@ -3,6 +3,7 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
+using Aldaman.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -96,7 +97,7 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.CreateContentPageAsync(model);
-            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PageCreatedSuccessfully].Value;
+            TempData.SetSuccessMessage(Localizer[UIResourceKeys.PageCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -147,7 +148,7 @@ public class ContentPagesController : BaseAdminController
         try
         {
             await ContentPageService.UpdateContentPageAsync(id, model);
-            TempData[TempDataKeys.SuccessMessage] = Localizer[UIResourceKeys.PageUpdatedSuccessfully].Value;
+            TempData.SetSuccessMessage(Localizer[UIResourceKeys.PageUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)

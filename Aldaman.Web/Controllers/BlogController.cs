@@ -2,6 +2,7 @@ using System.Globalization;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Interfaces;
+using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -46,7 +47,7 @@ public sealed class BlogController : Controller
                 var fallbackSlug = await BlogService.GetRedirectSlugCachedAsync(slug, defaultCulture);
                 if (fallbackSlug != null)
                 {
-                    TempData["ShowTranslationMissingToast"] = true;
+                    TempData.SetShowTranslationMissingToast(true);
                     return RedirectToAction("Detail", "Blog", new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
@@ -60,7 +61,7 @@ public sealed class BlogController : Controller
         {
             alternatives[slugEntry.Key] = Url.Action("Detail", "Blog", new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
         }
-        ViewData["LanguageAlternatives"] = alternatives;
+        ViewData.SetLanguageAlternatives(alternatives);
 
         var navigation = await BlogService.GetBlogPostNavigationCachedAsync(postDetail.Id, cultureCode);
 

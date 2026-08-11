@@ -1,6 +1,6 @@
 @model Aldaman.Web.Models.Account.LoginRequest
 @{
-    ViewData["Title"] = Localizer[UIResourceKeys.Login];
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.Login]);
 }
 
 <div class="h-[70vh] flex flex-col items-center justify-center p-6 text-slate-900 dark:text-slate-100 font-sans">
@@ -11,7 +11,7 @@
         </div>
 
         <form asp-action="Login" method="post" class="space-y-6">
-            <input type="hidden" asp-for="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+            <input type="hidden" asp-for="ReturnUrl" />
             
             <div asp-validation-summary="ModelOnly" class="text-red-500 text-sm italic font-medium"></div>
 

@@ -1,4 +1,5 @@
 using Aldaman.Services.Configuration;
+using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,7 @@ public sealed class LanguageSwitcherViewComponent : ViewComponent
         var supportedLanguages = new List<LanguageInfo>();
 
         // Check for manual overrides from controllers (e.g., translated slugs)
-        var alternatives = ViewContext.ViewData["LanguageAlternatives"] as Dictionary<string, string> 
+        var alternatives = ViewContext.ViewData.GetLanguageAlternatives() 
                            ?? new Dictionary<string, string>();
 
         foreach (var culture in _settings.SupportedCultures)
