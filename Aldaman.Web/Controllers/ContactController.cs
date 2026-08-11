@@ -36,9 +36,8 @@ public sealed class ContactController : Controller
 
         ContactMessageDto dto = new()
         {
-            EmailOrPhone = viewModel.EmailOrPhone,
-
-            Message = viewModel.Message
+            EmailOrPhone = viewModel.EmailOrPhone ?? string.Empty,
+            Message = viewModel.Message ?? string.Empty
         };
 
         string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? UnknownClientIp;
