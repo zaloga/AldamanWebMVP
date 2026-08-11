@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-100">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,60 +63,60 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
-    <script>
-        window.AdminI18n = {
-            areYouSure: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.AreYouSure].Value)),
-            confirmDeleteText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmDeleteText].Value)),
-            confirmDeletePermanentlyText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmDeletePermanentlyText].Value)),
-            confirmRestoreText: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ConfirmRestoreText].Value)),
-            yesDeleteIt: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.YesDeleteIt].Value)),
-            deletePermanentlyButton: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.DeletePermanentlyButton].Value)),
-            cancel: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Cancel].Value)),
-            deletedSuccessfully: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.DeletedSuccessfully].Value)),
-            restoredSuccessfully: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RestoredSuccessfully].Value)),
-            yes: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Yes].Value)),
-            fileSizeExceedsLimit: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.FileSizeExceedsLimit].Value)),
-            imageUploadFailed: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ImageUploadFailed].Value)),
-            errorUploadingImage: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorUploadingImage].Value)),
-            error: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.Error].Value)),
-            errorOccurred: @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.ErrorOccurred].Value)),
-            quillTooltips: {
-                'bold': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBold].Value)),
-                'italic': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteItalic].Value)),
-                'underline': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteUnderline].Value)),
-                'strike': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteStrikethrough].Value)),
-                'color': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteTextColor].Value)),
-                'background': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBackgroundColor].Value)),
-                'script[value="sub"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSubscript].Value)),
-                'script[value="super"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSuperscript].Value)),
-                'header[value="1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader1].Value)),
-                'header[value="2"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader2].Value)),
-                'header[value="3"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader3].Value)),
-                'header[value="4"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteHeader4].Value)),
-                'blockquote': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteBlockquote].Value)),
-                'code-block': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteCodeBlock].Value)),
-                'list[value="ordered"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteListOrdered].Value)),
-                'list[value="bullet"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteListBullet].Value)),
-                'indent[value="-1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteIndentDecrease].Value)),
-                'indent[value="+1"]': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteIndentIncrease].Value)),
-                'direction': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteDirection].Value)),
-                'align': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteAlign].Value)),
-                'link': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteLink].Value)),
-                'image': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteImage].Value)),
-                'video': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteVideo].Value)),
-                'formula': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFormula].Value)),
-                'table': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteTable].Value)),
-                'tableRows': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteRows].Value)),
-                'tableColumns': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteColumns].Value)),
-                'tableInsert': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteInsert].Value)),
-                'clean': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteClean].Value)),
-                'font': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteFont].Value)),
-                'size': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteSize].Value)),
-                'customColor': @Html.Raw(Json.Serialize(Localizer[UIResourceKeys.RteCustomColor].Value))
+    <script id="admin-i18n-data" type="application/json">
+        @Html.Raw(Json.Serialize(new
+        {
+            areYouSure = Localizer[UIResourceKeys.AreYouSure].Value,
+            confirmDeleteText = Localizer[UIResourceKeys.ConfirmDeleteText].Value,
+            confirmDeletePermanentlyText = Localizer[UIResourceKeys.ConfirmDeletePermanentlyText].Value,
+            confirmRestoreText = Localizer[UIResourceKeys.ConfirmRestoreText].Value,
+            yesDeleteIt = Localizer[UIResourceKeys.YesDeleteIt].Value,
+            deletePermanentlyButton = Localizer[UIResourceKeys.DeletePermanentlyButton].Value,
+            cancel = Localizer[UIResourceKeys.Cancel].Value,
+            deletedSuccessfully = Localizer[UIResourceKeys.DeletedSuccessfully].Value,
+            restoredSuccessfully = Localizer[UIResourceKeys.RestoredSuccessfully].Value,
+            yes = Localizer[UIResourceKeys.Yes].Value,
+            fileSizeExceedsLimit = Localizer[UIResourceKeys.FileSizeExceedsLimit].Value,
+            imageUploadFailed = Localizer[UIResourceKeys.ImageUploadFailed].Value,
+            errorUploadingImage = Localizer[UIResourceKeys.ErrorUploadingImage].Value,
+            error = Localizer[UIResourceKeys.Error].Value,
+            errorOccurred = Localizer[UIResourceKeys.ErrorOccurred].Value,
+            quillTooltips = new Dictionary<string, string>
+            {
+                ["bold"] = Localizer[UIResourceKeys.RteBold].Value,
+                ["italic"] = Localizer[UIResourceKeys.RteItalic].Value,
+                ["underline"] = Localizer[UIResourceKeys.RteUnderline].Value,
+                ["strike"] = Localizer[UIResourceKeys.RteStrikethrough].Value,
+                ["color"] = Localizer[UIResourceKeys.RteTextColor].Value,
+                ["background"] = Localizer[UIResourceKeys.RteBackgroundColor].Value,
+                ["script[value=\"sub\"]"] = Localizer[UIResourceKeys.RteSubscript].Value,
+                ["script[value=\"super\"]"] = Localizer[UIResourceKeys.RteSuperscript].Value,
+                ["header[value=\"1\"]"] = Localizer[UIResourceKeys.RteHeader1].Value,
+                ["header[value=\"2\"]"] = Localizer[UIResourceKeys.RteHeader2].Value,
+                ["header[value=\"3\"]"] = Localizer[UIResourceKeys.RteHeader3].Value,
+                ["header[value=\"4\"]"] = Localizer[UIResourceKeys.RteHeader4].Value,
+                ["blockquote"] = Localizer[UIResourceKeys.RteBlockquote].Value,
+                ["code-block"] = Localizer[UIResourceKeys.RteCodeBlock].Value,
+                ["list[value=\"ordered\"]"] = Localizer[UIResourceKeys.RteListOrdered].Value,
+                ["list[value=\"bullet\"]"] = Localizer[UIResourceKeys.RteListBullet].Value,
+                ["indent[value=\"-1\"]"] = Localizer[UIResourceKeys.RteIndentDecrease].Value,
+                ["indent[value=\"+1\"]"] = Localizer[UIResourceKeys.RteIndentIncrease].Value,
+                ["direction"] = Localizer[UIResourceKeys.RteDirection].Value,
+                ["align"] = Localizer[UIResourceKeys.RteAlign].Value,
+                ["link"] = Localizer[UIResourceKeys.RteLink].Value,
+                ["image"] = Localizer[UIResourceKeys.RteImage].Value,
+                ["video"] = Localizer[UIResourceKeys.RteVideo].Value,
+                ["formula"] = Localizer[UIResourceKeys.RteFormula].Value,
+                ["table"] = Localizer[UIResourceKeys.RteTable].Value,
+                ["tableRows"] = Localizer[UIResourceKeys.RteRows].Value,
+                ["tableColumns"] = Localizer[UIResourceKeys.RteColumns].Value,
+                ["tableInsert"] = Localizer[UIResourceKeys.RteInsert].Value,
+                ["clean"] = Localizer[UIResourceKeys.RteClean].Value,
+                ["font"] = Localizer[UIResourceKeys.RteFont].Value,
+                ["size"] = Localizer[UIResourceKeys.RteSize].Value,
+                ["customColor"] = Localizer[UIResourceKeys.RteCustomColor].Value
             }
-        };
-
-
+        }))
     </script>
     <script src="~/js/admin-actions.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -50,7 +50,7 @@
                                 
                                 <div class="btn-group btn-group-sm">
                                     <button type="submit" class="btn btn-success">@Localizer[UIResourceKeys.Save]</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault('@setting.Id', '@setting.Key', '@setting.DefaultValue')" title="@Localizer[UIResourceKeys.ResetToDefault]">
+                                    <button type="button" class="btn btn-outline-secondary" data-action="reset-style-default" data-id="@setting.Id" data-key="@setting.Key" data-default-value="@setting.DefaultValue" data-url="@Url.Action("ResetToDefault")" data-success-msg="@Localizer[UIResourceKeys.UpdatedSuccessfully]" title="@Localizer[UIResourceKeys.ResetToDefault]">
                                         <i class="bi bi-arrow-counterclockwise" style="font-size: 14px;"></i>
                                     </button>
                                 </div>
@@ -126,46 +126,5 @@
 @Html.AntiForgeryToken()
 
 @section Scripts {
-    <script>
-        function resetToDefault(id, key, defaultValue) {
-            const i18n = window.AdminI18n || {};
-            Swal.fire({
-                title: i18n.areYouSure,
-                text: key + ' (' + defaultValue + ')',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#6366f1',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: i18n.yes,
-                cancelButtonText: i18n.cancel
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("ResetToDefault")',
-                        type: 'POST',
-                        data: { 
-                            id: id,
-                            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                        },
-                        success: function(response) {
-                            if (response && response.success) {
-                                Swal.fire({
-                                    title: response.message || '@Localizer[UIResourceKeys.UpdatedSuccessfully]',
-                                    icon: 'success'
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                const msg = (response && response.message) ? response.message : i18n.errorOccurred;
-                                Swal.fire(i18n.error, msg, 'error');
-                            }
-                        },
-                        error: function() {
-                            Swal.fire(i18n.error, i18n.errorOccurred, 'error');
-                        }
-                    });
-                }
-            });
-        }
-    </script>
+    <script src="~/js/admin-style-settings.js" asp-append-version="true"></script>
 }

@@ -1,30 +1,80 @@
 /**
- * Admin Item Actions (Delete, Hard Delete, Restore)
+ * Admin Item Actions (Delete, Hard Delete, Restore, Filter Clear, Cover Image File Selection)
  * Shared JavaScript handling SweetAlert2 confirmations and AJAX requests across Admin area.
  */
 
+function initAdminI18n() {
+    if (!window.AdminI18n) {
+        const i18nElem = document.getElementById('admin-i18n-data');
+        if (i18nElem && i18nElem.textContent) {
+            try {
+                window.AdminI18n = JSON.parse(i18nElem.textContent);
+            } catch (e) {
+                console.error('Failed to parse admin i18n data', e);
+            }
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    initAdminI18n();
+
     // Shared event delegation for buttons with data-action
     document.addEventListener('click', function (event) {
-        const button = event.target.closest('[data-action="delete"], [data-action="hard-delete"], [data-action="restore"], [data-action="renew"]');
-        if (!button) return;
+        // Delete / Hard-delete / Restore / Renew buttons
+        const actionButton = event.target.closest('[data-action="delete"], [data-action="hard-delete"], [data-action="restore"], [data-action="renew"]');
+        if (actionButton) {
+            event.preventDefault();
 
-        event.preventDefault();
+            const action = actionButton.dataset.action;
+            const id = actionButton.dataset.id;
+            const title = actionButton.dataset.title || '';
+            const url = actionButton.dataset.url;
+            const customConfirmText = actionButton.dataset.confirmText || null;
 
-        const action = button.dataset.action;
-        const id = button.dataset.id;
-        const title = button.dataset.title || '';
-        const url = button.dataset.url;
-        const customConfirmText = button.dataset.confirmText || null;
+            if (!id || !url) return;
 
-        if (!id || !url) return;
+            if (action === 'delete') {
+                deleteItem(id, title, url, customConfirmText);
+            } else if (action === 'hard-delete') {
+                hardDeleteItem(id, title, url, customConfirmText);
+            } else if (action === 'restore' || action === 'renew') {
+                restoreItem(id, title, url, customConfirmText);
+            }
+            return;
+        }
 
-        if (action === 'delete') {
-            deleteItem(id, title, url, customConfirmText);
-        } else if (action === 'hard-delete') {
-            hardDeleteItem(id, title, url, customConfirmText);
-        } else if (action === 'restore' || action === 'renew') {
-            restoreItem(id, title, url, customConfirmText);
+        // Clear Filter buttons
+        const clearBtn = event.target.closest('[data-action="clear-filter"]');
+        if (clearBtn) {
+            event.preventDefault();
+            const form = clearBtn.closest('form');
+            if (form) {
+                if (form.SearchTerm) form.SearchTerm.value = '';
+                if (form.SortBy) form.SortBy.value = clearBtn.dataset.defaultSortBy || '';
+                if (form.SortDescending) form.SortDescending.value = clearBtn.dataset.defaultSortDesc || 'true';
+                form.submit();
+            }
+            return;
+        }
+    });
+
+    // Delegated event listener for file inputs with cover image display target
+    document.addEventListener('change', function (event) {
+        const coverInput = event.target.closest('[data-action="cover-file-input"]');
+        if (!coverInput) return;
+
+        const displayId = coverInput.dataset.displayTarget || 'coverFileNameDisplay';
+        const display = document.getElementById(displayId);
+        if (display) {
+            if (coverInput.files && coverInput.files.length > 0) {
+                display.textContent = coverInput.files[0].name;
+                display.classList.remove('text-muted');
+            } else {
+                const noFileText = coverInput.dataset.noFileText || '';
+                display.textContent = noFileText;
+                display.classList.add('text-muted');
+            }
         }
     });
 });

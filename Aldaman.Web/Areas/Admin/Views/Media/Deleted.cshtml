@@ -41,7 +41,7 @@
         </div>
         <div class="col-md-2 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResourceKeys.Filter]</button>
-            <button type="submit" onclick="this.form.SearchTerm.value=''; this.form.SortBy.value='@SortByConstants.UploadedAt'; this.form.SortDescending.value='true';" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
+            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.UploadedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
         </div>
     </form>
 </div>

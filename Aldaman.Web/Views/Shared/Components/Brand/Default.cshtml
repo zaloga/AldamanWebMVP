@@ -34,54 +34,5 @@
                 }
             </div>
         </div>
-
-        <script>
-            (function() {
-                const link = document.getElementById('brand-nav-link');
-                const dropdown = document.getElementById('brand-nav-dropdown');
-                const chevron = document.getElementById('brand-nav-chevron');
-                
-                if (!link || !dropdown) return;
-
-                link.addEventListener('click', function(e) {
-                    // Only prevent default if there are items and it's a dropdown trigger
-                    // Actually, usually brand link should also work as a home link.
-                    // But if it's "rozklikávací", user might expect it to just open the menu.
-                    // Let's make it toggle dropdown on click.
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isOpen = !dropdown.classList.contains('invisible');
-                    
-                    if (isOpen) {
-                        closeDropdown();
-                    } else {
-                        openDropdown();
-                    }
-                });
-
-                function openDropdown() {
-                    dropdown.classList.remove('invisible', 'opacity-0', '-translate-y-2');
-                    dropdown.classList.add('visible', 'opacity-100', 'translate-y-0');
-                    if (chevron) chevron.classList.add('rotate-180');
-                }
-
-                function closeDropdown() {
-                    dropdown.classList.add('invisible', 'opacity-0', '-translate-y-2');
-                    dropdown.classList.remove('visible', 'opacity-100', 'translate-y-0');
-                    if (chevron) chevron.classList.remove('rotate-180');
-                }
-
-                document.addEventListener('click', function(e) {
-                    if (!link.contains(e.target) && !dropdown.contains(e.target)) {
-                        closeDropdown();
-                    }
-                });
-
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') closeDropdown();
-                });
-            })();
-        </script>
     }
 </div>

@@ -118,7 +118,7 @@
                                     <i class="bi bi-upload me-1"></i>
                                     @Localizer[UIResourceKeys.ChooseFile]
                                 </label>
-                                <input asp-for="CoverImageFile" class="form-control d-none" type="file" accept="image/*" onchange="updateCoverFileName(this)" />
+                                <input asp-for="CoverImageFile" class="form-control d-none" type="file" accept="image/*" data-action="cover-file-input" data-display-target="coverFileNameDisplay" data-no-file-text="@Localizer[UIResourceKeys.NoFileChosen]" />
                                 <span class="form-control bg-light text-muted" id="coverFileNameDisplay">@Localizer[UIResourceKeys.NoFileChosen]</span>
                             </div>
                             <input type="hidden" asp-for="CoverMediaAssetId" />
@@ -144,16 +144,4 @@
     <script src="~/lib/quill/quill.js"></script>
     <script src="~/js/admin-quill.js" asp-append-version="true"></script>
     <script src="~/js/admin-slug.js" asp-append-version="true"></script>
-    <script>
-        function updateCoverFileName(input) {
-            const display = document.getElementById('coverFileNameDisplay');
-            if (input.files && input.files.length > 0) {
-                display.textContent = input.files[0].name;
-                display.classList.remove('text-muted');
-            } else {
-                display.textContent = '@Localizer[UIResourceKeys.NoFileChosen]';
-                display.classList.add('text-muted');
-            }
-        }
-    </script>
 }
