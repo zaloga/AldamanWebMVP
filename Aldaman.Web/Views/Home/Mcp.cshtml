@@ -1,5 +1,5 @@
 @{
-    ViewData.SetPageTitle("MCP API for AI");
+    ViewData.SetPageTitle(Localizer[UIResourceKeys.McpApiTitle]);
 }
 
 <div class="py-12 md:py-20 max-w-5xl mx-auto px-4">
@@ -10,13 +10,13 @@
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
             </span>
-            Model Context Protocol
+            @Localizer[UIResourceKeys.ModelContextProtocol]
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
-            MCP API for <span class="text-brand-primary">AI Agents</span>
+            @Localizer[UIResourceKeys.McpApiHeading]
         </h1>
         <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-            Integrate Aldaman directly into your LLM workflows. The Model Context Protocol implementation enables AI agents to browse content, search articles, and interact with site resources with native context awareness.
+            @Localizer[UIResourceKeys.McpApiDescription]
         </p>
     </header>
 
@@ -25,16 +25,16 @@
         <!-- Step 1 -->
         <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
             <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-brand-primary text-white text-sm font-bold shadow-lg">1</div>
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Establish SSE Connection</h2>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">@Localizer[UIResourceKeys.EstablishSseConnection]</h2>
             <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
-                Connect to the Server-Sent Events stream to create a persistent communication channel.
+                @Localizer[UIResourceKeys.EstablishSseDescription]
             </p>
             <div class="flex items-center gap-3 bg-slate-900 rounded-xl p-4 font-mono text-sm mb-4 border border-white/5">
                 <span class="text-emerald-400">GET</span>
                 <span class="text-slate-300">/api/mcp/sse</span>
             </div>
             <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5">
-                <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-widest">Initial Event</p>
+                <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-widest">@Localizer[UIResourceKeys.InitialEvent]</p>
                 <code class="text-xs text-brand-primary dark:text-brand-accent break-all">event: endpoint | data: https://aldaman.cz/api/mcp/message?sessionId=...</code>
             </div>
         </section>
@@ -42,9 +42,9 @@
         <!-- Step 2 -->
         <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
             <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-brand-accent text-white text-sm font-bold shadow-lg">2</div>
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Execute JSON-RPC Requests</h2>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">@Localizer[UIResourceKeys.ExecuteJsonRpcRequests]</h2>
             <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
-                Send standard MCP requests using the unique session URL provided by the SSE stream.
+                @Localizer[UIResourceKeys.ExecuteJsonRpcDescription]
             </p>
             <div class="flex items-center gap-3 bg-slate-900 rounded-xl p-4 font-mono text-sm mb-6 border border-white/5">
                 <span class="text-blue-400">POST</span>
@@ -53,7 +53,7 @@
             
             <div class="grid md:grid-cols-2 gap-4">
                 <div class="p-5 rounded-xl bg-slate-900 border border-white/5">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">List Tools</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">@Localizer[UIResourceKeys.ListTools]</p>
                     <pre class="text-[11px] text-slate-300 leading-tight"><code>{
   "jsonrpc": "2.0",
   "method": "tools/list",
@@ -61,7 +61,7 @@
 }</code></pre>
                 </div>
                 <div class="p-5 rounded-xl bg-slate-900 border border-white/5">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">Search Request</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">@Localizer[UIResourceKeys.SearchRequest]</p>
                     <pre class="text-[11px] text-slate-300 leading-tight"><code>{
   "jsonrpc": "2.0",
   "method": "tools/call",
@@ -78,14 +78,14 @@
         <!-- Step 3 -->
         <section class="group relative p-8 rounded-2xl bg-white dark:bg-slate-900/20 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
             <div class="absolute -top-4 left-8 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 dark:bg-white text-white dark:text-slate-900 text-sm font-bold shadow-lg">3</div>
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Receive Async Responses</h2>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4">@Localizer[UIResourceKeys.ReceiveAsyncResponses]</h2>
             <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm leading-relaxed">
-                The server processes requests asynchronously and streams responses back via the SSE channel.
+                @Localizer[UIResourceKeys.ReceiveAsyncDescription]
             </p>
             <div class="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Incoming SSE Event</p>
+                    <p class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">@Localizer[UIResourceKeys.IncomingSseEvent]</p>
                 </div>
                 <code class="text-xs text-slate-700 dark:text-slate-300 break-all">event: message | data: {"jsonrpc":"2.0","result":{...},"id":2}</code>
             </div>
@@ -99,8 +99,8 @@
                 <i class="bi bi-database text-2xl"></i>
             </div>
             <div>
-                <h3 class="font-bold text-slate-900 dark:text-white mb-1">Native Context</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Exposes site hierarchy and metadata directly to LLM context windows.</p>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1">@Localizer[UIResourceKeys.NativeContext]</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">@Localizer[UIResourceKeys.NativeContextDescription]</p>
             </div>
         </div>
         <div class="flex gap-4 items-start">
@@ -108,8 +108,8 @@
                 <i class="bi bi-lightning-charge text-2xl"></i>
             </div>
             <div>
-                <h3 class="font-bold text-slate-900 dark:text-white mb-1">Low Latency</h3>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Optimized data retrieval designed for high-speed AI interactions.</p>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1">@Localizer[UIResourceKeys.LowLatency]</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">@Localizer[UIResourceKeys.LowLatencyDescription]</p>
             </div>
         </div>
     </div>

@@ -888,4 +888,124 @@
   <data name="ShowLess" xml:space="preserve">
     <value>Show less</value>
   </data>
+  <data name="UpdateStyleSetting" xml:space="preserve">
+    <value>Update Style Setting</value>
+  </data>
+  <data name="CreateStyleSetting" xml:space="preserve">
+    <value>Create Style Setting</value>
+  </data>
+  <data name="EditCssVariable" xml:space="preserve">
+    <value>Edit CSS Variable</value>
+  </data>
+  <data name="NewCssVariable" xml:space="preserve">
+    <value>New CSS Variable</value>
+  </data>
+  <data name="KeyInfo" xml:space="preserve">
+    <value>Key (e.g. --brand-primary)</value>
+  </data>
+  <data name="ValueInfo" xml:space="preserve">
+    <value>Value (e.g. #ff0000 or 1.5rem)</value>
+  </data>
+  <data name="UpdateSetting" xml:space="preserve">
+    <value>Update Setting</value>
+  </data>
+  <data name="CreateSetting" xml:space="preserve">
+    <value>Create Setting</value>
+  </data>
+  <data name="SearchApiTitle" xml:space="preserve">
+    <value>Search API for AI</value>
+  </data>
+  <data name="RestApi" xml:space="preserve">
+    <value>REST API</value>
+  </data>
+  <data name="SearchApiHeading" xml:space="preserve">
+    <value>Search API for Applications</value>
+  </data>
+  <data name="SearchApiDescription" xml:space="preserve">
+    <value>A high-performance REST API to retrieve content from Aldaman. Perfect for integrating search functionality into external tools, mobile apps, or custom AI agents.</value>
+  </data>
+  <data name="Endpoint" xml:space="preserve">
+    <value>Endpoint</value>
+  </data>
+  <data name="QueryParameters" xml:space="preserve">
+    <value>Query Parameters</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="SearchTermDescription" xml:space="preserve">
+    <value>The search term (minimum 2 characters).</value>
+  </data>
+  <data name="TargetCultureDescription" xml:space="preserve">
+    <value>Target culture (e.g., "cs", "en").</value>
+  </data>
+  <data name="NoDefaultCs" xml:space="preserve">
+    <value>No (Default: cs)</value>
+  </data>
+  <data name="SampleResponse" xml:space="preserve">
+    <value>Sample Response</value>
+  </data>
+  <data name="DeveloperGuidelines" xml:space="preserve">
+    <value>Developer Guidelines</value>
+  </data>
+  <data name="SearchApiGuidelines" xml:space="preserve">
+    <value>This API is public and does not require authentication for standard read operations. To prevent abuse, please limit your requests to a reasonable frequency.</value>
+  </data>
+  <data name="McpApiTitle" xml:space="preserve">
+    <value>MCP API for AI</value>
+  </data>
+  <data name="ModelContextProtocol" xml:space="preserve">
+    <value>Model Context Protocol</value>
+  </data>
+  <data name="McpApiHeading" xml:space="preserve">
+    <value>MCP API for AI Agents</value>
+  </data>
+  <data name="McpApiDescription" xml:space="preserve">
+    <value>Integrate Aldaman directly into your LLM workflows. The Model Context Protocol implementation enables AI agents to browse content, search articles, and interact with site resources with native context awareness.</value>
+  </data>
+  <data name="EstablishSseConnection" xml:space="preserve">
+    <value>Establish SSE Connection</value>
+  </data>
+  <data name="EstablishSseDescription" xml:space="preserve">
+    <value>Connect to the Server-Sent Events stream to create a persistent communication channel.</value>
+  </data>
+  <data name="InitialEvent" xml:space="preserve">
+    <value>Initial Event</value>
+  </data>
+  <data name="ExecuteJsonRpcRequests" xml:space="preserve">
+    <value>Execute JSON-RPC Requests</value>
+  </data>
+  <data name="ExecuteJsonRpcDescription" xml:space="preserve">
+    <value>Send standard MCP requests using the unique session URL provided by the SSE stream.</value>
+  </data>
+  <data name="ListTools" xml:space="preserve">
+    <value>List Tools</value>
+  </data>
+  <data name="SearchRequest" xml:space="preserve">
+    <value>Search Request</value>
+  </data>
+  <data name="ReceiveAsyncResponses" xml:space="preserve">
+    <value>Receive Async Responses</value>
+  </data>
+  <data name="ReceiveAsyncDescription" xml:space="preserve">
+    <value>The server processes requests asynchronously and streams responses back via the SSE channel.</value>
+  </data>
+  <data name="IncomingSseEvent" xml:space="preserve">
+    <value>Incoming SSE Event</value>
+  </data>
+  <data name="NativeContext" xml:space="preserve">
+    <value>Native Context</value>
+  </data>
+  <data name="NativeContextDescription" xml:space="preserve">
+    <value>Exposes site hierarchy and metadata directly to LLM context windows.</value>
+  </data>
+  <data name="LowLatency" xml:space="preserve">
+    <value>Low Latency</value>
+  </data>
+  <data name="LowLatencyDescription" xml:space="preserve">
+    <value>Optimized data retrieval designed for high-speed AI interactions.</value>
+  </data>
 </root>

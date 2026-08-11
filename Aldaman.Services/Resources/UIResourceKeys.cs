@@ -95,6 +95,14 @@ public static class UIResourceKeys
     public const string StyleSettingCreated = nameof(StyleSettingCreated);
     public const string ResetToDefault = nameof(ResetToDefault);
     public const string StyleSettingResetSuccessfully = nameof(StyleSettingResetSuccessfully);
+    public const string UpdateStyleSetting = nameof(UpdateStyleSetting);
+    public const string CreateStyleSetting = nameof(CreateStyleSetting);
+    public const string EditCssVariable = nameof(EditCssVariable);
+    public const string NewCssVariable = nameof(NewCssVariable);
+    public const string KeyInfo = nameof(KeyInfo);
+    public const string ValueInfo = nameof(ValueInfo);
+    public const string UpdateSetting = nameof(UpdateSetting);
+    public const string CreateSetting = nameof(CreateSetting);
 
     // Pages & Media
     public const string PageCreatedSuccessfully = nameof(PageCreatedSuccessfully);
@@ -293,6 +301,42 @@ public static class UIResourceKeys
     public const string RteFont = nameof(RteFont);
     public const string RteSize = nameof(RteSize);
     public const string RteCustomColor = nameof(RteCustomColor);
+
+    // Public Search API Documentation
+    public const string SearchApiTitle = nameof(SearchApiTitle);
+    public const string RestApi = nameof(RestApi);
+    public const string SearchApiHeading = nameof(SearchApiHeading);
+    public const string SearchApiDescription = nameof(SearchApiDescription);
+    public const string Endpoint = nameof(Endpoint);
+    public const string QueryParameters = nameof(QueryParameters);
+    public const string Parameter = nameof(Parameter);
+    public const string Required = nameof(Required);
+    public const string SearchTermDescription = nameof(SearchTermDescription);
+    public const string TargetCultureDescription = nameof(TargetCultureDescription);
+    public const string NoDefaultCs = nameof(NoDefaultCs);
+    public const string SampleResponse = nameof(SampleResponse);
+    public const string DeveloperGuidelines = nameof(DeveloperGuidelines);
+    public const string SearchApiGuidelines = nameof(SearchApiGuidelines);
+
+    // Public MCP API Documentation
+    public const string McpApiTitle = nameof(McpApiTitle);
+    public const string ModelContextProtocol = nameof(ModelContextProtocol);
+    public const string McpApiHeading = nameof(McpApiHeading);
+    public const string McpApiDescription = nameof(McpApiDescription);
+    public const string EstablishSseConnection = nameof(EstablishSseConnection);
+    public const string EstablishSseDescription = nameof(EstablishSseDescription);
+    public const string InitialEvent = nameof(InitialEvent);
+    public const string ExecuteJsonRpcRequests = nameof(ExecuteJsonRpcRequests);
+    public const string ExecuteJsonRpcDescription = nameof(ExecuteJsonRpcDescription);
+    public const string ListTools = nameof(ListTools);
+    public const string SearchRequest = nameof(SearchRequest);
+    public const string ReceiveAsyncResponses = nameof(ReceiveAsyncResponses);
+    public const string ReceiveAsyncDescription = nameof(ReceiveAsyncDescription);
+    public const string IncomingSseEvent = nameof(IncomingSseEvent);
+    public const string NativeContext = nameof(NativeContext);
+    public const string NativeContextDescription = nameof(NativeContextDescription);
+    public const string LowLatency = nameof(LowLatency);
+    public const string LowLatencyDescription = nameof(LowLatencyDescription);
 }
 
 
