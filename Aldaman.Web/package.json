@@ -6,10 +6,12 @@
   "scripts": {
     "build:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css",
     "watch:web": "tailwindcss -i ./config/site-input.css -o ./wwwroot/css/site.css --watch",
+    "build:js": "esbuild assets/js/theme-init.js assets/js/site.js assets/js/home.js --outdir=wwwroot/js --minify",
+    "watch:js": "esbuild assets/js/theme-init.js assets/js/site.js assets/js/home.js --outdir=wwwroot/js --watch",
     "copy:quill": "npx shx mkdir -p wwwroot/lib/quill && npx shx cp node_modules/quill/dist/quill.js wwwroot/lib/quill/ && npx shx cp node_modules/quill/dist/quill.snow.css wwwroot/lib/quill/",
     "copy:bootstrap-icons": "npx shx mkdir -p wwwroot/lib/bootstrap-icons && npx shx cp -r node_modules/bootstrap-icons/font wwwroot/lib/bootstrap-icons/",
     "copy:sweetalert2": "npx shx mkdir -p wwwroot/lib/sweetalert2 && npx shx cp node_modules/sweetalert2/dist/sweetalert2.all.min.js wwwroot/lib/sweetalert2/",
-    "build": "npm run copy:quill && npm run copy:bootstrap-icons && npm run copy:sweetalert2 && npm run build:web"
+    "build": "npm run copy:quill && npm run copy:bootstrap-icons && npm run copy:sweetalert2 && npm run build:web && npm run build:js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@tailwindcss/cli": "^4.2.2",
     "autoprefixer": "^10.4.27",
     "bootstrap-icons": "^1.11.1",
+    "esbuild": "^0.25.0",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2"
   },

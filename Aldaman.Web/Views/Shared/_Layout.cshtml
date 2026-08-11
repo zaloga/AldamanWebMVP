@@ -17,7 +17,7 @@
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
-    <script src="~/js/theme-init.js"></script>
+    <script src="~/js/theme-init.js" asp-append-version="true"></script>
 </head>
 <body class="min-w-[300px] flex flex-col min-h-full bg-brand-bg-light dark:bg-brand-bg-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <header class="glass sticky top-0 z-50 transition-colors duration-300">
