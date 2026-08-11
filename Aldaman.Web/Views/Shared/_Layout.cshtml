@@ -82,7 +82,7 @@
                 </p>
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
                     <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link @(ViewContext.IsNavActive("Home", "Mcp") ? "text-brand-primary dark:text-brand-accent font-semibold underline" : "")">MCP API for AI</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "text-brand-primary dark:text-brand-accent font-semibold underline" : "")">Search API for AI</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "text-brand-primary dark:text-brand-accent font-semibold underline" : "")">Search API</a>
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
