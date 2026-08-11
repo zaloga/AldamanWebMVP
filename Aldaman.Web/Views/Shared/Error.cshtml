@@ -3,8 +3,8 @@
     ViewData["Title"] = Localizer[UIResourceKeys.Error];
 }
 
-<h1 class="text-danger">@Localizer[UIResourceKeys.Error].</h1>
-<h2 class="text-danger">@Localizer[UIResourceKeys.ErrorOccurred]</h2>
+<h1 class="text-red-600 dark:text-red-400 font-bold text-3xl mb-2">@Localizer[UIResourceKeys.Error].</h1>
+<h2 class="text-red-600 dark:text-red-400 text-xl mb-4">@Localizer[UIResourceKeys.ErrorOccurred]</h2>
 
 @if (Model.ShowRequestId)
 {

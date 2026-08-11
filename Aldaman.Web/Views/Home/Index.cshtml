@@ -66,7 +66,7 @@
                             </p>
                         </div>
 
-                        <div class="js-full-content-container mt-4 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 opacity-0 transition-opacity duration-300" style="display: none;">
+                        <div class="js-full-content-container mt-4 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 opacity-0 transition-opacity duration-300 hidden">
                         </div>
 
                         <div class="mt-3 flex items-center justify-between gap-4">
@@ -81,8 +81,7 @@
                                     </svg>
                                 </button>
                                 <button type="button"
-                                        class="js-show-less-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm"
-                                        style="display: none;"
+                                        class="js-show-less-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm hidden"
                                         data-slug="@post.Slug">
                                     <span>@Localizer[UIResourceKeys.ShowLess]</span>
                                 </button>
@@ -124,14 +123,14 @@
 
                     if (card.dataset.loadedContent === "true") {
                         if (perexText) perexText.classList.remove('line-clamp-3');
-                        button.style.display = 'none';
+                        button.classList.add('hidden');
                         if (fullContentContainer) {
-                            fullContentContainer.style.display = 'block';
+                            fullContentContainer.classList.remove('hidden');
                             requestAnimationFrame(() => {
                                 fullContentContainer.classList.remove('opacity-0');
                             });
                         }
-                        if (showLessBtn) showLessBtn.style.display = 'inline-flex';
+                        if (showLessBtn) showLessBtn.classList.remove('hidden');
                         return;
                     }
 
@@ -150,12 +149,12 @@
                             card.dataset.loadedContent = "true";
 
                             if (perexText) perexText.classList.remove('line-clamp-3');
-                            button.style.display = 'none';
-                            fullContentContainer.style.display = 'block';
+                            button.classList.add('hidden');
+                            fullContentContainer.classList.remove('hidden');
                             requestAnimationFrame(() => {
                                 fullContentContainer.classList.remove('opacity-0');
                             });
-                            if (showLessBtn) showLessBtn.style.display = 'inline-flex';
+                            if (showLessBtn) showLessBtn.classList.remove('hidden');
                         }
                     } catch (err) {
                         console.error('Error fetching blog content:', err);
@@ -179,13 +178,13 @@
                     const fullContentContainer = card.querySelector('.js-full-content-container');
                     const showMoreBtn = card.querySelector('.js-show-more-btn');
 
-                    this.style.display = 'none';
+                    this.classList.add('hidden');
                     if (fullContentContainer) {
                         fullContentContainer.classList.add('opacity-0');
-                        fullContentContainer.style.display = 'none';
+                        fullContentContainer.classList.add('hidden');
                     }
                     if (perexText) perexText.classList.add('line-clamp-3');
-                    if (showMoreBtn) showMoreBtn.style.display = 'inline-flex';
+                    if (showMoreBtn) showMoreBtn.classList.remove('hidden');
                 });
             });
         });

@@ -52,6 +52,50 @@
   .footer-link {
     @apply text-xs text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors font-medium;
   }
+
+  .contact-input {
+    background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 15%, #ffffff) !important;
+  }
+
+  .dark .contact-input {
+    background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 25%, #1e293b) !important;
+  }
+
+  .contact-input:focus {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
+    outline: none !important;
+  }
+
+  .dark .contact-input:focus {
+    border-color: var(--brand-accent) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent), transparent 70%) !important;
+  }
+
+  #site-search,
+  #search-results {
+    background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 38%, #ffffff) !important;
+  }
+
+  .dark #site-search,
+  .dark #search-results {
+    background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 40%, #1e293b) !important;
+  }
+
+  #site-search:focus {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
+    outline: none !important;
+  }
+
+  .dark #site-search:focus {
+    border-color: var(--brand-accent) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent), transparent 70%) !important;
+  }
+}
+
+.hidden {
+  display: none !important;
 }
 
 /* Quill editor spacing resets */

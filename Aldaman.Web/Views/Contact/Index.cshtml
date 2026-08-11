@@ -3,29 +3,6 @@
     ViewData["Title"] = Localizer[UIResourceKeys.Contact];
 }
 
-@section Styles {
-    <style>
-        .contact-input {
-            background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 15%, #ffffff) !important;
-        }
-
-        .dark .contact-input {
-            background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 25%, #1e293b) !important;
-        }
-
-        .contact-input:focus {
-            border-color: var(--brand-primary) !important;
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
-            outline: none !important;
-        }
-
-        .dark .contact-input:focus {
-            border-color: var(--brand-accent) !important;
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent), transparent 70%) !important;
-        }
-    </style>
-}
-
 <div class="max-w-3xl mx-auto">
     <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">@Localizer[UIResourceKeys.ContactMe]</h2>
     <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
