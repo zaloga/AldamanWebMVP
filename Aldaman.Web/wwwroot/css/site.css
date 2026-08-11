@@ -1801,11 +1801,6 @@
       }
     }
   }
-  .dark\:bg-slate-900 {
-    &:where(.dark, .dark *) {
-      background-color: var(--color-slate-900);
-    }
-  }
   .dark\:bg-slate-900\/20 {
     &:where(.dark, .dark *) {
       background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 20%, transparent);

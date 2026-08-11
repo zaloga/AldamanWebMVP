@@ -51,9 +51,10 @@
                          alt="@post.Title">
                     <div class="flex flex-col">
                         <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">@post.Title</span>
-                        <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-amber-950/70 dark:text-slate-400">
+                        @* TODO delete?
+                            <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-amber-950/70 dark:text-slate-400">
                             @post.PublishedAtUtc?.ToString(FormatConstants.DateDot)
-                        </time>
+                        </time> *@
                     </div>
                 </div>
 

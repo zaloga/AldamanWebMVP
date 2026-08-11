@@ -3,6 +3,29 @@
     ViewData["Title"] = Localizer[UIResourceKeys.Contact];
 }
 
+@section Styles {
+    <style>
+        .contact-input {
+            background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 15%, #ffffff) !important;
+        }
+
+        .dark .contact-input {
+            background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 25%, #1e293b) !important;
+        }
+
+        .contact-input:focus {
+            border-color: var(--brand-primary) !important;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
+            outline: none !important;
+        }
+
+        .dark .contact-input:focus {
+            border-color: var(--brand-accent) !important;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent), transparent 70%) !important;
+        }
+    </style>
+}
+
 <div class="max-w-3xl mx-auto">
     <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">@Localizer[UIResourceKeys.ContactMe]</h2>
     <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
@@ -13,7 +36,7 @@
         <div class="sm:col-span-2">
             <label asp-for="EmailOrPhone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.EmailOrPhone]</label>
             <div class="mt-1">
-                <input asp-for="EmailOrPhone" type="text" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-md">
+                <input asp-for="EmailOrPhone" type="text" class="contact-input py-3 px-4 block w-full shadow-sm border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-md outline-none transition-all">
                 <span asp-validation-for="EmailOrPhone" class="text-sm text-red-600"></span>
             </div>
         </div>
@@ -21,13 +44,13 @@
         <div class="sm:col-span-2">
             <label asp-for="Message" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.Message]</label>
             <div class="mt-1">
-                <textarea asp-for="Message" rows="4" class="py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-md"></textarea>
+                <textarea asp-for="Message" rows="4" class="contact-input py-3 px-4 block w-full shadow-sm border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-md outline-none transition-all"></textarea>
                 <span asp-validation-for="Message" class="text-sm text-red-600"></span>
             </div>
         </div>
 
         <div class="sm:col-span-2">
-            <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button type="submit" class="btn-primary w-full justify-center py-3 text-base">
                 @Localizer[UIResourceKeys.SendMessage]
             </button>
         </div>

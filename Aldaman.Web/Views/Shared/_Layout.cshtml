@@ -17,6 +17,16 @@
                 }
             }
 
+            #site-search,
+            #search-results {
+                background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 38%, #ffffff) !important;
+            }
+
+            .dark #site-search,
+            .dark #search-results {
+                background-color: color-mix(in srgb, var(--brand-primary, #cc3300) 40%, #1e293b) !important;
+            }
+
             #site-search:focus {
                 border-color: var(--brand-primary) !important;
                 box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary), transparent 70%) !important;
