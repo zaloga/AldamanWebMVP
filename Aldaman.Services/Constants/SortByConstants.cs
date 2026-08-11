@@ -1,7 +1,12 @@
+using Aldaman.Services.Dtos.General;
+
 namespace Aldaman.Services.Constants;
 
 public static class SortByConstants
 {
+    public const string SortBy = nameof(PaginationQuery.SortBy);
+    public const string SortDescending = nameof(PaginationQuery.SortDescending);
+
     public const string CreatedAt = "CreatedAt";
     public const string Title = "Title";
     public const string PublishedAt = "PublishedAt";
@@ -12,3 +17,4 @@ public static class SortByConstants
     public const string PageOrder = "PageOrder";
     public const string State = "State";
 }
+

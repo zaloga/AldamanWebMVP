@@ -28,16 +28,16 @@
             </div>
         </div>
         <div class="col-md-4">
-            <select name="SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query["SortBy"] == SortByConstants.CreatedAt)">@Localizer[UIResourceKeys.SortByCreatedDate]</option>
-                <option value="@SortByConstants.Title" selected="@(Context.Request.Query["SortBy"] == SortByConstants.Title)">@Localizer[UIResourceKeys.SortByTitle]</option>
-                <option value="@SortByConstants.PageOrder" selected="@(Context.Request.Query["SortBy"] == SortByConstants.PageOrder)">@Localizer[UIResourceKeys.SortByOrder]</option>
+            <select name="@SortByConstants.SortBy" class="form-select">
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResourceKeys.SortByCreatedDate]</option>
+                <option value="@SortByConstants.Title" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Title)">@Localizer[UIResourceKeys.SortByTitle]</option>
+                <option value="@SortByConstants.PageOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.PageOrder)">@Localizer[UIResourceKeys.SortByOrder]</option>
             </select>
         </div>
         <div class="col-md-3">
-            <select name="SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query["SortDescending"] == "true" || string.IsNullOrEmpty(Context.Request.Query["SortDescending"]))">@Localizer[UIResourceKeys.Descending]</option>
-                <option value="false" selected="@(Context.Request.Query["SortDescending"] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
+            <select name="@SortByConstants.SortDescending" class="form-select">
+                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResourceKeys.Descending]</option>
+                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
