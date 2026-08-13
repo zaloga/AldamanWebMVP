@@ -9,3 +9,25 @@
 .flip-y {
     transform: scaleY(-1);
 }
+
+/* Quill Blot Formatter Overlay & Handle Styling */
+.blot-formatter__overlay {
+    border: 1px dashed #0d6efd !important;
+    box-sizing: border-box;
+}
+
+.blot-formatter__action {
+    background-color: #0d6efd !important;
+    border: 1px solid #ffffff !important;
+    border-radius: 50%;
+    width: 10px !important;
+    height: 10px !important;
+}
+
+.blot-formatter__toolbar {
+    background-color: #ffffff !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 4px;
+}

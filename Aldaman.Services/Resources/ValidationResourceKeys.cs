@@ -19,4 +19,9 @@ public const string MessageRequired = nameof(MessageRequired);
     public const string TitleRequiredIfTranslationNotEmpty = nameof(TitleRequiredIfTranslationNotEmpty);
     public const string SlugRequiredIfTranslationNotEmpty = nameof(SlugRequiredIfTranslationNotEmpty);
     public const string GenericMaxLength = nameof(GenericMaxLength);
+    public const string ImageFileRequired = nameof(ImageFileRequired);
+    public const string ImageFileEmpty = nameof(ImageFileEmpty);
+    public const string TargetWidthGreaterThanZero = nameof(TargetWidthGreaterThanZero);
+    public const string TargetHeightGreaterThanZero = nameof(TargetHeightGreaterThanZero);
 }
+

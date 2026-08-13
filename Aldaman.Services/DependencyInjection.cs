@@ -1,5 +1,7 @@
+using Aldaman.Services.Configuration;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Services;
+using Aldaman.Services.Services.Images;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Aldaman.Services;
@@ -17,6 +19,8 @@ public static class DependencyInjection
         services.AddScoped<IStyleService, StyleService>();
         services.AddScoped<ISearchService, SearchService>();
         services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();
+        services.AddOptions<ImageProcessingSettings>().BindConfiguration(ImageProcessingSettings.SectionName);
+        services.AddScoped<IImageProcessingService, SkiaImageProcessingService>();
 
         // Register other services here as they are implemented
 

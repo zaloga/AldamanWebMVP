@@ -2,7 +2,9 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
+using Aldaman.Services.Services.Images;
 using Aldaman.Web.Extensions;
+using Aldaman.Web.Models.Media;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -11,11 +13,16 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class MediaController : BaseAdminController
 {
     private IMediaService MediaService { get; }
+    private IImageProcessingService ImageProcessingService { get; }
 
-    public MediaController(IMediaService mediaService, IStringLocalizer<UIResources> localizer)
+    public MediaController(
+        IMediaService mediaService,
+        IImageProcessingService imageProcessingService,
+        IStringLocalizer<UIResources> localizer)
         : base(localizer)
     {
         MediaService = mediaService;
+        ImageProcessingService = imageProcessingService;
     }
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
@@ -84,6 +91,56 @@ public class MediaController : BaseAdminController
         {
             return Json(new { success = false, message = ex.Message });
         }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UploadQuillSkia([FromForm] UploadImageRequest request, CancellationToken cancellationToken)
+    {
+        if (request.File == null || request.File.Length == 0)
+        {
+            return Json(new { success = false, message = Localizer[UIResourceKeys.PleaseSelectFile].Value });
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return Json(new { success = false, message = Localizer[UIResourceKeys.InvalidRequestPayload].Value });
+        }
+
+        await using Stream inputStream = request.File.OpenReadStream();
+        byte[] processedBytes = await ImageProcessingService.ProcessImageAsync(inputStream, request.TargetWidth, request.TargetHeight, cancellationToken);
+
+        using MemoryStream processedStream = new(processedBytes);
+        string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
+        MediaAssetDto asset = await MediaService.UploadAsync(processedStream, newFileName, "image/webp");
+
+        return Json(new { success = true, url = asset.RelativePath });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UploadSkia([FromForm] UploadImageRequest request, CancellationToken cancellationToken)
+    {
+        if (request.File == null || request.File.Length == 0)
+        {
+            ModelState.AddModelError("File", Localizer[UIResourceKeys.PleaseSelectFile].Value);
+            return View("Upload");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View("Upload");
+        }
+
+        await using Stream inputStream = request.File.OpenReadStream();
+        byte[] processedBytes = await ImageProcessingService.ProcessImageAsync(inputStream, request.TargetWidth, request.TargetHeight, cancellationToken);
+
+        using MemoryStream processedStream = new(processedBytes);
+        string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
+        await MediaService.UploadAsync(processedStream, newFileName, "image/webp");
+
+        TempData.SetSuccessMessage(Localizer[UIResourceKeys.FileUploadedSuccessfully].Value);
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]

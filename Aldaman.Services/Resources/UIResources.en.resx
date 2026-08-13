@@ -1008,4 +1008,7 @@
   <data name="LowLatencyDescription" xml:space="preserve">
     <value>Optimized data retrieval designed for high-speed AI interactions.</value>
   </data>
+  <data name="InvalidRequestPayload" xml:space="preserve">
+    <value>Invalid upload request payload.</value>
+  </data>
 </root>

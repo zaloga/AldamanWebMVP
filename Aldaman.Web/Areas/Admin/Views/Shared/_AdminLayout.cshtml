@@ -63,6 +63,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/lib/quill-blot-formatter/quill-blot-formatter.min.js" asp-append-version="true"></script>
     <script id="admin-i18n-data" type="application/json">
         @Html.Raw(Json.Serialize(new
         {
@@ -79,6 +80,7 @@
             fileSizeExceedsLimit = Localizer[UIResourceKeys.FileSizeExceedsLimit].Value,
             imageUploadFailed = Localizer[UIResourceKeys.ImageUploadFailed].Value,
             errorUploadingImage = Localizer[UIResourceKeys.ErrorUploadingImage].Value,
+            invalidRequestPayload = Localizer[UIResourceKeys.InvalidRequestPayload].Value,
             error = Localizer[UIResourceKeys.Error].Value,
             errorOccurred = Localizer[UIResourceKeys.ErrorOccurred].Value,
             quillTooltips = new Dictionary<string, string>

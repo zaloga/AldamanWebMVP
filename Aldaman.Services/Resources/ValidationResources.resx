@@ -100,4 +100,16 @@
   <data name="GenericMaxLength" xml:space="preserve">
     <value>Pole může mít maximálně {0} znaků.</value>
   </data>
+  <data name="ImageFileRequired" xml:space="preserve">
+    <value>Obrázkový soubor je povinný.</value>
+  </data>
+  <data name="ImageFileEmpty" xml:space="preserve">
+    <value>Nahrávaný obrázkový soubor nesmí být prázdný.</value>
+  </data>
+  <data name="TargetWidthGreaterThanZero" xml:space="preserve">
+    <value>Cílová šířka musí být větší než nula.</value>
+  </data>
+  <data name="TargetHeightGreaterThanZero" xml:space="preserve">
+    <value>Cílová výška musí být větší než nula.</value>
+  </data>
 </root>

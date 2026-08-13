@@ -1008,5 +1008,8 @@
   <data name="LowLatencyDescription" xml:space="preserve">
     <value>Optimalizované získávání dat navržené pro rychlé AI interakce.</value>
   </data>
+  <data name="InvalidRequestPayload" xml:space="preserve">
+    <value>Neplatný požadavek na nahrání souboru.</value>
+  </data>
 </root>
 

@@ -337,6 +337,7 @@ public static class UIResourceKeys
     public const string NativeContextDescription = nameof(NativeContextDescription);
     public const string LowLatency = nameof(LowLatency);
     public const string LowLatencyDescription = nameof(LowLatencyDescription);
+    public const string InvalidRequestPayload = nameof(InvalidRequestPayload);
 }
 
 

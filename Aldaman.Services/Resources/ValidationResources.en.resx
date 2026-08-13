@@ -100,4 +100,16 @@
   <data name="GenericMaxLength" xml:space="preserve">
     <value>The field can have at most {0} characters.</value>
   </data>
+  <data name="ImageFileRequired" xml:space="preserve">
+    <value>An image file must be provided.</value>
+  </data>
+  <data name="ImageFileEmpty" xml:space="preserve">
+    <value>Uploaded image file cannot be empty.</value>
+  </data>
+  <data name="TargetWidthGreaterThanZero" xml:space="preserve">
+    <value>Target width must be greater than zero.</value>
+  </data>
+  <data name="TargetHeightGreaterThanZero" xml:space="preserve">
+    <value>Target height must be greater than zero.</value>
+  </data>
 </root>
