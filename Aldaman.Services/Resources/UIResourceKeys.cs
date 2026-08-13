@@ -267,6 +267,18 @@ public static class UIResourceKeys
     public const string AltTextInfo = nameof(AltTextInfo);
     public const string ClickToUpload = nameof(ClickToUpload);
     public const string MaxFileSizeInfo = nameof(MaxFileSizeInfo);
+    public const string ResizeImage = nameof(ResizeImage);
+    public const string ResizeMode = nameof(ResizeMode);
+    public const string Pixels = nameof(Pixels);
+    public const string Percentage = nameof(Percentage);
+    public const string Width = nameof(Width);
+    public const string Height = nameof(Height);
+    public const string MaintainAspectRatio = nameof(MaintainAspectRatio);
+    public const string OriginalDimensions = nameof(OriginalDimensions);
+    public const string TargetDimensions = nameof(TargetDimensions);
+    public const string OriginalSize = nameof(OriginalSize);
+    public const string ResetDimensions = nameof(ResetDimensions);
+    public const string Presets = nameof(Presets);
 
     // Quill RTE Tooltips
     public const string RteBold = nameof(RteBold);

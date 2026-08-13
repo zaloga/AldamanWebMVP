@@ -1011,5 +1011,41 @@
   <data name="InvalidRequestPayload" xml:space="preserve">
     <value>Neplatný požadavek na nahrání souboru.</value>
   </data>
+  <data name="ResizeImage" xml:space="preserve">
+    <value>Změnit velikost obrázku</value>
+  </data>
+  <data name="ResizeMode" xml:space="preserve">
+    <value>Režim změny velikosti</value>
+  </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>Pixely</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>Procenta</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Šířka</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Výška</value>
+  </data>
+  <data name="MaintainAspectRatio" xml:space="preserve">
+    <value>Zachovat poměr stran</value>
+  </data>
+  <data name="OriginalDimensions" xml:space="preserve">
+    <value>Původní rozměry</value>
+  </data>
+  <data name="TargetDimensions" xml:space="preserve">
+    <value>Cílové rozměry</value>
+  </data>
+  <data name="OriginalSize" xml:space="preserve">
+    <value>Původní velikost</value>
+  </data>
+  <data name="ResetDimensions" xml:space="preserve">
+    <value>Obnovit rozměry</value>
+  </data>
+  <data name="Presets" xml:space="preserve">
+    <value>Předvolby</value>
+  </data>
 </root>
 

@@ -18,28 +18,100 @@
             <form asp-action="UploadSkia" method="post" enctype="multipart/form-data" id="uploadForm">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="TargetWidth" id="targetWidthInput" value="@MediaConstants.DefaultImageWidth" />
+                <input type="hidden" name="TargetHeight" id="targetHeightInput" value="" />
                 
-                <div id="dropZone" class="py-5 border border-2 border-dashed rounded-4 bg-light cursor-pointer hover-bg-light transition-all d-flex flex-column align-items-center justify-content-center mb-4" style="min-height: 300px; border-color: #cbd5e1; transition: all 0.2s ease-in-out;">
+                <div id="dropZone" class="py-5 border border-2 border-dashed rounded-4 bg-light cursor-pointer hover-bg-light transition-all d-flex flex-column align-items-center justify-content-center mb-4" style="min-height: 280px; border-color: #cbd5e1; transition: all 0.2s ease-in-out;">
                     <div class="mb-4 text-primary bg-primary bg-opacity-10 p-3 rounded-circle" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
                         <i class="bi bi-cloud-arrow-up" style="font-size: 40px;"></i>
                     </div>
                     <h3 class="h5 fw-bold mb-2">@Localizer[UIResourceKeys.ClickToUpload]</h3>
                     <p class="text-muted small mb-0">@Localizer[UIResourceKeys.MaxFileSizeInfo]</p>
-                    <input type="file" name="File" id="fileInput" class="d-none">
+                    <input type="file" name="File" id="fileInput" class="d-none" accept="image/*">
                 </div>
 
-                <div id="filePreview" class="d-none mb-4 p-3 bg-light rounded border border-primary border-opacity-25 text-start animate-fade-in">
-                    <div class="d-flex align-items-center gap-3">
-                        <div id="fileIcon" class="p-2 bg-primary text-white rounded">
-                            <i class="bi bi-file-earmark" style="font-size: 24px;"></i>
+                <div id="filePreview" class="d-none mb-4 p-4 bg-light rounded-3 border border-primary border-opacity-25 text-start animate-fade-in">
+                    <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                        <div id="fileThumbContainer" class="rounded overflow-hidden bg-white border d-flex align-items-center justify-content-center" style="width: 56px; height: 56px; min-width: 56px;">
+                            <img id="imageThumbnail" class="w-100 h-100 object-fit-cover d-none" alt="Preview" />
+                            <i id="fileIcon" class="bi bi-file-earmark-image text-primary" style="font-size: 28px;"></i>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
                             <div id="fileName" class="fw-bold text-dark text-truncate">file-name.jpg</div>
-                            <div id="fileSize" class="small text-muted">0 KB</div>
+                            <div class="small text-muted d-flex gap-3">
+                                <span id="fileSize">0 KB</span>
+                                <span id="origDimBadge" class="badge bg-secondary bg-opacity-75"></span>
+                            </div>
                         </div>
-                        <button type="button" id="resetFileBtn" class="btn btn-link text-danger p-0">
-                            <i class="bi bi-x" style="font-size: 20px;"></i>
+                        <button type="button" id="resetFileBtn" class="btn btn-outline-danger btn-sm rounded-circle p-1 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="@Localizer[UIResourceKeys.RemoveImage]">
+                            <i class="bi bi-x-lg"></i>
                         </button>
+                    </div>
+
+                    <!-- MS Paint style Resize Section -->
+                    <div id="resizeSection" class="p-3 bg-white rounded border shadow-sm">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="fw-bold text-secondary small text-uppercase tracking-wider d-flex align-items-center gap-2">
+                                <i class="bi bi-aspect-ratio text-primary"></i>
+                                @Localizer[UIResourceKeys.ResizeImage]
+                            </div>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <input type="radio" class="btn-check" name="resizeUnit" id="unitPixels" value="pixels" checked>
+                                <label class="btn btn-outline-secondary" for="unitPixels">@Localizer[UIResourceKeys.Pixels]</label>
+
+                                <input type="radio" class="btn-check" name="resizeUnit" id="unitPercent" value="percent">
+                                <label class="btn btn-outline-secondary" for="unitPercent">@Localizer[UIResourceKeys.Percentage]</label>
+                            </div>
+                        </div>
+
+                        <!-- Pixel Inputs -->
+                        <div id="pixelInputsRow" class="row g-2 align-items-center mb-3">
+                            <div class="col">
+                                <label for="pixelWidthInput" class="form-label small text-muted mb-1">@Localizer[UIResourceKeys.Width] (px)</label>
+                                <input type="number" id="pixelWidthInput" class="form-control form-control-sm" min="1" max="10000" />
+                            </div>
+                            <div class="col-auto pt-4">
+                                <button type="button" id="aspectLockBtn" class="btn btn-sm btn-outline-primary active" title="@Localizer[UIResourceKeys.MaintainAspectRatio]" data-bs-toggle="button" aria-pressed="true">
+                                    <i id="aspectLockIcon" class="bi bi-lock-fill"></i>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <label for="pixelHeightInput" class="form-label small text-muted mb-1">@Localizer[UIResourceKeys.Height] (px)</label>
+                                <input type="number" id="pixelHeightInput" class="form-control form-control-sm" min="1" max="10000" />
+                            </div>
+                        </div>
+
+                        <!-- Percentage Inputs -->
+                        <div id="percentInputsRow" class="row g-2 align-items-center mb-3 d-none">
+                            <div class="col">
+                                <label for="percentWidthInput" class="form-label small text-muted mb-1">@Localizer[UIResourceKeys.Width] (%)</label>
+                                <input type="number" id="percentWidthInput" class="form-control form-control-sm" min="1" max="500" value="100" />
+                            </div>
+                            <div class="col-auto pt-4">
+                                <button type="button" id="aspectLockBtnPercent" class="btn btn-sm btn-outline-primary active" title="@Localizer[UIResourceKeys.MaintainAspectRatio]" data-bs-toggle="button" aria-pressed="true">
+                                    <i id="aspectLockIconPercent" class="bi bi-lock-fill"></i>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <label for="percentHeightInput" class="form-label small text-muted mb-1">@Localizer[UIResourceKeys.Height] (%)</label>
+                                <input type="number" id="percentHeightInput" class="form-control form-control-sm" min="1" max="500" value="100" />
+                            </div>
+                        </div>
+
+                        <!-- Presets -->
+                        <div class="d-flex flex-wrap gap-1 align-items-center mb-3">
+                            <span class="small text-muted me-1">@Localizer[UIResourceKeys.Presets]:</span>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 preset-btn" data-preset="orig">@Localizer[UIResourceKeys.OriginalSize]</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 preset-btn" data-preset="1920">1920 px</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 preset-btn" data-preset="1280">1280 px</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 preset-btn" data-preset="800">800 px</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2 preset-btn" data-preset="50%">50 %</button>
+                        </div>
+
+                        <!-- Dimension Status Bar -->
+                        <div class="bg-light p-2 rounded small d-flex justify-content-between align-items-center border">
+                            <span class="text-muted">@Localizer[UIResourceKeys.TargetDimensions]:</span>
+                            <span id="targetDimDisplay" class="fw-bold text-primary">-</span>
+                        </div>
                     </div>
                 </div>
 

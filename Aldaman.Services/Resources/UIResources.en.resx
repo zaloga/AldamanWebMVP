@@ -1011,4 +1011,40 @@
   <data name="InvalidRequestPayload" xml:space="preserve">
     <value>Invalid upload request payload.</value>
   </data>
+  <data name="ResizeImage" xml:space="preserve">
+    <value>Resize Image</value>
+  </data>
+  <data name="ResizeMode" xml:space="preserve">
+    <value>Resize Mode</value>
+  </data>
+  <data name="Pixels" xml:space="preserve">
+    <value>Pixels</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="MaintainAspectRatio" xml:space="preserve">
+    <value>Maintain aspect ratio</value>
+  </data>
+  <data name="OriginalDimensions" xml:space="preserve">
+    <value>Original dimensions</value>
+  </data>
+  <data name="TargetDimensions" xml:space="preserve">
+    <value>Target dimensions</value>
+  </data>
+  <data name="OriginalSize" xml:space="preserve">
+    <value>Original</value>
+  </data>
+  <data name="ResetDimensions" xml:space="preserve">
+    <value>Reset dimensions</value>
+  </data>
+  <data name="Presets" xml:space="preserve">
+    <value>Presets</value>
+  </data>
 </root>
