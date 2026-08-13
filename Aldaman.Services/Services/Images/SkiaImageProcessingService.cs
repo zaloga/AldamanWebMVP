@@ -13,7 +13,7 @@ internal sealed class SkiaImageProcessingService : IImageProcessingService
         SettingsOptions = settingsOptions;
     }
 
-    public Task<byte[]> ProcessImageAsync(Stream inputStream, int targetWidth, int targetHeight, CancellationToken cancellationToken = default)
+    public Task<byte[]> ProcessImageAsync(Stream inputStream, int targetWidth, int? targetHeight = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(inputStream);
 
@@ -22,9 +22,9 @@ internal sealed class SkiaImageProcessingService : IImageProcessingService
             throw new ArgumentOutOfRangeException(nameof(targetWidth), "Target width must be greater than zero.");
         }
 
-        if (targetHeight <= 0)
+        if (targetHeight.HasValue && targetHeight.Value <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(targetHeight), "Target height must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(targetHeight), "Target height must be greater than zero when specified.");
         }
 
         return Task.Run(() =>
@@ -39,7 +39,11 @@ internal sealed class SkiaImageProcessingService : IImageProcessingService
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            SKImageInfo imageInfo = new(targetWidth, targetHeight, originalBitmap.ColorType, originalBitmap.AlphaType, originalBitmap.ColorSpace);
+            int effectiveHeight = targetHeight.HasValue && targetHeight.Value > 0
+                ? targetHeight.Value
+                : (int)Math.Max(1, Math.Round((double)originalBitmap.Height * targetWidth / originalBitmap.Width));
+
+            SKImageInfo imageInfo = new(targetWidth, effectiveHeight, originalBitmap.ColorType, originalBitmap.AlphaType, originalBitmap.ColorSpace);
             using SKBitmap resizedBitmap = originalBitmap.Resize(imageInfo, new SKSamplingOptions(SKCubicResampler.Mitchell));
             if (resizedBitmap == null)
             {

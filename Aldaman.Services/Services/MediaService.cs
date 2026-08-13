@@ -1,4 +1,3 @@
-using System.Drawing;
 using Aldaman.Services.Constants;
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
@@ -6,6 +5,8 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SkiaSharp;
 
 namespace Aldaman.Services.Services;
 
@@ -13,11 +14,13 @@ public sealed class MediaService : IMediaService
 {
     private AppDbContext Context { get; }
     private string WebRootPath { get; }
+    private ILogger<MediaService> Logger { get; }
 
-    public MediaService(AppDbContext context, string webRootPath)
+    public MediaService(AppDbContext context, string webRootPath, ILogger<MediaService> logger)
     {
         Context = context;
         WebRootPath = webRootPath;
+        Logger = logger;
     }
 
     public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false)
@@ -92,15 +95,30 @@ public sealed class MediaService : IMediaService
         {
             try
             {
-                using (var image = Image.FromFile(physicalPath))
+                using var codec = SKCodec.Create(physicalPath);
+                if (codec != null)
                 {
-                    width = image.Width;
-                    height = image.Height;
+                    width = codec.Info.Width;
+                    height = codec.Info.Height;
+                }
+                else
+                {
+                    using var bitmap = SKBitmap.Decode(physicalPath);
+                    if (bitmap != null)
+                    {
+                        width = bitmap.Width;
+                        height = bitmap.Height;
+                    }
+                    else
+                    {
+                        Logger.LogWarning("Failed to decode image file {PhysicalPath} using SkiaSharp. Treating as non-image.", physicalPath);
+                        isImage = false;
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Silently fail if not a valid image
+                Logger.LogError(ex, "Error reading image dimensions for file {PhysicalPath}.", physicalPath);
                 isImage = false;
             }
         }

@@ -18,7 +18,7 @@ public class UploadImageRequest
     public int TargetWidth { get; set; }
 
     /// <summary>
-    /// Target height in pixels.
+    /// Target height in pixels. Optional; calculated proportionally if not provided.
     /// </summary>
-    public int TargetHeight { get; set; }
+    public int? TargetHeight { get; set; }
 }

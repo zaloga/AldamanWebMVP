@@ -19,7 +19,10 @@ public class UploadImageRequestValidator : AbstractValidator<UploadImageRequest>
         RuleFor(x => x.TargetWidth)
             .GreaterThan(0).WithMessage(localizer[ValidationResourceKeys.TargetWidthGreaterThanZero]);
 
-        RuleFor(x => x.TargetHeight)
-            .GreaterThan(0).WithMessage(localizer[ValidationResourceKeys.TargetHeightGreaterThanZero]);
+        When(x => x.TargetHeight.HasValue, () =>
+        {
+            RuleFor(x => x.TargetHeight!.Value)
+                .GreaterThan(0).WithMessage(localizer[ValidationResourceKeys.TargetHeightGreaterThanZero]);
+        });
     }
 }
