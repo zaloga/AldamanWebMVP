@@ -63,7 +63,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
-    <script src="~/lib/quill-blot-formatter/quill-blot-formatter.min.js" asp-append-version="true"></script>
     <script id="admin-i18n-data" type="application/json">
         @Html.Raw(Json.Serialize(new
         {
@@ -74,6 +73,7 @@
             yesDeleteIt = Localizer[UIResourceKeys.YesDeleteIt].Value,
             deletePermanentlyButton = Localizer[UIResourceKeys.DeletePermanentlyButton].Value,
             cancel = Localizer[UIResourceKeys.Cancel].Value,
+            save = Localizer[UIResourceKeys.Save].Value,
             deletedSuccessfully = Localizer[UIResourceKeys.DeletedSuccessfully].Value,
             restoredSuccessfully = Localizer[UIResourceKeys.RestoredSuccessfully].Value,
             yes = Localizer[UIResourceKeys.Yes].Value,
@@ -116,7 +116,19 @@
                 ["clean"] = Localizer[UIResourceKeys.RteClean].Value,
                 ["font"] = Localizer[UIResourceKeys.RteFont].Value,
                 ["size"] = Localizer[UIResourceKeys.RteSize].Value,
-                ["customColor"] = Localizer[UIResourceKeys.RteCustomColor].Value
+                ["customColor"] = Localizer[UIResourceKeys.RteCustomColor].Value,
+                ["imageProperties"] = Localizer[UIResourceKeys.RteImageProperties].Value,
+                ["alignLeft"] = Localizer[UIResourceKeys.RteAlignLeft].Value,
+                ["alignCenter"] = Localizer[UIResourceKeys.RteAlignCenter].Value,
+                ["alignRight"] = Localizer[UIResourceKeys.RteAlignRight].Value,
+                ["alignInline"] = Localizer[UIResourceKeys.RteAlignInline].Value,
+                ["width"] = Localizer[UIResourceKeys.RteImageWidth].Value,
+                ["height"] = Localizer[UIResourceKeys.RteImageHeight].Value,
+                ["altText"] = Localizer[UIResourceKeys.RteImageAltText].Value,
+                ["imageTitle"] = Localizer[UIResourceKeys.RteImageTitle].Value,
+                ["resetSize"] = Localizer[UIResourceKeys.RteResetSize].Value,
+                ["deleteImage"] = Localizer[UIResourceKeys.RteDeleteImage].Value,
+                ["maintainAspectRatio"] = Localizer[UIResourceKeys.RteMaintainAspectRatio].Value
             }
         }))
     </script>

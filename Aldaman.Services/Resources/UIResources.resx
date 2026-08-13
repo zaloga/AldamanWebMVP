@@ -879,6 +879,42 @@
   <data name="RteCustomColor" xml:space="preserve">
     <value>Vlastní barva</value>
   </data>
+  <data name="RteImageProperties" xml:space="preserve">
+    <value>Vlastnosti obrázku</value>
+  </data>
+  <data name="RteAlignLeft" xml:space="preserve">
+    <value>Zarovnat vlevo</value>
+  </data>
+  <data name="RteAlignCenter" xml:space="preserve">
+    <value>Zarovnat na střed</value>
+  </data>
+  <data name="RteAlignRight" xml:space="preserve">
+    <value>Zarovnat vpravo</value>
+  </data>
+  <data name="RteAlignInline" xml:space="preserve">
+    <value>V řádku</value>
+  </data>
+  <data name="RteImageWidth" xml:space="preserve">
+    <value>Šířka</value>
+  </data>
+  <data name="RteImageHeight" xml:space="preserve">
+    <value>Výška</value>
+  </data>
+  <data name="RteImageAltText" xml:space="preserve">
+    <value>Alternativní text (Alt)</value>
+  </data>
+  <data name="RteImageTitle" xml:space="preserve">
+    <value>Titulek obrázku (Title)</value>
+  </data>
+  <data name="RteResetSize" xml:space="preserve">
+    <value>Původní velikost</value>
+  </data>
+  <data name="RteDeleteImage" xml:space="preserve">
+    <value>Odstranit obrázek</value>
+  </data>
+  <data name="RteMaintainAspectRatio" xml:space="preserve">
+    <value>Zachovat poměr stran</value>
+  </data>
   <data name="ShowMore" xml:space="preserve">
     <value>Zobrazit více</value>
   </data>

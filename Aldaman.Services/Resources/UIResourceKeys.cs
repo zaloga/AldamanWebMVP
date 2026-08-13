@@ -313,6 +313,18 @@ public static class UIResourceKeys
     public const string RteFont = nameof(RteFont);
     public const string RteSize = nameof(RteSize);
     public const string RteCustomColor = nameof(RteCustomColor);
+    public const string RteImageProperties = nameof(RteImageProperties);
+    public const string RteAlignLeft = nameof(RteAlignLeft);
+    public const string RteAlignCenter = nameof(RteAlignCenter);
+    public const string RteAlignRight = nameof(RteAlignRight);
+    public const string RteAlignInline = nameof(RteAlignInline);
+    public const string RteImageWidth = nameof(RteImageWidth);
+    public const string RteImageHeight = nameof(RteImageHeight);
+    public const string RteImageAltText = nameof(RteImageAltText);
+    public const string RteImageTitle = nameof(RteImageTitle);
+    public const string RteResetSize = nameof(RteResetSize);
+    public const string RteDeleteImage = nameof(RteDeleteImage);
+    public const string RteMaintainAspectRatio = nameof(RteMaintainAspectRatio);
 
     // Public Search API Documentation
     public const string SearchApiTitle = nameof(SearchApiTitle);

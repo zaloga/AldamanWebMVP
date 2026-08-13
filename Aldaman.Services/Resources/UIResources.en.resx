@@ -879,6 +879,42 @@
   <data name="RteCustomColor" xml:space="preserve">
     <value>Custom Color</value>
   </data>
+  <data name="RteImageProperties" xml:space="preserve">
+    <value>Image Properties</value>
+  </data>
+  <data name="RteAlignLeft" xml:space="preserve">
+    <value>Align Left (Float)</value>
+  </data>
+  <data name="RteAlignCenter" xml:space="preserve">
+    <value>Align Center</value>
+  </data>
+  <data name="RteAlignRight" xml:space="preserve">
+    <value>Align Right (Float)</value>
+  </data>
+  <data name="RteAlignInline" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+  <data name="RteImageWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="RteImageHeight" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="RteImageAltText" xml:space="preserve">
+    <value>Alternative Text (Alt)</value>
+  </data>
+  <data name="RteImageTitle" xml:space="preserve">
+    <value>Image Title</value>
+  </data>
+  <data name="RteResetSize" xml:space="preserve">
+    <value>Reset Size</value>
+  </data>
+  <data name="RteDeleteImage" xml:space="preserve">
+    <value>Delete Image</value>
+  </data>
+  <data name="RteMaintainAspectRatio" xml:space="preserve">
+    <value>Maintain aspect ratio</value>
+  </data>
   <data name="ViewDetail" xml:space="preserve">
     <value>Detail</value>
   </data>

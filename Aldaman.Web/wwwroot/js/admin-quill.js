@@ -1,7 +1,62 @@
-/**
- * Quill RTE Integration for Aldaman Admin
- * Handles initialization and synchronization of Quill editors with ASP.NET Core model fields.
- */
+// Extend Quill's default Image Blot to persist width, height, style, alt, and title
+(function () {
+    if (typeof Quill !== 'undefined') {
+        const BaseImage = Quill.import('formats/image');
+        if (BaseImage) {
+            class CustomImageBlot extends BaseImage {
+                static create(value) {
+                    const node = super.create(value);
+                    if (typeof value === 'object' && value !== null) {
+                        if (value.src) node.setAttribute('src', value.src);
+                        if (value.width) node.setAttribute('width', value.width);
+                        if (value.height) node.setAttribute('height', value.height);
+                        if (value.style) node.setAttribute('style', value.style);
+                        if (value.alt) node.setAttribute('alt', value.alt);
+                        if (value.title) node.setAttribute('title', value.title);
+                    } else if (typeof value === 'string') {
+                        node.setAttribute('src', value);
+                    }
+                    return node;
+                }
+
+                static value(domNode) {
+                    return {
+                        src: domNode.getAttribute('src') || '',
+                        width: domNode.getAttribute('width') || domNode.style.width || null,
+                        height: domNode.getAttribute('height') || domNode.style.height || null,
+                        style: domNode.getAttribute('style') || null,
+                        alt: domNode.getAttribute('alt') || null,
+                        title: domNode.getAttribute('title') || null
+                    };
+                }
+
+                static formats(domNode) {
+                    return {
+                        width: domNode.getAttribute('width') || domNode.style.width || null,
+                        height: domNode.getAttribute('height') || domNode.style.height || null,
+                        style: domNode.getAttribute('style') || null,
+                        alt: domNode.getAttribute('alt') || null,
+                        title: domNode.getAttribute('title') || null
+                    };
+                }
+
+                format(name, value) {
+                    if (['width', 'height', 'style', 'alt', 'title'].includes(name)) {
+                        if (value) {
+                            this.domNode.setAttribute(name, value);
+                        } else {
+                            this.domNode.removeAttribute(name);
+                        }
+                    } else {
+                        super.format(name, value);
+                    }
+                }
+            }
+            Quill.register(CustomImageBlot, true);
+        }
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
     const editors = document.querySelectorAll('.quill-editor-container');
 
@@ -68,17 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
 
-        // Helper to prompt native HTML5 color picker
-        const customColorHandler = function (format) {
-            const input = document.createElement('input');
-            input.type = 'color';
-            input.value = '#000000';
-            input.click();
-            input.onchange = () => {
-                quill.format(format, input.value);
-            };
-        };
-
         // Initialize Quill
         const quill = new Quill(container, {
             theme: 'snow',
@@ -122,6 +166,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Apply localized tooltips to toolbar buttons and pickers
         addQuillTooltips(quill);
+
+        // Initialize Interactive Image Resizer & Formatting Controller
+        initQuillImageResizer(quill);
 
         // Load initial content if available (prefer Delta, fallback to HTML)
         if (deltaInput.value) {
@@ -461,4 +508,564 @@ function promptInsertTable(quill) {
         }
     }
 }
+
+/**
+ * Interactive Image Resizer & Alignment Controller for Quill 2.
+ */
+function initQuillImageResizer(quill) {
+    ensureImageResizerStyles();
+
+    const editorRoot = quill.root;
+    const container = quill.container;
+    container.style.position = 'relative';
+
+    let activeImage = null;
+    let overlay = null;
+
+    // Create or get the resizer overlay
+    function getOverlay() {
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'ql-image-resizer-overlay';
+            overlay.innerHTML = `
+                <div class="ql-resizer-handle ql-resizer-nw" data-handle="nw"></div>
+                <div class="ql-resizer-handle ql-resizer-ne" data-handle="ne"></div>
+                <div class="ql-resizer-handle ql-resizer-se" data-handle="se"></div>
+                <div class="ql-resizer-handle ql-resizer-sw" data-handle="sw"></div>
+                <div class="ql-resizer-size-badge"></div>
+                <div class="ql-resizer-toolbar">
+                    <div class="ql-resizer-btn-group">
+                        <button type="button" class="ql-resizer-btn" data-action="align-left" title="Align Left">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v2H2V2zm0 4h7v2H2V6zm0 4h12v2H2v-2zm0 4h7v2H2v-2z"/></svg>
+                        </button>
+                        <button type="button" class="ql-resizer-btn" data-action="align-center" title="Align Center">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v2H2V2zm3 4h6v2H5V6zm-3 4h12v2H2v-2zm3 4h6v2H5v-2z"/></svg>
+                        </button>
+                        <button type="button" class="ql-resizer-btn" data-action="align-right" title="Align Right">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v2H2V2zm5 4h7v2H7V6zm-5 4h12v2H2v-2zm5 4h7v2H7v-2z"/></svg>
+                        </button>
+                        <button type="button" class="ql-resizer-btn" data-action="align-inline" title="Inline">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h11A1.5 1.5 0 0 1 15 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-9zM2.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-11z"/></svg>
+                        </button>
+                    </div>
+                    <div class="ql-resizer-divider"></div>
+                    <div class="ql-resizer-btn-group">
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-text" data-action="size-25">25%</button>
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-text" data-action="size-50">50%</button>
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-text" data-action="size-75">75%</button>
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-text" data-action="size-100">100%</button>
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-text" data-action="size-auto">Auto</button>
+                    </div>
+                    <div class="ql-resizer-divider"></div>
+                    <div class="ql-resizer-btn-group">
+                        <button type="button" class="ql-resizer-btn" data-action="properties" title="Properties">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z"/></svg>
+                        </button>
+                        <button type="button" class="ql-resizer-btn ql-resizer-btn-danger" data-action="delete" title="Delete">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Localize toolbar button titles
+            const i18n = window.AdminI18n || {};
+            const tooltips = i18n.quillTooltips || {};
+            if (tooltips.alignLeft) overlay.querySelector('[data-action="align-left"]').setAttribute('title', tooltips.alignLeft);
+            if (tooltips.alignCenter) overlay.querySelector('[data-action="align-center"]').setAttribute('title', tooltips.alignCenter);
+            if (tooltips.alignRight) overlay.querySelector('[data-action="align-right"]').setAttribute('title', tooltips.alignRight);
+            if (tooltips.alignInline) overlay.querySelector('[data-action="align-inline"]').setAttribute('title', tooltips.alignInline);
+            if (tooltips.imageProperties) overlay.querySelector('[data-action="properties"]').setAttribute('title', tooltips.imageProperties);
+            if (tooltips.deleteImage) overlay.querySelector('[data-action="delete"]').setAttribute('title', tooltips.deleteImage);
+
+            // Handle toolbar actions
+            overlay.querySelector('.ql-resizer-toolbar').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const btn = e.target.closest('.ql-resizer-btn');
+                if (!btn || !activeImage) return;
+
+                const action = btn.getAttribute('data-action');
+                handleImageAction(action, activeImage, quill);
+            });
+
+            // Handle drag resizing on handles
+            overlay.querySelectorAll('.ql-resizer-handle').forEach(handle => {
+                handle.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    startHandleDrag(e, handle.getAttribute('data-handle'));
+                });
+            });
+
+            container.appendChild(overlay);
+        }
+        return overlay;
+    }
+
+    function repositionOverlay() {
+        if (!activeImage || !overlay || !activeImage.isConnected) {
+            hideOverlay();
+            return;
+        }
+
+        const containerRect = container.getBoundingClientRect();
+        const imgRect = activeImage.getBoundingClientRect();
+
+        const top = imgRect.top - containerRect.top + container.scrollTop;
+        const left = imgRect.left - containerRect.left + container.scrollLeft;
+        const width = imgRect.width;
+        const height = imgRect.height;
+
+        overlay.style.top = `${top}px`;
+        overlay.style.left = `${left}px`;
+        overlay.style.width = `${width}px`;
+        overlay.style.height = `${height}px`;
+        overlay.style.display = 'block';
+
+        // Update badge
+        const badge = overlay.querySelector('.ql-resizer-size-badge');
+        if (badge) {
+            badge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
+        }
+
+        // Adjust toolbar position (flip below if near top of container)
+        const toolbar = overlay.querySelector('.ql-resizer-toolbar');
+        if (toolbar) {
+            if (top < 45) {
+                toolbar.classList.add('ql-resizer-toolbar-bottom');
+            } else {
+                toolbar.classList.remove('ql-resizer-toolbar-bottom');
+            }
+        }
+    }
+
+    function showOverlay(img) {
+        activeImage = img;
+        getOverlay();
+        repositionOverlay();
+    }
+
+    function hideOverlay() {
+        activeImage = null;
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    }
+
+    function handleImageAction(action, img, quillInstance) {
+        if (!img) return;
+
+        if (action === 'align-left') {
+            img.style.float = 'left';
+            img.style.margin = '0 1rem 1rem 0';
+            img.style.display = 'inline';
+        } else if (action === 'align-center') {
+            img.style.float = 'none';
+            img.style.margin = '0 auto';
+            img.style.display = 'block';
+        } else if (action === 'align-right') {
+            img.style.float = 'right';
+            img.style.margin = '0 0 1rem 1rem';
+            img.style.display = 'inline';
+        } else if (action === 'align-inline') {
+            img.style.float = 'none';
+            img.style.margin = '0';
+            img.style.display = 'inline-block';
+        } else if (action === 'size-25') {
+            img.style.width = '25%';
+            img.style.height = 'auto';
+        } else if (action === 'size-50') {
+            img.style.width = '50%';
+            img.style.height = 'auto';
+        } else if (action === 'size-75') {
+            img.style.width = '75%';
+            img.style.height = 'auto';
+        } else if (action === 'size-100') {
+            img.style.width = '100%';
+            img.style.height = 'auto';
+        } else if (action === 'size-auto') {
+            img.style.width = '';
+            img.style.height = '';
+            img.removeAttribute('width');
+            img.removeAttribute('height');
+        } else if (action === 'properties') {
+            openImagePropertiesModal(img, quillInstance, repositionOverlay);
+            return;
+        } else if (action === 'delete') {
+            const blot = Quill.find(img);
+            hideOverlay();
+            if (blot) {
+                blot.deleteAt(0);
+            } else {
+                img.remove();
+            }
+            quillInstance.emitter.emit('text-change');
+            return;
+        }
+
+        repositionOverlay();
+        quillInstance.emitter.emit('text-change');
+    }
+
+    function startHandleDrag(initialEvent, handleCorner) {
+        if (!activeImage) return;
+
+        const startX = initialEvent.clientX;
+        const startY = initialEvent.clientY;
+        const startWidth = activeImage.offsetWidth;
+        const startHeight = activeImage.offsetHeight;
+        const aspectRatio = startWidth / (startHeight || 1);
+
+        const onMouseMove = (moveEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const deltaY = moveEvent.clientY - startY;
+
+            let newWidth = startWidth;
+            if (handleCorner === 'se' || handleCorner === 'ne') {
+                newWidth = startWidth + deltaX;
+            } else if (handleCorner === 'sw' || handleCorner === 'nw') {
+                newWidth = startWidth - deltaX;
+            }
+
+            // Minimum width boundary
+            newWidth = Math.max(30, Math.round(newWidth));
+
+            // Keep aspect ratio by default (or allow shift key for freeform)
+            activeImage.style.width = `${newWidth}px`;
+            if (moveEvent.shiftKey) {
+                let newHeight = startHeight;
+                if (handleCorner === 'se' || handleCorner === 'sw') {
+                    newHeight = startHeight + deltaY;
+                } else {
+                    newHeight = startHeight - deltaY;
+                }
+                activeImage.style.height = `${Math.max(20, Math.round(newHeight))}px`;
+            } else {
+                activeImage.style.height = 'auto';
+            }
+
+            repositionOverlay();
+        };
+
+        const onMouseUp = () => {
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+            repositionOverlay();
+            quill.emitter.emit('text-change');
+        };
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+    }
+
+    // Click on image inside editor
+    editorRoot.addEventListener('click', (e) => {
+        if (e.target && e.target.tagName === 'IMG') {
+            e.stopPropagation();
+            showOverlay(e.target);
+        } else {
+            hideOverlay();
+        }
+    });
+
+    // Double click to open property modal
+    editorRoot.addEventListener('dblclick', (e) => {
+        if (e.target && e.target.tagName === 'IMG') {
+            e.stopPropagation();
+            showOverlay(e.target);
+            openImagePropertiesModal(e.target, quill, repositionOverlay);
+        }
+    });
+
+    // Click outside to deselect
+    document.addEventListener('click', (e) => {
+        if (overlay && !overlay.contains(e.target) && (!activeImage || activeImage !== e.target)) {
+            hideOverlay();
+        }
+    });
+
+    // Reposition on editor scroll or window resize
+    editorRoot.addEventListener('scroll', repositionOverlay);
+    window.addEventListener('resize', repositionOverlay);
+    quill.on('text-change', () => {
+        if (activeImage) {
+            setTimeout(repositionOverlay, 10);
+        }
+    });
+}
+
+/**
+ * Opens a modal dialog (SweetAlert2) to edit detailed image attributes and styling.
+ */
+function openImagePropertiesModal(img, quill, onUpdate) {
+    if (!img) return;
+
+    const i18n = window.AdminI18n || {};
+    const tooltips = i18n.quillTooltips || {};
+
+    const currentWidth = img.style.width || img.getAttribute('width') || '';
+    const currentHeight = img.style.height || img.getAttribute('height') || '';
+    const currentAlt = img.getAttribute('alt') || '';
+    const currentTitle = img.getAttribute('title') || '';
+
+    // Determine current alignment
+    let currentAlign = 'inline';
+    if (img.style.float === 'left') currentAlign = 'left';
+    else if (img.style.float === 'right') currentAlign = 'right';
+    else if (img.style.margin && img.style.margin.includes('auto') && img.style.display === 'block') currentAlign = 'center';
+
+    const title = tooltips.imageProperties || 'Image Properties';
+    const widthLabel = tooltips.width || 'Width';
+    const heightLabel = tooltips.height || 'Height';
+    const altLabel = tooltips.altText || 'Alternative Text (Alt)';
+    const titleLabel = tooltips.imageTitle || 'Image Title';
+    const alignLabel = tooltips.align || 'Alignment';
+    const alignInline = tooltips.alignInline || 'Inline';
+    const alignLeft = tooltips.alignLeft || 'Align Left';
+    const alignCenter = tooltips.alignCenter || 'Align Center';
+    const alignRight = tooltips.alignRight || 'Align Right';
+    const ratioLabel = tooltips.maintainAspectRatio || 'Maintain aspect ratio';
+    const saveBtnText = i18n.save || 'Save';
+    const cancelBtnText = i18n.cancel || 'Cancel';
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: title,
+            html: `
+                <div class="text-start mb-3">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label for="swal-img-width" class="form-label fw-medium mb-1">${widthLabel}</label>
+                            <input id="swal-img-width" type="text" value="${currentWidth}" placeholder="e.g. 400px or 50%" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label for="swal-img-height" class="form-label fw-medium mb-1">${heightLabel}</label>
+                            <input id="swal-img-height" type="text" value="${currentHeight}" placeholder="e.g. auto or 300px" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="swal-img-ratio" checked>
+                        <label class="form-check-label small text-muted" for="swal-img-ratio">${ratioLabel}</label>
+                    </div>
+                </div>
+                <div class="text-start mb-3">
+                    <label for="swal-img-align" class="form-label fw-medium mb-1">${alignLabel}</label>
+                    <select id="swal-img-align" class="form-select">
+                        <option value="inline" ${currentAlign === 'inline' ? 'selected' : ''}>${alignInline}</option>
+                        <option value="left" ${currentAlign === 'left' ? 'selected' : ''}>${alignLeft}</option>
+                        <option value="center" ${currentAlign === 'center' ? 'selected' : ''}>${alignCenter}</option>
+                        <option value="right" ${currentAlign === 'right' ? 'selected' : ''}>${alignRight}</option>
+                    </select>
+                </div>
+                <div class="text-start mb-3">
+                    <label for="swal-img-alt" class="form-label fw-medium mb-1">${altLabel}</label>
+                    <input id="swal-img-alt" type="text" value="${currentAlt}" class="form-control" />
+                </div>
+                <div class="text-start">
+                    <label for="swal-img-title" class="form-label fw-medium mb-1">${titleLabel}</label>
+                    <input id="swal-img-title" type="text" value="${currentTitle}" class="form-control" />
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: saveBtnText,
+            cancelButtonText: cancelBtnText,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#64748b',
+            didOpen: () => {
+                const wInput = document.getElementById('swal-img-width');
+                const hInput = document.getElementById('swal-img-height');
+                const ratioCheck = document.getElementById('swal-img-ratio');
+                const naturalRatio = (img.naturalWidth || img.offsetWidth) / ((img.naturalHeight || img.offsetHeight) || 1);
+
+                wInput.addEventListener('input', () => {
+                    if (ratioCheck.checked) {
+                        const num = parseFloat(wInput.value);
+                        if (!isNaN(num) && (wInput.value.endsWith('px') || !wInput.value.includes('%'))) {
+                            hInput.value = `${Math.round(num / naturalRatio)}px`;
+                        } else if (wInput.value === '') {
+                            hInput.value = '';
+                        }
+                    }
+                });
+            },
+            preConfirm: () => {
+                return {
+                    width: document.getElementById('swal-img-width').value.trim(),
+                    height: document.getElementById('swal-img-height').value.trim(),
+                    align: document.getElementById('swal-img-align').value,
+                    alt: document.getElementById('swal-img-alt').value.trim(),
+                    title: document.getElementById('swal-img-title').value.trim()
+                };
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                const vals = result.value;
+
+                // Width / Height
+                if (vals.width) {
+                    img.style.width = vals.width.includes('%') || vals.width.includes('px') || vals.width === 'auto' ? vals.width : `${vals.width}px`;
+                } else {
+                    img.style.width = '';
+                    img.removeAttribute('width');
+                }
+
+                if (vals.height) {
+                    img.style.height = vals.height.includes('%') || vals.height.includes('px') || vals.height === 'auto' ? vals.height : `${vals.height}px`;
+                } else {
+                    img.style.height = '';
+                    img.removeAttribute('height');
+                }
+
+                // Alignment
+                if (vals.align === 'left') {
+                    img.style.float = 'left';
+                    img.style.margin = '0 1rem 1rem 0';
+                    img.style.display = 'inline';
+                } else if (vals.align === 'center') {
+                    img.style.float = 'none';
+                    img.style.margin = '0 auto';
+                    img.style.display = 'block';
+                } else if (vals.align === 'right') {
+                    img.style.float = 'right';
+                    img.style.margin = '0 0 1rem 1rem';
+                    img.style.display = 'inline';
+                } else {
+                    img.style.float = 'none';
+                    img.style.margin = '0';
+                    img.style.display = 'inline-block';
+                }
+
+                // Alt & Title
+                if (vals.alt) img.setAttribute('alt', vals.alt);
+                else img.removeAttribute('alt');
+
+                if (vals.title) img.setAttribute('title', vals.title);
+                else img.removeAttribute('title');
+
+                if (typeof onUpdate === 'function') onUpdate();
+                quill.emitter.emit('text-change');
+            }
+        });
+    }
+}
+
+/**
+ * Injects required CSS styling for the Quill image resizer overlay and toolbar.
+ */
+function ensureImageResizerStyles() {
+    if (document.getElementById('ql-image-resizer-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'ql-image-resizer-styles';
+    style.textContent = `
+        .ql-image-resizer-overlay {
+            position: absolute;
+            display: none;
+            border: 2px dashed #0d6efd;
+            box-sizing: border-box;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .ql-resizer-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #0d6efd;
+            border: 2px solid #ffffff;
+            border-radius: 2px;
+            box-sizing: border-box;
+            pointer-events: auto;
+            z-index: 102;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .ql-resizer-nw { top: -5px; left: -5px; cursor: nwse-resize; }
+        .ql-resizer-ne { top: -5px; right: -5px; cursor: nesw-resize; }
+        .ql-resizer-se { bottom: -5px; right: -5px; cursor: nwse-resize; }
+        .ql-resizer-sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
+
+        .ql-resizer-size-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #ffffff;
+            font-size: 11px;
+            line-height: 1;
+            padding: 3px 6px;
+            border-radius: 3px;
+            pointer-events: none;
+            font-family: monospace;
+            z-index: 101;
+        }
+
+        .ql-resizer-toolbar {
+            position: absolute;
+            top: -42px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 3px 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
+            z-index: 105;
+            white-space: nowrap;
+            gap: 4px;
+        }
+        .ql-resizer-toolbar.ql-resizer-toolbar-bottom {
+            top: auto;
+            bottom: -44px;
+        }
+        .ql-resizer-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .ql-resizer-divider {
+            width: 1px;
+            height: 18px;
+            background: #dee2e6;
+            margin: 0 3px;
+        }
+        .ql-resizer-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: none;
+            background: transparent;
+            color: #495057;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .ql-resizer-btn:hover {
+            background: #e9ecef;
+            color: #0d6efd;
+        }
+        .ql-resizer-btn-text {
+            width: auto;
+            padding: 0 5px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        .ql-resizer-btn-text:hover {
+            background: #e9ecef;
+            color: #0d6efd;
+        }
+        .ql-resizer-btn-danger:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 
