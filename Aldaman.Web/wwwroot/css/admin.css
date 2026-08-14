@@ -30,4 +30,141 @@
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     padding: 4px;
+}
+
+/* Quill Photo Gallery Blot Styling */
+.quill-gallery {
+    display: grid;
+    margin: 1.5rem 0;
+    position: relative;
+    user-select: none;
+}
+
+.quill-gallery[data-columns="auto"] {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.quill-gallery[data-columns="1"] { grid-template-columns: 1fr; }
+.quill-gallery[data-columns="2"] { grid-template-columns: repeat(2, 1fr); }
+.quill-gallery[data-columns="3"] { grid-template-columns: repeat(3, 1fr); }
+.quill-gallery[data-columns="4"] { grid-template-columns: repeat(4, 1fr); }
+.quill-gallery[data-columns="5"] { grid-template-columns: repeat(5, 1fr); }
+.quill-gallery[data-columns="6"] { grid-template-columns: repeat(6, 1fr); }
+
+.quill-gallery[data-gap="sm"] { gap: 8px; }
+.quill-gallery[data-gap="md"] { gap: 16px; }
+.quill-gallery[data-gap="lg"] { gap: 24px; }
+
+.quill-gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    aspect-ratio: 4 / 3;
+}
+
+.quill-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease-in-out;
+}
+
+.quill-gallery-item:hover img {
+    transform: scale(1.03);
+}
+
+/* Admin Quill Editor Gallery selected state & controls */
+.ql-editor .quill-gallery {
+    border: 2px dashed transparent;
+    padding: 4px;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+}
+
+.ql-editor .quill-gallery:hover {
+    border-color: #0d6efd;
+}
+
+.ql-editor .quill-gallery-actions {
+    position: absolute;
+    top: -14px;
+    right: 8px;
+    background: #0d6efd;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.ql-editor .quill-gallery:hover .quill-gallery-actions {
+    display: flex;
+}
+
+/* Media Gallery Picker Modal Items */
+.gallery-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+.gallery-picker-card {
+    position: relative;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    transition: all 0.15s ease-in-out;
+    background: #f8f9fa;
+}
+
+.gallery-picker-card:hover {
+    border-color: #0d6efd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.gallery-picker-card.is-selected {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+.gallery-picker-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-picker-card .check-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: 2px solid #adb5bd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.gallery-picker-card.is-selected .check-badge {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
 }

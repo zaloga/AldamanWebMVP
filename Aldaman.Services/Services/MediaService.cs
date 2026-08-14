@@ -23,11 +23,16 @@ public sealed class MediaService : IMediaService
         Logger = logger;
     }
 
-    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false)
+    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false, bool onlyImages = false)
     {
         var dbQuery = filterDeleted
             ? Context.MediaAssets.IgnoreQueryFilters().Where(p => p.IsDeleted)
             : Context.MediaAssets.AsQueryable();
+
+        if (onlyImages)
+        {
+            dbQuery = dbQuery.Where(p => p.IsImage);
+        }
 
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))

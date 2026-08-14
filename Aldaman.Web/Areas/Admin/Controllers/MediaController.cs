@@ -38,6 +38,13 @@ public class MediaController : BaseAdminController
     }
 
     [HttpGet]
+    public async Task<IActionResult> ApiList([FromQuery] PaginationQuery query)
+    {
+        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: false, onlyImages: true);
+        return Json(result);
+    }
+
+    [HttpGet]
     public IActionResult Upload()
     {
         return View();

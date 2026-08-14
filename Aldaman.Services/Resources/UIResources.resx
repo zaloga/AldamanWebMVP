@@ -1077,11 +1077,53 @@
   <data name="OriginalSize" xml:space="preserve">
     <value>Původní velikost</value>
   </data>
-  <data name="ResetDimensions" xml:space="preserve">
-    <value>Obnovit rozměry</value>
-  </data>
   <data name="Presets" xml:space="preserve">
     <value>Předvolby</value>
+  </data>
+  <data name="RteGallery" xml:space="preserve">
+    <value>Fotogalerie</value>
+  </data>
+  <data name="InsertGallery" xml:space="preserve">
+    <value>Vložit fotogalerii</value>
+  </data>
+  <data name="EditGallery" xml:space="preserve">
+    <value>Upravit fotogalerii</value>
+  </data>
+  <data name="Columns" xml:space="preserve">
+    <value>Počet sloupců</value>
+  </data>
+  <data name="ColumnsAuto" xml:space="preserve">
+    <value>Automaticky (responzivní)</value>
+  </data>
+  <data name="SelectImages" xml:space="preserve">
+    <value>Vybrat obrázky z knihovny</value>
+  </data>
+  <data name="SelectedImagesCount" xml:space="preserve">
+    <value>Vybráno {0} obrázků</value>
+  </data>
+  <data name="Gap" xml:space="preserve">
+    <value>Mezera mezi obrázky</value>
+  </data>
+  <data name="GapSmall" xml:space="preserve">
+    <value>Malá (8px)</value>
+  </data>
+  <data name="GapMedium" xml:space="preserve">
+    <value>Střední (16px)</value>
+  </data>
+  <data name="GapLarge" xml:space="preserve">
+    <value>Velká (24px)</value>
+  </data>
+  <data name="EnableLightbox" xml:space="preserve">
+    <value>Povolit lightbox náhled po kliknutí</value>
+  </data>
+  <data name="DeleteGallery" xml:space="preserve">
+    <value>Smazat galerii</value>
+  </data>
+  <data name="NoImagesSelected" xml:space="preserve">
+    <value>Není vybrán žádný obrázek.</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Vybráno</value>
   </data>
 </root>
 

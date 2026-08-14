@@ -1,4 +1,5 @@
 // Extend Quill's default Image Blot to persist width, height, style, alt, and title
+// and register custom GalleryBlot for photo galleries
 (function () {
     if (typeof Quill !== 'undefined') {
         const BaseImage = Quill.import('formats/image');
@@ -53,6 +54,72 @@
                 }
             }
             Quill.register(CustomImageBlot, true);
+        }
+
+        const BlockEmbed = Quill.import('blots/block/embed');
+        if (BlockEmbed) {
+            class GalleryBlot extends BlockEmbed {
+                static create(value) {
+                    const node = super.create(value);
+                    node.setAttribute('contenteditable', 'false');
+                    node.classList.add('quill-gallery');
+
+                    const columns = (value && value.columns) ? value.columns : 'auto';
+                    const gap = (value && value.gap) ? value.gap : 'md';
+                    const lightbox = (value && value.lightbox !== false);
+                    node.setAttribute('data-columns', columns);
+                    node.setAttribute('data-gap', gap);
+                    node.setAttribute('data-lightbox', lightbox ? 'true' : 'false');
+
+                    const images = (value && Array.isArray(value.images)) ? value.images : [];
+                    node.setAttribute('data-images-json', JSON.stringify(images));
+
+                    // Build inner HTML for images
+                    let innerHtml = '';
+                    images.forEach(img => {
+                        const src = typeof img === 'string' ? img : (img.src || img.url || '');
+                        const alt = (img && img.alt) ? img.alt : '';
+                        const title = (img && img.title) ? img.title : '';
+
+                        if (lightbox) {
+                            innerHtml += `<div class="quill-gallery-item"><a href="${src}" data-gallery="gallery" title="${title || alt}"><img src="${src}" alt="${alt}" title="${title}" loading="lazy" /></a></div>`;
+                        } else {
+                            innerHtml += `<div class="quill-gallery-item"><img src="${src}" alt="${alt}" title="${title}" loading="lazy" /></div>`;
+                        }
+                    });
+
+                    node.innerHTML = innerHtml;
+                    return node;
+                }
+
+                static value(domNode) {
+                    let images = [];
+                    try {
+                        const raw = domNode.getAttribute('data-images-json');
+                        if (raw) images = JSON.parse(raw);
+                    } catch (e) {
+                        domNode.querySelectorAll('img').forEach(img => {
+                            images.push({
+                                src: img.getAttribute('src') || '',
+                                alt: img.getAttribute('alt') || '',
+                                title: img.getAttribute('title') || ''
+                            });
+                        });
+                    }
+
+                    return {
+                        columns: domNode.getAttribute('data-columns') || 'auto',
+                        gap: domNode.getAttribute('data-gap') || 'md',
+                        lightbox: domNode.getAttribute('data-lightbox') === 'true',
+                        images: images
+                    };
+                }
+            }
+
+            GalleryBlot.blotName = 'gallery';
+            GalleryBlot.tagName = 'div';
+            GalleryBlot.className = 'quill-gallery';
+            Quill.register(GalleryBlot, true);
         }
     }
 })();
@@ -137,11 +204,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         [{ 'header': 1 }, { 'header': 2 }, { 'header': 3 }, { 'header': 4 }, 'blockquote', 'code-block'],
                         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
                         [{ 'direction': 'rtl' }, { 'align': [] }],
-                        ['link', 'image', 'video', 'formula', 'table'],
+                        ['link', 'image', 'gallery', 'video', 'formula', 'table'],
                         ['clean']
                     ],
                     handlers: {
                         image: imageHandler,
+                        gallery: function () {
+                            openMediaGalleryModal(this.quill);
+                        },
                         table: function () {
                             promptInsertTable(this.quill);
                         },
@@ -332,6 +402,17 @@ function addQuillTooltips(quill) {
         }
         if (!tableBtn.hasAttribute('title') && tooltips.table) {
             tableBtn.setAttribute('title', tooltips.table);
+        }
+    }
+
+    // Ensure gallery button has visual icon if missing
+    const galleryBtn = toolbar.querySelector('.ql-gallery');
+    if (galleryBtn) {
+        if (!galleryBtn.innerHTML || galleryBtn.innerHTML.trim() === '') {
+            galleryBtn.innerHTML = '<svg viewBox="0 0 18 18"><rect class="ql-stroke" height="10" width="10" x="2" y="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect><rect class="ql-stroke" height="10" width="10" x="6" y="6" fill="none" stroke="currentColor" stroke-width="1.5"></rect><circle class="ql-fill" cx="5" cy="5" r="1"></circle></svg>';
+        }
+        if (!galleryBtn.hasAttribute('title') && (tooltips.gallery || tooltips.insertGallery)) {
+            galleryBtn.setAttribute('title', tooltips.gallery || tooltips.insertGallery);
         }
     }
 
@@ -1067,5 +1148,253 @@ function ensureImageResizerStyles() {
     `;
     document.head.appendChild(style);
 }
+
+/**
+ * Opens a modal dialog to select media library photos and configure/insert a photo gallery into Quill.
+ */
+async function openMediaGalleryModal(quill) {
+    const i18n = window.AdminI18n || {};
+    const tooltips = i18n.quillTooltips || {};
+
+    let selectedImages = [];
+    let currentPage = 1;
+    let currentSearch = '';
+    const pageSize = 12;
+
+    // Ensure modal markup exists in document body
+    let modalEl = document.getElementById('quillMediaGalleryModal');
+    if (!modalEl) {
+        const modalHtml = `
+        <div class="modal fade" id="quillMediaGalleryModal" tabindex="-1" aria-labelledby="quillMediaGalleryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content shadow-lg border-0">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold" id="quillMediaGalleryModalLabel">
+                            <i class="bi bi-images text-primary me-2"></i>${tooltips.insertGallery || 'Insert Photo Gallery'}
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <!-- Options Bar -->
+                        <div class="card bg-light border-0 mb-4">
+                            <div class="card-body">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-md-3">
+                                        <label class="form-label small fw-bold mb-1">${tooltips.columns || 'Columns'}</label>
+                                        <select id="galleryModalColumns" class="form-select form-select-sm">
+                                            <option value="auto" selected>${tooltips.columnsAuto || 'Auto (Responsive)'}</option>
+                                            <option value="1">1 Column</option>
+                                            <option value="2">2 Columns</option>
+                                            <option value="3">3 Columns</option>
+                                            <option value="4">4 Columns</option>
+                                            <option value="5">5 Columns</option>
+                                            <option value="6">6 Columns</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label small fw-bold mb-1">${tooltips.gap || 'Gap'}</label>
+                                        <select id="galleryModalGap" class="form-select form-select-sm">
+                                            <option value="sm">${tooltips.gapSmall || 'Small (8px)'}</option>
+                                            <option value="md" selected>${tooltips.gapMedium || 'Medium (16px)'}</option>
+                                            <option value="lg">${tooltips.gapLarge || 'Large (24px)'}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 pt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="galleryModalLightbox" checked>
+                                            <label class="form-check-label small fw-medium" for="galleryModalLightbox">${tooltips.enableLightbox || 'Enable Lightbox'}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-end pt-3">
+                                        <span id="gallerySelectionCountBadge" class="badge bg-primary fs-6 px-3 py-2">
+                                            0 ${tooltips.selected || 'selected'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="input-group" style="max-width: 320px;">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                <input type="text" id="gallerySearchInput" class="form-control border-start-0" placeholder="${i18n.search || 'Search images...'}">
+                            </div>
+                            <small class="text-muted">${tooltips.selectImages || 'Click on images to select/unselect'}</small>
+                        </div>
+
+                        <!-- Image Grid -->
+                        <div id="galleryImageGrid" class="gallery-picker-grid mb-3">
+                            <div class="text-center py-5 text-muted col-span-full">
+                                <div class="spinner-border spinner-border-sm text-primary me-2"></div>Loading...
+                            </div>
+                        </div>
+
+                        <!-- Pagination Controls -->
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                            <button type="button" id="galleryPrevPage" class="btn btn-sm btn-outline-secondary" disabled>
+                                <i class="bi bi-chevron-left"></i> ${i18n.previous || 'Previous'}
+                            </button>
+                            <span id="galleryPageIndicator" class="small text-muted">Page 1</span>
+                            <button type="button" id="galleryNextPage" class="btn btn-sm btn-outline-secondary" disabled>
+                                ${i18n.next || 'Next'} <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">${i18n.cancel || 'Cancel'}</button>
+                        <button type="button" id="galleryInsertBtn" class="btn btn-primary px-4" disabled>
+                            <i class="bi bi-plus-circle me-1"></i> ${tooltips.insertGallery || 'Insert Gallery'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        modalEl = document.getElementById('quillMediaGalleryModal');
+    }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    const gridEl = document.getElementById('galleryImageGrid');
+    const searchInput = document.getElementById('gallerySearchInput');
+    const prevBtn = document.getElementById('galleryPrevPage');
+    const nextBtn = document.getElementById('galleryNextPage');
+    const pageIndicator = document.getElementById('galleryPageIndicator');
+    const countBadge = document.getElementById('gallerySelectionCountBadge');
+    const insertBtn = document.getElementById('galleryInsertBtn');
+    const columnsSelect = document.getElementById('galleryModalColumns');
+    const gapSelect = document.getElementById('galleryModalGap');
+    const lightboxCheck = document.getElementById('galleryModalLightbox');
+
+    // Reset state on open
+    selectedImages = [];
+    currentPage = 1;
+    currentSearch = '';
+    searchInput.value = '';
+    updateSelectionUI();
+
+    async function loadAssets() {
+        gridEl.innerHTML = `
+            <div class="d-flex justify-content-center align-items-center py-5 w-100" style="grid-column: 1 / -1;">
+                <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                <span class="text-muted small">Loading media assets...</span>
+            </div>`;
+
+        try {
+            const url = `/Admin/Media/ApiList?Page=${currentPage}&PageSize=${pageSize}&SearchTerm=${encodeURIComponent(currentSearch)}`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to load media');
+            const data = await response.json();
+
+            renderAssets(data.items || []);
+            updatePaginationUI(data);
+        } catch (error) {
+            console.error('Error fetching media list:', error);
+            gridEl.innerHTML = `<div class="alert alert-danger w-100" style="grid-column: 1 / -1;">Error loading media library.</div>`;
+        }
+    }
+
+    function renderAssets(items) {
+        if (!items || items.length === 0) {
+            gridEl.innerHTML = `<div class="text-center py-5 text-muted w-100" style="grid-column: 1 / -1;">No images found.</div>`;
+            return;
+        }
+
+        gridEl.innerHTML = '';
+        items.forEach(item => {
+            const isSelected = selectedImages.some(img => img.src === item.relativePath);
+            const card = document.createElement('div');
+            card.className = `gallery-picker-card ${isSelected ? 'is-selected' : ''}`;
+            card.setAttribute('data-src', item.relativePath);
+            card.setAttribute('data-alt', item.altText || '');
+            card.setAttribute('data-title', item.title || item.originalFileName || '');
+
+            card.innerHTML = `
+                <img src="${item.relativePath}" alt="${item.altText || ''}" loading="lazy" />
+                <div class="check-badge"><i class="bi bi-check"></i></div>
+            `;
+
+            card.addEventListener('click', () => {
+                const src = item.relativePath;
+                const alt = item.altText || '';
+                const title = item.title || item.originalFileName || '';
+
+                const existingIndex = selectedImages.findIndex(img => img.src === src);
+                if (existingIndex >= 0) {
+                    selectedImages.splice(existingIndex, 1);
+                    card.classList.remove('is-selected');
+                } else {
+                    selectedImages.push({ src, alt, title });
+                    card.classList.add('is-selected');
+                }
+                updateSelectionUI();
+            });
+
+            gridEl.appendChild(card);
+        });
+    }
+
+    function updatePaginationUI(data) {
+        const totalPages = Math.ceil((data.totalCount || 0) / pageSize) || 1;
+        pageIndicator.textContent = `Page ${data.page} of ${totalPages} (${data.totalCount || 0} items)`;
+        prevBtn.disabled = (data.page <= 1);
+        nextBtn.disabled = (data.page >= totalPages);
+    }
+
+    function updateSelectionUI() {
+        const count = selectedImages.length;
+        countBadge.textContent = `${count} ${tooltips.selected || 'selected'}`;
+        insertBtn.disabled = (count === 0);
+    }
+
+    // Debounced search
+    let searchDebounceTimer = null;
+    searchInput.oninput = () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+            currentSearch = searchInput.value.trim();
+            currentPage = 1;
+            loadAssets();
+        }, 300);
+    };
+
+    prevBtn.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadAssets();
+        }
+    };
+
+    nextBtn.onclick = () => {
+        currentPage++;
+        loadAssets();
+    };
+
+    insertBtn.onclick = () => {
+        if (selectedImages.length === 0) return;
+
+        quill.focus();
+        let range = quill.getSelection(true);
+        if (!range) {
+            range = { index: quill.getLength(), length: 0 };
+        }
+
+        const galleryData = {
+            columns: columnsSelect.value,
+            gap: gapSelect.value,
+            lightbox: lightboxCheck.checked,
+            images: selectedImages
+        };
+
+        quill.insertEmbed(range.index, 'gallery', galleryData);
+        quill.setSelection(range.index + 1);
+
+        modal.hide();
+    };
+
+    modal.show();
+    loadAssets();
+}
+
 
 

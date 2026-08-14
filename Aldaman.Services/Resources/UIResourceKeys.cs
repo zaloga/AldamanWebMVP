@@ -325,6 +325,21 @@ public static class UIResourceKeys
     public const string RteResetSize = nameof(RteResetSize);
     public const string RteDeleteImage = nameof(RteDeleteImage);
     public const string RteMaintainAspectRatio = nameof(RteMaintainAspectRatio);
+    public const string RteGallery = nameof(RteGallery);
+    public const string InsertGallery = nameof(InsertGallery);
+    public const string EditGallery = nameof(EditGallery);
+    public const string Columns = nameof(Columns);
+    public const string ColumnsAuto = nameof(ColumnsAuto);
+    public const string SelectImages = nameof(SelectImages);
+    public const string SelectedImagesCount = nameof(SelectedImagesCount);
+    public const string Gap = nameof(Gap);
+    public const string GapSmall = nameof(GapSmall);
+    public const string GapMedium = nameof(GapMedium);
+    public const string GapLarge = nameof(GapLarge);
+    public const string EnableLightbox = nameof(EnableLightbox);
+    public const string DeleteGallery = nameof(DeleteGallery);
+    public const string NoImagesSelected = nameof(NoImagesSelected);
+    public const string Selected = nameof(Selected);
 
     // Public Search API Documentation
     public const string SearchApiTitle = nameof(SearchApiTitle);

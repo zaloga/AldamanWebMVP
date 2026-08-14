@@ -16,7 +16,7 @@ public interface IMediaService
     /// <summary>
     /// Lists all media assets with pagination and filtering.
     /// </summary>
-    Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false);
+    Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false, bool onlyImages = false);
 
     /// <summary>
     /// Gets a media asset's metadata by its ID.

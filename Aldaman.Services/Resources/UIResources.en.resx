@@ -1077,10 +1077,52 @@
   <data name="OriginalSize" xml:space="preserve">
     <value>Original</value>
   </data>
-  <data name="ResetDimensions" xml:space="preserve">
-    <value>Reset dimensions</value>
-  </data>
   <data name="Presets" xml:space="preserve">
     <value>Presets</value>
+  </data>
+  <data name="RteGallery" xml:space="preserve">
+    <value>Photo Gallery</value>
+  </data>
+  <data name="InsertGallery" xml:space="preserve">
+    <value>Insert Photo Gallery</value>
+  </data>
+  <data name="EditGallery" xml:space="preserve">
+    <value>Edit Photo Gallery</value>
+  </data>
+  <data name="Columns" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="ColumnsAuto" xml:space="preserve">
+    <value>Auto (Responsive)</value>
+  </data>
+  <data name="SelectImages" xml:space="preserve">
+    <value>Select Images from Library</value>
+  </data>
+  <data name="SelectedImagesCount" xml:space="preserve">
+    <value>{0} images selected</value>
+  </data>
+  <data name="Gap" xml:space="preserve">
+    <value>Grid Gap</value>
+  </data>
+  <data name="GapSmall" xml:space="preserve">
+    <value>Small (8px)</value>
+  </data>
+  <data name="GapMedium" xml:space="preserve">
+    <value>Medium (16px)</value>
+  </data>
+  <data name="GapLarge" xml:space="preserve">
+    <value>Large (24px)</value>
+  </data>
+  <data name="EnableLightbox" xml:space="preserve">
+    <value>Enable click-to-enlarge lightbox</value>
+  </data>
+  <data name="DeleteGallery" xml:space="preserve">
+    <value>Delete Gallery</value>
+  </data>
+  <data name="NoImagesSelected" xml:space="preserve">
+    <value>No images selected.</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Selected</value>
   </data>
 </root>
