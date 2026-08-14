@@ -17,21 +17,21 @@ public class ContactMessagesController : BaseAdminController
         ContactService = contactService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
-        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false);
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false, ct: cancellationToken);
         return View(result);
     }
 
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
-        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: true);
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: true, ct: cancellationToken);
         return View(result);
     }
 
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
-        var message = await ContactService.GetMessageByIdAsync(id);
+        var message = await ContactService.GetMessageByIdAsync(id, cancellationToken);
         if (message == null)
         {
             return NotFound();
@@ -42,19 +42,19 @@ public class ContactMessagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkHandled(Guid id)
+    public async Task<IActionResult> MarkHandled(Guid id, CancellationToken cancellationToken = default)
     {
-        await ContactService.MarkAsHandledAsync(id);
+        await ContactService.MarkAsHandledAsync(id, cancellationToken);
         return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContactService.DeleteMessageAsync(id);
+            await ContactService.DeleteMessageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
@@ -65,11 +65,11 @@ public class ContactMessagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Restore(Guid id)
+    public async Task<IActionResult> Restore(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContactService.RestoreMessageAsync(id);
+            await ContactService.RestoreMessageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
@@ -80,11 +80,11 @@ public class ContactMessagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> HardDelete(Guid id)
+    public async Task<IActionResult> HardDelete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContactService.HardDeleteMessageAsync(id);
+            await ContactService.HardDeleteMessageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)

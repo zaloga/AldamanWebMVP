@@ -19,27 +19,27 @@ public class ContentPagesController : BaseAdminController
         ContentPageService = contentPageService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: false);
+        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: false, ct: cancellationToken);
         return View(result);
     }
 
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: true);
+        PagedResultDto<ContentPageListItemDto> result = await ContentPageService.GetPagedContentPagesAsync(query, culture, filterDeleted: true, ct: cancellationToken);
         return View(result);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContentPageService.SoftDeleteContentPageAsync(id);
+            await ContentPageService.SoftDeleteContentPageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
@@ -50,11 +50,11 @@ public class ContentPagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Restore(Guid id)
+    public async Task<IActionResult> Restore(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContentPageService.RestoreContentPageAsync(id);
+            await ContentPageService.RestoreContentPageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
@@ -65,11 +65,11 @@ public class ContentPagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> HardDelete(Guid id)
+    public async Task<IActionResult> HardDelete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await ContentPageService.HardDeleteContentPageAsync(id);
+            await ContentPageService.HardDeleteContentPageAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public class ContentPagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Page.ContentPageEditDto model)
+    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Page.ContentPageEditDto model, CancellationToken cancellationToken = default)
     {
         if (!ModelState.IsValid)
         {
@@ -96,7 +96,7 @@ public class ContentPagesController : BaseAdminController
 
         try
         {
-            await ContentPageService.CreateContentPageAsync(model);
+            await ContentPageService.CreateContentPageAsync(model, cancellationToken);
             TempData.SetSuccessMessage(Localizer[UIResourceKeys.PageCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
@@ -108,9 +108,9 @@ public class ContentPagesController : BaseAdminController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
-        var page = await ContentPageService.GetContentPageForEditAsync(id);
+        var page = await ContentPageService.GetContentPageForEditAsync(id, cancellationToken);
         if (page == null)
         {
             return NotFound();
@@ -120,9 +120,9 @@ public class ContentPagesController : BaseAdminController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Update(Guid id)
+    public async Task<IActionResult> Update(Guid id, CancellationToken cancellationToken = default)
     {
-        var page = await ContentPageService.GetContentPageForEditAsync(id);
+        var page = await ContentPageService.GetContentPageForEditAsync(id, cancellationToken);
         if (page == null)
         {
             return NotFound();
@@ -133,7 +133,7 @@ public class ContentPagesController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Page.ContentPageEditDto model)
+    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Page.ContentPageEditDto model, CancellationToken cancellationToken = default)
     {
         if (id != model.Id)
         {
@@ -147,7 +147,7 @@ public class ContentPagesController : BaseAdminController
 
         try
         {
-            await ContentPageService.UpdateContentPageAsync(id, model);
+            await ContentPageService.UpdateContentPageAsync(id, model, cancellationToken);
             TempData.SetSuccessMessage(Localizer[UIResourceKeys.PageUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }

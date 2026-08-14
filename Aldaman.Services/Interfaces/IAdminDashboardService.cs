@@ -10,5 +10,5 @@ public interface IAdminDashboardService
     /// <summary>
     /// Aggregates data for the dashboard.
     /// </summary>
-    Task<AdminDashboardStatsDto> GetStatsAsync();
+    Task<AdminDashboardStatsDto> GetStatsAsync(CancellationToken ct = default);
 }

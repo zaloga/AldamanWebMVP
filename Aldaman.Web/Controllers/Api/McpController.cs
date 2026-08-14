@@ -28,7 +28,7 @@ public sealed class McpController : ControllerBase
     /// This provides a long-running channel for the server to send asynchronous messages and notifications back to the client.
     /// </summary>
     [HttpGet("sse")]
-    public async Task Sse()
+    public async Task Sse(CancellationToken cancellationToken = default)
     {
         var sessionId = SessionManager.CreateSession();
         var channel = SessionManager.GetChannel(sessionId);
@@ -48,15 +48,15 @@ public sealed class McpController : ControllerBase
         var messageUrl = Url.Action("Message", "Mcp", new { sessionId }, Request.Scheme);
 
         // Send the endpoint event as per MCP spec
-        await Response.WriteAsync($"event: endpoint\ndata: {messageUrl}\n\n");
-        await Response.Body.FlushAsync();
+        await Response.WriteAsync($"event: endpoint\ndata: {messageUrl}\n\n", cancellationToken);
+        await Response.Body.FlushAsync(cancellationToken);
 
         try
         {
-            await foreach (var message in channel.Reader.ReadAllAsync(HttpContext.RequestAborted))
+            await foreach (var message in channel.Reader.ReadAllAsync(cancellationToken))
             {
-                await Response.WriteAsync($"event: message\ndata: {message}\n\n");
-                await Response.Body.FlushAsync();
+                await Response.WriteAsync($"event: message\ndata: {message}\n\n", cancellationToken);
+                await Response.Body.FlushAsync(cancellationToken);
             }
         }
         catch (OperationCanceledException)
@@ -78,7 +78,7 @@ public sealed class McpController : ControllerBase
     /// Receives JSON-RPC messages from the client.
     /// </summary>
     [HttpPost("message")]
-    public async Task<IActionResult> Message([FromQuery] string sessionId, [FromBody] JsonRpcRequest request)
+    public async Task<IActionResult> Message([FromQuery] string sessionId, [FromBody] JsonRpcRequest request, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(sessionId))
         {
@@ -92,7 +92,7 @@ public sealed class McpController : ControllerBase
         }
 
         var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-        var response = await McpMessageHandler.HandleRequestAsync(request, baseUrl, HttpContext.RequestAborted);
+        var response = await McpMessageHandler.HandleRequestAsync(request, baseUrl, cancellationToken);
 
         if (response != null)
         {
@@ -101,7 +101,7 @@ public sealed class McpController : ControllerBase
             // Official MCP spec says: "The server SHOULD send the response message as a 'message' event on the SSE stream."
 
             var jsonResponse = JsonSerializer.Serialize(response);
-            await SessionManager.SendMessageAsync(sessionId, jsonResponse);
+            await SessionManager.SendMessageAsync(sessionId, jsonResponse, cancellationToken);
         }
 
         return Accepted();

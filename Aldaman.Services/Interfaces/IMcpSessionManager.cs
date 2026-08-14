@@ -20,7 +20,7 @@ public interface IMcpSessionManager
     /// <summary>
     /// Sends a message to a session's SSE stream.
     /// </summary>
-    Task SendMessageAsync(string sessionId, string message);
+    Task SendMessageAsync(string sessionId, string message, CancellationToken ct = default);
 
     /// <summary>
     /// Closes and removes a session.

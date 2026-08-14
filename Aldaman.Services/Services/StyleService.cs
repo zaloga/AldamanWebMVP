@@ -18,13 +18,13 @@ public sealed class StyleService : IStyleService
         _cache = cache;
     }
 
-    public async Task<Dictionary<string, string>> GetActiveStylesAsync()
+    public async Task<Dictionary<string, string>> GetActiveStylesAsync(CancellationToken ct = default)
     {
         if (!_cache.TryGetValue(CacheKey, out Dictionary<string, string>? styles) || styles == null)
         {
             styles = await _context.StyleSettings
                 .AsNoTracking()
-                .ToDictionaryAsync(s => s.Key, s => s.Value);
+                .ToDictionaryAsync(s => s.Key, s => s.Value, ct);
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromHours(24));
@@ -35,7 +35,7 @@ public sealed class StyleService : IStyleService
         return styles;
     }
 
-    public async Task<List<StyleSettingDto>> GetAllSettingsAsync()
+    public async Task<List<StyleSettingDto>> GetAllSettingsAsync(CancellationToken ct = default)
     {
         return await _context.StyleSettings
             .AsNoTracking()
@@ -47,10 +47,10 @@ public sealed class StyleService : IStyleService
                 Value = s.Value,
                 DefaultValue = s.DefaultValue
             })
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 
-    public async Task<StyleSettingDto?> GetSettingByIdAsync(Guid id)
+    public async Task<StyleSettingDto?> GetSettingByIdAsync(Guid id, CancellationToken ct = default)
     {
         return await _context.StyleSettings
             .AsNoTracking()
@@ -63,16 +63,16 @@ public sealed class StyleService : IStyleService
                 Value = s.Value,
                 DefaultValue = s.DefaultValue
             })
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(ct);
     }
 
-    public async Task UpdateSettingAsync(UpdateStyleSettingDto dto)
+    public async Task UpdateSettingAsync(UpdateStyleSettingDto dto, CancellationToken ct = default)
     {
         Aldaman.Persistence.Entities.StyleSettingEntity? entity;
 
         if (dto.Id.HasValue && dto.Id.Value != Guid.Empty)
         {
-            entity = await _context.StyleSettings.FindAsync(dto.Id.Value);
+            entity = await _context.StyleSettings.FindAsync([dto.Id.Value], cancellationToken: ct);
             if (entity == null) return;
 
             // Only update fields that are provided (for inline updates)
@@ -93,63 +93,63 @@ public sealed class StyleService : IStyleService
             _context.StyleSettings.Add(entity);
         }
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(ct);
 
         // Invalidate cache
         _cache.Remove(CacheKey);
     }
 
-    public async Task ResetToDefaultSettingAsync(Guid id)
+    public async Task ResetToDefaultSettingAsync(Guid id, CancellationToken ct = default)
     {
-        var entity = await _context.StyleSettings.FindAsync(id);
+        var entity = await _context.StyleSettings.FindAsync([id], cancellationToken: ct);
         if (entity != null)
         {
             entity.Value = entity.DefaultValue;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
             _cache.Remove(CacheKey);
         }
     }
 
-    public async Task SoftDeleteSettingAsync(Guid id)
+    public async Task SoftDeleteSettingAsync(Guid id, CancellationToken ct = default)
     {
-        var entity = await _context.StyleSettings.FindAsync(id);
+        var entity = await _context.StyleSettings.FindAsync([id], cancellationToken: ct);
         if (entity != null)
         {
             entity.IsDeleted = true;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
             _cache.Remove(CacheKey);
         }
     }
 
-    public async Task RestoreSettingAsync(Guid id)
+    public async Task RestoreSettingAsync(Guid id, CancellationToken ct = default)
     {
         var entity = await _context.StyleSettings
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id, ct);
 
         if (entity != null)
         {
             entity.IsDeleted = false;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
             _cache.Remove(CacheKey);
         }
     }
 
-    public async Task HardDeleteSettingAsync(Guid id)
+    public async Task HardDeleteSettingAsync(Guid id, CancellationToken ct = default)
     {
         var entity = await _context.StyleSettings
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id, ct);
 
         if (entity != null)
         {
             _context.StyleSettings.Remove(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
             _cache.Remove(CacheKey);
         }
     }
 
-    public async Task<List<StyleSettingDto>> GetDeletedSettingsAsync()
+    public async Task<List<StyleSettingDto>> GetDeletedSettingsAsync(CancellationToken ct = default)
     {
         return await _context.StyleSettings
             .IgnoreQueryFilters()
@@ -163,6 +163,6 @@ public sealed class StyleService : IStyleService
                 Value = s.Value,
                 DefaultValue = s.DefaultValue
             })
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 }

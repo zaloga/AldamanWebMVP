@@ -19,11 +19,11 @@ public class HomeController : Controller
         BlogService = blogService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] int p = 1)
+    public async Task<IActionResult> Index([FromQuery] int p = 1, CancellationToken cancellationToken = default)
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var homePages = await ContentPageService.GetHomePageCachedAsync(cultureCode);
-        var blogPosts = await BlogService.GetPagedBlogPostsCachedAsync(p, DefaultPageSize, cultureCode);
+        var homePages = await ContentPageService.GetHomePageCachedAsync(cultureCode, cancellationToken);
+        var blogPosts = await BlogService.GetPagedBlogPostsCachedAsync(p, DefaultPageSize, cultureCode, cancellationToken);
 
         var viewModel = new HomeIndexViewModel
         {

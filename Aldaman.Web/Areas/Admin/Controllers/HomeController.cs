@@ -15,9 +15,9 @@ public class HomeController : BaseAdminController
         _adminDashboardService = adminDashboardService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
     {
-        var stats = await _adminDashboardService.GetStatsAsync();
+        var stats = await _adminDashboardService.GetStatsAsync(cancellationToken);
         return View(stats);
     }
 }

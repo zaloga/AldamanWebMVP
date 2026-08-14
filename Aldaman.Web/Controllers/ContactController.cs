@@ -27,7 +27,7 @@ public sealed class ContactController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Submit(
         ContactFormViewModel viewModel,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         if (!ModelState.IsValid)
         {
@@ -48,8 +48,8 @@ public sealed class ContactController : Controller
         await ContactService.SubmitMessageAsync(
             dto,
             clientIp,
-            userAgent
-            /*cancellationToken*/);
+            userAgent,
+            cancellationToken);
 
         return RedirectToAction(nameof(Success));
     }

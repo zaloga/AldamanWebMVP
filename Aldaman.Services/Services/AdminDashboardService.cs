@@ -14,13 +14,13 @@ internal sealed class AdminDashboardService : IAdminDashboardService
         _context = context;
     }
 
-    public async Task<AdminDashboardStatsDto> GetStatsAsync()
+    public async Task<AdminDashboardStatsDto> GetStatsAsync(CancellationToken ct = default)
     {
-        var totalPages = await _context.ContentPages.CountAsync();
-        var totalPosts = await _context.BlogPosts.CountAsync();
-        var totalMessages = await _context.ContactMessages.CountAsync();
-        var totalMedia = await _context.MediaAssets.CountAsync();
-        var totalMediaSize = await _context.MediaAssets.SumAsync(x => x.FileSize);
+        var totalPages = await _context.ContentPages.CountAsync(ct);
+        var totalPosts = await _context.BlogPosts.CountAsync(ct);
+        var totalMessages = await _context.ContactMessages.CountAsync(ct);
+        var totalMedia = await _context.MediaAssets.CountAsync(ct);
+        var totalMediaSize = await _context.MediaAssets.SumAsync(x => x.FileSize, ct);
 
         return new AdminDashboardStatsDto
         {

@@ -1,9 +1,9 @@
 using Aldaman.Persistence.Context;
-using Aldaman.Services.Constants;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
+using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Helpers;
@@ -58,7 +58,7 @@ public sealed class ContentPageService : IContentPageService
 
     #region Admin web part methods
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false, CancellationToken ct = default)
     {
         var dbQuery = filterDeleted
             ? Context.ContentPages.IgnoreQueryFilters().Where(p => p.IsDeleted)
@@ -88,7 +88,7 @@ public sealed class ContentPageService : IContentPageService
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
-        var totalCount = await dbQuery.CountAsync();
+        var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
@@ -111,7 +111,7 @@ public sealed class ContentPageService : IContentPageService
                 CreatedAtUtc = p.CreatedAtUtc,
                 DeletedAtUtc = p.DeletedAtUtc
             })
-            .ToListAsync();
+            .ToListAsync(ct);
 
         return new PagedResultDto<ContentPageListItemDto>
         {
@@ -122,12 +122,12 @@ public sealed class ContentPageService : IContentPageService
         };
     }
 
-    public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id)
+    public async Task<ContentPageEditDto?> GetContentPageForEditAsync(Guid id, CancellationToken ct = default)
     {
         var page = await Context.ContentPages
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (page == null) return null;
 
@@ -165,7 +165,7 @@ public sealed class ContentPageService : IContentPageService
         };
     }
 
-    public async Task CreateContentPageAsync(ContentPageEditDto dto)
+    public async Task CreateContentPageAsync(ContentPageEditDto dto, CancellationToken ct = default)
     {
         var page = new ContentPageEntity
         {
@@ -195,16 +195,16 @@ public sealed class ContentPageService : IContentPageService
         }
 
         Context.ContentPages.Add(page);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(ct);
         InvalidateCache();
     }
 
-    public async Task UpdateContentPageAsync(Guid id, ContentPageEditDto dto)
+    public async Task UpdateContentPageAsync(Guid id, ContentPageEditDto dto, CancellationToken ct = default)
     {
         var page = await Context.ContentPages
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (page == null)
         {
@@ -279,49 +279,47 @@ public sealed class ContentPageService : IContentPageService
             existingTranslation.PlainText = StringHelpers.StripHtml(bodyHtml, ContentPageTranslationEntity.PlainTextMaxLength);
         }
 
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(ct);
         InvalidateCache();
 
         // 4. Cleanup orphaned media files
         if (mediaToDelete.Any())
         {
-            await MediaService.DeleteMediaAsync(mediaToDelete.ToList());
+            await MediaService.DeleteMediaAsync(mediaToDelete.ToList(), ct);
         }
     }
 
-    public async Task SoftDeleteContentPageAsync(Guid id)
+    public async Task SoftDeleteContentPageAsync(Guid id, CancellationToken ct = default)
     {
-        var page = await Context.ContentPages.FindAsync(id);
+        var page = await Context.ContentPages.FindAsync([id], cancellationToken: ct);
         if (page != null)
         {
             page.IsDeleted = true;
             page.DeletedAtUtc = DateTime.UtcNow;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
             InvalidateCache();
         }
     }
 
-
-
-    public async Task RestoreContentPageAsync(Guid id)
+    public async Task RestoreContentPageAsync(Guid id, CancellationToken ct = default)
     {
-        var page = await Context.ContentPages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        var page = await Context.ContentPages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id, ct);
         if (page != null)
         {
             page.IsDeleted = false;
             page.DeletedAtUtc = null;
             page.DeletedByUserId = null;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
             InvalidateCache();
         }
     }
 
-    public async Task HardDeleteContentPageAsync(Guid id)
+    public async Task HardDeleteContentPageAsync(Guid id, CancellationToken ct = default)
     {
         var page = await Context.ContentPages
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (page != null)
         {
@@ -333,7 +331,7 @@ public sealed class ContentPageService : IContentPageService
 
             // Delete page
             Context.ContentPages.Remove(page);
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
             InvalidateCache();
 
             // Remove images used by RTE
@@ -343,7 +341,7 @@ public sealed class ContentPageService : IContentPageService
 
             if (rteMediaPaths.Any())
             {
-                await MediaService.DeleteMediaAsync(rteMediaPaths);
+                await MediaService.DeleteMediaAsync(rteMediaPaths, ct);
             }
         }
     }
@@ -352,13 +350,13 @@ public sealed class ContentPageService : IContentPageService
 
     #region Public web part methods
 
-    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesCachedAsync(PaginationQuery query, string? culture = null)
+    public async Task<PagedResultDto<ContentPageListItemDto>> GetPagedContentPagesCachedAsync(PaginationQuery query, string? culture = null, CancellationToken ct = default)
     {
         string cacheKey = $"Page:Paged:{query.Page}:{query.PageSize}:{query.SearchTerm ?? ""}:{query.SortBy ?? ""}:{query.SortDescending}:{culture ?? ""}";
 
         if (!Cache.TryGetValue(cacheKey, out PagedResultDto<ContentPageListItemDto>? result) || result == null)
         {
-            result = await GetPagedContentPagesAsync(query, culture);
+            result = await GetPagedContentPagesAsync(query, culture, ct: ct);
 
             Cache.Set(cacheKey, result, CacheOptions);
         }
@@ -366,7 +364,7 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<ContentPageDetailDto?> GetContentPageBySlugCachedAsync(string slug, string culture)
+    public async Task<ContentPageDetailDto?> GetContentPageBySlugCachedAsync(string slug, string culture, CancellationToken ct = default)
     {
         bool isAdmin = UserContext.IsAdminOrSuperAdmin;
         string cacheKey = $"Page:Slug:{culture}:{slug.ToLowerInvariant()}:{isAdmin}";
@@ -381,7 +379,7 @@ public sealed class ContentPageService : IContentPageService
                 .Include(p => p.Translations);
 
             var page = await query
-                .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture));
+                .FirstOrDefaultAsync(p => p.Translations.Any(c => c.Slug == slug && c.CultureCode == culture), ct);
 
             if (page == null)
             {
@@ -414,7 +412,7 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageCachedAsync(string culture)
+    public async Task<IEnumerable<ContentPageDetailDto>> GetHomePageCachedAsync(string culture, CancellationToken ct = default)
     {
         string cacheKey = $"Page:Home:{culture}";
 
@@ -433,7 +431,7 @@ public sealed class ContentPageService : IContentPageService
                     BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,
                     PlainText = p.Translations.First(t => t.CultureCode == culture).PlainText
                 })
-                .ToListAsync();
+                .ToListAsync(ct);
 
             Cache.Set(cacheKey, result, CacheOptions);
         }
@@ -441,22 +439,22 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture)
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture, CancellationToken ct = default)
     {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.HomePage);
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.HomePage, ct);
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture)
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture, CancellationToken ct = default)
     {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.TopNavigation);
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.TopNavigation, ct);
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture)
+    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture, CancellationToken ct = default)
     {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.Footer);
+        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.Footer, ct);
     }
 
-    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalCachedAsync(string culture, PlaceToShowEnum placeToShow)
+    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalCachedAsync(string culture, PlaceToShowEnum placeToShow, CancellationToken ct = default)
     {
         string cacheKey = $"Page:Navigation:{culture}:{placeToShow}";
 
@@ -472,7 +470,7 @@ public sealed class ContentPageService : IContentPageService
                     Title = t.Title,
                     Slug = t.Slug
                 })
-                .ToListAsync();
+                .ToListAsync(ct);
 
             Cache.Set(cacheKey, result, CacheOptions);
         }
@@ -480,7 +478,7 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id)
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default)
     {
         string cacheKey = $"Page:AlternativeSlugs:{id}";
 
@@ -488,7 +486,7 @@ public sealed class ContentPageService : IContentPageService
         {
             result = await Context.ContentPageTranslations
                 .Where(t => t.ContentPageId == id)
-                .ToDictionaryAsync(t => t.CultureCode, t => t.Slug);
+                .ToDictionaryAsync(t => t.CultureCode, t => t.Slug, ct);
 
             Cache.Set(cacheKey, result, CacheOptions);
         }
@@ -496,7 +494,7 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture)
+    public async Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture, CancellationToken ct = default)
     {
         string cacheKey = $"Page:RedirectSlug:{slug.ToLowerInvariant()}:{targetCulture}";
 
@@ -505,7 +503,7 @@ public sealed class ContentPageService : IContentPageService
             var pageId = await Context.ContentPageTranslations
                 .Where(t => t.Slug == slug)
                 .Select(t => (Guid?)t.ContentPageId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(ct);
 
             if (pageId == null)
             {
@@ -516,7 +514,7 @@ public sealed class ContentPageService : IContentPageService
                 result = await Context.ContentPageTranslations
                     .Where(t => t.ContentPageId == pageId.Value && t.CultureCode == targetCulture)
                     .Select(t => t.Slug)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(ct);
             }
 
             Cache.Set(cacheKey, result, CacheOptions);

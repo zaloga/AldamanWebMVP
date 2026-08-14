@@ -23,7 +23,7 @@ public sealed class MediaService : IMediaService
         Logger = logger;
     }
 
-    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false, bool onlyImages = false)
+    public async Task<PagedResultDto<MediaAssetDto>> ListAssetsAsync(PaginationQuery query, bool filterDeleted = false, bool onlyImages = false, CancellationToken ct = default)
     {
         var dbQuery = filterDeleted
             ? Context.MediaAssets.IgnoreQueryFilters().Where(p => p.IsDeleted)
@@ -53,12 +53,12 @@ public sealed class MediaService : IMediaService
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
-        var totalCount = await dbQuery.CountAsync();
+        var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
             .Select(p => Map(p))
-            .ToListAsync();
+            .ToListAsync(ct);
 
         return new PagedResultDto<MediaAssetDto>
         {
@@ -69,7 +69,7 @@ public sealed class MediaService : IMediaService
         };
     }
 
-    public async Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType)
+    public async Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType, CancellationToken ct = default)
     {
         if (fileStream.Length > 1 * 1024 * 1024)
         {
@@ -89,7 +89,7 @@ public sealed class MediaService : IMediaService
 
         using (var fs = new FileStream(physicalPath, FileMode.Create))
         {
-            await fileStream.CopyToAsync(fs);
+            await fileStream.CopyToAsync(fs, ct);
         }
 
         var isImage = contentType.StartsWith("image/");
@@ -142,62 +142,62 @@ public sealed class MediaService : IMediaService
         };
 
         Context.MediaAssets.Add(asset);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(ct);
 
         return Map(asset);
     }
 
-    public async Task<MediaAssetDto?> GetAssetAsync(Guid id)
+    public async Task<MediaAssetDto?> GetAssetAsync(Guid id, CancellationToken ct = default)
     {
         var asset = await Context.MediaAssets
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
         return asset != null ? Map(asset) : null;
     }
 
-    public async Task UpdateAssetAsync(UpdateMediaAssetDto dto)
+    public async Task UpdateAssetAsync(UpdateMediaAssetDto dto, CancellationToken ct = default)
     {
-        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id);
+        var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id, ct);
         if (asset != null)
         {
             asset.AltTextDefault = dto.AltTextDefault;
             asset.TitleDefault = dto.TitleDefault;
             asset.UpdatedAtUtc = DateTime.UtcNow;
 
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task DeleteAssetAsync(Guid id)
+    public async Task DeleteAssetAsync(Guid id, CancellationToken ct = default)
     {
-        var asset = await Context.MediaAssets.FindAsync(id);
+        var asset = await Context.MediaAssets.FindAsync([id], cancellationToken: ct);
         if (asset != null)
         {
             asset.IsDeleted = true;
             asset.DeletedAtUtc = DateTime.UtcNow;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task RestoreAssetAsync(Guid id)
+    public async Task RestoreAssetAsync(Guid id, CancellationToken ct = default)
     {
         var asset = await Context.MediaAssets
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (asset != null)
         {
             asset.IsDeleted = false;
             asset.DeletedAtUtc = null;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task HardDeleteAssetAsync(Guid id)
+    public async Task HardDeleteAssetAsync(Guid id, CancellationToken ct = default)
     {
         var asset = await Context.MediaAssets
             .IgnoreQueryFilters()
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (asset != null)
         {
@@ -210,20 +210,20 @@ public sealed class MediaService : IMediaService
             }
 
             Context.MediaAssets.Remove(asset);
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task DeleteMediaAsync(IEnumerable<string> relativePaths)
+    public async Task DeleteMediaAsync(IEnumerable<string> relativePaths, CancellationToken ct = default)
     {
         foreach (var path in relativePaths.Distinct())
         {
             var asset = await Context.MediaAssets
                 .IgnoreQueryFilters()
-                .FirstOrDefaultAsync(a => a.RelativePath == path);
+                .FirstOrDefaultAsync(a => a.RelativePath == path, ct);
             if (asset != null)
             {
-                await HardDeleteAssetAsync(asset.Id);
+                await HardDeleteAssetAsync(asset.Id, ct);
             }
         }
     }

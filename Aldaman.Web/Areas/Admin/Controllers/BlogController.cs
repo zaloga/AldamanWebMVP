@@ -20,17 +20,17 @@ public class BlogController : BaseAdminController
         MediaService = mediaService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture);
+        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture, ct: cancellationToken);
         return View(result);
     }
 
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query)
+    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture, filterDeleted: true);
+        PagedResultDto<BlogPostListItemDto> result = await BlogService.GetPagedBlogPostsAdminAsync(query, culture, filterDeleted: true, ct: cancellationToken);
         return View(result);
     }
 
@@ -43,7 +43,7 @@ public class BlogController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Blog.BlogPostEditDto model)
+    public async Task<IActionResult> Create(Aldaman.Services.Dtos.Blog.BlogPostEditDto model, CancellationToken cancellationToken = default)
     {
         if (!ModelState.IsValid)
         {
@@ -56,12 +56,12 @@ public class BlogController : BaseAdminController
             {
                 using (var stream = model.CoverImageFile.OpenReadStream())
                 {
-                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType);
+                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType, cancellationToken);
                     model.CoverMediaAssetId = asset.Id;
                 }
             }
 
-            await BlogService.CreateBlogPostAsync(model);
+            await BlogService.CreateBlogPostAsync(model, cancellationToken);
             TempData.SetSuccessMessage(Localizer[UIResourceKeys.PostCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
@@ -73,9 +73,9 @@ public class BlogController : BaseAdminController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
-        var post = await BlogService.GetBlogPostForEditAsync(id);
+        var post = await BlogService.GetBlogPostForEditAsync(id, cancellationToken);
         if (post == null)
         {
             return NotFound();
@@ -85,9 +85,9 @@ public class BlogController : BaseAdminController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Update(Guid id)
+    public async Task<IActionResult> Update(Guid id, CancellationToken cancellationToken = default)
     {
-        var post = await BlogService.GetBlogPostForEditAsync(id);
+        var post = await BlogService.GetBlogPostForEditAsync(id, cancellationToken);
         if (post == null)
         {
             return NotFound();
@@ -98,7 +98,7 @@ public class BlogController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Blog.BlogPostEditDto model)
+    public async Task<IActionResult> Update(Guid id, Aldaman.Services.Dtos.Blog.BlogPostEditDto model, CancellationToken cancellationToken = default)
     {
         if (id != model.Id)
         {
@@ -116,12 +116,12 @@ public class BlogController : BaseAdminController
             {
                 using (var stream = model.CoverImageFile.OpenReadStream())
                 {
-                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType);
+                    var asset = await MediaService.UploadAsync(stream, model.CoverImageFile.FileName, model.CoverImageFile.ContentType, cancellationToken);
                     model.CoverMediaAssetId = asset.Id;
                 }
             }
 
-            await BlogService.UpdateBlogPostAsync(id, model);
+            await BlogService.UpdateBlogPostAsync(id, model, cancellationToken);
             TempData.SetSuccessMessage(Localizer[UIResourceKeys.PostUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
@@ -138,11 +138,11 @@ public class BlogController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await BlogService.SoftDeleteBlogPostAsync(id);
+            await BlogService.SoftDeleteBlogPostAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
@@ -153,11 +153,11 @@ public class BlogController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Restore(Guid id)
+    public async Task<IActionResult> Restore(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await BlogService.RestoreBlogPostAsync(id);
+            await BlogService.RestoreBlogPostAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
@@ -168,11 +168,11 @@ public class BlogController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> HardDelete(Guid id)
+    public async Task<IActionResult> HardDelete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await BlogService.HardDeleteBlogPostAsync(id);
+            await BlogService.HardDeleteBlogPostAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)

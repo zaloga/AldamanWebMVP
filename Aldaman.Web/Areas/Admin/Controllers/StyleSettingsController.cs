@@ -19,10 +19,10 @@ public class StyleSettingsController : BaseAdminController
         _styleService = styleService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
     {
-        var settings = await _styleService.GetAllSettingsAsync();
-        ViewBag.DeletedItems = await _styleService.GetDeletedSettingsAsync();
+        var settings = await _styleService.GetAllSettingsAsync(cancellationToken);
+        ViewBag.DeletedItems = await _styleService.GetDeletedSettingsAsync(cancellationToken);
         return View(settings);
     }
 
@@ -33,9 +33,9 @@ public class StyleSettingsController : BaseAdminController
     }
 
     [HttpGet]
-    public async Task<IActionResult> UpdatePage(Guid id)
+    public async Task<IActionResult> UpdatePage(Guid id, CancellationToken cancellationToken = default)
     {
-        var setting = await _styleService.GetSettingByIdAsync(id);
+        var setting = await _styleService.GetSettingByIdAsync(id, cancellationToken);
         if (setting == null) return NotFound();
 
         var model = new UpdateStyleSettingDto
@@ -51,7 +51,7 @@ public class StyleSettingsController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(UpdateStyleSettingDto dto)
+    public async Task<IActionResult> Update(UpdateStyleSettingDto dto, CancellationToken cancellationToken = default)
     {
         if (!ModelState.IsValid)
         {
@@ -59,7 +59,7 @@ public class StyleSettingsController : BaseAdminController
         }
 
         bool isEdit = dto.Id.HasValue && dto.Id != Guid.Empty;
-        await _styleService.UpdateSettingAsync(dto);
+        await _styleService.UpdateSettingAsync(dto, cancellationToken);
 
         TempData.SetSuccessMessage(isEdit
             ? Localizer[UIResourceKeys.StyleSettingUpdated].Value
@@ -70,7 +70,7 @@ public class StyleSettingsController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateInline(Guid id, string value)
+    public async Task<IActionResult> UpdateInline(Guid id, string value, CancellationToken cancellationToken = default)
     {
         var dto = new UpdateStyleSettingDto
         {
@@ -78,7 +78,7 @@ public class StyleSettingsController : BaseAdminController
             Value = value
         };
 
-        await _styleService.UpdateSettingAsync(dto);
+        await _styleService.UpdateSettingAsync(dto, cancellationToken);
 
         TempData.SetSuccessMessage(Localizer[UIResourceKeys.StyleSettingUpdated].Value);
 
@@ -87,20 +87,20 @@ public class StyleSettingsController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ResetToDefault(Guid id)
+    public async Task<IActionResult> ResetToDefault(Guid id, CancellationToken cancellationToken = default)
     {
-        await _styleService.ResetToDefaultSettingAsync(id);
+        await _styleService.ResetToDefaultSettingAsync(id, cancellationToken);
 
         return Json(new { success = true, message = Localizer[UIResourceKeys.StyleSettingResetSuccessfully].Value });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _styleService.SoftDeleteSettingAsync(id);
+            await _styleService.SoftDeleteSettingAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
@@ -111,11 +111,11 @@ public class StyleSettingsController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Restore(Guid id)
+    public async Task<IActionResult> Restore(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _styleService.RestoreSettingAsync(id);
+            await _styleService.RestoreSettingAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
@@ -126,11 +126,11 @@ public class StyleSettingsController : BaseAdminController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> HardDelete(Guid id)
+    public async Task<IActionResult> HardDelete(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _styleService.HardDeleteSettingAsync(id);
+            await _styleService.HardDeleteSettingAsync(id, cancellationToken);
             return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
         }
         catch (Exception ex)

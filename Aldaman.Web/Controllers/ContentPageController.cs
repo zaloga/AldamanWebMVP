@@ -23,13 +23,14 @@ public sealed class ContentPageController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken)
+    public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken = default)
     {
         string cultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
         ContentPageDetailDto? pageDetail = await ContentPageService.GetContentPageBySlugCachedAsync(
             slug,
-            cultureCode);
+            cultureCode,
+            cancellationToken);
 
         if (pageDetail is null)
         {
@@ -37,7 +38,7 @@ public sealed class ContentPageController : Controller
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {
-                var fallbackSlug = await ContentPageService.GetRedirectSlugCachedAsync(slug, defaultCulture);
+                var fallbackSlug = await ContentPageService.GetRedirectSlugCachedAsync(slug, defaultCulture, cancellationToken);
                 if (fallbackSlug != null)
                 {
                     TempData.SetShowTranslationMissingToast(true);
@@ -48,7 +49,7 @@ public sealed class ContentPageController : Controller
         }
 
         // Provide alternative URLs for the language switcher
-        var alternativeSlugs = await ContentPageService.GetAlternativeSlugsCachedAsync(pageDetail.Id);
+        var alternativeSlugs = await ContentPageService.GetAlternativeSlugsCachedAsync(pageDetail.Id, cancellationToken);
         var alternatives = new Dictionary<string, string>();
         foreach (var slugEntry in alternativeSlugs)
         {

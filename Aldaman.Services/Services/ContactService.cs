@@ -28,7 +28,7 @@ public sealed class ContactService : IContactService
         EmailOptions = emailOptions.Value;
     }
 
-    public async Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query, bool filterDeleted = false)
+    public async Task<PagedResultDto<ContactMessageDto>> GetPagedMessagesAsync(PaginationQuery query, bool filterDeleted = false, CancellationToken ct = default)
     {
         var dbQuery = filterDeleted
             ? Context.ContactMessages.IgnoreQueryFilters().Where(p => p.IsDeleted)
@@ -51,7 +51,7 @@ public sealed class ContactService : IContactService
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
 
-        var totalCount = await dbQuery.CountAsync();
+        var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
@@ -67,7 +67,7 @@ public sealed class ContactService : IContactService
                 IsDeleted = p.IsDeleted,
                 DeletedAtUtc = p.DeletedAtUtc
             })
-            .ToListAsync();
+            .ToListAsync(ct);
 
         return new PagedResultDto<ContactMessageDto>
         {
@@ -78,7 +78,7 @@ public sealed class ContactService : IContactService
         };
     }
 
-    public async Task SubmitMessageAsync(ContactMessageDto dto, string clientIp, string userAgent)
+    public async Task SubmitMessageAsync(ContactMessageDto dto, string clientIp, string userAgent, CancellationToken ct = default)
     {
         var entity = new ContactMessageEntity
         {
@@ -91,7 +91,7 @@ public sealed class ContactService : IContactService
         };
 
         Context.ContactMessages.Add(entity);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(ct);
 
         try
         { // TODO...
@@ -107,7 +107,8 @@ public sealed class ContactService : IContactService
                 EmailOptions.AdminEmail,
                 $"Contact Form: {entity.Subject}",
                 body,
-                isHtml: true);
+                isHtml: true,
+                cancellationToken: ct);
 
             entity.State = ContactMessageState.Sent;
             entity.SentAtUtc = DateTime.UtcNow;
@@ -118,55 +119,53 @@ public sealed class ContactService : IContactService
             entity.FailureReason = ex.Message;
         }
 
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(ct);
     }
 
-    public async Task MarkAsHandledAsync(Guid id)
+    public async Task MarkAsHandledAsync(Guid id, CancellationToken ct = default)
     {
-        var message = await Context.ContactMessages.FindAsync(id);
+        var message = await Context.ContactMessages.FindAsync([id], cancellationToken: ct);
         if (message != null)
         {
             message.State = ContactMessageState.Handled;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task DeleteMessageAsync(Guid id)
+    public async Task DeleteMessageAsync(Guid id, CancellationToken ct = default)
     {
-        var message = await Context.ContactMessages.FindAsync(id);
+        var message = await Context.ContactMessages.FindAsync([id], cancellationToken: ct);
         if (message != null)
         {
             message.IsDeleted = true;
             message.DeletedAtUtc = DateTime.UtcNow;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task RestoreMessageAsync(Guid id)
+    public async Task RestoreMessageAsync(Guid id, CancellationToken ct = default)
     {
-        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id, ct);
         if (message != null)
         {
             message.IsDeleted = false;
             message.DeletedAtUtc = null;
             message.DeletedByUserId = null;
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task HardDeleteMessageAsync(Guid id)
+    public async Task HardDeleteMessageAsync(Guid id, CancellationToken ct = default)
     {
-        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
+        var message = await Context.ContactMessages.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id, ct);
         if (message != null)
         {
             Context.ContactMessages.Remove(message);
-            await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync(ct);
         }
     }
 
-
-
-    public async Task<ContactMessageDto?> GetMessageByIdAsync(Guid id)
+    public async Task<ContactMessageDto?> GetMessageByIdAsync(Guid id, CancellationToken ct = default)
     {
         return await Context.ContactMessages
             .IgnoreQueryFilters()
@@ -186,10 +185,10 @@ public sealed class ContactService : IContactService
                 IsDeleted = p.IsDeleted,
                 DeletedAtUtc = p.DeletedAtUtc
             })
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(ct);
     }
 
-    public async Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5)
+    public async Task<IEnumerable<ContactMessageDto>> GetRecentMessagesAsync(int count = 5, CancellationToken ct = default)
     {
         return await Context.ContactMessages
             .OrderByDescending(p => p.CreatedAtUtc)
@@ -204,6 +203,6 @@ public sealed class ContactService : IContactService
                 SentAtUtc = p.SentAtUtc,
                 State = p.State
             })
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 }

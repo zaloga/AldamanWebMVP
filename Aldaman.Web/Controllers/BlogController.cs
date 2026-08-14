@@ -29,14 +29,14 @@ public sealed class BlogController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken)
+    public async Task<IActionResult> Detail(string slug, CancellationToken cancellationToken = default)
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
 
         BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugCachedAsync(
             slug,
-            cultureCode
-            /*cancellationToken*/);
+            cultureCode,
+            cancellationToken);
 
         if (postDetail is null)
         {
@@ -44,7 +44,7 @@ public sealed class BlogController : Controller
             string defaultCulture = LocalizationSettings.DefaultCulture;
             if (cultureCode != defaultCulture)
             {
-                var fallbackSlug = await BlogService.GetRedirectSlugCachedAsync(slug, defaultCulture);
+                var fallbackSlug = await BlogService.GetRedirectSlugCachedAsync(slug, defaultCulture, cancellationToken);
                 if (fallbackSlug != null)
                 {
                     TempData.SetShowTranslationMissingToast(true);
@@ -55,7 +55,7 @@ public sealed class BlogController : Controller
         }
 
         // Provide alternative URLs for the language switcher
-        var alternativeSlugs = await BlogService.GetAlternativeSlugsCachedAsync(postDetail.Id);
+        var alternativeSlugs = await BlogService.GetAlternativeSlugsCachedAsync(postDetail.Id, cancellationToken);
         var alternatives = new Dictionary<string, string>();
         foreach (var slugEntry in alternativeSlugs)
         {
@@ -63,7 +63,7 @@ public sealed class BlogController : Controller
         }
         ViewData.SetLanguageAlternatives(alternatives);
 
-        var navigation = await BlogService.GetBlogPostNavigationCachedAsync(postDetail.Id, cultureCode);
+        var navigation = await BlogService.GetBlogPostNavigationCachedAsync(postDetail.Id, cultureCode, cancellationToken);
 
         return View(new BlogPostViewModel
         {
@@ -82,7 +82,7 @@ public sealed class BlogController : Controller
         }
 
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugCachedAsync(slug, cultureCode);
+        BlogPostDetailDto? postDetail = await BlogService.GetBlogPostBySlugCachedAsync(slug, cultureCode, cancellationToken);
 
         if (postDetail is null)
         {

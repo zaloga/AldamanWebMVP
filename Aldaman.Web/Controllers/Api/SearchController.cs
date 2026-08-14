@@ -27,7 +27,7 @@ public sealed class SearchController : ControllerBase
     /// <param name="culture">Culture code (e.g., "cs", "en"). Defaults to "cs".</param>
     /// <returns>Search results.</returns>
     [HttpGet]
-    public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] string culture = "cs")
+    public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] string culture = "cs", CancellationToken cancellationToken = default)
     {
         try
         {
@@ -37,7 +37,7 @@ public sealed class SearchController : ControllerBase
             }
 
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            var results = await SearchService.SearchCachedAsync(query, culture, baseUrl, HttpContext.RequestAborted);
+            var results = await SearchService.SearchCachedAsync(query, culture, baseUrl, cancellationToken);
 
             return Ok(new
             {
@@ -59,9 +59,10 @@ public sealed class SearchController : ControllerBase
     /// </summary>
     /// <param name="query">The search term.</param>
     /// <param name="culture">Culture code (e.g., "cs", "en"). Defaults to "cs".</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Autocomplete results.</returns>
     [HttpGet("autocomplete")]
-    public async Task<IActionResult> Autocomplete([FromQuery] string query, [FromQuery] string culture = "cs")
+    public async Task<IActionResult> Autocomplete([FromQuery] string query, [FromQuery] string culture = "cs", CancellationToken cancellationToken = default)
     {
         try
         {
@@ -71,7 +72,7 @@ public sealed class SearchController : ControllerBase
             }
 
             string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            List<AutocompleteResultDto> results = await SearchService.AutocompleteCachedAsync(query, culture, baseUrl, HttpContext.RequestAborted);
+            List<AutocompleteResultDto> results = await SearchService.AutocompleteCachedAsync(query, culture, baseUrl, cancellationToken);
 
             return Ok(new
             {

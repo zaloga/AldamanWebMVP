@@ -5,6 +5,6 @@ namespace Aldaman.Services.Services;
 
 public sealed class SiteConfigurationService : ISiteConfigurationService
 {
-    public Task<SiteConfigurationDto> GetConfigurationAsync() => throw new NotImplementedException();
-    public Task UpdateConfigurationAsync(SiteConfigurationDto dto) => throw new NotImplementedException();
+    public Task<SiteConfigurationDto> GetConfigurationAsync(CancellationToken ct = default) => throw new NotImplementedException();
+    public Task UpdateConfigurationAsync(SiteConfigurationDto dto, CancellationToken ct = default) => throw new NotImplementedException();
 }

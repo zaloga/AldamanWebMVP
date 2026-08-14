@@ -34,11 +34,11 @@ public sealed class McpSessionManager : IMcpSessionManager
         return _sessions.TryGetValue(sessionId, out var channel) ? channel : null;
     }
 
-    public async Task SendMessageAsync(string sessionId, string message)
+    public async Task SendMessageAsync(string sessionId, string message, CancellationToken ct = default)
     {
         if (_sessions.TryGetValue(sessionId, out var channel))
         {
-            await channel.Writer.WriteAsync(message);
+            await channel.Writer.WriteAsync(message, ct);
         }
         else
         {
