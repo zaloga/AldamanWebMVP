@@ -37,7 +37,7 @@ public sealed class MediaService : IMediaService
         // Filtering
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {
-            dbQuery = dbQuery.Where(p => p.OriginalFileName.Contains(query.SearchTerm) || (p.AltText != null && p.AltText.Contains(query.SearchTerm)) || (p.Title != null && p.Title.Contains(query.SearchTerm)));
+            dbQuery = dbQuery.Where(p => p.OriginalFileName.Contains(query.SearchTerm) || (p.AltTextDefault != null && p.AltTextDefault.Contains(query.SearchTerm)) || (p.TitleDefault != null && p.TitleDefault.Contains(query.SearchTerm)));
         }
 
         // Sorting
@@ -160,8 +160,8 @@ public sealed class MediaService : IMediaService
         var asset = await Context.MediaAssets.FirstOrDefaultAsync(p => p.Id == dto.Id);
         if (asset != null)
         {
-            asset.AltText = dto.AltText;
-            asset.Title = dto.Title;
+            asset.AltTextDefault = dto.AltTextDefault;
+            asset.TitleDefault = dto.TitleDefault;
             asset.UpdatedAtUtc = DateTime.UtcNow;
 
             await Context.SaveChangesAsync();
@@ -239,8 +239,8 @@ public sealed class MediaService : IMediaService
             FileSize = p.FileSize,
             Width = p.Width,
             Height = p.Height,
-            AltText = p.AltText,
-            Title = p.Title,
+            AltTextDefault = p.AltTextDefault,
+            TitleDefault = p.TitleDefault,
             UploadedAtUtc = p.CreatedAtUtc,
             UpdatedAtUtc = p.UpdatedAtUtc,
             IsImage = p.IsImage,

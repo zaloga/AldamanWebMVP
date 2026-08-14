@@ -10,12 +10,12 @@ public class UpdateMediaAssetDtoValidator : AbstractValidator<UpdateMediaAssetDt
 {
     public UpdateMediaAssetDtoValidator(IStringLocalizer<ValidationResources> localizer)
     {
-        RuleFor(x => x.Title)
-            .MinimumLength(MediaAssetEntity.TitleMinLength).WithMessage(localizer[ValidationResourceKeys.TitleMinLength, MediaAssetEntity.TitleMinLength])
-            .MaximumLength(MediaAssetEntity.TitleMaxLength).WithMessage(localizer[ValidationResourceKeys.TitleMaxLength, MediaAssetEntity.TitleMaxLength]);
+        RuleFor(x => x.TitleDefault)
+            .MinimumLength(MediaAssetEntity.TitleDefaultMinLength).WithMessage(localizer[ValidationResourceKeys.TitleMinLength, MediaAssetEntity.TitleDefaultMinLength])
+            .MaximumLength(MediaAssetEntity.TitleDefaultMaxLength).WithMessage(localizer[ValidationResourceKeys.TitleMaxLength, MediaAssetEntity.TitleDefaultMaxLength]);
 
-        RuleFor(x => x.AltText)
-            .MinimumLength(MediaAssetEntity.AltTextMinLength).WithMessage(localizer[ValidationResourceKeys.AltTextMinLength, MediaAssetEntity.AltTextMinLength])
-            .MaximumLength(MediaAssetEntity.AltTextMaxLength).WithMessage(localizer[ValidationResourceKeys.AltTextMaxLength, MediaAssetEntity.AltTextMaxLength]);
+        RuleFor(x => x.AltTextDefault)
+            .MinimumLength(MediaAssetEntity.AltTextDefaultMinLength).WithMessage(localizer[ValidationResourceKeys.AltTextMinLength, MediaAssetEntity.AltTextDefaultMinLength])
+            .MaximumLength(MediaAssetEntity.AltTextDefaultMaxLength).WithMessage(localizer[ValidationResourceKeys.AltTextMaxLength, MediaAssetEntity.AltTextDefaultMaxLength]);
     }
 }

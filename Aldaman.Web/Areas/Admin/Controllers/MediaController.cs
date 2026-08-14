@@ -91,7 +91,7 @@ public class MediaController : BaseAdminController
             using (var stream = file.OpenReadStream())
             {
                 var asset = await MediaService.UploadAsync(stream, file.FileName, file.ContentType);
-                return Json(new { success = true, url = asset.RelativePath });
+                return Json(new { success = true, url = asset.RelativePath, alt = asset.AltTextDefault, title = asset.TitleDefault });
             }
         }
         catch (Exception ex)
@@ -121,7 +121,7 @@ public class MediaController : BaseAdminController
         string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
         MediaAssetDto asset = await MediaService.UploadAsync(processedStream, newFileName, "image/webp");
 
-        return Json(new { success = true, url = asset.RelativePath });
+        return Json(new { success = true, url = asset.RelativePath, alt = asset.AltTextDefault, title = asset.TitleDefault });
     }
 
     [HttpPost]
@@ -168,8 +168,8 @@ public class MediaController : BaseAdminController
         var model = new UpdateMediaAssetDto
         {
             Id = asset.Id,
-            AltText = asset.AltText,
-            Title = asset.Title
+            AltTextDefault = asset.AltTextDefault,
+            TitleDefault = asset.TitleDefault
         };
 
         ViewData.SetMediaPreview(asset.RelativePath, asset.IsImage);

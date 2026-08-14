@@ -29,11 +29,11 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
         builder.Property(x => x.FileSize)
             .IsRequired();
 
-        builder.Property(x => x.AltText)
-            .HasMaxLength(MediaAssetEntity.AltTextMaxLength);
+        builder.Property(x => x.AltTextDefault)
+            .HasMaxLength(MediaAssetEntity.AltTextDefaultMaxLength);
 
-        builder.Property(x => x.Title)
-            .HasMaxLength(MediaAssetEntity.TitleMaxLength);
+        builder.Property(x => x.TitleDefault)
+            .HasMaxLength(MediaAssetEntity.TitleDefaultMaxLength);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();

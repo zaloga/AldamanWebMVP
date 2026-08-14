@@ -38,15 +38,15 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label asp-for="Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title]</label>
-                        <input asp-for="Title" class="form-control" placeholder="@Localizer[UIResourceKeys.TitleInfo]" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <label asp-for="TitleDefault" class="form-label fw-medium">@Localizer[UIResourceKeys.Title]</label>
+                        <input asp-for="TitleDefault" class="form-control" placeholder="@Localizer[UIResourceKeys.TitleInfo]" />
+                        <span asp-validation-for="TitleDefault" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="AltText" class="form-label fw-medium">@Localizer[UIResourceKeys.AltText]</label>
-                        <textarea asp-for="AltText" class="form-control" rows="3" placeholder="@Localizer[UIResourceKeys.AltTextInfo]"></textarea>
-                        <span asp-validation-for="AltText" class="text-danger"></span>
+                        <label asp-for="AltTextDefault" class="form-label fw-medium">@Localizer[UIResourceKeys.AltText]</label>
+                        <textarea asp-for="AltTextDefault" class="form-control" rows="3" placeholder="@Localizer[UIResourceKeys.AltTextInfo]"></textarea>
+                        <span asp-validation-for="AltTextDefault" class="text-danger"></span>
                     </div>
 
                     <hr />

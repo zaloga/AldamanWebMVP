@@ -178,7 +178,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (result.success) {
                         const range = quill.getSelection(true);
-                        quill.insertEmbed(range.index, 'image', result.url);
+                        quill.insertEmbed(range.index, 'image', {
+                            src: result.url,
+                            alt: result.alt || '',
+                            title: result.title || ''
+                        });
                         quill.setSelection(range.index + 1);
                     } else {
                         alert(result.message || i18n.imageUploadFailed);
@@ -1303,21 +1307,24 @@ async function openMediaGalleryModal(quill) {
         gridEl.innerHTML = '';
         items.forEach(item => {
             const isSelected = selectedImages.some(img => img.src === item.relativePath);
+            const defaultAlt = item.altTextDefault || '';
+            const defaultTitle = item.titleDefault || item.originalFileName || '';
+
             const card = document.createElement('div');
             card.className = `gallery-picker-card ${isSelected ? 'is-selected' : ''}`;
             card.setAttribute('data-src', item.relativePath);
-            card.setAttribute('data-alt', item.altText || '');
-            card.setAttribute('data-title', item.title || item.originalFileName || '');
+            card.setAttribute('data-alt', defaultAlt);
+            card.setAttribute('data-title', defaultTitle);
 
             card.innerHTML = `
-                <img src="${item.relativePath}" alt="${item.altText || ''}" loading="lazy" />
+                <img src="${item.relativePath}" alt="${defaultAlt}" loading="lazy" />
                 <div class="check-badge"><i class="bi bi-check"></i></div>
             `;
 
             card.addEventListener('click', () => {
                 const src = item.relativePath;
-                const alt = item.altText || '';
-                const title = item.title || item.originalFileName || '';
+                const alt = defaultAlt;
+                const title = defaultTitle;
 
                 const existingIndex = selectedImages.findIndex(img => img.src === src);
                 if (existingIndex >= 0) {

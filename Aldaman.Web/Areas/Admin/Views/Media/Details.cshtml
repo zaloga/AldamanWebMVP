@@ -15,7 +15,7 @@
                     <div class="bg-light rounded border border-2 border-dashed overflow-hidden d-flex align-items-center justify-content-center" style="min-height: 250px;">
                         @if (Model.IsImage)
                         {
-                            <img src="@Model.RelativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Model.AltText">
+                            <img src="@Model.RelativePath" class="img-fluid" style="object-fit: contain; max-height: 350px;" alt="@Model.AltTextDefault">
                         }
                         else if (Model.IsVideo)
                         {
@@ -42,10 +42,10 @@
                         <dd class="col-sm-7 text-break">@Model.OriginalFileName</dd>
 
                         <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Title]</dt>
-                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.Title) ? "-" : Model.Title)</dd>
+                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.TitleDefault) ? "-" : Model.TitleDefault)</dd>
 
                         <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.AltText]</dt>
-                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.AltText) ? "-" : Model.AltText)</dd>
+                        <dd class="col-sm-7">@(string.IsNullOrEmpty(Model.AltTextDefault) ? "-" : Model.AltTextDefault)</dd>
 
                         <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.ContentType]</dt>
                         <dd class="col-sm-7"><span class="badge bg-light text-dark border">@Model.ContentType</span></dd>

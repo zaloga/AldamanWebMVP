@@ -2,10 +2,10 @@ namespace Aldaman.Persistence.Entities;
 
 public class MediaAssetEntity : BaseEntityAuditableSoftDel
 {
-    public const int TitleMaxLength = 512;
-    public const int TitleMinLength = 3;
-    public const int AltTextMaxLength = 512;
-    public const int AltTextMinLength = 3;
+    public const int TitleDefaultMaxLength = 512;
+    public const int TitleDefaultMinLength = 3;
+    public const int AltTextDefaultMaxLength = 512;
+    public const int AltTextDefaultMinLength = 3;
     public const int OriginalFileNameMaxLength = 256;
     public const int StoredFileNameMaxLength = 256;
     public const int RelativePathMaxLength = 512;
@@ -25,9 +25,9 @@ public class MediaAssetEntity : BaseEntityAuditableSoftDel
 
     public int? Height { get; set; }
 
-    public string? AltText { get; set; }
+    public string? AltTextDefault { get; set; }
 
-    public string? Title { get; set; }
+    public string? TitleDefault { get; set; }
 
     public bool IsImage { get; set; }
 
