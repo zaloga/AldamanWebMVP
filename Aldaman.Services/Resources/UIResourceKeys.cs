@@ -74,6 +74,7 @@ public static class UIResourceKeys
     public const string PermanentlyDeleted = nameof(PermanentlyDeleted);
     public const string ErrorPermanentlyDeleting = nameof(ErrorPermanentlyDeleting);
     public const string Yes = nameof(Yes);
+    public const string No = nameof(No);
     public const string FileSizeExceedsLimit = nameof(FileSizeExceedsLimit);
     public const string ImageUploadFailed = nameof(ImageUploadFailed);
     public const string ErrorUploadingImage = nameof(ErrorUploadingImage);
@@ -241,6 +242,7 @@ public static class UIResourceKeys
     public const string EditPage = nameof(EditPage);
     public const string Settings = nameof(Settings);
     public const string DisplayTitle = nameof(DisplayTitle);
+    public const string DisplayExpanded = nameof(DisplayExpanded);
     public const string TitleHidden = nameof(TitleHidden);
 
     // Admin Media

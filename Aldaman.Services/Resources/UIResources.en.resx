@@ -735,6 +735,9 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="FileSizeExceedsLimit" xml:space="preserve">
     <value>File size exceeds the 1 MB limit.</value>
   </data>
@@ -1127,6 +1130,9 @@
   </data>
   <data name="DisplayTitle" xml:space="preserve">
     <value>Display Title</value>
+  </data>
+  <data name="DisplayExpanded" xml:space="preserve">
+    <value>Display Expanded</value>
   </data>
   <data name="TitleHidden" xml:space="preserve">
     <value>Title Hidden</value>

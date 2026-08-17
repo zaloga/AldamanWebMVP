@@ -735,6 +735,9 @@
   <data name="Yes" xml:space="preserve">
     <value>Ano</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
+  </data>
   <data name="FileSizeExceedsLimit" xml:space="preserve">
     <value>Velikost souboru přesahuje limit 1 MB.</value>
   </data>
@@ -1127,6 +1130,9 @@
   </data>
   <data name="DisplayTitle" xml:space="preserve">
     <value>Zobrazit titulek</value>
+  </data>
+  <data name="DisplayExpanded" xml:space="preserve">
+    <value>Zobrazit rozbalené</value>
   </data>
   <data name="TitleHidden" xml:space="preserve">
     <value>Titulek nezobrazen</value>

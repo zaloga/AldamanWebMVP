@@ -64,6 +64,11 @@
                                         <span asp-validation-for="Translations[i].Perex" class="text-danger"></span>
                                     </div>
 
+                                    <div class="form-check mb-3">
+                                        <input asp-for="Translations[i].DisplayExpanded" class="form-check-input" type="checkbox" />
+                                        <label asp-for="Translations[i].DisplayExpanded" class="form-check-label">@Localizer[UIResourceKeys.DisplayExpanded]</label>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer[UIResourceKeys.Content] (@culture.ToUpper())</label>
                                         <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>

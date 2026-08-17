@@ -107,6 +107,7 @@ public sealed class BlogService : IBlogService
                 Title = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Title ?? p.Translations.FirstOrDefault()!.Title,
                 Slug = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Slug,
                 Perex = p.Translations.FirstOrDefault(t => t.CultureCode == culture)!.Perex,
+                DisplayExpanded = p.Translations.Where(t => t.CultureCode == culture).Select(t => t.DisplayExpanded).FirstOrDefault(),
                 PublishedAtUtc = p.PublishedAtUtc,
                 IsPublished = p.IsPublished,
                 CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
@@ -159,7 +160,8 @@ public sealed class BlogService : IBlogService
                     Perex = translation?.Perex,
                     BodyHtml = translation?.BodyHtml,
                     BodyDeltaJson = translation?.BodyDeltaJson,
-                    PlainText = translation?.PlainText
+                    PlainText = translation?.PlainText,
+                    DisplayExpanded = translation?.DisplayExpanded ?? false
                 };
             }).ToList()
         };
@@ -200,7 +202,8 @@ public sealed class BlogService : IBlogService
                 Perex = translationDto.Perex,
                 BodyHtml = translationDto.BodyHtml,
                 BodyDeltaJson = translationDto.BodyDeltaJson,
-                PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength)
+                PlainText = StringHelpers.StripHtml(translationDto.BodyHtml, BlogPostTranslationEntity.PlainTextMaxLength),
+                DisplayExpanded = translationDto.DisplayExpanded
             };
 
             post.Translations.Add(translation);
@@ -311,6 +314,7 @@ public sealed class BlogService : IBlogService
             existingTranslation.BodyHtml = bodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
             existingTranslation.PlainText = StringHelpers.StripHtml(bodyHtml, BlogPostTranslationEntity.PlainTextMaxLength);
+            existingTranslation.DisplayExpanded = translationDto.DisplayExpanded;
         }
 
         // Handle cover image deletion if requested
@@ -432,6 +436,10 @@ public sealed class BlogService : IBlogService
                     Title = p.Translations.First(t => t.CultureCode == culture).Title,
                     Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
                     Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
+                    DisplayExpanded = p.Translations.First(t => t.CultureCode == culture).DisplayExpanded,
+                    BodyHtml = p.Translations.First(t => t.CultureCode == culture).DisplayExpanded
+                        ? p.Translations.First(t => t.CultureCode == culture).BodyHtml
+                        : null,
                     PublishedAtUtc = p.PublishedAtUtc,
                     IsPublished = p.IsPublished,
                     CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,

@@ -9,4 +9,5 @@ public class BlogPostTranslationDto
     public string? BodyHtml { get; set; }
     public string? BodyDeltaJson { get; set; }
     public string? PlainText { get; set; }
+    public bool DisplayExpanded { get; set; } = false;
 }

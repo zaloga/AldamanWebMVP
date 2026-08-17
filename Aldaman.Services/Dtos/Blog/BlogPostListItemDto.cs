@@ -11,6 +11,8 @@ public class BlogPostListItemDto
     public string Slug { get; set; } = string.Empty;
     public string? Perex { get; set; }
     public string? CoverImageRelativePath { get; set; }
+    public bool DisplayExpanded { get; set; }
+    public string? BodyHtml { get; set; }
     public DateTime? PublishedAtUtc { get; set; }
     public bool IsPublished { get; set; }
     public DateTime? UpdatedAtUtc { get; set; }

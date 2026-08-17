@@ -80,6 +80,18 @@
                                         }
                                     </dd>
 
+                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.DisplayExpanded]</dt>
+                                    <dd class="col-sm-10">
+                                        @if (translation.DisplayExpanded)
+                                        {
+                                            <span class="badge bg-success">@Localizer[UIResourceKeys.Yes]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@Localizer[UIResourceKeys.No]</span>
+                                        }
+                                    </dd>
+
                                     <dt class="col-sm-12 text-muted small text-uppercase fw-bold mt-3 mb-2">@Localizer[UIResourceKeys.Content]</dt>
                                     <dd class="col-sm-12">
                                         @if (!string.IsNullOrWhiteSpace(translation.BodyHtml))

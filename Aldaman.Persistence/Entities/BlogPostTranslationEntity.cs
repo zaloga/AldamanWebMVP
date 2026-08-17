@@ -25,6 +25,8 @@ public class BlogPostTranslationEntity : BaseEntityAuditable
 
     public string? PlainText { get; set; }
 
+    public bool DisplayExpanded { get; set; } = false;
+
 
 
     // Navigation property

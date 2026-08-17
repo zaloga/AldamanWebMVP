@@ -32,6 +32,9 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
         builder.Property(x => x.PlainText)
             .HasMaxLength(BlogPostTranslationEntity.PlainTextMaxLength);
 
+        builder.Property(x => x.DisplayExpanded)
+            .HasDefaultValue(false);
+
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
