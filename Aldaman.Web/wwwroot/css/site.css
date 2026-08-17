@@ -15,6 +15,7 @@
     --color-red-900: oklch(39.6% 0.141 25.723);
     --color-orange-500: oklch(70.5% 0.213 47.604);
     --color-amber-100: oklch(96.2% 0.059 95.617);
+    --color-amber-300: oklch(87.9% 0.169 91.605);
     --color-amber-400: oklch(82.8% 0.189 84.429);
     --color-amber-500: oklch(76.9% 0.188 70.08);
     --color-amber-900: oklch(41.4% 0.112 45.904);
@@ -800,6 +801,12 @@
   .border-\[\#EDBD00\] {
     border-color: #EDBD00;
   }
+  .border-amber-500\/30 {
+    border-color: color-mix(in srgb, oklch(76.9% 0.188 70.08) 30%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-amber-500) 30%, transparent);
+    }
+  }
   .border-amber-900\/15 {
     border-color: color-mix(in srgb, oklch(41.4% 0.112 45.904) 15%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1064,6 +1071,9 @@
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
@@ -1229,6 +1239,9 @@
   }
   .break-all {
     word-break: break-all;
+  }
+  .text-amber-900 {
+    color: var(--color-amber-900);
   }
   .text-amber-950\/60 {
     color: color-mix(in srgb, oklch(27.9% 0.077 45.635) 60%, transparent);
@@ -1889,6 +1902,16 @@
       }
     }
   }
+  .dark\:text-amber-300 {
+    &:where(.dark, .dark *) {
+      color: var(--color-amber-300);
+    }
+  }
+  .dark\:text-amber-400 {
+    &:where(.dark, .dark *) {
+      color: var(--color-amber-400);
+    }
+  }
   .dark\:text-blue-400 {
     &:where(.dark, .dark *) {
       color: var(--color-blue-400);
@@ -1965,6 +1988,24 @@
     &:where(.dark, .dark *) {
       &::placeholder {
         color: var(--color-slate-500);
+      }
+    }
+  }
+  .dark\:hover\:bg-slate-600 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-slate-600);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-slate-700 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-slate-700);
+        }
       }
     }
   }

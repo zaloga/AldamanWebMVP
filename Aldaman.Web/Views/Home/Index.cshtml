@@ -13,15 +13,31 @@
     {
         <section id="@homePage.Slug" class="mb-3">
             <div class="flex flex-col mb-3">
-                @if (homePage.DisplayTitle)
-                {
-                    <div class="mb-2">
-                        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                            @homePage.Title
-                        </h2>
-                        <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full"></div>
-                    </div>
-                }
+                <div class="flex items-start justify-between gap-4 mb-2">
+                    @if (homePage.DisplayTitle)
+                    {
+                        <div>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                                @homePage.Title
+                            </h2>
+                            <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mt-2"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-area="Admin" asp-controller="ContentPages" asp-action="Update" asp-route-id="@homePage.Id"
+                           class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
+                           title="@Localizer[UIResourceKeys.Edit]">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>@Localizer[UIResourceKeys.Edit]</span>
+                        </a>
+                    }
+                </div>
                 @if (!string.IsNullOrEmpty(homePage.BodyHtml))
                 {
                     <div class="ql-snow">
@@ -99,10 +115,22 @@
                                 </button>
                             </div>
 
-                            <a href="/blog/@post.Slug" class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline">
-                                <span>@Localizer[UIResourceKeys.ViewDetail]</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
+                            <div class="flex items-center gap-3">
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <a asp-area="Admin" asp-controller="Blog" asp-action="Update" asp-route-id="@post.Id"
+                                       class="inline-flex items-center gap-1 text-xs font-semibold rounded-md px-2 py-1 bg-amber-500/10 text-amber-900 dark:bg-slate-700 dark:text-amber-300 hover:bg-amber-500/20 dark:hover:bg-slate-600 transition-colors"
+                                       title="@Localizer[UIResourceKeys.Edit]">
+                                        <i class="bi bi-pencil-square"></i>
+                                        <span>@Localizer[UIResourceKeys.Edit]</span>
+                                    </a>
+                                }
+
+                                <a href="/blog/@post.Slug" class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline">
+                                    <span>@Localizer[UIResourceKeys.ViewDetail]</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

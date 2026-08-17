@@ -10,10 +10,22 @@
 <article id="@Model.Post.Slug" class="border-b border-amber-900/15 dark:border-white/5 last:border-0">
     <div class="flex flex-col">
         <div class="mb-6">
-            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all mb-4">
-                <i class="bi bi-arrow-left mr-2"></i>
-                @Localizer[UIResourceKeys.AllArticles]
-            </a>
+            <div class="flex items-center justify-between gap-4 mb-4">
+                <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                    <i class="bi bi-arrow-left mr-2"></i>
+                    @Localizer[UIResourceKeys.AllArticles]
+                </a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-area="Admin" asp-controller="Blog" asp-action="Update" asp-route-id="@Model.Post.Id"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
+                       title="@Localizer[UIResourceKeys.Edit]">
+                        <i class="bi bi-pencil-square"></i>
+                        <span>@Localizer[UIResourceKeys.Edit]</span>
+                    </a>
+                }
+            </div>
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
                 @Model.Post.Title
             </h1>
