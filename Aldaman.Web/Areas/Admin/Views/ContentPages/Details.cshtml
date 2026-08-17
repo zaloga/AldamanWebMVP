@@ -53,6 +53,10 @@
                                         else
                                         {
                                             @translation.Title
+                                            @if (!translation.DisplayTitle)
+                                            {
+                                                <span class="badge bg-secondary ms-2">@Localizer[UIResourceKeys.TitleHidden]</span>
+                                            }
                                         }
                                     </dd>
 

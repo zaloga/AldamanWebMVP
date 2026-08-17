@@ -18,6 +18,10 @@ public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<Cont
             .HasMaxLength(ContentPageTranslationEntity.TitleMaxLength)
             .IsRequired();
 
+        builder.Property(x => x.DisplayTitle)
+            .HasDefaultValue(true)
+            .IsRequired();
+
         builder.Property(x => x.Slug)
             .HasMaxLength(ContentPageTranslationEntity.SlugMaxLength)
             .IsRequired();

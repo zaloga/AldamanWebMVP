@@ -45,6 +45,10 @@
                                         <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title] (@culture.ToUpper())</label>
                                         <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer[UIResourceKeys.Title] (@culture.ToUpper())..." />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
+                                        <div class="form-check mt-2">
+                                            <input asp-for="Translations[i].DisplayTitle" class="form-check-input" type="checkbox" />
+                                            <label asp-for="Translations[i].DisplayTitle" class="form-check-label">@Localizer[UIResourceKeys.DisplayTitle]</label>
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">

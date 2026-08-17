@@ -240,6 +240,8 @@ public static class UIResourceKeys
     public const string CreatePage = nameof(CreatePage);
     public const string EditPage = nameof(EditPage);
     public const string Settings = nameof(Settings);
+    public const string DisplayTitle = nameof(DisplayTitle);
+    public const string TitleHidden = nameof(TitleHidden);
 
     // Admin Media
     public const string MediaLibrary = nameof(MediaLibrary);

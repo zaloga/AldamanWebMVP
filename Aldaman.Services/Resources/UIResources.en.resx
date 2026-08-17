@@ -1125,4 +1125,10 @@
   <data name="Selected" xml:space="preserve">
     <value>Selected</value>
   </data>
+  <data name="DisplayTitle" xml:space="preserve">
+    <value>Display Title</value>
+  </data>
+  <data name="TitleHidden" xml:space="preserve">
+    <value>Title Hidden</value>
+  </data>
 </root>

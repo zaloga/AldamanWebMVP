@@ -1125,5 +1125,11 @@
   <data name="Selected" xml:space="preserve">
     <value>Vybráno</value>
   </data>
+  <data name="DisplayTitle" xml:space="preserve">
+    <value>Zobrazit titulek</value>
+  </data>
+  <data name="TitleHidden" xml:space="preserve">
+    <value>Titulek nezobrazen</value>
+  </data>
 </root>
 

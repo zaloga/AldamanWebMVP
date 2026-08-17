@@ -145,6 +145,7 @@ public sealed class ContentPageService : IContentPageService
                 {
                     CultureCode = culture,
                     Title = translation?.Title ?? string.Empty,
+                    DisplayTitle = translation?.DisplayTitle ?? true,
                     Slug = translation?.Slug ?? string.Empty,
                     BodyHtml = translation?.BodyHtml,
                     BodyDeltaJson = translation?.BodyDeltaJson,
@@ -160,7 +161,8 @@ public sealed class ContentPageService : IContentPageService
         {
             Translations = Localization.SupportedCultures.Select(c => new ContentPageTranslationDto
             {
-                CultureCode = c
+                CultureCode = c,
+                DisplayTitle = true
             }).ToList()
         };
     }
@@ -183,6 +185,7 @@ public sealed class ContentPageService : IContentPageService
             {
                 CultureCode = translationDto.CultureCode,
                 Title = translationDto.Title,
+                DisplayTitle = translationDto.DisplayTitle,
                 Slug = !string.IsNullOrWhiteSpace(translationDto.Slug)
                     ? translationDto.Slug
                     : translationDto.Title.ToLower().Replace(" ", "-"),
@@ -273,6 +276,7 @@ public sealed class ContentPageService : IContentPageService
             }
 
             existingTranslation.Title = title;
+            existingTranslation.DisplayTitle = translationDto.DisplayTitle;
             existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug) ? slug : StringHelpers.ToSlug(title);
             existingTranslation.BodyHtml = bodyHtml;
             existingTranslation.BodyDeltaJson = translationDto.BodyDeltaJson;
@@ -398,6 +402,7 @@ public sealed class ContentPageService : IContentPageService
                     {
                         Id = page.Id,
                         Title = content.Title,
+                        DisplayTitle = content.DisplayTitle,
                         Slug = content.Slug,
                         BodyHtml = content.BodyHtml,
                         BodyDeltaJson = content.BodyDeltaJson,
@@ -426,6 +431,7 @@ public sealed class ContentPageService : IContentPageService
                 {
                     Id = p.Id,
                     Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                    DisplayTitle = p.Translations.First(t => t.CultureCode == culture).DisplayTitle,
                     Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
                     BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
                     BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,

@@ -8,6 +8,7 @@ public class ContentPageDetailDto
     public Guid Id { get; set; }
 
     public string Title { get; set; } = string.Empty;
+    public bool DisplayTitle { get; set; } = true;
     public string Slug { get; set; } = string.Empty;
     public string? BodyHtml { get; set; }
     public string? BodyDeltaJson { get; set; }
