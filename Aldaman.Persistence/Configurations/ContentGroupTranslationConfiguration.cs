@@ -4,38 +4,29 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class ContentPageTranslationConfiguration : IEntityTypeConfiguration<ContentPageTranslationEntity>
+public class ContentGroupTranslationConfiguration : IEntityTypeConfiguration<ContentGroupTranslationEntity>
 {
-    public void Configure(EntityTypeBuilder<ContentPageTranslationEntity> builder)
+    public void Configure(EntityTypeBuilder<ContentGroupTranslationEntity> builder)
     {
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.CultureCode)
-            .HasMaxLength(ContentPageTranslationEntity.CultureCodeMaxLength)
+            .HasMaxLength(ContentGroupTranslationEntity.CultureCodeMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Title)
-            .HasMaxLength(ContentPageTranslationEntity.TitleMaxLength)
-            .IsRequired();
-
-        builder.Property(x => x.DisplayTitle)
-            .HasDefaultValue(true)
+            .HasMaxLength(ContentGroupTranslationEntity.TitleMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Slug)
-            .HasMaxLength(ContentPageTranslationEntity.SlugMaxLength)
+            .HasMaxLength(ContentGroupTranslationEntity.SlugMaxLength)
             .IsRequired();
-
-        builder.Property(x => x.BodyHtml);
-        builder.Property(x => x.BodyDeltaJson);
-        builder.Property(x => x.PlainText)
-            .HasMaxLength(ContentPageTranslationEntity.PlainTextMaxLength);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        // Unique constraint for Page + Language
-        builder.HasIndex(x => new { x.ContentPageId, x.CultureCode })
+        // Unique constraint for Group + Language
+        builder.HasIndex(x => new { x.ContentGroupId, x.CultureCode })
             .IsUnique();
 
         // Audit Relationships

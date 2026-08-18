@@ -55,12 +55,6 @@ public class BlogPostTranslationConfiguration : IEntityTypeConfiguration<BlogPos
             .HasForeignKey(x => x.UpdatedByUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Relationships
-        builder.HasOne(x => x.BlogPost)
-            .WithMany(x => x.Translations)
-            .HasForeignKey(x => x.BlogPostId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Indexes
         builder.HasIndex(x => new { x.BlogPostId, x.CultureCode }).IsUnique();
         builder.HasIndex(x => x.Slug).IsUnique();

@@ -5,28 +5,27 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class ContentPageConfiguration : IEntityTypeConfiguration<ContentPageEntity>
+public class ContentGroupConfiguration : IEntityTypeConfiguration<ContentGroupEntity>
 {
-    public void Configure(EntityTypeBuilder<ContentPageEntity> builder)
+    public void Configure(EntityTypeBuilder<ContentGroupEntity> builder)
     {
         builder.HasKey(x => x.Id);
-
 
         builder.Property(x => x.PlaceToShow)
             .IsRequired()
             .HasDefaultValue(PlaceToShowEnum.None);
 
-        builder.Property(x => x.PageOrder)
+        builder.Property(x => x.GroupOrder)
             .IsRequired()
             .HasDefaultValue(0);
 
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 
-        // Relationship: One ContentPage -> Many Translations
+        // Relationship: One ContentGroup -> Many Translations
         builder.HasMany(x => x.Translations)
-            .WithOne(x => x.ContentPage)
-            .HasForeignKey(x => x.ContentPageId)
+            .WithOne(x => x.ContentGroup)
+            .HasForeignKey(x => x.ContentGroupId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Audit Relationships

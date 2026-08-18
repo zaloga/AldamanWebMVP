@@ -25,6 +25,12 @@ public class BlogPostConfiguration : IEntityTypeConfiguration<BlogPostEntity>
 
         builder.Property(x => x.DeletedByUserId);
 
+        // Relationships: One BlogPost -> Many Translations
+        builder.HasMany(x => x.Translations)
+            .WithOne(x => x.BlogPost)
+            .HasForeignKey(x => x.BlogPostId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         // Relationships
         builder.HasOne(x => x.CoverMediaAsset)
             .WithMany()

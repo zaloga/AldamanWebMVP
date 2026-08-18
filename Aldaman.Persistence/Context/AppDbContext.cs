@@ -9,6 +9,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     public DbSet<ContentPageEntity> ContentPages { get; set; } = null!;
     public DbSet<ContentPageTranslationEntity> ContentPageTranslations { get; set; } = null!;
+    public DbSet<ContentGroupEntity> ContentGroups { get; set; } = null!;
+    public DbSet<ContentGroupTranslationEntity> ContentGroupTranslations { get; set; } = null!;
     public DbSet<MediaAssetEntity> MediaAssets { get; set; } = null!;
     public DbSet<BlogPostEntity> BlogPosts { get; set; } = null!;
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;
@@ -33,6 +35,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         // Global query filters for soft delete
         builder.Entity<BlogPostEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContentPageEntity>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<ContentGroupEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<MediaAssetEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<ContactMessageEntity>().HasQueryFilter(e => !e.IsDeleted);
         builder.Entity<StyleSettingEntity>().HasQueryFilter(e => !e.IsDeleted);
