@@ -11,6 +11,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<ContentPageTranslationEntity> ContentPageTranslations { get; set; } = null!;
     public DbSet<ContentGroupEntity> ContentGroups { get; set; } = null!;
     public DbSet<ContentGroupTranslationEntity> ContentGroupTranslations { get; set; } = null!;
+    public DbSet<ContentGroupContentPageEntity> ContentGroupContentPages { get; set; } = null!;
+    public DbSet<ContentGroupBlogPostEntity> ContentGroupBlogPosts { get; set; } = null!;
     public DbSet<MediaAssetEntity> MediaAssets { get; set; } = null!;
     public DbSet<BlogPostEntity> BlogPosts { get; set; } = null!;
     public DbSet<BlogPostTranslationEntity> BlogPostTranslations { get; set; } = null!;

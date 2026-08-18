@@ -11,4 +11,5 @@ public class BlogPostEntity : BaseEntityAuditableSoftDel
     // Navigation properties
     public virtual MediaAssetEntity? CoverMediaAsset { get; set; }
     public virtual ICollection<BlogPostTranslationEntity> Translations { get; set; } = new List<BlogPostTranslationEntity>();
+    public virtual ICollection<ContentGroupBlogPostEntity> ContentGroups { get; set; } = new List<ContentGroupBlogPostEntity>();
 }

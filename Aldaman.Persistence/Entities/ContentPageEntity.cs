@@ -20,4 +20,5 @@ public class ContentPageEntity : BaseEntityAuditableSoftDel
 
     // Navigation properties
     public virtual ICollection<ContentPageTranslationEntity> Translations { get; set; } = new List<ContentPageTranslationEntity>();
+    public virtual ICollection<ContentGroupContentPageEntity> ContentGroups { get; set; } = new List<ContentGroupContentPageEntity>();
 }
