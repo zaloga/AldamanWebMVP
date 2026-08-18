@@ -245,6 +245,19 @@ public static class UIResourceKeys
     public const string DisplayExpanded = nameof(DisplayExpanded);
     public const string TitleHidden = nameof(TitleHidden);
 
+    // Admin Content Groups
+    public const string ContentGroups = nameof(ContentGroups);
+    public const string ContentGroup = nameof(ContentGroup);
+    public const string DeletedContentGroups = nameof(DeletedContentGroups);
+    public const string CreateContentGroup = nameof(CreateContentGroup);
+    public const string EditContentGroup = nameof(EditContentGroup);
+    public const string ContentGroupDetails = nameof(ContentGroupDetails);
+    public const string GroupOrder = nameof(GroupOrder);
+    public const string ContentGroupCreatedSuccessfully = nameof(ContentGroupCreatedSuccessfully);
+    public const string ErrorCreatingContentGroup = nameof(ErrorCreatingContentGroup);
+    public const string ContentGroupUpdatedSuccessfully = nameof(ContentGroupUpdatedSuccessfully);
+    public const string ErrorUpdatingContentGroup = nameof(ErrorUpdatingContentGroup);
+
     // Admin Media
     public const string MediaLibrary = nameof(MediaLibrary);
     public const string UploadMedia = nameof(UploadMedia);

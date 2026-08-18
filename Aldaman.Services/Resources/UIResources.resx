@@ -1137,5 +1137,38 @@
   <data name="TitleHidden" xml:space="preserve">
     <value>Titulek nezobrazen</value>
   </data>
+  <data name="ContentGroups" xml:space="preserve">
+    <value>Skupiny obsahu</value>
+  </data>
+  <data name="ContentGroup" xml:space="preserve">
+    <value>Skupina obsahu</value>
+  </data>
+  <data name="DeletedContentGroups" xml:space="preserve">
+    <value>Smazané skupiny obsahu</value>
+  </data>
+  <data name="CreateContentGroup" xml:space="preserve">
+    <value>Vytvořit skupinu obsahu</value>
+  </data>
+  <data name="EditContentGroup" xml:space="preserve">
+    <value>Upravit skupinu obsahu</value>
+  </data>
+  <data name="ContentGroupDetails" xml:space="preserve">
+    <value>Detail skupiny obsahu</value>
+  </data>
+  <data name="GroupOrder" xml:space="preserve">
+    <value>Pořadí skupiny</value>
+  </data>
+  <data name="ContentGroupCreatedSuccessfully" xml:space="preserve">
+    <value>Skupina obsahu byla úspěšně vytvořena.</value>
+  </data>
+  <data name="ErrorCreatingContentGroup" xml:space="preserve">
+    <value>Při vytváření skupiny obsahu došlo k chybě: {0}</value>
+  </data>
+  <data name="ContentGroupUpdatedSuccessfully" xml:space="preserve">
+    <value>Skupina obsahu byla úspěšně upravena.</value>
+  </data>
+  <data name="ErrorUpdatingContentGroup" xml:space="preserve">
+    <value>Při úpravě skupiny obsahu došlo k chybě: {0}</value>
+  </data>
 </root>
 

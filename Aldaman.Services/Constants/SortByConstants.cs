@@ -15,6 +15,7 @@ public static class SortByConstants
     public const string FileName = "FileName";
     public const string Size = "Size";
     public const string PageOrder = "PageOrder";
+    public const string GroupOrder = "GroupOrder";
     public const string State = "State";
 }
 

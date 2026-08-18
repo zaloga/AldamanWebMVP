@@ -1137,4 +1137,37 @@
   <data name="TitleHidden" xml:space="preserve">
     <value>Title Hidden</value>
   </data>
+  <data name="ContentGroups" xml:space="preserve">
+    <value>Content Groups</value>
+  </data>
+  <data name="ContentGroup" xml:space="preserve">
+    <value>Content Group</value>
+  </data>
+  <data name="DeletedContentGroups" xml:space="preserve">
+    <value>Deleted Content Groups</value>
+  </data>
+  <data name="CreateContentGroup" xml:space="preserve">
+    <value>Create Content Group</value>
+  </data>
+  <data name="EditContentGroup" xml:space="preserve">
+    <value>Edit Content Group</value>
+  </data>
+  <data name="ContentGroupDetails" xml:space="preserve">
+    <value>Content Group Details</value>
+  </data>
+  <data name="GroupOrder" xml:space="preserve">
+    <value>Group Order</value>
+  </data>
+  <data name="ContentGroupCreatedSuccessfully" xml:space="preserve">
+    <value>Content group was successfully created.</value>
+  </data>
+  <data name="ErrorCreatingContentGroup" xml:space="preserve">
+    <value>An error occurred while creating the content group: {0}</value>
+  </data>
+  <data name="ContentGroupUpdatedSuccessfully" xml:space="preserve">
+    <value>Content group was successfully updated.</value>
+  </data>
+  <data name="ErrorUpdatingContentGroup" xml:space="preserve">
+    <value>An error occurred while updating the content group: {0}</value>
+  </data>
 </root>
