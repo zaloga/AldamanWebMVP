@@ -275,17 +275,11 @@
   .static {
     position: static;
   }
-  .sticky {
-    position: sticky;
-  }
   .-inset-0\.5 {
     inset: calc(var(--spacing) * -0.5);
   }
   .-top-4 {
     top: calc(var(--spacing) * -4);
-  }
-  .top-0 {
-    top: calc(var(--spacing) * 0);
   }
   .top-20 {
     top: calc(var(--spacing) * 20);
@@ -780,6 +774,10 @@
   .border-t {
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
+  }
+  .border-t-0 {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 0px;
   }
   .border-b {
     border-bottom-style: var(--tw-border-style);
