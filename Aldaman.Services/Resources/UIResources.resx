@@ -1170,5 +1170,37 @@
   <data name="ErrorUpdatingContentGroup" xml:space="preserve">
     <value>Při úpravě skupiny obsahu došlo k chybě: {0}</value>
   </data>
+  <data name="SelectContentPages" xml:space="preserve">
+    <value>Vybrat stránky obsahu</value>
+  </data>
+  <data name="SelectBlogPosts" xml:space="preserve">
+    <value>Vybrat příspěvky blogu</value>
+  </data>
+  <data name="NoPagesSelected" xml:space="preserve">
+    <value>Nebyly přiřazeny žádné stránky obsahu.</value>
+  </data>
+  <data name="NoBlogPostsSelected" xml:space="preserve">
+    <value>Nebyly přiřazeny žádné příspěvky blogu.</value>
+  </data>
+  <data name="MoveUp" xml:space="preserve">
+    <value>Posunout nahoru</value>
+  </data>
+  <data name="MoveDown" xml:space="preserve">
+    <value>Posunout dolů</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Odebrat</value>
+  </data>
+  <data name="AssociatedPages" xml:space="preserve">
+    <value>Přiřazené stránky obsahu</value>
+  </data>
+  <data name="AssociatedBlogPosts" xml:space="preserve">
+    <value>Přiřazené příspěvky blogu</value>
+  </data>
 </root>
+
+
 

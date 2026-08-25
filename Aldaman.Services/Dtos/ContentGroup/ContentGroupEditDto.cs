@@ -15,4 +15,11 @@ public class ContentGroupEditDto
     public DateTime? DeletedAtUtc { get; set; }
 
     public List<ContentGroupTranslationDto> Translations { get; set; } = new();
+
+    public List<ContentGroupItemSelectionDto> SelectedContentPages { get; set; } = new();
+    public List<ContentGroupItemSelectionDto> SelectedBlogPosts { get; set; } = new();
+
+    public List<ContentGroupItemOptionDto> AvailableContentPages { get; set; } = new();
+    public List<ContentGroupItemOptionDto> AvailableBlogPosts { get; set; } = new();
 }
+

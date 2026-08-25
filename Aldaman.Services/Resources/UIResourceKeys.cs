@@ -257,6 +257,17 @@ public static class UIResourceKeys
     public const string ErrorCreatingContentGroup = nameof(ErrorCreatingContentGroup);
     public const string ContentGroupUpdatedSuccessfully = nameof(ContentGroupUpdatedSuccessfully);
     public const string ErrorUpdatingContentGroup = nameof(ErrorUpdatingContentGroup);
+    public const string SelectContentPages = nameof(SelectContentPages);
+    public const string SelectBlogPosts = nameof(SelectBlogPosts);
+    public const string NoPagesSelected = nameof(NoPagesSelected);
+    public const string NoBlogPostsSelected = nameof(NoBlogPostsSelected);
+    public const string MoveUp = nameof(MoveUp);
+    public const string MoveDown = nameof(MoveDown);
+    public const string Add = nameof(Add);
+    public const string Remove = nameof(Remove);
+    public const string AssociatedPages = nameof(AssociatedPages);
+    public const string AssociatedBlogPosts = nameof(AssociatedBlogPosts);
+
 
     // Admin Media
     public const string MediaLibrary = nameof(MediaLibrary);

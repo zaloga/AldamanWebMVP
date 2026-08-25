@@ -79,9 +79,10 @@ public class ContentGroupsController : BaseAdminController
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create(CancellationToken cancellationToken = default)
     {
-        ContentGroupEditDto model = ContentGroupService.GetContentGroupForCreate();
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        ContentGroupEditDto model = await ContentGroupService.GetContentGroupForCreateAsync(culture, cancellationToken);
         return View("Update", model);
     }
 
@@ -89,8 +90,10 @@ public class ContentGroupsController : BaseAdminController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ContentGroupEditDto model, CancellationToken cancellationToken = default)
     {
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         if (!ModelState.IsValid)
         {
+            await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View("Update", model);
         }
 
@@ -103,6 +106,7 @@ public class ContentGroupsController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError(string.Empty, Localizer[UIResourceKeys.ErrorCreatingContentGroup, ex.Message].Value);
+            await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View("Update", model);
         }
     }
@@ -110,7 +114,8 @@ public class ContentGroupsController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
-        var group = await ContentGroupService.GetContentGroupForEditAsync(id, cancellationToken);
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var group = await ContentGroupService.GetContentGroupForEditAsync(id, culture, cancellationToken);
         if (group == null)
         {
             return NotFound();
@@ -122,7 +127,8 @@ public class ContentGroupsController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id, CancellationToken cancellationToken = default)
     {
-        var group = await ContentGroupService.GetContentGroupForEditAsync(id, cancellationToken);
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var group = await ContentGroupService.GetContentGroupForEditAsync(id, culture, cancellationToken);
         if (group == null)
         {
             return NotFound();
@@ -140,8 +146,10 @@ public class ContentGroupsController : BaseAdminController
             return BadRequest();
         }
 
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         if (!ModelState.IsValid)
         {
+            await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View(model);
         }
 
@@ -158,7 +166,9 @@ public class ContentGroupsController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError(string.Empty, Localizer[UIResourceKeys.ErrorUpdatingContentGroup, ex.Message].Value);
+            await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View(model);
         }
     }
+
 }

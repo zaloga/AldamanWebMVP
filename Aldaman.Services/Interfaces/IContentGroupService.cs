@@ -16,12 +16,17 @@ public interface IContentGroupService
     /// <summary>
     /// Gets a content group for editing in admin.
     /// </summary>
-    Task<ContentGroupEditDto?> GetContentGroupForEditAsync(Guid id, CancellationToken ct = default);
+    Task<ContentGroupEditDto?> GetContentGroupForEditAsync(Guid id, string? culture = null, CancellationToken ct = default);
 
     /// <summary>
-    /// Gets a new content group template for creation in admin.
+    /// Gets a new content group template for creation in admin with available options.
     /// </summary>
-    ContentGroupEditDto GetContentGroupForCreate();
+    Task<ContentGroupEditDto> GetContentGroupForCreateAsync(string? culture = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Populates available dropdown options for ContentPages and BlogPosts.
+    /// </summary>
+    Task PopulateAvailableOptionsAsync(ContentGroupEditDto dto, string? culture = null, CancellationToken ct = default);
 
     /// <summary>
     /// Creates a new content group.

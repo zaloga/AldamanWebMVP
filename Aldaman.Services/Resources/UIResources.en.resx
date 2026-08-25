@@ -1170,4 +1170,35 @@
   <data name="ErrorUpdatingContentGroup" xml:space="preserve">
     <value>An error occurred while updating the content group: {0}</value>
   </data>
+  <data name="SelectContentPages" xml:space="preserve">
+    <value>Select Content Pages</value>
+  </data>
+  <data name="SelectBlogPosts" xml:space="preserve">
+    <value>Select Blog Posts</value>
+  </data>
+  <data name="NoPagesSelected" xml:space="preserve">
+    <value>No content pages have been assigned.</value>
+  </data>
+  <data name="NoBlogPostsSelected" xml:space="preserve">
+    <value>No blog posts have been assigned.</value>
+  </data>
+  <data name="MoveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="MoveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AssociatedPages" xml:space="preserve">
+    <value>Associated Content Pages</value>
+  </data>
+  <data name="AssociatedBlogPosts" xml:space="preserve">
+    <value>Associated Blog Posts</value>
+  </data>
 </root>
+

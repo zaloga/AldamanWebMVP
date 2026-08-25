@@ -58,6 +58,127 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Content Pages Selector -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedPages]</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-9">
+                                <select id="contentPagesSelect" class="form-select">
+                                    <option value="">-- @Localizer[UIResourceKeys.SelectContentPages] --</option>
+                                    @foreach (var pageItem in Model.AvailableContentPages)
+                                    {
+                                        <option value="@pageItem.Id" data-title="@pageItem.Title" data-slug="@pageItem.Slug">
+                                            @pageItem.Title (@pageItem.Slug)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="btnAddContentPage" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-1">
+                                    <i class="bi bi-plus-lg"></i>
+                                    @Localizer[UIResourceKeys.Add]
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="selectedPagesContainer" class="list-group">
+                            <div class="empty-items-message text-muted text-center py-3 bg-light rounded border @(Model.SelectedContentPages.Any() ? "d-none" : "")">
+                                @Localizer[UIResourceKeys.NoPagesSelected]
+                            </div>
+                            @for (int i = 0; i < Model.SelectedContentPages.Count; i++)
+                            {
+                                var item = Model.SelectedContentPages[i];
+                                <div class="list-group-item d-flex justify-content-between align-items-center content-group-item-row p-2 mb-1 bg-white border rounded">
+                                    <div class="d-flex align-items-center gap-2 text-truncate me-2">
+                                        <span class="badge bg-secondary order-badge">@(i + 1)</span>
+                                        <span class="fw-medium text-dark text-truncate">@item.Title</span>
+                                        <span class="text-muted small font-monospace d-none d-md-inline">/@item.Slug</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                                        <input type="hidden" class="item-id-input" name="SelectedContentPages[@i].Id" value="@item.Id" />
+                                        <input type="hidden" class="item-title-input" name="SelectedContentPages[@i].Title" value="@item.Title" />
+                                        <input type="hidden" class="item-slug-input" name="SelectedContentPages[@i].Slug" value="@item.Slug" />
+                                        <input type="hidden" class="item-order-input" name="SelectedContentPages[@i].Order" value="@i" />
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="@Localizer[UIResourceKeys.MoveUp]" @(i == 0 ? "disabled" : "")>
+                                            <i class="bi bi-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="@Localizer[UIResourceKeys.MoveDown]" @(i == Model.SelectedContentPages.Count - 1 ? "disabled" : "")>
+                                            <i class="bi bi-arrow-down"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="@Localizer[UIResourceKeys.Remove]">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Posts Selector -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedBlogPosts]</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-9">
+                                <select id="blogPostsSelect" class="form-select">
+                                    <option value="">-- @Localizer[UIResourceKeys.SelectBlogPosts] --</option>
+                                    @foreach (var blogItem in Model.AvailableBlogPosts)
+                                    {
+                                        <option value="@blogItem.Id" data-title="@blogItem.Title" data-slug="@blogItem.Slug">
+                                            @blogItem.Title (@blogItem.Slug)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="btnAddBlogPost" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-1">
+                                    <i class="bi bi-plus-lg"></i>
+                                    @Localizer[UIResourceKeys.Add]
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="selectedBlogPostsContainer" class="list-group">
+                            <div class="empty-items-message text-muted text-center py-3 bg-light rounded border @(Model.SelectedBlogPosts.Any() ? "d-none" : "")">
+                                @Localizer[UIResourceKeys.NoBlogPostsSelected]
+                            </div>
+                            @for (int i = 0; i < Model.SelectedBlogPosts.Count; i++)
+                            {
+                                var item = Model.SelectedBlogPosts[i];
+                                <div class="list-group-item d-flex justify-content-between align-items-center content-group-item-row p-2 mb-1 bg-white border rounded">
+                                    <div class="d-flex align-items-center gap-2 text-truncate me-2">
+                                        <span class="badge bg-secondary order-badge">@(i + 1)</span>
+                                        <span class="fw-medium text-dark text-truncate">@item.Title</span>
+                                        <span class="text-muted small font-monospace d-none d-md-inline">/@item.Slug</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                                        <input type="hidden" class="item-id-input" name="SelectedBlogPosts[@i].Id" value="@item.Id" />
+                                        <input type="hidden" class="item-title-input" name="SelectedBlogPosts[@i].Title" value="@item.Title" />
+                                        <input type="hidden" class="item-slug-input" name="SelectedBlogPosts[@i].Slug" value="@item.Slug" />
+                                        <input type="hidden" class="item-order-input" name="SelectedBlogPosts[@i].Order" value="@i" />
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="@Localizer[UIResourceKeys.MoveUp]" @(i == 0 ? "disabled" : "")>
+                                            <i class="bi bi-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="@Localizer[UIResourceKeys.MoveDown]" @(i == Model.SelectedBlogPosts.Count - 1 ? "disabled" : "")>
+                                            <i class="bi bi-arrow-down"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="@Localizer[UIResourceKeys.Remove]">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="col-lg-4">
@@ -106,4 +227,6 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/admin-slug.js" asp-append-version="true"></script>
+    <script src="~/js/admin-content-groups.js" asp-append-version="true"></script>
 }
+
