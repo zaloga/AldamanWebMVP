@@ -70,15 +70,15 @@
                 </div>
             </div>
 
-            <!-- Content Pages Details -->
+            <!-- Associated Content Pages and Posts Details -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedPages]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedItems]</h6>
                 </div>
                 <div class="card-body">
-                    @if (!Model.SelectedContentPages.Any())
+                    @if (!Model.SelectedItems.Any())
                     {
-                        <p class="text-muted mb-0">@Localizer[UIResourceKeys.NoPagesSelected]</p>
+                        <p class="text-muted mb-0">@Localizer[UIResourceKeys.NoItemsSelected]</p>
                     }
                     else
                     {
@@ -87,54 +87,29 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 80px;">@Localizer[UIResourceKeys.Order]</th>
+                                        <th style="width: 140px;">@Localizer[UIResourceKeys.Type]</th>
                                         <th>@Localizer[UIResourceKeys.Title]</th>
                                         <th>@Localizer[UIResourceKeys.Slug]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var pageItem in Model.SelectedContentPages.OrderBy(x => x.Order))
+                                    @foreach (var item in Model.SelectedItems.OrderBy(x => x.Order))
                                     {
+                                        var isPage = item.Type == ContentGroupItemTypeEnum.ContentPage;
                                         <tr>
-                                            <td><span class="badge bg-secondary">@(pageItem.Order + 1)</span></td>
-                                            <td class="fw-medium">@pageItem.Title</td>
-                                            <td class="font-monospace small text-muted">/@pageItem.Slug</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <!-- Blog Posts Details -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedBlogPosts]</h6>
-                </div>
-                <div class="card-body">
-                    @if (!Model.SelectedBlogPosts.Any())
-                    {
-                        <p class="text-muted mb-0">@Localizer[UIResourceKeys.NoBlogPostsSelected]</p>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 80px;">@Localizer[UIResourceKeys.Order]</th>
-                                        <th>@Localizer[UIResourceKeys.Title]</th>
-                                        <th>@Localizer[UIResourceKeys.Slug]</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var blogItem in Model.SelectedBlogPosts.OrderBy(x => x.Order))
-                                    {
-                                        <tr>
-                                            <td><span class="badge bg-secondary">@(blogItem.Order + 1)</span></td>
-                                            <td class="fw-medium">@blogItem.Title</td>
-                                            <td class="font-monospace small text-muted">/@blogItem.Slug</td>
+                                            <td><span class="badge bg-secondary">@(item.Order + 1)</span></td>
+                                            <td>
+                                                @if (isPage)
+                                                {
+                                                    <span class="badge bg-info text-dark">@Localizer[UIResourceKeys.ItemTypePage]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-primary">@Localizer[UIResourceKeys.ItemTypeBlogPost]</span>
+                                                }
+                                            </td>
+                                            <td class="fw-medium">@item.Title</td>
+                                            <td class="font-monospace small text-muted">/@item.Slug</td>
                                         </tr>
                                     }
                                 </tbody>

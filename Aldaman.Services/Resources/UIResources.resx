@@ -1200,6 +1200,27 @@
   <data name="AssociatedBlogPosts" xml:space="preserve">
     <value>Přiřazené příspěvky blogu</value>
   </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Přiřazené stránky obsahu a příspěvky blogu</value>
+  </data>
+  <data name="NoItemsSelected" xml:space="preserve">
+    <value>Nebyly přiřazeny žádné položky.</value>
+  </data>
+  <data name="SelectContentPage" xml:space="preserve">
+    <value>Vybrat stránku obsahu</value>
+  </data>
+  <data name="SelectBlogPost" xml:space="preserve">
+    <value>Vybrat příspěvek blogu</value>
+  </data>
+  <data name="ItemTypePage" xml:space="preserve">
+    <value>Stránka</value>
+  </data>
+  <data name="ItemTypeBlogPost" xml:space="preserve">
+    <value>Příspěvek blogu</value>
+  </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>Přidat položku</value>
+  </data>
 </root>
 
 

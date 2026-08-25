@@ -1200,5 +1200,26 @@
   <data name="AssociatedBlogPosts" xml:space="preserve">
     <value>Associated Blog Posts</value>
   </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Associated Content Pages and Posts</value>
+  </data>
+  <data name="NoItemsSelected" xml:space="preserve">
+    <value>No items have been assigned.</value>
+  </data>
+  <data name="SelectContentPage" xml:space="preserve">
+    <value>Select Content Page</value>
+  </data>
+  <data name="SelectBlogPost" xml:space="preserve">
+    <value>Select Blog Post</value>
+  </data>
+  <data name="ItemTypePage" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="ItemTypeBlogPost" xml:space="preserve">
+    <value>Blog Post</value>
+  </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>Add Item</value>
+  </data>
 </root>
 

@@ -1,5 +1,6 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.ContentGroup;
@@ -120,9 +121,10 @@ public sealed class ContentGroupService : IContentGroupService
                     Slug = translation?.Slug ?? string.Empty
                 };
             }).ToList(),
-            SelectedContentPages = group.ContentPages.Select(cp => new ContentGroupItemSelectionDto
+            SelectedItems = group.ContentPages.Select(cp => new ContentGroupItemSelectionDto
             {
                 Id = cp.ContentPageId,
+                Type = ContentGroupItemTypeEnum.ContentPage,
                 Title = cp.ContentPage.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)?.Title
                         ?? cp.ContentPage.Translations.FirstOrDefault()?.Title
                         ?? string.Empty,
@@ -130,10 +132,11 @@ public sealed class ContentGroupService : IContentGroupService
                         ?? cp.ContentPage.Translations.FirstOrDefault()?.Slug
                         ?? string.Empty,
                 Order = cp.Order
-            }).ToList(),
-            SelectedBlogPosts = group.BlogPosts.Select(bp => new ContentGroupItemSelectionDto
+            })
+            .Concat(group.BlogPosts.Select(bp => new ContentGroupItemSelectionDto
             {
                 Id = bp.BlogPostId,
+                Type = ContentGroupItemTypeEnum.BlogPost,
                 Title = bp.BlogPost.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)?.Title
                         ?? bp.BlogPost.Translations.FirstOrDefault()?.Title
                         ?? string.Empty,
@@ -141,7 +144,9 @@ public sealed class ContentGroupService : IContentGroupService
                         ?? bp.BlogPost.Translations.FirstOrDefault()?.Slug
                         ?? string.Empty,
                 Order = bp.Order
-            }).ToList()
+            }))
+            .OrderBy(x => x.Order)
+            .ToList()
         };
 
         await PopulateAvailableOptionsAsync(dto, culture, ct);
@@ -222,33 +227,31 @@ public sealed class ContentGroupService : IContentGroupService
             group.Translations.Add(translation);
         }
 
-        if (dto.SelectedContentPages != null)
+        if (dto.SelectedItems != null)
         {
-            int pageIndex = 0;
-            foreach (var item in dto.SelectedContentPages.Where(x => x.Id != Guid.Empty))
+            int itemIndex = 0;
+            foreach (var item in dto.SelectedItems.Where(x => x.Id != Guid.Empty))
             {
-                group.ContentPages.Add(new ContentGroupContentPageEntity
+                int resolvedOrder = item.Order != 0 ? item.Order : itemIndex;
+                if (item.Type == ContentGroupItemTypeEnum.ContentPage)
                 {
-                    Id = Guid.NewGuid(),
-                    ContentGroupId = group.Id,
-                    ContentPageId = item.Id,
-                    Order = item.Order != 0 ? item.Order : pageIndex++
-                });
-            }
-        }
-
-        if (dto.SelectedBlogPosts != null)
-        {
-            int blogIndex = 0;
-            foreach (var item in dto.SelectedBlogPosts.Where(x => x.Id != Guid.Empty))
-            {
-                group.BlogPosts.Add(new ContentGroupBlogPostEntity
+                    group.ContentPages.Add(new ContentGroupContentPageEntity
+                    {
+                        ContentGroupId = group.Id,
+                        ContentPageId = item.Id,
+                        Order = resolvedOrder
+                    });
+                }
+                else if (item.Type == ContentGroupItemTypeEnum.BlogPost)
                 {
-                    Id = Guid.NewGuid(),
-                    ContentGroupId = group.Id,
-                    BlogPostId = item.Id,
-                    Order = item.Order != 0 ? item.Order : blogIndex++
-                });
+                    group.BlogPosts.Add(new ContentGroupBlogPostEntity
+                    {
+                        ContentGroupId = group.Id,
+                        BlogPostId = item.Id,
+                        Order = resolvedOrder
+                    });
+                }
+                itemIndex++;
             }
         }
 
@@ -309,8 +312,10 @@ public sealed class ContentGroupService : IContentGroupService
             existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug) ? slug : StringHelpers.ToSlug(title);
         }
 
+        var selectedItems = dto.SelectedItems?.Where(x => x.Id != Guid.Empty).ToList() ?? new List<ContentGroupItemSelectionDto>();
+
         // Process ContentPages M:N relations
-        var selectedPageItems = dto.SelectedContentPages?.Where(x => x.Id != Guid.Empty).ToList() ?? new List<ContentGroupItemSelectionDto>();
+        var selectedPageItems = selectedItems.Where(x => x.Type == ContentGroupItemTypeEnum.ContentPage).ToList();
         var selectedPageIds = selectedPageItems.Select(x => x.Id).ToHashSet();
 
         // Remove unselected pages
@@ -321,14 +326,12 @@ public sealed class ContentGroupService : IContentGroupService
         }
 
         // Add or update existing pages
-        int pageOrderIndex = 0;
         foreach (var item in selectedPageItems)
         {
             var existing = group.ContentPages.FirstOrDefault(cp => cp.ContentPageId == item.Id);
-            int resolvedOrder = item.Order != 0 ? item.Order : pageOrderIndex++;
             if (existing != null)
             {
-                existing.Order = resolvedOrder;
+                existing.Order = item.Order;
             }
             else
             {
@@ -336,14 +339,14 @@ public sealed class ContentGroupService : IContentGroupService
                 {
                     ContentGroupId = group.Id,
                     ContentPageId = item.Id,
-                    Order = resolvedOrder
+                    Order = item.Order
                 };
                 Context.ContentGroupContentPages.Add(newContentPage);
             }
         }
 
         // Process BlogPosts M:N relations
-        var selectedBlogItems = dto.SelectedBlogPosts?.Where(x => x.Id != Guid.Empty).ToList() ?? new List<ContentGroupItemSelectionDto>();
+        var selectedBlogItems = selectedItems.Where(x => x.Type == ContentGroupItemTypeEnum.BlogPost).ToList();
         var selectedBlogIds = selectedBlogItems.Select(x => x.Id).ToHashSet();
 
         // Remove unselected blog posts
@@ -354,14 +357,12 @@ public sealed class ContentGroupService : IContentGroupService
         }
 
         // Add or update existing blog posts
-        int blogOrderIndex = 0;
         foreach (var item in selectedBlogItems)
         {
             var existing = group.BlogPosts.FirstOrDefault(bp => bp.BlogPostId == item.Id);
-            int resolvedOrder = item.Order != 0 ? item.Order : blogOrderIndex++;
             if (existing != null)
             {
-                existing.Order = resolvedOrder;
+                existing.Order = item.Order;
             }
             else
             {
@@ -369,7 +370,7 @@ public sealed class ContentGroupService : IContentGroupService
                 {
                     ContentGroupId = group.Id,
                     BlogPostId = item.Id,
-                    Order = resolvedOrder
+                    Order = item.Order
                 };
                 Context.ContentGroupBlogPosts.Add(newBlogPost);
             }
@@ -377,6 +378,7 @@ public sealed class ContentGroupService : IContentGroupService
 
         await Context.SaveChangesAsync(ct);
     }
+
 
     public async Task SoftDeleteContentGroupAsync(Guid id, CancellationToken ct = default)
     {

@@ -16,10 +16,8 @@ public class ContentGroupEditDto
 
     public List<ContentGroupTranslationDto> Translations { get; set; } = new();
 
-    public List<ContentGroupItemSelectionDto> SelectedContentPages { get; set; } = new();
-    public List<ContentGroupItemSelectionDto> SelectedBlogPosts { get; set; } = new();
+    public List<ContentGroupItemSelectionDto> SelectedItems { get; set; } = new();
 
     public List<ContentGroupItemOptionDto> AvailableContentPages { get; set; } = new();
     public List<ContentGroupItemOptionDto> AvailableBlogPosts { get; set; } = new();
 }
-
