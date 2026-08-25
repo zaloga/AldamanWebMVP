@@ -3,26 +3,50 @@ using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Constants;
+using Aldaman.Services.Dtos.Blog;
 using Aldaman.Services.Dtos.ContentGroup;
 using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace Aldaman.Services.Services;
 
 public sealed class ContentGroupService : IContentGroupService
 {
+    private static CancellationTokenSource _contentGroupCacheTokenSource = new();
+
     private AppDbContext Context { get; }
     private LocalizationSettings Localization { get; }
+    private IMemoryCache Cache { get; }
+    private MemoryCacheEntryOptions CacheOptions { get; }
 
     public ContentGroupService(
         AppDbContext context,
-        IOptions<LocalizationSettings> localizationOptions)
+        IOptions<LocalizationSettings> localizationOptions,
+        IOptions<CacheSettings> cacheOptions,
+        IMemoryCache cache)
     {
         Context = context;
         Localization = localizationOptions.Value;
+        Cache = cache;
+        CacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentPageExpirationHours))
+            .AddExpirationToken(new CancellationChangeToken(_contentGroupCacheTokenSource.Token));
+    }
+
+    /// <summary>
+    /// Instantly invalidates all content group related cached entries.
+    /// </summary>
+    private static void InvalidateCache()
+    {
+        var oldSource = Interlocked.Exchange(ref _contentGroupCacheTokenSource, new CancellationTokenSource());
+        oldSource.Cancel();
+        oldSource.Dispose();
     }
 
     public async Task<PagedResultDto<ContentGroupListItemDto>> GetPagedContentGroupsAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false, CancellationToken ct = default)
@@ -257,6 +281,7 @@ public sealed class ContentGroupService : IContentGroupService
 
         Context.ContentGroups.Add(group);
         await Context.SaveChangesAsync(ct);
+        InvalidateCache();
     }
 
     public async Task UpdateContentGroupAsync(Guid id, ContentGroupEditDto dto, CancellationToken ct = default)
@@ -273,13 +298,12 @@ public sealed class ContentGroupService : IContentGroupService
             throw new KeyNotFoundException($"Content group with ID {id} not found.");
         }
 
-        var currentTranslations = group.Translations.ToDictionary(t => t.CultureCode);
-
-        // Update core group properties
         group.PlaceToShow = dto.PlaceToShow;
         group.GroupOrder = dto.GroupOrder;
 
-        // Process translations
+        // Process Translations
+        var currentTranslations = group.Translations.ToDictionary(t => t.CultureCode);
+
         foreach (var translationDto in dto.Translations)
         {
             currentTranslations.TryGetValue(translationDto.CultureCode, out var existingTranslation);
@@ -312,20 +336,23 @@ public sealed class ContentGroupService : IContentGroupService
             existingTranslation.Slug = !string.IsNullOrWhiteSpace(slug) ? slug : StringHelpers.ToSlug(title);
         }
 
-        var selectedItems = dto.SelectedItems?.Where(x => x.Id != Guid.Empty).ToList() ?? new List<ContentGroupItemSelectionDto>();
+        // Process unified SelectedItems
+        var selectedItems = (dto.SelectedItems ?? new List<ContentGroupItemSelectionDto>())
+            .Where(x => x.Id != Guid.Empty)
+            .ToList();
 
         // Process ContentPages M:N relations
         var selectedPageItems = selectedItems.Where(x => x.Type == ContentGroupItemTypeEnum.ContentPage).ToList();
         var selectedPageIds = selectedPageItems.Select(x => x.Id).ToHashSet();
 
-        // Remove unselected pages
+        // Remove unselected content pages
         var pagesToRemove = group.ContentPages.Where(cp => !selectedPageIds.Contains(cp.ContentPageId)).ToList();
         if (pagesToRemove.Count > 0)
         {
             Context.ContentGroupContentPages.RemoveRange(pagesToRemove);
         }
 
-        // Add or update existing pages
+        // Add or update existing content pages
         foreach (var item in selectedPageItems)
         {
             var existing = group.ContentPages.FirstOrDefault(cp => cp.ContentPageId == item.Id);
@@ -377,6 +404,7 @@ public sealed class ContentGroupService : IContentGroupService
         }
 
         await Context.SaveChangesAsync(ct);
+        InvalidateCache();
     }
 
 
@@ -388,6 +416,7 @@ public sealed class ContentGroupService : IContentGroupService
             group.IsDeleted = true;
             group.DeletedAtUtc = DateTime.UtcNow;
             await Context.SaveChangesAsync(ct);
+            InvalidateCache();
         }
     }
 
@@ -400,6 +429,7 @@ public sealed class ContentGroupService : IContentGroupService
             group.DeletedAtUtc = null;
             group.DeletedByUserId = null;
             await Context.SaveChangesAsync(ct);
+            InvalidateCache();
         }
     }
 
@@ -431,6 +461,161 @@ public sealed class ContentGroupService : IContentGroupService
 
             Context.ContentGroups.Remove(group);
             await Context.SaveChangesAsync(ct);
+            InvalidateCache();
         }
     }
+
+    #region Public web part methods
+
+    public async Task<ContentGroupDetailDto?> GetContentGroupBySlugCachedAsync(string slug, string culture, CancellationToken ct = default)
+    {
+        string cacheKey = $"ContentGroup:Detail:{slug.ToLowerInvariant()}:{culture}";
+
+        if (!Cache.TryGetValue(cacheKey, out ContentGroupDetailDto? result))
+        {
+            var group = await Context.ContentGroups
+                .Include(p => p.Translations)
+                .Include(p => p.ContentPages)
+                    .ThenInclude(cp => cp.ContentPage)
+                        .ThenInclude(p => p.Translations)
+                .Include(p => p.BlogPosts)
+                    .ThenInclude(bp => bp.BlogPost)
+                        .ThenInclude(p => p.Translations)
+                .Include(p => p.BlogPosts)
+                    .ThenInclude(bp => bp.BlogPost)
+                        .ThenInclude(p => p.CoverMediaAsset)
+                .FirstOrDefaultAsync(p => p.Translations.Any(t => t.Slug == slug && t.CultureCode == culture), ct);
+
+            if (group == null)
+            {
+                result = null;
+            }
+            else
+            {
+                var translation = group.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                if (translation == null)
+                {
+                    result = null;
+                }
+                else
+                {
+                    var items = new List<ContentGroupDetailItemDto>();
+
+                    // Map ContentPages
+                    foreach (var cp in group.ContentPages.Where(cp => !cp.ContentPage.IsDeleted))
+                    {
+                        var pageTranslation = cp.ContentPage.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                        if (pageTranslation != null)
+                        {
+                            items.Add(new ContentGroupDetailItemDto
+                            {
+                                Id = cp.ContentPageId,
+                                Type = ContentGroupItemTypeEnum.ContentPage,
+                                Order = cp.Order,
+                                Page = new ContentPageDetailDto
+                                {
+                                    Id = cp.ContentPage.Id,
+                                    Title = pageTranslation.Title,
+                                    DisplayTitle = pageTranslation.DisplayTitle,
+                                    Slug = pageTranslation.Slug,
+                                    BodyHtml = pageTranslation.BodyHtml,
+                                    BodyDeltaJson = pageTranslation.BodyDeltaJson,
+                                    PlainText = pageTranslation.PlainText
+                                }
+                            });
+                        }
+                    }
+
+                    // Map BlogPosts
+                    foreach (var bp in group.BlogPosts.Where(bp => !bp.BlogPost.IsDeleted && bp.BlogPost.IsPublished))
+                    {
+                        var blogTranslation = bp.BlogPost.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                        if (blogTranslation != null)
+                        {
+                            items.Add(new ContentGroupDetailItemDto
+                            {
+                                Id = bp.BlogPostId,
+                                Type = ContentGroupItemTypeEnum.BlogPost,
+                                Order = bp.Order,
+                                BlogPost = new BlogPostListItemDto
+                                {
+                                    Id = bp.BlogPost.Id,
+                                    Title = blogTranslation.Title,
+                                    Slug = blogTranslation.Slug,
+                                    Perex = blogTranslation.Perex,
+                                    DisplayExpanded = blogTranslation.DisplayExpanded,
+                                    BodyHtml = blogTranslation.DisplayExpanded ? blogTranslation.BodyHtml : null,
+                                    PublishedAtUtc = bp.BlogPost.PublishedAtUtc,
+                                    IsPublished = bp.BlogPost.IsPublished,
+                                    CoverImageRelativePath = bp.BlogPost.CoverMediaAsset?.RelativePath,
+                                    CreatedAtUtc = bp.BlogPost.CreatedAtUtc
+                                }
+                            });
+                        }
+                    }
+
+                    result = new ContentGroupDetailDto
+                    {
+                        Id = group.Id,
+                        Title = translation.Title,
+                        Slug = translation.Slug,
+                        PlaceToShow = group.PlaceToShow,
+                        GroupOrder = group.GroupOrder,
+                        Items = items.OrderBy(x => x.Order).ToList()
+                    };
+                }
+            }
+
+            Cache.Set(cacheKey, result, CacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default)
+    {
+        string cacheKey = $"ContentGroup:AlternativeSlugs:{id}";
+
+        if (!Cache.TryGetValue(cacheKey, out Dictionary<string, string>? result) || result == null)
+        {
+            result = await Context.ContentGroupTranslations
+                .Where(t => t.ContentGroupId == id)
+                .ToDictionaryAsync(t => t.CultureCode, t => t.Slug, ct);
+
+            Cache.Set(cacheKey, result, CacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture, CancellationToken ct = default)
+    {
+        string cacheKey = $"ContentGroup:RedirectSlug:{slug.ToLowerInvariant()}:{targetCulture}";
+
+        if (!Cache.TryGetValue(cacheKey, out string? result))
+        {
+            var groupId = await Context.ContentGroupTranslations
+                .Where(t => t.Slug == slug)
+                .Select(t => (Guid?)t.ContentGroupId)
+                .FirstOrDefaultAsync(ct);
+
+            if (groupId == null)
+            {
+                result = null;
+            }
+            else
+            {
+                result = await Context.ContentGroupTranslations
+                    .Where(t => t.ContentGroupId == groupId.Value && t.CultureCode == targetCulture)
+                    .Select(t => t.Slug)
+                    .FirstOrDefaultAsync(ct);
+            }
+
+            Cache.Set(cacheKey, result, CacheOptions);
+        }
+
+        return result;
+    }
+
+    #endregion
 }

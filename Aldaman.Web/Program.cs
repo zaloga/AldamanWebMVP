@@ -143,6 +143,13 @@ public class Program
             defaults: new { controller = "ContentPage", action = "Detail" })
             .WithStaticAssets();
 
+        // Content Groups
+        app.MapControllerRoute(
+            name: "content_group_detail",
+            pattern: $"{culturePattern}/content/{{slug}}",
+            defaults: new { controller = "ContentGroup", action = "Detail" })
+            .WithStaticAssets();
+
         // Blog
         app.MapControllerRoute(
             name: "blog_index",

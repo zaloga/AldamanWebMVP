@@ -52,4 +52,19 @@ public interface IContentGroupService
     /// Permanently deletes a content group.
     /// </summary>
     Task HardDeleteContentGroupAsync(Guid id, CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets a content group by its URL slug for public display.
+    /// </summary>
+    Task<ContentGroupDetailDto?> GetContentGroupBySlugCachedAsync(string slug, string culture, CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets slugs for all translations of a content group.
+    /// </summary>
+    Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default);
+
+    /// <summary>
+    /// Finds the slug for a content group in a target culture if it exists under the given slug in any other culture.
+    /// </summary>
+    Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture, CancellationToken ct = default);
 }
