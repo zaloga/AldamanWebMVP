@@ -6,17 +6,17 @@ namespace Aldaman.Web.Infrastructure.ViewComponents;
 
 public class FooterNavigationViewComponent : ViewComponent
 {
-    private IContentPageService ContentPageService { get; }
+    private INavigationService NavigationService { get; }
 
-    public FooterNavigationViewComponent(IContentPageService contentPageService)
+    public FooterNavigationViewComponent(INavigationService navigationService)
     {
-        ContentPageService = contentPageService;
+        NavigationService = navigationService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var footerPages = await ContentPageService.GetFooterNavigationAsync(cultureCode);
+        var footerPages = await NavigationService.GetFooterNavigationAsync(cultureCode);
         
         return View(footerPages);
     }

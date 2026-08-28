@@ -1,13 +1,14 @@
-@using Aldaman.Services.Dtos.Page
+@using Aldaman.Services.Dtos.Navigation
 @using Aldaman.Web.Extensions
-@model IEnumerable<ContentPageNavigationDto>
+@model IEnumerable<NavigationDto>
 
 @foreach (var navigation in Model)
 {
-    var isActive = ViewContext.IsNavActive("ContentPage", "Detail", navigation.Slug);
+    var targetController = navigation.IsGroup ? "ContentGroup" : "ContentPage";
+    var isActive = ViewContext.IsNavActive(targetController, "Detail", navigation.Slug);
     <a class="@(isActive ? "text-md font-semibold text-brand-primary dark:text-brand-accent underline decoration-2 underline-offset-4 transition-colors" : "text-md text-amber-950/80 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition-colors")" 
        asp-area="" 
-       asp-controller="ContentPage" 
+       asp-controller="@targetController" 
        asp-action="Detail" 
        asp-route-slug="@navigation.Slug">
         @navigation.Title

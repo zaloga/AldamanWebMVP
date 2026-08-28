@@ -44,15 +44,16 @@ public sealed class BlogService : IBlogService
     }
 
     /// <summary>
-    /// Instantly invalidates all blog-related cached entries.
+    /// Instantly invalidates all blog-related cached entries and content group cache entries.
     /// It swaps the shared <see cref="_blogCacheTokenSource"/> with a new instance and cancels the old one,
     /// triggering eviction for all cache entries associated with the cancellation change token.
     /// </summary>
-    private static void InvalidateCache()
+    internal static void InvalidateCache()
     {
         var oldSource = Interlocked.Exchange(ref _blogCacheTokenSource, new CancellationTokenSource());
         oldSource.Cancel();
         oldSource.Dispose();
+        ContentGroupService.InvalidateCache();
     }
 
     #region Admin web part methods

@@ -18,20 +18,6 @@ public interface IContentPageService
     /// </summary>
     Task<IEnumerable<ContentPageDetailDto>> GetHomePageCachedAsync(string culture, CancellationToken ct = default);
 
-    /// <summary>
-    /// Gets pages marked for display on home page as navigation links.
-    /// </summary>
-    Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture, CancellationToken ct = default);
-
-    /// <summary>
-    /// Gets pages marked for display in navigation.
-    /// </summary>
-    Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture, CancellationToken ct = default);
-
-    /// <summary>
-    /// Gets pages marked for display in footer.
-    /// </summary>
-    Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture, CancellationToken ct = default);
 
     /// <summary>
     /// Gets all pages for admin listing with pagination, sorting and filtering.

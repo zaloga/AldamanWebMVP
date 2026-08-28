@@ -40,13 +40,14 @@ public sealed class ContentGroupService : IContentGroupService
     }
 
     /// <summary>
-    /// Instantly invalidates all content group related cached entries.
+    /// Instantly invalidates all content group related cached entries and navigation caches.
     /// </summary>
-    private static void InvalidateCache()
+    internal static void InvalidateCache()
     {
         var oldSource = Interlocked.Exchange(ref _contentGroupCacheTokenSource, new CancellationTokenSource());
         oldSource.Cancel();
         oldSource.Dispose();
+        NavigationService.InvalidateCache();
     }
 
     public async Task<PagedResultDto<ContentGroupListItemDto>> GetPagedContentGroupsAsync(PaginationQuery query, string? culture = null, bool filterDeleted = false, CancellationToken ct = default)

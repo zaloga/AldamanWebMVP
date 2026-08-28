@@ -14,6 +14,7 @@ public static class DependencyInjection
         services.AddScoped<IBlogService, BlogService>();
         services.AddScoped<IContentPageService, ContentPageService>();
         services.AddScoped<IContentGroupService, ContentGroupService>();
+        services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IMediaService>(sp => new MediaService(
             sp.GetRequiredService<Aldaman.Persistence.Context.AppDbContext>(),
             webRootPath,

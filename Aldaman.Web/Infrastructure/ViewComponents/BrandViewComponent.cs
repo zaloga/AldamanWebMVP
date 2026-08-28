@@ -6,17 +6,17 @@ namespace Aldaman.Web.Infrastructure.ViewComponents;
 
 public class BrandViewComponent : ViewComponent
 {
-    private IContentPageService ContentPageService { get; }
+    private INavigationService NavigationService { get; }
 
-    public BrandViewComponent(IContentPageService contentPageService)
+    public BrandViewComponent(INavigationService navigationService)
     {
-        ContentPageService = contentPageService;
+        NavigationService = navigationService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
         string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var homePagePages = await ContentPageService.GetHomePageNavigationAsync(cultureCode);
+        var homePagePages = await NavigationService.GetHomePageNavigationAsync(cultureCode);
         
         return View(homePagePages);
     }

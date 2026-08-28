@@ -7,11 +7,11 @@ namespace Aldaman.Web.Infrastructure.ViewComponents;
 
 public class TopNavigationViewComponent : ViewComponent
 {
-    private IContentPageService ContentPageService { get; }
+    private INavigationService NavigationService { get; }
 
-    public TopNavigationViewComponent(IContentPageService contentPageService)
+    public TopNavigationViewComponent(INavigationService navigationService)
     {
-        ContentPageService = contentPageService;
+        NavigationService = navigationService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
@@ -20,7 +20,7 @@ public class TopNavigationViewComponent : ViewComponent
         
         var model = new TopNavigationViewModel
         {
-            NavigationPages = await ContentPageService.GetTopNavigationAsync(cultureCode)
+            NavigationPages = await NavigationService.GetTopNavigationAsync(cultureCode)
         };
         
         return View(model);

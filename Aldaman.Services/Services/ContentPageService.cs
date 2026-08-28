@@ -45,15 +45,17 @@ public sealed class ContentPageService : IContentPageService
     }
 
     /// <summary>
-    /// Instantly invalidates all blog-related cached entries.
-    /// It swaps the shared <see cref="_blogCacheTokenSource"/> with a new instance and cancels the old one,
+    /// Instantly invalidates all page-related cached entries, content groups and navigation caches.
+    /// It swaps the shared <see cref="_pageCacheTokenSource"/> with a new instance and cancels the old one,
     /// triggering eviction for all cache entries associated with the cancellation change token.
     /// </summary>
-    private static void InvalidateCache()
+    internal static void InvalidateCache()
     {
         var oldSource = Interlocked.Exchange(ref _pageCacheTokenSource, new CancellationTokenSource());
         oldSource.Cancel();
         oldSource.Dispose();
+        ContentGroupService.InvalidateCache();
+        NavigationService.InvalidateCache();
     }
 
     #region Admin web part methods
@@ -445,44 +447,6 @@ public sealed class ContentPageService : IContentPageService
         return result;
     }
 
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetHomePageNavigationAsync(string culture, CancellationToken ct = default)
-    {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.HomePage, ct);
-    }
-
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetTopNavigationAsync(string culture, CancellationToken ct = default)
-    {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.TopNavigation, ct);
-    }
-
-    public async Task<IEnumerable<ContentPageNavigationDto>> GetFooterNavigationAsync(string culture, CancellationToken ct = default)
-    {
-        return await GetNavigationInternalCachedAsync(culture, PlaceToShowEnum.Footer, ct);
-    }
-
-    private async Task<IEnumerable<ContentPageNavigationDto>> GetNavigationInternalCachedAsync(string culture, PlaceToShowEnum placeToShow, CancellationToken ct = default)
-    {
-        string cacheKey = $"Page:Navigation:{culture}:{placeToShow}";
-
-        if (!Cache.TryGetValue(cacheKey, out IEnumerable<ContentPageNavigationDto>? result) || result == null)
-        {
-            result = await Context.ContentPages
-                .Where(p => p.PlaceToShow.HasFlag(placeToShow))
-                .SelectMany(p => p.Translations.Where(t => t.CultureCode == culture))
-                .Where(t => !string.IsNullOrEmpty(t.Title) && !string.IsNullOrEmpty(t.Slug))
-                .OrderBy(t => t.ContentPage.PageOrder)
-                .Select(t => new ContentPageNavigationDto
-                {
-                    Title = t.Title,
-                    Slug = t.Slug
-                })
-                .ToListAsync(ct);
-
-            Cache.Set(cacheKey, result, CacheOptions);
-        }
-
-        return result;
-    }
 
     public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default)
     {
