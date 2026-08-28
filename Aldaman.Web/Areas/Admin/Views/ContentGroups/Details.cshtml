@@ -52,7 +52,7 @@
                                         }
                                     </dd>
 
-                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Slug]</dt>
+                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">URL</dt>
                                     <dd class="col-sm-10 font-monospace">
                                         @if (string.IsNullOrWhiteSpace(translation.Slug))
                                         {
@@ -60,7 +60,8 @@
                                         }
                                         else
                                         {
-                                            @translation.Slug
+                                            var url = Url.Action("Detail", "ContentGroup", new { area = "", culture = translation.CultureCode, slug = translation.Slug });
+                                            <a href="@url" target="_blank">@url</a>
                                         }
                                     </dd>
                                 </dl>
