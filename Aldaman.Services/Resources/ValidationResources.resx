@@ -112,4 +112,7 @@
   <data name="TargetHeightGreaterThanZero" xml:space="preserve">
     <value>Cílová výška musí být větší než nula.</value>
   </data>
+  <data name="OnlyOneContentGroupAllowedOnHomePage" xml:space="preserve">
+    <value>Na hlavní stránce (HP) může být umístěna maximálně jedna skupina obsahu.</value>
+  </data>
 </root>

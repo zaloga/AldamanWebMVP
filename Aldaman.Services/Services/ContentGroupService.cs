@@ -9,8 +9,10 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Page;
 using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
@@ -24,16 +26,19 @@ public sealed class ContentGroupService : IContentGroupService
     private LocalizationSettings Localization { get; }
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
+    private IStringLocalizer<ValidationResources> Localizer { get; }
 
     public ContentGroupService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
         IOptions<CacheSettings> cacheOptions,
-        IMemoryCache cache)
+        IMemoryCache cache,
+        IStringLocalizer<ValidationResources> localizer)
     {
         Context = context;
         Localization = localizationOptions.Value;
         Cache = cache;
+        Localizer = localizer;
         CacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentPageExpirationHours))
             .AddExpirationToken(new CancellationChangeToken(_contentGroupCacheTokenSource.Token));
@@ -229,6 +234,17 @@ public sealed class ContentGroupService : IContentGroupService
 
     public async Task CreateContentGroupAsync(ContentGroupEditDto dto, CancellationToken ct = default)
     {
+        if (dto.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+        {
+            bool hasOtherHomePageGroup = await Context.ContentGroups
+                .AnyAsync(g => g.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage), ct);
+
+            if (hasOtherHomePageGroup)
+            {
+                throw new InvalidOperationException(Localizer[ValidationResourceKeys.OnlyOneContentGroupAllowedOnHomePage].Value);
+            }
+        }
+
         var group = new ContentGroupEntity
         {
             PlaceToShow = dto.PlaceToShow,
@@ -297,6 +313,17 @@ public sealed class ContentGroupService : IContentGroupService
         if (group == null)
         {
             throw new KeyNotFoundException($"Content group with ID {id} not found.");
+        }
+
+        if (dto.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+        {
+            bool hasOtherHomePageGroup = await Context.ContentGroups
+                .AnyAsync(g => g.Id != id && g.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage), ct);
+
+            if (hasOtherHomePageGroup)
+            {
+                throw new InvalidOperationException(Localizer[ValidationResourceKeys.OnlyOneContentGroupAllowedOnHomePage].Value);
+            }
         }
 
         group.PlaceToShow = dto.PlaceToShow;
@@ -582,6 +609,120 @@ public sealed class ContentGroupService : IContentGroupService
             result = await Context.ContentGroupTranslations
                 .Where(t => t.ContentGroupId == id)
                 .ToDictionaryAsync(t => t.CultureCode, t => t.Slug, ct);
+
+            Cache.Set(cacheKey, result, CacheOptions);
+        }
+
+        return result;
+    }
+
+    public async Task<ContentGroupDetailDto?> GetHomePageContentGroupCachedAsync(string culture, CancellationToken ct = default)
+    {
+        string cacheKey = $"ContentGroup:HomePage:{culture}";
+
+        if (!Cache.TryGetValue(cacheKey, out ContentGroupDetailDto? result))
+        {
+            var group = await Context.ContentGroups
+                .Include(p => p.Translations)
+                .Include(p => p.ContentPages)
+                    .ThenInclude(cp => cp.ContentPage)
+                        .ThenInclude(p => p.Translations)
+                .Include(p => p.BlogPosts)
+                    .ThenInclude(bp => bp.BlogPost)
+                        .ThenInclude(p => p.Translations)
+                .Include(p => p.BlogPosts)
+                    .ThenInclude(bp => bp.BlogPost)
+                        .ThenInclude(p => p.CoverMediaAsset)
+                .FirstOrDefaultAsync(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage), ct);
+
+            if (group == null)
+            {
+                result = null;
+            }
+            else
+            {
+                var translation = group.Translations.FirstOrDefault(t => t.CultureCode == culture)
+                                  ?? group.Translations.FirstOrDefault(t => t.CultureCode == Localization.DefaultCulture)
+                                  ?? group.Translations.FirstOrDefault();
+
+                if (translation == null)
+                {
+                    result = null;
+                }
+                else
+                {
+                    var items = new List<ContentGroupDetailItemDto>();
+
+                    // Map ContentPages
+                    foreach (var cp in group.ContentPages.Where(cp => !cp.ContentPage.IsDeleted))
+                    {
+                        var pageTranslation = cp.ContentPage.Translations.FirstOrDefault(t => t.CultureCode == culture)
+                                              ?? cp.ContentPage.Translations.FirstOrDefault(t => t.CultureCode == Localization.DefaultCulture)
+                                              ?? cp.ContentPage.Translations.FirstOrDefault();
+
+                        if (pageTranslation != null)
+                        {
+                            items.Add(new ContentGroupDetailItemDto
+                            {
+                                Id = cp.ContentPageId,
+                                Type = ContentGroupItemTypeEnum.ContentPage,
+                                Order = cp.Order,
+                                Page = new ContentPageDetailDto
+                                {
+                                    Id = cp.ContentPage.Id,
+                                    Title = pageTranslation.Title,
+                                    DisplayTitle = pageTranslation.DisplayTitle,
+                                    Slug = pageTranslation.Slug,
+                                    BodyHtml = pageTranslation.BodyHtml,
+                                    BodyDeltaJson = pageTranslation.BodyDeltaJson,
+                                    PlainText = pageTranslation.PlainText
+                                }
+                            });
+                        }
+                    }
+
+                    // Map BlogPosts
+                    foreach (var bp in group.BlogPosts.Where(bp => !bp.BlogPost.IsDeleted && bp.BlogPost.IsPublished))
+                    {
+                        var blogTranslation = bp.BlogPost.Translations.FirstOrDefault(t => t.CultureCode == culture)
+                                              ?? bp.BlogPost.Translations.FirstOrDefault(t => t.CultureCode == Localization.DefaultCulture)
+                                              ?? bp.BlogPost.Translations.FirstOrDefault();
+
+                        if (blogTranslation != null)
+                        {
+                            items.Add(new ContentGroupDetailItemDto
+                            {
+                                Id = bp.BlogPostId,
+                                Type = ContentGroupItemTypeEnum.BlogPost,
+                                Order = bp.Order,
+                                BlogPost = new BlogPostListItemDto
+                                {
+                                    Id = bp.BlogPost.Id,
+                                    Title = blogTranslation.Title,
+                                    Slug = blogTranslation.Slug,
+                                    Perex = blogTranslation.Perex,
+                                    DisplayExpanded = blogTranslation.DisplayExpanded,
+                                    BodyHtml = blogTranslation.DisplayExpanded ? blogTranslation.BodyHtml : null,
+                                    PublishedAtUtc = bp.BlogPost.PublishedAtUtc,
+                                    IsPublished = bp.BlogPost.IsPublished,
+                                    CoverImageRelativePath = bp.BlogPost.CoverMediaAsset?.RelativePath,
+                                    CreatedAtUtc = bp.BlogPost.CreatedAtUtc
+                                }
+                            });
+                        }
+                    }
+
+                    result = new ContentGroupDetailDto
+                    {
+                        Id = group.Id,
+                        Title = translation.Title,
+                        Slug = translation.Slug,
+                        PlaceToShow = group.PlaceToShow,
+                        GroupOrder = group.GroupOrder,
+                        Items = items.OrderBy(x => x.Order).ToList()
+                    };
+                }
+            }
 
             Cache.Set(cacheKey, result, CacheOptions);
         }

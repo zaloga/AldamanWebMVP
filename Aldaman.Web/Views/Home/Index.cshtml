@@ -1,140 +1,169 @@
+@using Aldaman.Persistence.Enums
 @model Aldaman.Web.ViewModels.HomeIndexViewModel
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.Home]);
+    ViewData.SetPageTitle(Model.Group?.Title ?? Localizer[UIResourceKeys.Home]);
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
 }
 
-@if (Model.HomePages.Any())
+@if (Model.Group != null && Model.Group.Items.Any())
 {
-    @foreach (var homePage in Model.HomePages)
-    {
-        <section id="@homePage.Slug" class="mb-3">
-            <div class="flex flex-col mb-3">
-                <div class="flex items-start justify-between gap-4 mb-2">
-                    @if (homePage.DisplayTitle)
-                    {
-                        <div>
-                            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                                @homePage.Title
-                            </h2>
-                            <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mt-2"></div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div></div>
-                    }
-
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <a asp-area="Admin" asp-controller="ContentPages" asp-action="Update" asp-route-id="@homePage.Id"
-                           class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
-                           title="@Localizer[UIResourceKeys.Edit]">
-                            <i class="bi bi-pencil-square"></i>
-                            <span>@Localizer[UIResourceKeys.Edit]</span>
-                        </a>
-                    }
-                </div>
-                @if (!string.IsNullOrEmpty(homePage.BodyHtml))
-                {
-                    <div class="ql-snow">
-                        <div class="ql-editor">
-                            @Html.Raw(homePage.BodyHtml)
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="text-center py-12 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700">
-                        @if (homePage.DisplayTitle)
-                        {
-                            <h2 class="text-2xl font-bold text-amber-950/70 dark:text-slate-500">@homePage.Title</h2>
-                        }
-                        <p class="mt-2 text-amber-950/60 dark:text-slate-600">@Localizer[UIResourceKeys.SectionNoContent]</p>
-                    </div>
-                }
-            </div>
-        </section>
-    }
-}
-
-@if (Model.Posts != null && Model.Posts.Items.Any())
-{
-    <div class="grid gap-6 grid-cols-1 mt-8">
-        @foreach (var post in Model.Posts.Items)
+    <div class="homepage-content-group">
+        @if (User.Identity?.IsAuthenticated == true)
         {
-            <article class="flex flex-col overflow-hidden rounded-xl border border-amber-900/15 dark:border-white/10 bg-gradient-to-b from-amber-500/20 via-amber-400/15 to-amber-500/20 dark:bg-slate-800/60 p-6 shadow-sm"
-                     data-slug="@post.Slug"
-                     data-loaded-content="@(post.DisplayExpanded ? "true" : "false")">
-                <div class="flex items-center gap-4 sm:gap-5 mb-5">
-                    <img class="h-22 w-22 rounded-full object-cover shrink-0 border-2 border-[#EDBD00] dark:border-white/10 bg-amber-100 dark:bg-slate-900/50"
-                         src="@(post.CoverImageRelativePath ?? "/images/placeholder.jpg")"
-                         alt="@post.Title">
-                    <div class="flex flex-col">
-                        <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">@post.Title</span>
-                        @* TODO delete?
-                            <time datetime="@post.PublishedAtUtc?.ToString(FormatConstants.DateIso)" class="text-sm sm:text-base text-amber-950/70 dark:text-slate-400">
-                            @post.PublishedAtUtc?.ToString(FormatConstants.DateDot)
-                        </time> *@
-                    </div>
-                </div>
+            <div class="flex justify-end mb-4">
+                <a asp-area="Admin" asp-controller="ContentGroups" asp-action="Update" asp-route-id="@Model.Group.Id"
+                   class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
+                   title="@Localizer[UIResourceKeys.EditContentGroup]">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>@Localizer[UIResourceKeys.Edit]</span>
+                </a>
+            </div>
+        }
 
-                <div class="flex flex-1 flex-col justify-between">
-                    <div class="flex-1">
-                        <div class="mt-3">
-                            <p class="js-perex-text text-sm/relaxed text-slate-800 dark:text-slate-400 @(post.DisplayExpanded ? "" : "line-clamp-3")">
-                                @post.Perex
-                            </p>
-                        </div>
+        <div class="flex flex-col gap-8">
+            @foreach (var item in Model.Group.Items)
+            {
+                @if (item.Type == ContentGroupItemTypeEnum.ContentPage && item.Page != null)
+                {
+                    <section id="@item.Page.Slug" class="mb-2">
+                        <div class="flex flex-col">
+                            <div class="flex items-start justify-between gap-4 mb-2">
+                                @if (item.Page.DisplayTitle)
+                                {
+                                    <div>
+                                        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                                            @item.Page.Title
+                                        </h2>
+                                        <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mt-2"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div></div>
+                                }
 
-                        <div class="js-full-content-container mt-4 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 transition-opacity duration-300 @(post.DisplayExpanded ? "" : "opacity-0 hidden")">
-                            @if (post.DisplayExpanded && !string.IsNullOrEmpty(post.BodyHtml))
-                            {
-                                @Html.Raw(post.BodyHtml)
-                            }
-                        </div>
-
-                        <div class="mt-3 flex items-center justify-between gap-4">
-                            <div>
-                                <button type="button"
-                                        class="js-show-more-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(post.DisplayExpanded ? "hidden" : "")"
-                                        data-slug="@post.Slug">
-                                    <span>@Localizer[UIResourceKeys.ShowMore]</span>
-                                    <svg class="w-4 h-4 js-spinner-icon hidden animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                </button>
-                                <button type="button"
-                                        class="js-show-less-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(post.DisplayExpanded ? "" : "hidden")"
-                                        data-slug="@post.Slug">
-                                    <span>@Localizer[UIResourceKeys.ShowLess]</span>
-                                </button>
-                            </div>
-
-                            <div class="flex items-center gap-3">
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
-                                    <a asp-area="Admin" asp-controller="Blog" asp-action="Update" asp-route-id="@post.Id"
-                                       class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline"
+                                    <a asp-area="Admin" asp-controller="ContentPages" asp-action="Update" asp-route-id="@item.Page.Id"
+                                       class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
                                        title="@Localizer[UIResourceKeys.Edit]">
                                         <i class="bi bi-pencil-square"></i>
                                         <span>@Localizer[UIResourceKeys.Edit]</span>
                                     </a>
                                 }
+                            </div>
 
-                                <a href="/blog/@post.Slug" class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline">
-                                    <span>@Localizer[UIResourceKeys.ViewDetail]</span>
-                                    <i class="bi bi-arrow-right"></i>
-                                </a>
+                            @if (!string.IsNullOrEmpty(item.Page.BodyHtml))
+                            {
+                                <div class="ql-snow">
+                                    <div class="ql-editor">
+                                        @Html.Raw(item.Page.BodyHtml)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-10 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700">
+                                    @if (item.Page.DisplayTitle)
+                                    {
+                                        <h3 class="text-xl font-bold text-amber-950/70 dark:text-slate-500">@item.Page.Title</h3>
+                                    }
+                                    <p class="mt-2 text-amber-950/60 dark:text-slate-600">@Localizer[UIResourceKeys.SectionNoContent]</p>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+                else if (item.Type == ContentGroupItemTypeEnum.BlogPost && item.BlogPost != null)
+                {
+                    var post = item.BlogPost;
+                    <article class="flex flex-col overflow-hidden rounded-xl border border-amber-900/15 dark:border-white/10 bg-gradient-to-b from-amber-500/20 via-amber-400/15 to-amber-500/20 dark:bg-slate-800/60 p-6 shadow-sm"
+                             data-slug="@post.Slug"
+                             data-loaded-content="@(post.DisplayExpanded ? "true" : "false")">
+                        <div class="flex items-center gap-4 sm:gap-5 mb-5">
+                            <img class="h-22 w-22 rounded-full object-cover shrink-0 border-2 border-[#EDBD00] dark:border-white/10 bg-amber-100 dark:bg-slate-900/50"
+                                 src="@(post.CoverImageRelativePath ?? "/images/placeholder.jpg")"
+                                 alt="@post.Title">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-900 dark:text-white text-xl sm:text-2xl leading-snug">@post.Title</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </article>
+
+                        <div class="flex flex-1 flex-col justify-between">
+                            <div class="flex-1">
+                                <div class="mt-3">
+                                    <p class="js-perex-text text-sm/relaxed text-slate-800 dark:text-slate-400 @(post.DisplayExpanded ? "" : "line-clamp-3")">
+                                        @post.Perex
+                                    </p>
+                                </div>
+
+                                <div class="js-full-content-container mt-4 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 transition-opacity duration-300 @(post.DisplayExpanded ? "" : "opacity-0 hidden")">
+                                    @if (post.DisplayExpanded && !string.IsNullOrEmpty(post.BodyHtml))
+                                    {
+                                        @Html.Raw(post.BodyHtml)
+                                    }
+                                </div>
+
+                                <div class="mt-3 flex items-center justify-between gap-4">
+                                    <div>
+                                        <button type="button"
+                                                class="js-show-more-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(post.DisplayExpanded ? "hidden" : "")"
+                                                data-slug="@post.Slug">
+                                            <span>@Localizer[UIResourceKeys.ShowMore]</span>
+                                            <svg class="w-4 h-4 js-spinner-icon hidden animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </button>
+                                        <button type="button"
+                                                class="js-show-less-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(post.DisplayExpanded ? "" : "hidden")"
+                                                data-slug="@post.Slug">
+                                            <span>@Localizer[UIResourceKeys.ShowLess]</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex items-center gap-3">
+                                        @if (User.Identity?.IsAuthenticated == true)
+                                        {
+                                            <a asp-area="Admin" asp-controller="Blog" asp-action="Update" asp-route-id="@post.Id"
+                                               class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline"
+                                               title="@Localizer[UIResourceKeys.Edit]">
+                                                <i class="bi bi-pencil-square"></i>
+                                                <span>@Localizer[UIResourceKeys.Edit]</span>
+                                            </a>
+                                        }
+
+                                        <a href="/blog/@post.Slug" class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline">
+                                            <span>@Localizer[UIResourceKeys.ViewDetail]</span>
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center py-16 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700 my-8">
+        <h2 class="text-2xl font-bold text-amber-950/70 dark:text-slate-500 mb-2">@Localizer[UIResourceKeys.Home]</h2>
+        <p class="text-amber-950/60 dark:text-slate-600">@Localizer[UIResourceKeys.SectionNoContent]</p>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div class="mt-4">
+                <a asp-area="Admin" asp-controller="ContentGroups" asp-action="Create"
+                   class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-brand-primary text-white hover:bg-brand-primary/90 transition-colors shadow-sm">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>@Localizer[UIResourceKeys.CreateContentGroup]</span>
+                </a>
+            </div>
         }
     </div>
 }

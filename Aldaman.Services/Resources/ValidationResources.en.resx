@@ -112,4 +112,7 @@
   <data name="TargetHeightGreaterThanZero" xml:space="preserve">
     <value>Target height must be greater than zero.</value>
   </data>
+  <data name="OnlyOneContentGroupAllowedOnHomePage" xml:space="preserve">
+    <value>Only one content group can be displayed on the Homepage.</value>
+  </data>
 </root>

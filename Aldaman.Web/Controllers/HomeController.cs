@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using Aldaman.Services.Interfaces;
+using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,27 +9,32 @@ namespace Aldaman.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private const int DefaultPageSize = 10;
+    private IContentGroupService ContentGroupService { get; }
 
-    private IContentPageService ContentPageService { get; }
-    private IBlogService BlogService { get; }
-
-    public HomeController(IContentPageService contentPageService, IBlogService blogService)
+    public HomeController(IContentGroupService contentGroupService)
     {
-        ContentPageService = contentPageService;
-        BlogService = blogService;
+        ContentGroupService = contentGroupService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] int p = 1, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
     {
-        string cultureCode = CultureInfo.CurrentUICulture.Name;
-        var homePages = await ContentPageService.GetHomePageCachedAsync(cultureCode, cancellationToken);
-        var blogPosts = await BlogService.GetPagedBlogPostsCachedAsync(p, DefaultPageSize, cultureCode, cancellationToken);
+        string cultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        var group = await ContentGroupService.GetHomePageContentGroupCachedAsync(cultureCode, cancellationToken);
+
+        if (group != null)
+        {
+            var alternativeSlugs = await ContentGroupService.GetAlternativeSlugsCachedAsync(group.Id, cancellationToken);
+            var alternatives = new Dictionary<string, string>();
+            foreach (var slugEntry in alternativeSlugs)
+            {
+                alternatives[slugEntry.Key] = $"/{slugEntry.Key}";
+            }
+            ViewData.SetLanguageAlternatives(alternatives);
+        }
 
         var viewModel = new HomeIndexViewModel
         {
-            HomePages = homePages,
-            Posts = blogPosts
+            Group = group
         };
 
         return View(viewModel);

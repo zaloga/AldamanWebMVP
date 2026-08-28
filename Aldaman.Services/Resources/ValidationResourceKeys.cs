@@ -23,5 +23,6 @@ public const string MessageRequired = nameof(MessageRequired);
     public const string ImageFileEmpty = nameof(ImageFileEmpty);
     public const string TargetWidthGreaterThanZero = nameof(TargetWidthGreaterThanZero);
     public const string TargetHeightGreaterThanZero = nameof(TargetHeightGreaterThanZero);
+    public const string OnlyOneContentGroupAllowedOnHomePage = nameof(OnlyOneContentGroupAllowedOnHomePage);
 }
 

@@ -64,6 +64,11 @@ public interface IContentGroupService
     Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default);
 
     /// <summary>
+    /// Gets the content group configured to display on the Homepage.
+    /// </summary>
+    Task<ContentGroupDetailDto?> GetHomePageContentGroupCachedAsync(string culture, CancellationToken ct = default);
+
+    /// <summary>
     /// Finds the slug for a content group in a target culture if it exists under the given slug in any other culture.
     /// </summary>
     Task<string?> GetRedirectSlugCachedAsync(string slug, string targetCulture, CancellationToken ct = default);
