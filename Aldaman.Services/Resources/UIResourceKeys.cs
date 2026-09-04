@@ -186,6 +186,7 @@ public static class UIResourceKeys
     public const string NoCoverImage = nameof(NoCoverImage);
     public const string CreateBlogPost = nameof(CreateBlogPost);
     public const string UpdateBlogPost = nameof(UpdateBlogPost);
+    public const string EditBlogPost = nameof(EditBlogPost);
     public const string BlogPostDetails = nameof(BlogPostDetails);
     public const string PostSettings = nameof(PostSettings);
     public const string Perex = nameof(Perex);
@@ -240,6 +241,7 @@ public static class UIResourceKeys
     public const string NotSet = nameof(NotSet);
     public const string CreatePage = nameof(CreatePage);
     public const string EditPage = nameof(EditPage);
+    public const string EditContentPage = nameof(EditContentPage);
     public const string Settings = nameof(Settings);
     public const string DisplayTitle = nameof(DisplayTitle);
     public const string DisplayExpanded = nameof(DisplayExpanded);
