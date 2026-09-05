@@ -1227,5 +1227,65 @@
   <data name="AddItem" xml:space="preserve">
     <value>Add Item</value>
   </data>
+  <data name="Contents" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="DeletedContents" xml:space="preserve">
+    <value>Deleted Contents</value>
+  </data>
+  <data name="CreateContent" xml:space="preserve">
+    <value>Create Content</value>
+  </data>
+  <data name="UpdateContent" xml:space="preserve">
+    <value>Update Content</value>
+  </data>
+  <data name="EditContent" xml:space="preserve">
+    <value>Edit Content</value>
+  </data>
+  <data name="ContentDetails" xml:space="preserve">
+    <value>Content Details</value>
+  </data>
+  <data name="ContentSettings" xml:space="preserve">
+    <value>Content Settings</value>
+  </data>
+  <data name="ContentCreatedSuccessfully" xml:space="preserve">
+    <value>Content was created successfully.</value>
+  </data>
+  <data name="ContentUpdatedSuccessfully" xml:space="preserve">
+    <value>Content was updated successfully.</value>
+  </data>
+  <data name="ErrorCreatingContent" xml:space="preserve">
+    <value>An error occurred while creating the content: {0}</value>
+  </data>
+  <data name="ErrorUpdatingContent" xml:space="preserve">
+    <value>An error occurred while updating the content: {0}</value>
+  </data>
+  <data name="SelectContents" xml:space="preserve">
+    <value>Select Contents</value>
+  </data>
+  <data name="SelectContent" xml:space="preserve">
+    <value>Select Content</value>
+  </data>
+  <data name="AssociatedContents" xml:space="preserve">
+    <value>Associated Contents</value>
+  </data>
+  <data name="NoContentsSelected" xml:space="preserve">
+    <value>No contents have been assigned.</value>
+  </data>
+  <data name="AsPage" xml:space="preserve">
+    <value>As Page</value>
+  </data>
+  <data name="AsPost" xml:space="preserve">
+    <value>As Post</value>
+  </data>
+  <data name="ContentTypePage" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="ContentTypePost" xml:space="preserve">
+    <value>Post</value>
+  </data>
 </root>
 

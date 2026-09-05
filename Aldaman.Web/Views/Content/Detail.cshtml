@@ -1,0 +1,167 @@
+@using Aldaman.Persistence.Enums
+@model Aldaman.Web.ViewModels.ContentViewModel
+@{
+    ViewData.SetPageTitle(Model.Content.Title);
+    var isPost = Model.Content.ContentType == ContentTypeEnum.Post;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
+@if (isPost)
+{
+    @* --- BLOG POST LAYOUT --- *@
+    <article id="@Model.Content.Slug" class="border-b border-amber-900/15 dark:border-white/5 last:border-0">
+        <div class="flex flex-col">
+            <div class="mb-6">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                        <i class="bi bi-arrow-left mr-2"></i>
+                        @Localizer[UIResourceKeys.AllArticles]
+                    </a>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@Model.Content.Id"
+                           class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
+                           title="@Localizer[UIResourceKeys.EditContent]">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>@Localizer[UIResourceKeys.EditContent]</span>
+                        </a>
+                    }
+                </div>
+
+                @if (Model.Content.DisplayTitle && !string.IsNullOrWhiteSpace(Model.Content.Title))
+                {
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+                        @Model.Content.Title
+                    </h1>
+                    <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full mb-4"></div>
+                }
+
+                @if (Model.Content.PublishedAtUtc.HasValue || !string.IsNullOrWhiteSpace(Model.Content.AuthorName))
+                {
+                    <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-4">
+                        @if (Model.Content.PublishedAtUtc.HasValue)
+                        {
+                            <span class="inline-flex items-center gap-1">
+                                <i class="bi bi-calendar3"></i>
+                                @Model.Content.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot)
+                            </span>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Content.AuthorName))
+                        {
+                            <span class="inline-flex items-center gap-1">
+                                <i class="bi bi-person"></i>
+                                @Model.Content.AuthorName
+                            </span>
+                        }
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Content.CoverImageRelativePath))
+                {
+                    <div class="mb-6 overflow-hidden rounded-2xl max-h-96">
+                        <img src="@Model.Content.CoverImageRelativePath" alt="@Model.Content.Title" class="w-full h-full object-cover" />
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Content.Perex))
+                {
+                    <p class="text-lg sm:text-xl text-slate-800 dark:text-slate-400 font-medium leading-relaxed mb-4">@Model.Content.Perex</p>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Content.BodyHtml))
+            {
+                <div class="ql-snow">
+                    <div class="ql-editor">
+                        @Html.Raw(Model.Content.BodyHtml)
+                    </div>
+                </div>
+            }
+            else if (string.IsNullOrWhiteSpace(Model.Content.Perex))
+            {
+                <div class="text-center py-12 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700">
+                    <p class="text-amber-950/70 dark:text-slate-500 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
+                </div>
+            }
+
+            @if (Model.PreviousContent != null || Model.NextContent != null)
+            {
+                <footer class="mt-8 pt-6 border-t border-amber-900/15 dark:border-white/10">
+                    <div class="flex flex-row justify-between items-center gap-4">
+                        <div>
+                            @if (Model.PreviousContent != null)
+                            {
+                                <a asp-action="Detail" asp-route-slug="@Model.PreviousContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                                    <i class="bi bi-arrow-left mr-2"></i>
+                                    @Localizer[UIResourceKeys.PreviousPost]
+                                </a>
+                            }
+                        </div>
+                        <div>
+                            @if (Model.NextContent != null)
+                            {
+                                <a asp-action="Detail" asp-route-slug="@Model.NextContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                                    @Localizer[UIResourceKeys.NextPost]
+                                    <i class="bi bi-arrow-right ml-2"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </footer>
+            }
+        </div>
+    </article>
+}
+else
+{
+    @* --- CONTENT PAGE LAYOUT --- *@
+    <article id="@Model.Content.Slug" class="border-b border-amber-900/15 dark:border-white/5 last:border-0">
+        <div class="flex flex-col">
+            <div class="flex items-center justify-between gap-4 mb-4">
+                <a asp-controller="Home" asp-action="Index" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                    <i class="bi bi-arrow-left mr-2"></i>
+                    @Localizer[UIResourceKeys.Home]
+                </a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@Model.Content.Id"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
+                       title="@Localizer[UIResourceKeys.EditContent]">
+                        <i class="bi bi-pencil-square"></i>
+                        <span>@Localizer[UIResourceKeys.EditContent]</span>
+                    </a>
+                }
+            </div>
+
+            @if (Model.Content.DisplayTitle && !string.IsNullOrWhiteSpace(Model.Content.Title))
+            {
+                <div class="mb-6">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+                        @Model.Content.Title
+                    </h1>
+                    <div class="h-1.5 w-20 bg-brand-primary dark:bg-brand-accent rounded-full"></div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.Content.BodyHtml))
+            {
+                <div class="ql-snow">
+                    <div class="ql-editor">
+                        @Html.Raw(Model.Content.BodyHtml)
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-12 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700">
+                    <p class="text-amber-950/70 dark:text-slate-500 italic">@Localizer[UIResourceKeys.NoHtmlContent]</p>
+                </div>
+            }
+        </div>
+    </article>
+}

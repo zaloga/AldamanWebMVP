@@ -11,8 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, string webRootPath)
     {
         services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<IBlogService, BlogService>();
-        services.AddScoped<IContentPageService, ContentPageService>();
+        services.AddScoped<IContentService, ContentService>();
         services.AddScoped<IContentGroupService, ContentGroupService>();
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IMediaService>(sp => new MediaService(

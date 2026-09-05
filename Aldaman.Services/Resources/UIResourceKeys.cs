@@ -138,7 +138,6 @@ public static class UIResourceKeys
     public const string NoItemsFound = nameof(NoItemsFound);
     public const string None = nameof(None);
     public const string Title = nameof(Title);
-    public const string Content = nameof(Content);
     public const string Translations = nameof(Translations);
     public const string Metadata = nameof(Metadata);
     public const string SystemInformation = nameof(SystemInformation);
@@ -164,6 +163,28 @@ public static class UIResourceKeys
     public const string ConfirmDeletePermanentlyText = nameof(ConfirmDeletePermanentlyText);
     public const string YesDeleteIt = nameof(YesDeleteIt);
     public const string DeletePermanentlyButton = nameof(DeletePermanentlyButton);
+
+    // Admin Content
+    public const string Contents = nameof(Contents);
+    public const string Content = nameof(Content);
+    public const string DeletedContents = nameof(DeletedContents);
+    public const string CreateContent = nameof(CreateContent);
+    public const string UpdateContent = nameof(UpdateContent);
+    public const string EditContent = nameof(EditContent);
+    public const string ContentDetails = nameof(ContentDetails);
+    public const string ContentSettings = nameof(ContentSettings);
+    public const string ContentCreatedSuccessfully = nameof(ContentCreatedSuccessfully);
+    public const string ContentUpdatedSuccessfully = nameof(ContentUpdatedSuccessfully);
+    public const string ErrorCreatingContent = nameof(ErrorCreatingContent);
+    public const string ErrorUpdatingContent = nameof(ErrorUpdatingContent);
+    public const string SelectContents = nameof(SelectContents);
+    public const string SelectContent = nameof(SelectContent);
+    public const string AssociatedContents = nameof(AssociatedContents);
+    public const string NoContentsSelected = nameof(NoContentsSelected);
+    public const string AsPage = nameof(AsPage);
+    public const string AsPost = nameof(AsPost);
+    public const string ContentTypePage = nameof(ContentTypePage);
+    public const string ContentTypePost = nameof(ContentTypePost);
 
     // Admin Blog
     public const string BlogPosts = nameof(BlogPosts);

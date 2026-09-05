@@ -136,37 +136,43 @@ public class Program
             pattern: $"{culturePattern}/{{area:exists}}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 
-        // Content Pages
+        // Content (Unified)
         app.MapControllerRoute(
-            name: "page_detail",
-            pattern: $"{culturePattern}/page/{{slug}}",
-            defaults: new { controller = "ContentPage", action = "Detail" })
+            name: "content_detail",
+            pattern: $"{culturePattern}/content/{{slug}}",
+            defaults: new { controller = "Content", action = "Detail" })
+            .WithStaticAssets();
+
+        app.MapControllerRoute(
+            name: "content_data",
+            pattern: $"{culturePattern}/content/data/{{slug}}",
+            defaults: new { controller = "Content", action = "GetContentBySlug" })
             .WithStaticAssets();
 
         // Content Groups
         app.MapControllerRoute(
             name: "content_group_detail",
-            pattern: $"{culturePattern}/content/{{slug}}",
+            pattern: $"{culturePattern}/group/{{slug}}",
             defaults: new { controller = "ContentGroup", action = "Detail" })
             .WithStaticAssets();
 
-        // Blog
+        // Backward compatibility routes for old page and blog URLs
         app.MapControllerRoute(
-            name: "blog_index",
-            pattern: $"{culturePattern}/blog",
-            defaults: new { controller = "Blog", action = "Index" })
-            .WithStaticAssets();
-
-        app.MapControllerRoute(
-            name: "blog_content",
-            pattern: $"{culturePattern}/blog/content/{{slug}}",
-            defaults: new { controller = "Blog", action = "GetContentBySlug" })
+            name: "page_detail",
+            pattern: $"{culturePattern}/page/{{slug}}",
+            defaults: new { controller = "Content", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
             name: "blog_detail",
             pattern: $"{culturePattern}/blog/{{slug}}",
-            defaults: new { controller = "Blog", action = "Detail" })
+            defaults: new { controller = "Content", action = "Detail" })
+            .WithStaticAssets();
+
+        app.MapControllerRoute(
+            name: "blog_content",
+            pattern: $"{culturePattern}/blog/content/{{slug}}",
+            defaults: new { controller = "Content", action = "GetContentBySlug" })
             .WithStaticAssets();
 
         // Contact

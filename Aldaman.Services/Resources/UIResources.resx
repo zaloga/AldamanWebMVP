@@ -1227,6 +1227,66 @@
   <data name="AddItem" xml:space="preserve">
     <value>Přidat položku</value>
   </data>
+  <data name="Contents" xml:space="preserve">
+    <value>Obsah</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Obsah</value>
+  </data>
+  <data name="DeletedContents" xml:space="preserve">
+    <value>Smazaný obsah</value>
+  </data>
+  <data name="CreateContent" xml:space="preserve">
+    <value>Vytvořit obsah</value>
+  </data>
+  <data name="UpdateContent" xml:space="preserve">
+    <value>Upravit obsah</value>
+  </data>
+  <data name="EditContent" xml:space="preserve">
+    <value>Upravit obsah</value>
+  </data>
+  <data name="ContentDetails" xml:space="preserve">
+    <value>Detail obsahu</value>
+  </data>
+  <data name="ContentSettings" xml:space="preserve">
+    <value>Nastavení obsahu</value>
+  </data>
+  <data name="ContentCreatedSuccessfully" xml:space="preserve">
+    <value>Obsah byl úspěšně vytvořen.</value>
+  </data>
+  <data name="ContentUpdatedSuccessfully" xml:space="preserve">
+    <value>Obsah byl úspěšně upraven.</value>
+  </data>
+  <data name="ErrorCreatingContent" xml:space="preserve">
+    <value>Při vytváření obsahu došlo k chybě: {0}</value>
+  </data>
+  <data name="ErrorUpdatingContent" xml:space="preserve">
+    <value>Při úpravě obsahu došlo k chybě: {0}</value>
+  </data>
+  <data name="SelectContents" xml:space="preserve">
+    <value>Vybrat obsah</value>
+  </data>
+  <data name="SelectContent" xml:space="preserve">
+    <value>Vybrat položku obsahu</value>
+  </data>
+  <data name="AssociatedContents" xml:space="preserve">
+    <value>Přiřazený obsah</value>
+  </data>
+  <data name="NoContentsSelected" xml:space="preserve">
+    <value>Nebyl vybrán žádný obsah.</value>
+  </data>
+  <data name="AsPage" xml:space="preserve">
+    <value>Jako stránka</value>
+  </data>
+  <data name="AsPost" xml:space="preserve">
+    <value>Jako příspěvek</value>
+  </data>
+  <data name="ContentTypePage" xml:space="preserve">
+    <value>Stránka</value>
+  </data>
+  <data name="ContentTypePost" xml:space="preserve">
+    <value>Příspěvek</value>
+  </data>
 </root>
 
 

@@ -4,7 +4,7 @@
 
 @foreach (var navigation in Model)
 {
-    var targetController = navigation.IsGroup ? "ContentGroup" : "ContentPage";
+    var targetController = navigation.IsGroup ? "ContentGroup" : "Content";
     var isActive = ViewContext.IsNavActive(targetController, "Detail", navigation.Slug);
     <a class="@(isActive ? "text-md font-semibold text-brand-primary dark:text-brand-accent underline decoration-2 underline-offset-4 transition-colors" : "text-md text-amber-950/80 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition-colors")" 
        asp-area="" 

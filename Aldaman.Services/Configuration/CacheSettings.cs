@@ -7,9 +7,7 @@ public sealed class CacheSettings
 {
     public const string SectionName = "Cache";
 
-    public int ContentPageExpirationHours { get; set; } = 24;
-
-    public int BlogExpirationHours { get; set; } = 24;
+    public int ContentExpirationHours { get; set; } = 24;
 
     public int SearchExpirationMinutes { get; set; } = 5;
 }

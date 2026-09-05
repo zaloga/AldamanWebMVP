@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Search;
@@ -39,33 +40,21 @@ public sealed class SearchService : ISearchService
 
         if (!Cache.TryGetValue(cacheKey, out List<SearchResultDto>? cachedResults) || cachedResults == null)
         {
-            // 1. Search Blog Posts
-            var blogResults = await SearchBlogResultsInternal(query, cultureCode)
+            var results = await SearchContentInternal(query, cultureCode)
                 .Take(MaxItemsForSearch)
                 .Select(t => new SearchResultDto
                 {
                     Title = t.Title,
                     Content = t.PlainText ?? string.Empty,
-                    Url = $"{baseUrl}/{cultureCode}/blog/{t.Slug}",
-                    Type = "BlogPost"
+                    Url = t.Content.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage)
+                        ? $"{baseUrl}/{cultureCode}#{t.Slug}"
+                        : $"{baseUrl}/{cultureCode}/content/{t.Slug}",
+                    Type = "Content"
                 })
                 .ToListAsync(ct);
 
-            // 2. Search Content Pages
-            var pageResults = await SearchContentPagesInternal(query, cultureCode)
-                .Take(MaxItemsForSearch)
-                .Select(t => new SearchResultDto
-                {
-                    Title = t.Title,
-                    Content = t.PlainText ?? string.Empty,
-                    Url = $"{baseUrl}/{cultureCode}/page/{t.Slug}",
-                    Type = "ContentPage"
-                })
-                .ToListAsync(ct);
-
-            // Combine and return
-            cachedResults = blogResults.Concat(pageResults)
-                .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase)) // Very basic relevance: title matches first
+            cachedResults = results
+                .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .Take(MaxItemsForSearch)
                 .ToList();
 
@@ -89,30 +78,18 @@ public sealed class SearchService : ISearchService
 
         if (!Cache.TryGetValue(cacheKey, out List<AutocompleteResultDto>? cachedResults) || cachedResults == null)
         {
-            // 1. Search Blog Posts
-            List<AutocompleteResultDto> blogResults = await SearchBlogResultsInternal(query, cultureCode)
+            List<AutocompleteResultDto> results = await SearchContentInternal(query, cultureCode)
                 .Take(MaxItemsForAutocomplete)
                 .Select(t => new AutocompleteResultDto
                 {
                     Title = t.Title,
-                    Url = $"{baseUrl}/{cultureCode}/blog/{t.Slug}"
-                })
-                .ToListAsync(ct);
-
-            // 2. Search Content Pages
-            List<AutocompleteResultDto> pageResults = await SearchContentPagesInternal(query, cultureCode)
-                .Take(MaxItemsForAutocomplete)
-                .Select(t => new AutocompleteResultDto
-                {
-                    Title = t.Title,
-                    Url = t.ContentPage.PlaceToShow == PlaceToShowEnum.HomePage
+                    Url = t.Content.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage)
                         ? $"{baseUrl}/{cultureCode}#{t.Slug}"
-                        : $"{baseUrl}/{cultureCode}/page/{t.Slug}"
+                        : $"{baseUrl}/{cultureCode}/content/{t.Slug}"
                 })
                 .ToListAsync(ct);
 
-            // Combine and return
-            cachedResults = [.. blogResults.Concat(pageResults)
+            cachedResults = [.. results
                 .OrderByDescending(r => r.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
                 .Take(MaxItemsForAutocomplete)];
 
@@ -122,25 +99,14 @@ public sealed class SearchService : ISearchService
         return cachedResults;
     }
 
-    private IOrderedQueryable<Persistence.Entities.BlogPostTranslationEntity> SearchBlogResultsInternal(string query, string cultureCode)
+    private IOrderedQueryable<ContentTranslationEntity> SearchContentInternal(string query, string cultureCode)
     {
-        return Context.BlogPostTranslations
-                    .Include(t => t.BlogPost)
-                    .Where(t =>
-                        t.CultureCode == cultureCode
-                        && t.BlogPost.IsPublished
-                        && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
-                    .OrderByDescending(t => t.BlogPost.PublishedAtUtc);
-    }
-
-    private IOrderedQueryable<Persistence.Entities.ContentPageTranslationEntity> SearchContentPagesInternal(string query, string cultureCode)
-    {
-        return Context.ContentPageTranslations
-                    .Include(t => t.ContentPage)
-                    .Where(t =>
-                        t.CultureCode == cultureCode
-                        && t.ContentPage.PlaceToShow != PlaceToShowEnum.None
-                        && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
-                    .OrderBy(t => t.ContentPage.PageOrder);
+        return Context.ContentTranslations
+            .Include(t => t.Content)
+            .Where(t =>
+                t.CultureCode == cultureCode
+                && t.Content.IsPublished
+                && (t.Title.Contains(query) || (t.PlainText != null && t.PlainText.Contains(query))))
+            .OrderByDescending(t => t.Content.PublishedAtUtc ?? t.Content.CreatedAtUtc);
     }
 }

@@ -26,7 +26,7 @@ public sealed class NavigationService : INavigationService
         Context = context;
         Cache = cache;
         CacheOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentPageExpirationHours))
+            .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentExpirationHours))
             .AddExpirationToken(new CancellationChangeToken(_navigationCacheTokenSource.Token));
     }
 
@@ -63,8 +63,8 @@ public sealed class NavigationService : INavigationService
 
         if (!Cache.TryGetValue(cacheKey, out IEnumerable<NavigationDto>? result) || result == null)
         {
-            var pages = await Context.ContentPages
-                .Where(p => p.PlaceToShow.HasFlag(placeToShow))
+            var contents = await Context.Contents
+                .Where(p => p.PlaceToShow.HasFlag(placeToShow) && p.IsPublished)
                 .SelectMany(p => p.Translations.Where(t => t.CultureCode == culture))
                 .Where(t => !string.IsNullOrEmpty(t.Title) && !string.IsNullOrEmpty(t.Slug))
                 .Select(t => new NavigationDto
@@ -72,7 +72,7 @@ public sealed class NavigationService : INavigationService
                     Title = t.Title,
                     Slug = t.Slug,
                     IsGroup = false,
-                    Order = t.ContentPage.PageOrder
+                    Order = t.Content.Order
                 })
                 .ToListAsync(ct);
 
@@ -89,7 +89,7 @@ public sealed class NavigationService : INavigationService
                 })
                 .ToListAsync(ct);
 
-            result = pages.Concat(groups)
+            result = contents.Concat(groups)
                 .OrderBy(item => item.Order)
                 .ToList();
 

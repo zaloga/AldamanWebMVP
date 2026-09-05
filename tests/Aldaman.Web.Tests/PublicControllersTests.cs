@@ -45,6 +45,7 @@ public class PublicControllersTests : IClassFixture<WebApplicationFactory<Progra
     }
 
     [Theory]
+    [InlineData("/cs/content/neexistujici-obsah")]
     [InlineData("/cs/page/neexistujici-stranka")]
     [InlineData("/cs/blog/neexistujici-clanek")]
     public async Task Get_DetailEndpoints_ReturnNotFoundForMissingItems(string url)

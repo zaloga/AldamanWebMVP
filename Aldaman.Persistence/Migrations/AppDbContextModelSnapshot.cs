@@ -127,131 +127,6 @@ namespace Aldaman.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.BlogPostEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CoverMediaAssetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("PublishedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CoverMediaAssetId");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("DeletedByUserId");
-
-                    b.HasIndex("IsPublished");
-
-                    b.HasIndex("PublishedAtUtc");
-
-                    b.HasIndex("UpdatedByUserId");
-
-                    b.ToTable("BlogPosts");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.BlogPostTranslationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BlogPostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BodyDeltaJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BodyHtml")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CultureCode")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<bool>("DisplayExpanded")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Perex")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("PlainText")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime?>("UpdatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.HasIndex("UpdatedByUserId");
-
-                    b.HasIndex("BlogPostId", "CultureCode")
-                        .IsUnique();
-
-                    b.ToTable("BlogPostTranslations");
-                });
-
             modelBuilder.Entity("Aldaman.Persistence.Entities.ContactMessageEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -317,16 +192,18 @@ namespace Aldaman.Persistence.Migrations
                     b.ToTable("ContactMessages");
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupBlogPostEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BlogPostId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ContentType")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
 
-                    b.Property<Guid>("ContentGroupId")
+                    b.Property<Guid?>("CoverMediaAssetId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -335,10 +212,30 @@ namespace Aldaman.Persistence.Migrations
                     b.Property<Guid?>("CreatedByUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DeletedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublished")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<int>("Order")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<int>("PlaceToShow")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PublishedAtUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
@@ -348,19 +245,26 @@ namespace Aldaman.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BlogPostId");
+                    b.HasIndex("CoverMediaAssetId");
 
                     b.HasIndex("CreatedByUserId");
 
+                    b.HasIndex("DeletedByUserId");
+
+                    b.HasIndex("IsPublished");
+
+                    b.HasIndex("Order");
+
+                    b.HasIndex("PlaceToShow");
+
+                    b.HasIndex("PublishedAtUtc");
+
                     b.HasIndex("UpdatedByUserId");
 
-                    b.HasIndex("ContentGroupId", "BlogPostId")
-                        .IsUnique();
-
-                    b.ToTable("ContentGroupBlogPosts");
+                    b.ToTable("Contents");
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupContentPageEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupContentEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -369,7 +273,7 @@ namespace Aldaman.Persistence.Migrations
                     b.Property<Guid>("ContentGroupId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContentPageId")
+                    b.Property<Guid>("ContentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -391,16 +295,16 @@ namespace Aldaman.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentPageId");
+                    b.HasIndex("ContentId");
 
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("UpdatedByUserId");
 
-                    b.HasIndex("ContentGroupId", "ContentPageId")
+                    b.HasIndex("ContentGroupId", "ContentId")
                         .IsUnique();
 
-                    b.ToTable("ContentGroupContentPages");
+                    b.ToTable("ContentGroupContents");
                 });
 
             modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupEntity", b =>
@@ -499,55 +403,7 @@ namespace Aldaman.Persistence.Migrations
                     b.ToTable("ContentGroupTranslations");
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PageOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("PlaceToShow")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<DateTime?>("UpdatedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("DeletedByUserId");
-
-                    b.HasIndex("UpdatedByUserId");
-
-                    b.ToTable("ContentPages");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageTranslationEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -559,7 +415,7 @@ namespace Aldaman.Persistence.Migrations
                     b.Property<string>("BodyHtml")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ContentPageId")
+                    b.Property<Guid>("ContentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -573,10 +429,19 @@ namespace Aldaman.Persistence.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
+                    b.Property<bool>("DisplayExpanded")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<bool>("DisplayTitle")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<string>("Perex")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("PlainText")
                         .HasMaxLength(2048)
@@ -604,10 +469,13 @@ namespace Aldaman.Persistence.Migrations
 
                     b.HasIndex("UpdatedByUserId");
 
-                    b.HasIndex("ContentPageId", "CultureCode")
+                    b.HasIndex("ContentId", "CultureCode")
                         .IsUnique();
 
-                    b.ToTable("ContentPageTranslations");
+                    b.HasIndex("CultureCode", "Slug")
+                        .IsUnique();
+
+                    b.ToTable("ContentTranslations");
                 });
 
             modelBuilder.Entity("Aldaman.Persistence.Entities.MediaAssetEntity", b =>
@@ -860,7 +728,22 @@ namespace Aldaman.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.BlogPostEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContactMessageEntity", b =>
+                {
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
+                        .WithMany()
+                        .HasForeignKey("DeletedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("DeletedByUser");
+                });
+
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentEntity", b =>
                 {
                     b.HasOne("Aldaman.Persistence.Entities.MediaAssetEntity", "CoverMediaAsset")
                         .WithMany()
@@ -891,90 +774,17 @@ namespace Aldaman.Persistence.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.BlogPostTranslationEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupContentEntity", b =>
                 {
-                    b.HasOne("Aldaman.Persistence.Entities.BlogPostEntity", "BlogPost")
-                        .WithMany("Translations")
-                        .HasForeignKey("BlogPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
-                        .WithMany()
-                        .HasForeignKey("UpdatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("BlogPost");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("UpdatedByUser");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContactMessageEntity", b =>
-                {
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId");
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
-                        .WithMany()
-                        .HasForeignKey("DeletedByUserId");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("DeletedByUser");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupBlogPostEntity", b =>
-                {
-                    b.HasOne("Aldaman.Persistence.Entities.BlogPostEntity", "BlogPost")
-                        .WithMany("ContentGroups")
-                        .HasForeignKey("BlogPostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Aldaman.Persistence.Entities.ContentGroupEntity", "ContentGroup")
-                        .WithMany("BlogPosts")
+                        .WithMany("Contents")
                         .HasForeignKey("ContentGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
-                        .WithMany()
-                        .HasForeignKey("UpdatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("BlogPost");
-
-                    b.Navigation("ContentGroup");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("UpdatedByUser");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupContentPageEntity", b =>
-                {
-                    b.HasOne("Aldaman.Persistence.Entities.ContentGroupEntity", "ContentGroup")
-                        .WithMany("ContentPages")
-                        .HasForeignKey("ContentGroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Aldaman.Persistence.Entities.ContentPageEntity", "ContentPage")
+                    b.HasOne("Aldaman.Persistence.Entities.ContentEntity", "Content")
                         .WithMany("ContentGroups")
-                        .HasForeignKey("ContentPageId")
+                        .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -988,9 +798,9 @@ namespace Aldaman.Persistence.Migrations
                         .HasForeignKey("UpdatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("ContentGroup");
+                    b.Navigation("Content");
 
-                    b.Navigation("ContentPage");
+                    b.Navigation("ContentGroup");
 
                     b.Navigation("CreatedByUser");
 
@@ -1046,35 +856,11 @@ namespace Aldaman.Persistence.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentTranslationEntity", b =>
                 {
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "DeletedByUser")
-                        .WithMany()
-                        .HasForeignKey("DeletedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Aldaman.Persistence.Entities.AppUser", "UpdatedByUser")
-                        .WithMany()
-                        .HasForeignKey("UpdatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("DeletedByUser");
-
-                    b.Navigation("UpdatedByUser");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageTranslationEntity", b =>
-                {
-                    b.HasOne("Aldaman.Persistence.Entities.ContentPageEntity", "ContentPage")
+                    b.HasOne("Aldaman.Persistence.Entities.ContentEntity", "Content")
                         .WithMany("Translations")
-                        .HasForeignKey("ContentPageId")
+                        .HasForeignKey("ContentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1088,7 +874,7 @@ namespace Aldaman.Persistence.Migrations
                         .HasForeignKey("UpdatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("ContentPage");
+                    b.Navigation("Content");
 
                     b.Navigation("CreatedByUser");
 
@@ -1191,7 +977,7 @@ namespace Aldaman.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Aldaman.Persistence.Entities.BlogPostEntity", b =>
+            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentEntity", b =>
                 {
                     b.Navigation("ContentGroups");
 
@@ -1200,16 +986,7 @@ namespace Aldaman.Persistence.Migrations
 
             modelBuilder.Entity("Aldaman.Persistence.Entities.ContentGroupEntity", b =>
                 {
-                    b.Navigation("BlogPosts");
-
-                    b.Navigation("ContentPages");
-
-                    b.Navigation("Translations");
-                });
-
-            modelBuilder.Entity("Aldaman.Persistence.Entities.ContentPageEntity", b =>
-                {
-                    b.Navigation("ContentGroups");
+                    b.Navigation("Contents");
 
                     b.Navigation("Translations");
                 });

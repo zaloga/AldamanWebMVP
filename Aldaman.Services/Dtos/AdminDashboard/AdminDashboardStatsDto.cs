@@ -5,9 +5,8 @@ namespace Aldaman.Services.Dtos.AdminDashboard;
 /// </summary>
 public class AdminDashboardStatsDto
 {
-    public int TotalPagesCount { get; set; }
+    public int TotalContentsCount { get; set; }
     public int TotalContentGroupsCount { get; set; }
-    public int BlogPostsCount { get; set; }
     public int ContactMessagesCount { get; set; }
     public long TotalMediaCount { get; set; }
     public long TotalMediaSizeInBytes { get; set; }

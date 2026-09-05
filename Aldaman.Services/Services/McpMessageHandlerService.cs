@@ -73,7 +73,7 @@ public sealed class McpMessageHandlerService : IMcpMessageHandlerService
                 new McpTool
                 {
                     Name = "search",
-                    Description = "Searches for content in the website (blog posts, pages).",
+                    Description = "Searches for content in the website (pages, articles).",
                     InputSchema = new McpJsonSchema
                     {
                         Properties = new Dictionary<string, object>

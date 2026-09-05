@@ -1,39 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Handler for Unified Content Pages and Blog Posts selector in Content Groups
+    // Handler for Unified Content selector in Content Groups
 
     const container = document.getElementById('selectedItemsContainer');
-    const itemTypeSelect = document.getElementById('itemTypeSelect');
-    const contentPagesWrapper = document.getElementById('contentPagesSelectWrapper');
-    const blogPostsWrapper = document.getElementById('blogPostsSelectWrapper');
-    const contentPagesSelect = document.getElementById('contentPagesSelect');
-    const blogPostsSelect = document.getElementById('blogPostsSelect');
+    const contentsSelect = document.getElementById('contentsSelect');
     const btnAddItem = document.getElementById('btnAddItem');
 
-    if (!container || !itemTypeSelect || !btnAddItem) return;
-
-    // Toggle dropdown based on selected type
-    itemTypeSelect.addEventListener('change', function () {
-        const typeValue = itemTypeSelect.value;
-        if (typeValue === '1') { // ContentPage
-            if (contentPagesWrapper) contentPagesWrapper.classList.remove('d-none');
-            if (blogPostsWrapper) blogPostsWrapper.classList.add('d-none');
-        } else if (typeValue === '2') { // BlogPost
-            if (contentPagesWrapper) contentPagesWrapper.classList.add('d-none');
-            if (blogPostsWrapper) blogPostsWrapper.classList.remove('d-none');
-        }
-    });
+    if (!container || !btnAddItem || !contentsSelect) return;
 
     function updateIndicesAndOrders() {
         const rows = container.querySelectorAll('.content-group-item-row');
         rows.forEach((row, index) => {
             const idInput = row.querySelector('.item-id-input');
-            const typeInput = row.querySelector('.item-type-input');
             const orderInput = row.querySelector('.item-order-input');
             const titleInput = row.querySelector('.item-title-input');
             const slugInput = row.querySelector('.item-slug-input');
 
             if (idInput) idInput.name = `SelectedItems[${index}].Id`;
-            if (typeInput) typeInput.name = `SelectedItems[${index}].Type`;
             if (titleInput) titleInput.name = `SelectedItems[${index}].Title`;
             if (slugInput) slugInput.name = `SelectedItems[${index}].Slug`;
             if (orderInput) {
@@ -65,28 +47,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     btnAddItem.addEventListener('click', function () {
-        const typeValue = itemTypeSelect.value;
-        const isPage = typeValue === '1';
-        const select = isPage ? contentPagesSelect : blogPostsSelect;
-
-        if (!select) return;
-
-        const selectedOption = select.options[select.selectedIndex];
+        const selectedOption = contentsSelect.options[contentsSelect.selectedIndex];
         if (!selectedOption || !selectedOption.value) return;
 
         const itemId = selectedOption.value;
         const itemTitle = selectedOption.getAttribute('data-title') || selectedOption.text;
         const itemSlug = selectedOption.getAttribute('data-slug') || '';
-        const pageLabel = itemTypeSelect.getAttribute('data-label-page') || 'Page';
-        const blogLabel = itemTypeSelect.getAttribute('data-label-blogpost') || 'Blog Post';
-        const typeLabel = isPage ? pageLabel : blogLabel;
-        const typeBadgeClass = isPage ? 'bg-info text-dark' : 'bg-primary';
 
-        // Check if already in list with same type
+        // Check if already in list
         const existing = Array.from(container.querySelectorAll('.content-group-item-row')).find(r => {
             const id = r.querySelector('.item-id-input')?.value;
-            const type = r.querySelector('.item-type-input')?.value;
-            return id === itemId && type === typeValue;
+            return id === itemId;
         });
 
         if (existing) {
@@ -108,13 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
         row.innerHTML = `
             <div class="d-flex align-items-center gap-2 text-truncate me-2">
                 <span class="badge bg-secondary order-badge">1</span>
-                <span class="badge ${typeBadgeClass} item-type-badge">${typeLabel}</span>
                 <span class="fw-medium text-dark text-truncate">${itemTitle}</span>
                 <span class="text-muted small font-monospace d-none d-md-inline">/${itemSlug}</span>
             </div>
             <div class="d-flex align-items-center gap-1 flex-shrink-0">
                 <input type="hidden" class="item-id-input" value="${itemId}" />
-                <input type="hidden" class="item-type-input" value="${typeValue}" />
                 <input type="hidden" class="item-title-input" value="${itemTitle}" />
                 <input type="hidden" class="item-slug-input" value="${itemSlug}" />
                 <input type="hidden" class="item-order-input" value="0" />
@@ -171,4 +140,3 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize state on load
     updateIndicesAndOrders();
 });
-

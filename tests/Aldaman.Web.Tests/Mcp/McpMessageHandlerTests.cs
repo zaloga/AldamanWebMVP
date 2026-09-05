@@ -95,7 +95,7 @@ public class McpMessageHandlerTests
         _searchServiceMock.Setup(s => s.SearchCachedAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Aldaman.Services.Dtos.Search.SearchResultDto>
             {
-                new() { Title = "Result 1", Content = "Content", Url = "/url", Type = "Post" }
+                new() { Title = "Result 1", Content = "Content", Url = "/url", Type = "Content" }
             });
 
         // Act

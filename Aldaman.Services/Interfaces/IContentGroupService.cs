@@ -24,7 +24,7 @@ public interface IContentGroupService
     Task<ContentGroupEditDto> GetContentGroupForCreateAsync(string? culture = null, CancellationToken ct = default);
 
     /// <summary>
-    /// Populates available dropdown options for ContentPages and BlogPosts.
+    /// Populates available dropdown options for Contents.
     /// </summary>
     Task PopulateAvailableOptionsAsync(ContentGroupEditDto dto, string? culture = null, CancellationToken ct = default);
 

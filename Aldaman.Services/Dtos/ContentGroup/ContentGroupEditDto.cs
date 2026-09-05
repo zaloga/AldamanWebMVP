@@ -3,7 +3,7 @@ using Aldaman.Persistence.Enums;
 namespace Aldaman.Services.Dtos.ContentGroup;
 
 /// <summary>
-/// DTO for creating or updating a content group with its localized content.
+/// DTO for creating or updating a content group with its localized content and selected items.
 /// </summary>
 public class ContentGroupEditDto
 {
@@ -18,6 +18,5 @@ public class ContentGroupEditDto
 
     public List<ContentGroupItemSelectionDto> SelectedItems { get; set; } = new();
 
-    public List<ContentGroupItemOptionDto> AvailableContentPages { get; set; } = new();
-    public List<ContentGroupItemOptionDto> AvailableBlogPosts { get; set; } = new();
+    public List<ContentGroupItemOptionDto> AvailableContents { get; set; } = new();
 }

@@ -1,7 +1,7 @@
 namespace Aldaman.Services.Dtos.ContentGroup;
 
 /// <summary>
-/// Option for item dropdown selectors (ContentPages, BlogPosts).
+/// Option for item dropdown selectors (Contents).
 /// </summary>
 public class ContentGroupItemOptionDto
 {
