@@ -1276,16 +1276,22 @@
     <value>Nebyl vybrán žádný obsah.</value>
   </data>
   <data name="AsPage" xml:space="preserve">
-    <value>Jako stránka</value>
+    <value>Stránka</value>
   </data>
   <data name="AsPost" xml:space="preserve">
-    <value>Jako příspěvek</value>
+    <value>Příspěvek</value>
   </data>
   <data name="ContentTypePage" xml:space="preserve">
     <value>Stránka</value>
   </data>
   <data name="ContentTypePost" xml:space="preserve">
     <value>Příspěvek</value>
+  </data>
+  <data name="DisplayMode" xml:space="preserve">
+    <value>Režim zobrazení</value>
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value>Nenastaveno</value>
   </data>
 </root>
 

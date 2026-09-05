@@ -1276,16 +1276,22 @@
     <value>No contents have been assigned.</value>
   </data>
   <data name="AsPage" xml:space="preserve">
-    <value>As Page</value>
+    <value>Page</value>
   </data>
   <data name="AsPost" xml:space="preserve">
-    <value>As Post</value>
+    <value>Post</value>
   </data>
   <data name="ContentTypePage" xml:space="preserve">
     <value>Page</value>
   </data>
   <data name="ContentTypePost" xml:space="preserve">
     <value>Post</value>
+  </data>
+  <data name="DisplayMode" xml:space="preserve">
+    <value>Display Mode</value>
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value>Not set</value>
   </data>
 </root>
 

@@ -1,3 +1,4 @@
+@using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
 @using Aldaman.Services.Dtos.Content
 @model PagedResultDto<ContentListItemDto>
@@ -54,6 +55,8 @@
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Content]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.CoverImage]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResourceKeys.Locations] / @Localizer[UIResourceKeys.Order]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResourceKeys.DisplayMode]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.State]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
                 </tr>
@@ -62,7 +65,7 @@
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
+                        <td colspan="6" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -76,7 +79,11 @@
                             }
                             <div class="text-muted small mt-2">
                                 @{
-                                    var deletedContentUrl = Url.Action("Detail", "Content", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                    var culture = (string?)ViewContext.RouteData.Values["culture"] ?? System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                                    var deletedContentUrl = item.ContentType == ContentTypeEnum.Page
+                                        ? Url.RouteUrl("page_detail", new { culture = culture, slug = item.Slug }, Context.Request.Scheme)
+                                        : Url.RouteUrl("blog_detail", new { culture = culture, slug = item.Slug }, Context.Request.Scheme);
+                                    deletedContentUrl ??= Url.Action("Detail", "Content", new { area = "", culture = culture, slug = item.Slug }, Context.Request.Scheme);
                                 }
                                 <a href="@deletedContentUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@deletedContentUrl</a>
                             </div>
@@ -91,6 +98,37 @@
                                 <div class="bg-light border rounded d-flex align-items-center justify-content-center text-muted opacity-50" style="width: 60px; height: 60px;">
                                     <i class="bi bi-image" style="font-size: 20px;"></i>
                                 </div>
+                            }
+                        </td>
+                        <td class="py-3 text-center">
+                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
+                                {
+                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.HomePage]"></i>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
+                                {
+                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.TopNavigation]"></i>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
+                                {
+                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.Footer]"></i>
+                                }
+                                @if (item.PlaceToShow == PlaceToShowEnum.None)
+                                {
+                                    <span class="text-muted small">@Localizer[UIResourceKeys.NotSet]</span>
+                                }
+                            </div>
+                            <div class="fw-medium text-secondary pt-1">@item.Order</div>
+                        </td>
+                        <td class="py-3 text-center">
+                            @if (item.ContentType == ContentTypeEnum.Page)
+                            {
+                                <span class="badge bg-secondary opacity-75">@Localizer[UIResourceKeys.AsPage]</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary opacity-75">@Localizer[UIResourceKeys.AsPost]</span>
                             }
                         </td>
                         <td class="py-3">

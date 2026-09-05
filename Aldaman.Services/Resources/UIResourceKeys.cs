@@ -185,6 +185,7 @@ public static class UIResourceKeys
     public const string AsPost = nameof(AsPost);
     public const string ContentTypePage = nameof(ContentTypePage);
     public const string ContentTypePost = nameof(ContentTypePost);
+    public const string DisplayMode = nameof(DisplayMode);
 
     // Admin Blog
     public const string BlogPosts = nameof(BlogPosts);
