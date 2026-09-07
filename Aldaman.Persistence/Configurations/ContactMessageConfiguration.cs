@@ -1,14 +1,13 @@
 using Aldaman.Persistence.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessageEntity>
+public class ContactMessageConfiguration : BaseEntityCreatableSoftDelConfiguration<ContactMessageEntity>
 {
-    public void Configure(EntityTypeBuilder<ContactMessageEntity> builder)
+    public override void Configure(EntityTypeBuilder<ContactMessageEntity> builder)
     {
-        builder.HasKey(x => x.Id);
+        base.Configure(builder);
 
         builder.Property(x => x.EmailOrPhone)
             .HasMaxLength(ContactMessageEntity.EmailOrPhoneMaxLength)
@@ -34,8 +33,5 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
         builder.Property(x => x.State)
             .HasConversion<string>()
             .HasMaxLength(ContactMessageEntity.StateMaxLength);
-
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
     }
 }

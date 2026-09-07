@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class ContentTranslationConfiguration : IEntityTypeConfiguration<ContentTranslationEntity>
+public class ContentTranslationConfiguration : BaseEntityAuditableConfiguration<ContentTranslationEntity>
 {
-    public void Configure(EntityTypeBuilder<ContentTranslationEntity> builder)
+    public override void Configure(EntityTypeBuilder<ContentTranslationEntity> builder)
     {
-        builder.HasKey(x => x.Id);
+        base.Configure(builder);
 
         builder.Property(x => x.CultureCode)
             .HasMaxLength(ContentTranslationEntity.CultureCodeMaxLength)
@@ -37,26 +37,6 @@ public class ContentTranslationConfiguration : IEntityTypeConfiguration<ContentT
 
         builder.Property(x => x.DisplayExpanded)
             .HasDefaultValue(false);
-
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
-
-        builder.Property(x => x.UpdatedAtUtc);
-
-        builder.Property(x => x.CreatedByUserId);
-
-        builder.Property(x => x.UpdatedByUserId);
-
-        // Audit Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.UpdatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         // Indexes
         builder.HasIndex(x => new { x.ContentId, x.CultureCode }).IsUnique();

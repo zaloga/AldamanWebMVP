@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity>
+public class MediaAssetConfiguration : BaseEntityAuditableSoftDelConfiguration<MediaAssetEntity>
 {
-    public void Configure(EntityTypeBuilder<MediaAssetEntity> builder)
+    public override void Configure(EntityTypeBuilder<MediaAssetEntity> builder)
     {
-        builder.HasKey(x => x.Id);
+        base.Configure(builder);
 
         builder.Property(x => x.OriginalFileName)
             .HasMaxLength(MediaAssetEntity.OriginalFileNameMaxLength)
@@ -35,10 +35,6 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
         builder.Property(x => x.TitleDefault)
             .HasMaxLength(MediaAssetEntity.TitleDefaultMaxLength);
 
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
-
-
         builder.Property(x => x.IsImage)
             .IsRequired()
             .HasDefaultValue(false);
@@ -47,24 +43,7 @@ public class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAssetEntity
             .IsRequired()
             .HasDefaultValue(false);
 
-        // Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.UpdatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.DeletedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.DeletedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         // Indexes
-        builder.HasIndex(x => x.CreatedByUserId);
         builder.HasIndex(x => x.StoredFileName).IsUnique();
     }
 }

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public class ContentGroupConfiguration : IEntityTypeConfiguration<ContentGroupEntity>
+public class ContentGroupConfiguration : BaseEntityAuditableSoftDelConfiguration<ContentGroupEntity>
 {
-    public void Configure(EntityTypeBuilder<ContentGroupEntity> builder)
+    public override void Configure(EntityTypeBuilder<ContentGroupEntity> builder)
     {
-        builder.HasKey(x => x.Id);
+        base.Configure(builder);
 
         builder.Property(x => x.PlaceToShow)
             .IsRequired()
@@ -19,29 +19,10 @@ public class ContentGroupConfiguration : IEntityTypeConfiguration<ContentGroupEn
             .IsRequired()
             .HasDefaultValue(0);
 
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
-
         // Relationship: One ContentGroup -> Many Translations
         builder.HasMany(x => x.Translations)
             .WithOne(x => x.ContentGroup)
             .HasForeignKey(x => x.ContentGroupId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        // Audit Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.UpdatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.DeletedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.DeletedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }
