@@ -4,21 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public abstract class BaseEntityAuditableSoftDelConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+public abstract class BaseEntityAuditableSoftDelConfiguration<TEntity> : BaseEntityAuditableConfiguration<TEntity>
     where TEntity : BaseEntityAuditableSoftDel
 {
-    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+    public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
-
-        builder.Property(x => x.UpdatedAtUtc);
-
-        builder.Property(x => x.CreatedByUserId);
-
-        builder.Property(x => x.UpdatedByUserId);
+        base.Configure(builder);
 
         builder.Property(x => x.IsDeleted)
             .IsRequired()
@@ -29,16 +20,6 @@ public abstract class BaseEntityAuditableSoftDelConfiguration<TEntity> : IEntity
         builder.Property(x => x.DeletedByUserId);
 
         // Audit Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.UpdatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.UpdatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne(x => x.DeletedByUser)
             .WithMany()
             .HasForeignKey(x => x.DeletedByUserId)

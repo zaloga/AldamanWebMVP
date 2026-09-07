@@ -4,17 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Aldaman.Persistence.Configurations;
 
-public abstract class BaseEntityCreatableSoftDelConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+public abstract class BaseEntityCreatableSoftDelConfiguration<TEntity> : BaseEntityCreatableConfiguration<TEntity>
     where TEntity : BaseEntityCreatableSoftDel
 {
-    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+    public override void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.CreatedAtUtc)
-            .IsRequired();
-
-        builder.Property(x => x.CreatedByUserId);
+        base.Configure(builder);
 
         builder.Property(x => x.IsDeleted)
             .IsRequired()
@@ -25,11 +20,6 @@ public abstract class BaseEntityCreatableSoftDelConfiguration<TEntity> : IEntity
         builder.Property(x => x.DeletedByUserId);
 
         // Audit Relationships
-        builder.HasOne(x => x.CreatedByUser)
-            .WithMany()
-            .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         builder.HasOne(x => x.DeletedByUser)
             .WithMany()
             .HasForeignKey(x => x.DeletedByUserId)

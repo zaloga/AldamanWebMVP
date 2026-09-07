@@ -56,48 +56,37 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         var currentUserId = UserContext.CurrentUserId;
         var now = DateTime.UtcNow;
 
-        var entriesAuditableSoftDeletable = ChangeTracker.Entries<BaseEntityAuditableSoftDel>();
-        foreach (var entry in entriesAuditableSoftDeletable)
+        // 1. Creation auditing for all creatable entities
+        var entriesCreatable = ChangeTracker.Entries<BaseEntityCreatable>();
+        foreach (var entry in entriesCreatable)
         {
-            var isSoftDeleting = entry.State == EntityState.Modified &&
-                                 entry.Property(e => e.IsDeleted).IsModified &&
-                                 entry.Entity.IsDeleted;
-
-            var isSoftRestoring = entry.State == EntityState.Modified &&
-                                  entry.Property(e => e.IsDeleted).IsModified &&
-                                  !entry.Entity.IsDeleted;
-
-            switch (entry.State)
+            if (entry.State == EntityState.Added)
             {
-                case EntityState.Added:
-                    entry.Entity.CreatedAtUtc = now;
-                    entry.Entity.CreatedByUserId = currentUserId;
-                    entry.Entity.IsDeleted = false;
-                    break;
-
-                case EntityState.Modified:
-                    if (!isSoftDeleting && !isSoftRestoring)
-                    {
-                        entry.Entity.UpdatedAtUtc = now;
-                        entry.Entity.UpdatedByUserId = currentUserId;
-                    }
-                    break;
-            }
-
-            if (entry.Entity.IsDeleted)
-            {
-                entry.Entity.DeletedAtUtc = now;
-                entry.Entity.DeletedByUserId = currentUserId;
-            }
-            else if (isSoftRestoring)
-            {
-                entry.Entity.DeletedAtUtc = null;
-                entry.Entity.DeletedByUserId = null;
+                entry.Entity.CreatedAtUtc = now;
+                entry.Entity.CreatedByUserId = currentUserId;
             }
         }
 
-        var entriesCreatableSoftDeletable = ChangeTracker.Entries<BaseEntityCreatableSoftDel>();
-        foreach (var entry in entriesCreatableSoftDeletable)
+        // 2. Update auditing for all auditable entities
+        var entriesAuditable = ChangeTracker.Entries<BaseEntityAuditable>();
+        foreach (var entry in entriesAuditable)
+        {
+            if (entry.State == EntityState.Modified)
+            {
+                var isSoftDeletingOrRestoring = entry.Entity is BaseEntityAuditableSoftDel &&
+                                                entry.Property(nameof(BaseEntityAuditableSoftDel.IsDeleted)).IsModified;
+
+                if (!isSoftDeletingOrRestoring)
+                {
+                    entry.Entity.UpdatedAtUtc = now;
+                    entry.Entity.UpdatedByUserId = currentUserId;
+                }
+            }
+        }
+
+        // 3. Soft deletion handling for auditable soft-deletable entities
+        var entriesAuditableSoftDel = ChangeTracker.Entries<BaseEntityAuditableSoftDel>();
+        foreach (var entry in entriesAuditableSoftDel)
         {
             var isSoftRestoring = entry.State == EntityState.Modified &&
                                   entry.Property(e => e.IsDeleted).IsModified &&
@@ -105,8 +94,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedAtUtc = now;
-                entry.Entity.CreatedByUserId = currentUserId;
                 entry.Entity.IsDeleted = false;
             }
 
@@ -122,20 +109,28 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             }
         }
 
-        var entriesAuditable = ChangeTracker.Entries<BaseEntityAuditable>();
-        foreach (var entry in entriesAuditable)
+        // 4. Soft deletion handling for creatable soft-deletable entities
+        var entriesCreatableSoftDel = ChangeTracker.Entries<BaseEntityCreatableSoftDel>();
+        foreach (var entry in entriesCreatableSoftDel)
         {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    entry.Entity.CreatedAtUtc = now;
-                    entry.Entity.CreatedByUserId = currentUserId;
-                    break;
+            var isSoftRestoring = entry.State == EntityState.Modified &&
+                                  entry.Property(e => e.IsDeleted).IsModified &&
+                                  !entry.Entity.IsDeleted;
 
-                case EntityState.Modified:
-                    entry.Entity.UpdatedAtUtc = now;
-                    entry.Entity.UpdatedByUserId = currentUserId;
-                    break;
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.IsDeleted = false;
+            }
+
+            if (entry.Entity.IsDeleted)
+            {
+                entry.Entity.DeletedAtUtc = now;
+                entry.Entity.DeletedByUserId = currentUserId;
+            }
+            else if (isSoftRestoring)
+            {
+                entry.Entity.DeletedAtUtc = null;
+                entry.Entity.DeletedByUserId = null;
             }
         }
     }
