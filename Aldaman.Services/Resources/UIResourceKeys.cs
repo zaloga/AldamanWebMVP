@@ -21,25 +21,12 @@ public static class UIResourceKeys
     public const string EmailOrPhone = nameof(EmailOrPhone);
     public const string Password = nameof(Password);
     public const string RememberMe = nameof(RememberMe);
-    public const string ForgotPassword = nameof(ForgotPassword);
     public const string SignInButton = nameof(SignInButton);
 
     // Blog
-    public const string Blog = nameof(Blog);
-    public const string BlogSubtitle = nameof(BlogSubtitle);
     public const string AllArticles = nameof(AllArticles);
     public const string PreviousPost = nameof(PreviousPost);
     public const string NextPost = nameof(NextPost);
-    public const string PostCreatedSuccessfully = nameof(PostCreatedSuccessfully);
-    public const string ErrorCreatingPost = nameof(ErrorCreatingPost);
-    public const string PostUpdatedSuccessfully = nameof(PostUpdatedSuccessfully);
-    public const string ErrorUpdatingPost = nameof(ErrorUpdatingPost);
-    public const string PostDeletedSuccessfully = nameof(PostDeletedSuccessfully);
-    public const string ErrorDeletingPost = nameof(ErrorDeletingPost);
-    public const string PostRestoredSuccessfully = nameof(PostRestoredSuccessfully);
-    public const string ErrorRestoringPost = nameof(ErrorRestoringPost);
-    public const string PostPermanentlyDeleted = nameof(PostPermanentlyDeleted);
-    public const string ErrorPermanentlyDeletingPost = nameof(ErrorPermanentlyDeletingPost);
     public const string ShowMore = nameof(ShowMore);
     public const string ShowLess = nameof(ShowLess);
     public const string ViewDetail = nameof(ViewDetail);
@@ -62,10 +49,7 @@ public static class UIResourceKeys
     public const string SectionNoContent = nameof(SectionNoContent);
     public const string GenerateSlug = nameof(GenerateSlug);
     public const string TranslationMissing = nameof(TranslationMissing);
-    public const string CreatedSuccessfully = nameof(CreatedSuccessfully);
-    public const string ErrorCreating = nameof(ErrorCreating);
     public const string UpdatedSuccessfully = nameof(UpdatedSuccessfully);
-    public const string ErrorUpdating = nameof(ErrorUpdating);
     public const string DeletedSuccessfully = nameof(DeletedSuccessfully);
     public const string ErrorDeleting = nameof(ErrorDeleting);
     public const string RestoredSuccessfully = nameof(RestoredSuccessfully);
@@ -106,10 +90,6 @@ public static class UIResourceKeys
     public const string CreateSetting = nameof(CreateSetting);
 
     // Pages & Media
-    public const string PageCreatedSuccessfully = nameof(PageCreatedSuccessfully);
-    public const string ErrorCreatingPage = nameof(ErrorCreatingPage);
-    public const string PageUpdatedSuccessfully = nameof(PageUpdatedSuccessfully);
-    public const string ErrorUpdatingPage = nameof(ErrorUpdatingPage);
     public const string PleaseSelectFile = nameof(PleaseSelectFile);
     public const string FileUploadedSuccessfully = nameof(FileUploadedSuccessfully);
     public const string ErrorUploadingFile = nameof(ErrorUploadingFile);
@@ -140,11 +120,6 @@ public static class UIResourceKeys
     public const string Title = nameof(Title);
     public const string Translations = nameof(Translations);
     public const string Metadata = nameof(Metadata);
-    public const string SystemInformation = nameof(SystemInformation);
-    public const string Id = nameof(Id);
-    public const string Created = nameof(Created);
-    public const string LastModified = nameof(LastModified);
-    public const string DeletedOn = nameof(DeletedOn);
     public const string Deleted = nameof(Deleted);
     public const string Manage = nameof(Manage);
     public const string Cancel = nameof(Cancel);
@@ -177,7 +152,6 @@ public static class UIResourceKeys
     public const string ContentUpdatedSuccessfully = nameof(ContentUpdatedSuccessfully);
     public const string ErrorCreatingContent = nameof(ErrorCreatingContent);
     public const string ErrorUpdatingContent = nameof(ErrorUpdatingContent);
-    public const string SelectContents = nameof(SelectContents);
     public const string SelectContent = nameof(SelectContent);
     public const string AssociatedContents = nameof(AssociatedContents);
     public const string NoContentsSelected = nameof(NoContentsSelected);
@@ -188,12 +162,9 @@ public static class UIResourceKeys
     public const string DisplayMode = nameof(DisplayMode);
 
     // Admin Blog
-    public const string BlogPosts = nameof(BlogPosts);
-    public const string DeletedPosts = nameof(DeletedPosts);
     public const string SortByCreatedDate = nameof(SortByCreatedDate);
     public const string SortByTitle = nameof(SortByTitle);
     public const string SortByPublishDate = nameof(SortByPublishDate);
-    public const string BlogPost = nameof(BlogPost);
     public const string CoverImage = nameof(CoverImage);
     public const string PublishedOnDate = nameof(PublishedOnDate);
     public const string Draft = nameof(Draft);
@@ -205,12 +176,6 @@ public static class UIResourceKeys
     public const string ChooseFile = nameof(ChooseFile);
     public const string NoFileChosen = nameof(NoFileChosen);
     public const string CoverImageInfo = nameof(CoverImageInfo);
-    public const string NoCoverImage = nameof(NoCoverImage);
-    public const string CreateBlogPost = nameof(CreateBlogPost);
-    public const string UpdateBlogPost = nameof(UpdateBlogPost);
-    public const string EditBlogPost = nameof(EditBlogPost);
-    public const string BlogPostDetails = nameof(BlogPostDetails);
-    public const string PostSettings = nameof(PostSettings);
     public const string Perex = nameof(Perex);
     public const string NoHtmlContent = nameof(NoHtmlContent);
     public const string AdditionalInfo = nameof(AdditionalInfo);
@@ -249,21 +214,13 @@ public static class UIResourceKeys
     public const string RestoreMessage = nameof(RestoreMessage);
 
     // Admin Content Pages
-    public const string Pages = nameof(Pages);
-    public const string DeletedPages = nameof(DeletedPages);
     public const string SortByOrder = nameof(SortByOrder);
-    public const string Page = nameof(Page);
     public const string Locations = nameof(Locations);
     public const string Order = nameof(Order);
     public const string HomePage = nameof(HomePage);
     public const string TopNavigation = nameof(TopNavigation);
     public const string Footer = nameof(Footer);
-    public const string PageDetails = nameof(PageDetails);
-    public const string NoLocationsSelected = nameof(NoLocationsSelected);
     public const string NotSet = nameof(NotSet);
-    public const string CreatePage = nameof(CreatePage);
-    public const string EditPage = nameof(EditPage);
-    public const string EditContentPage = nameof(EditContentPage);
     public const string Settings = nameof(Settings);
     public const string DisplayTitle = nameof(DisplayTitle);
     public const string DisplayExpanded = nameof(DisplayExpanded);
@@ -281,24 +238,10 @@ public static class UIResourceKeys
     public const string ErrorCreatingContentGroup = nameof(ErrorCreatingContentGroup);
     public const string ContentGroupUpdatedSuccessfully = nameof(ContentGroupUpdatedSuccessfully);
     public const string ErrorUpdatingContentGroup = nameof(ErrorUpdatingContentGroup);
-    public const string SelectContentPages = nameof(SelectContentPages);
-    public const string SelectBlogPosts = nameof(SelectBlogPosts);
-    public const string SelectContentPage = nameof(SelectContentPage);
-    public const string SelectBlogPost = nameof(SelectBlogPost);
-    public const string NoPagesSelected = nameof(NoPagesSelected);
-    public const string NoBlogPostsSelected = nameof(NoBlogPostsSelected);
-    public const string NoItemsSelected = nameof(NoItemsSelected);
-    public const string AssociatedItems = nameof(AssociatedItems);
-    public const string ItemTypePage = nameof(ItemTypePage);
-    public const string ItemTypeBlogPost = nameof(ItemTypeBlogPost);
     public const string AddItem = nameof(AddItem);
     public const string MoveUp = nameof(MoveUp);
     public const string MoveDown = nameof(MoveDown);
-    public const string Add = nameof(Add);
     public const string Remove = nameof(Remove);
-    public const string AssociatedPages = nameof(AssociatedPages);
-    public const string AssociatedBlogPosts = nameof(AssociatedBlogPosts);
-
 
     // Admin Media
     public const string MediaLibrary = nameof(MediaLibrary);
@@ -318,25 +261,20 @@ public static class UIResourceKeys
     public const string ContentType = nameof(ContentType);
     public const string FileSize = nameof(FileSize);
     public const string Active = nameof(Active);
-    public const string UploadedAtUtc = nameof(UploadedAtUtc);
     public const string Uploaded = nameof(Uploaded);
-    public const string PublicPath = nameof(PublicPath);
     public const string EditMedia = nameof(EditMedia);
     public const string TitleInfo = nameof(TitleInfo);
     public const string AltTextInfo = nameof(AltTextInfo);
     public const string ClickToUpload = nameof(ClickToUpload);
     public const string MaxFileSizeInfo = nameof(MaxFileSizeInfo);
     public const string ResizeImage = nameof(ResizeImage);
-    public const string ResizeMode = nameof(ResizeMode);
     public const string Pixels = nameof(Pixels);
     public const string Percentage = nameof(Percentage);
     public const string Width = nameof(Width);
     public const string Height = nameof(Height);
     public const string MaintainAspectRatio = nameof(MaintainAspectRatio);
-    public const string OriginalDimensions = nameof(OriginalDimensions);
     public const string TargetDimensions = nameof(TargetDimensions);
     public const string OriginalSize = nameof(OriginalSize);
-    public const string ResetDimensions = nameof(ResetDimensions);
     public const string Presets = nameof(Presets);
 
     // Quill RTE Tooltips
@@ -382,7 +320,6 @@ public static class UIResourceKeys
     public const string RteImageAltText = nameof(RteImageAltText);
     public const string RteImageTitle = nameof(RteImageTitle);
     public const string RteResetSize = nameof(RteResetSize);
-    public const string RteDeleteImage = nameof(RteDeleteImage);
     public const string RteMaintainAspectRatio = nameof(RteMaintainAspectRatio);
     public const string RteGallery = nameof(RteGallery);
     public const string InsertGallery = nameof(InsertGallery);
@@ -437,5 +374,4 @@ public static class UIResourceKeys
     public const string LowLatencyDescription = nameof(LowLatencyDescription);
     public const string InvalidRequestPayload = nameof(InvalidRequestPayload);
 }
-
 
