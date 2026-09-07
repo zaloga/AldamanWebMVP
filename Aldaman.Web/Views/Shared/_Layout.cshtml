@@ -1,4 +1,5 @@
-﻿@inject Aldaman.Services.Interfaces.IStyleService StyleService
+@inject Aldaman.Services.Interfaces.IStyleService StyleService
+@inject Aldaman.Services.Interfaces.IContentService ContentService
 @using Aldaman.Web.Extensions
 <!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-full">
@@ -65,9 +66,28 @@
         </nav>
     </header>
 
-    <main role="main" class="flex-grow bg-gradient-to-b from-orange-500/30 via-amber-500/25 to-orange-500/30 dark:bg-brand-bg-dark">
+    <main role="main" class="flex-grow bg-gradient-to-b from-orange-500/30 via-amber-500/25 to-orange-500/30 dark:bg-brand-bg-dark py-6 sm:py-8">
         <div class="container">
-            @RenderBody()
+            @{
+                var cultureCode = System.Globalization.CultureInfo.CurrentUICulture.Name;
+                var sidebarBanners = await ContentService.GetSidebarBannersCachedAsync(cultureCode);
+                var hasSidebar = sidebarBanners.Any();
+            }
+            @if (hasSidebar)
+            {
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-8 xl:col-span-9 min-w-0">
+                        @RenderBody()
+                    </div>
+                    <div class="lg:col-span-4 xl:col-span-3 min-w-0">
+                        @await Component.InvokeAsync("SidebarBanners")
+                    </div>
+                </div>
+            }
+            else
+            {
+                @RenderBody()
+            }
         </div>
     </main>
 

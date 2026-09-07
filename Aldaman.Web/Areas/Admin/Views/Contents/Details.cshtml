@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.Content.ContentEditDto
 
 @{
@@ -228,6 +228,10 @@
                                     @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                     {
                                         <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResources.Footer]"></i>
+                                    }
+                                    @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.Sidebar))
+                                    {
+                                        <i class="bi bi-layout-sidebar-inset-reverse" data-bs-toggle="tooltip" title="@Localizer[UIResources.Sidebar]"></i>
                                     }
                                 </div>
                             }

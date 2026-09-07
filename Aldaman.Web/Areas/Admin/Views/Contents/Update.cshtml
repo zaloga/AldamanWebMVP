@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.Content.ContentEditDto
 
 @{
@@ -123,6 +123,7 @@
                                             @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResources.HomePage]</text> }
                                             else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResources.TopNavigation]</text> }
                                             else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResources.Footer]</text> }
+                                            else if (value == PlaceToShowEnum.Sidebar) { <text>@Localizer[UIResources.Sidebar]</text> }
                                             else { @value }
                                         </label>
                                     </div>

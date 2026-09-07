@@ -603,6 +603,44 @@ public sealed class ContentService : IContentService
         return result;
     }
 
+    public async Task<IEnumerable<ContentDetailDto>> GetSidebarBannersCachedAsync(string culture, CancellationToken ct = default)
+    {
+        string cacheKey = $"Content:Sidebar:{culture}";
+
+        if (!Cache.TryGetValue(cacheKey, out IEnumerable<ContentDetailDto>? result) || result == null)
+        {
+            result = await Context.Contents
+                .Where(p => p.PlaceToShow.HasFlag(PlaceToShowEnum.Sidebar) && p.IsPublished)
+                .Where(p => p.Translations.Any(t => t.CultureCode == culture))
+                .Include(p => p.Translations)
+                .Include(p => p.CoverMediaAsset)
+                .OrderBy(p => p.Order)
+                .Select(p => new ContentDetailDto
+                {
+                    Id = p.Id,
+                    ContentType = p.ContentType,
+                    Title = p.Translations.First(t => t.CultureCode == culture).Title,
+                    DisplayTitle = p.Translations.First(t => t.CultureCode == culture).DisplayTitle,
+                    DisplayExpanded = p.Translations.First(t => t.CultureCode == culture).DisplayExpanded,
+                    Slug = p.Translations.First(t => t.CultureCode == culture).Slug,
+                    Perex = p.Translations.First(t => t.CultureCode == culture).Perex,
+                    BodyHtml = p.Translations.First(t => t.CultureCode == culture).BodyHtml,
+                    BodyDeltaJson = p.Translations.First(t => t.CultureCode == culture).BodyDeltaJson,
+                    PlainText = p.Translations.First(t => t.CultureCode == culture).PlainText,
+                    CoverImageRelativePath = p.CoverMediaAsset != null ? p.CoverMediaAsset.RelativePath : null,
+                    PublishedAtUtc = p.PublishedAtUtc,
+                    IsPublished = p.IsPublished,
+                    PlaceToShow = p.PlaceToShow,
+                    Order = p.Order
+                })
+                .ToListAsync(ct);
+
+            Cache.Set(cacheKey, result, CacheOptions);
+        }
+
+        return result;
+    }
+
     public async Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default)
     {
         string cacheKey = $"Content:AlternativeSlugs:{id}";

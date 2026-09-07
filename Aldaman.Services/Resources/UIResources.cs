@@ -11,6 +11,7 @@ public sealed class UIResources
     public const string Login = nameof(Login);
     public const string Admin = nameof(Admin);
     public const string Search = nameof(Search);
+    public const string Sidebar = nameof(Sidebar);
 
     // Account & Auth
     public const string AccessDenied = nameof(AccessDenied);

@@ -70,6 +70,11 @@ public interface IContentService
     Task<IEnumerable<ContentDetailDto>> GetHomePageCachedAsync(string culture, CancellationToken ct = default);
 
     /// <summary>
+    /// Gets items marked for display in the right sidebar as banners.
+    /// </summary>
+    Task<IEnumerable<ContentDetailDto>> GetSidebarBannersCachedAsync(string culture, CancellationToken ct = default);
+
+    /// <summary>
     /// Gets slugs for all translations of a content item.
     /// </summary>
     Task<Dictionary<string, string>> GetAlternativeSlugsCachedAsync(Guid id, CancellationToken ct = default);

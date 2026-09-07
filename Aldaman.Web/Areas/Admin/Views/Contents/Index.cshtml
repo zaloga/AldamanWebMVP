@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
 @using Aldaman.Services.Dtos.Content
 @model PagedResultDto<ContentListItemDto>
@@ -115,6 +115,10 @@
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
                                     <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResources.Footer]"></i>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Sidebar))
+                                {
+                                    <i class="bi bi-layout-sidebar-inset-reverse" data-bs-toggle="tooltip" title="@Localizer[UIResources.Sidebar]"></i>
                                 }
                                 @if (item.PlaceToShow == PlaceToShowEnum.None)
                                 {
