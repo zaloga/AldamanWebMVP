@@ -1,4 +1,4 @@
-using Aldaman.Persistence.Entities;
+﻿using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.Content;
 using Aldaman.Services.Resources;
 using FluentValidation;
@@ -12,25 +12,25 @@ public class ContentTranslationDtoValidator : AbstractValidator<ContentTranslati
     {
         RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage(localizer[ValidationResourceKeys.TitleRequiredIfTranslationNotEmpty])
+            .WithMessage(localizer[ValidationResources.TitleRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage(localizer[ValidationResourceKeys.SlugRequiredIfTranslationNotEmpty])
+            .WithMessage(localizer[ValidationResources.SlugRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Title)
             .MaximumLength(ContentTranslationEntity.TitleMaxLength)
-            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, ContentTranslationEntity.TitleMaxLength]);
+            .WithMessage(localizer[ValidationResources.GenericMaxLength, ContentTranslationEntity.TitleMaxLength]);
 
         RuleFor(x => x.Slug)
             .MaximumLength(ContentTranslationEntity.SlugMaxLength)
-            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, ContentTranslationEntity.SlugMaxLength]);
+            .WithMessage(localizer[ValidationResources.GenericMaxLength, ContentTranslationEntity.SlugMaxLength]);
 
         RuleFor(x => x.Perex)
             .MaximumLength(ContentTranslationEntity.PerexMaxLength)
-            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, ContentTranslationEntity.PerexMaxLength]);
+            .WithMessage(localizer[ValidationResources.GenericMaxLength, ContentTranslationEntity.PerexMaxLength]);
     }
 
     private static bool IsTranslationEmpty(ContentTranslationDto dto)

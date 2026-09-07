@@ -1,4 +1,4 @@
-using Aldaman.Services.Constants;
+﻿using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.StyleSettings;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -62,8 +62,8 @@ public class StyleSettingsController : BaseAdminController
         await _styleService.UpdateSettingAsync(dto, cancellationToken);
 
         TempData.SetSuccessMessage(isEdit
-            ? Localizer[UIResourceKeys.StyleSettingUpdated].Value
-            : Localizer[UIResourceKeys.StyleSettingCreated].Value);
+            ? Localizer[UIResources.StyleSettingUpdated].Value
+            : Localizer[UIResources.StyleSettingCreated].Value);
 
         return RedirectToAction(nameof(Index));
     }
@@ -80,7 +80,7 @@ public class StyleSettingsController : BaseAdminController
 
         await _styleService.UpdateSettingAsync(dto, cancellationToken);
 
-        TempData.SetSuccessMessage(Localizer[UIResourceKeys.StyleSettingUpdated].Value);
+        TempData.SetSuccessMessage(Localizer[UIResources.StyleSettingUpdated].Value);
 
         return RedirectToAction(nameof(Index));
     }
@@ -91,7 +91,7 @@ public class StyleSettingsController : BaseAdminController
     {
         await _styleService.ResetToDefaultSettingAsync(id, cancellationToken);
 
-        return Json(new { success = true, message = Localizer[UIResourceKeys.StyleSettingResetSuccessfully].Value });
+        return Json(new { success = true, message = Localizer[UIResources.StyleSettingResetSuccessfully].Value });
     }
 
     [HttpPost]
@@ -101,11 +101,11 @@ public class StyleSettingsController : BaseAdminController
         try
         {
             await _styleService.SoftDeleteSettingAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -116,11 +116,11 @@ public class StyleSettingsController : BaseAdminController
         try
         {
             await _styleService.RestoreSettingAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -131,11 +131,11 @@ public class StyleSettingsController : BaseAdminController
         try
         {
             await _styleService.HardDeleteSettingAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResources.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

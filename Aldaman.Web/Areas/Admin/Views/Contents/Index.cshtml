@@ -1,21 +1,21 @@
-@using Aldaman.Persistence.Enums
+﻿@using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
 @using Aldaman.Services.Dtos.Content
 @model PagedResultDto<ContentListItemDto>
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.Contents]);
+    ViewData.SetPageTitle(Localizer[UIResources.Contents]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex gap-2">
         <a asp-action="Create" class="btn btn-success">
             <i class="bi bi-plus-lg me-1"></i>
-            @Localizer[UIResourceKeys.Create]
+            @Localizer[UIResources.Create]
         </a>
     </div>
     <a asp-action="Deleted" class="btn btn-outline-danger">
         <i class="bi bi-trash"></i>
-        @Localizer[UIResourceKeys.DeletedContents]
+        @Localizer[UIResources.DeletedContents]
     </a>
 </div>
 
@@ -26,26 +26,26 @@
                 <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
                 </span>
-                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResourceKeys.Search]..." value="@Context.Request.Query["SearchTerm"]">
+                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResources.Search]..." value="@Context.Request.Query["SearchTerm"]">
             </div>
         </div>
         <div class="col-md-4">
             <select name="@SortByConstants.SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResourceKeys.SortByCreatedDate]</option>
-                <option value="@SortByConstants.Title" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Title)">@Localizer[UIResourceKeys.SortByTitle]</option>
-                <option value="@SortByConstants.PublishedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.PublishedAt)">@Localizer[UIResourceKeys.SortByPublishDate]</option>
-                <option value="@SortByConstants.PageOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.PageOrder)">@Localizer[UIResourceKeys.SortByOrder]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResources.SortByCreatedDate]</option>
+                <option value="@SortByConstants.Title" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Title)">@Localizer[UIResources.SortByTitle]</option>
+                <option value="@SortByConstants.PublishedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.PublishedAt)">@Localizer[UIResources.SortByPublishDate]</option>
+                <option value="@SortByConstants.PageOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.PageOrder)">@Localizer[UIResources.SortByOrder]</option>
             </select>
         </div>
         <div class="col-md-3">
             <select name="@SortByConstants.SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResourceKeys.Descending]</option>
-                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
+                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResources.Descending]</option>
+                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResources.Ascending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResourceKeys.Filter]</button>
-            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.CreatedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
+            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResources.Filter]</button>
+            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.CreatedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
         </div>
     </form>
 </div>
@@ -55,19 +55,19 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Content]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.CoverImage]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResourceKeys.Locations] / @Localizer[UIResourceKeys.Order]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResourceKeys.DisplayMode]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.State]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Content]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.CoverImage]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations] / @Localizer[UIResources.Order]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.DisplayMode]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
+                        <td colspan="6" class="text-center py-5 text-muted">@Localizer[UIResources.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -106,19 +106,19 @@
                             <div class="d-flex flex-wrap gap-1 justify-content-center">
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
-                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.HomePage]"></i>
+                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResources.HomePage]"></i>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
                                 {
-                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.TopNavigation]"></i>
+                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResources.TopNavigation]"></i>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
-                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.Footer]"></i>
+                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResources.Footer]"></i>
                                 }
                                 @if (item.PlaceToShow == PlaceToShowEnum.None)
                                 {
-                                    <span class="text-muted small">@Localizer[UIResourceKeys.NotSet]</span>
+                                    <span class="text-muted small">@Localizer[UIResources.NotSet]</span>
                                 }
                             </div>
                             <div class="fw-medium text-secondary pt-1">@item.Order</div>
@@ -126,30 +126,30 @@
                         <td class="py-3 text-center">
                             @if (item.ContentType == ContentTypeEnum.Page)
                             {
-                                <span class="badge bg-secondary">@Localizer[UIResourceKeys.AsPage]</span>
+                                <span class="badge bg-secondary">@Localizer[UIResources.AsPage]</span>
                             }
                             else
                             {
-                                <span class="badge bg-primary">@Localizer[UIResourceKeys.AsPost]</span>
+                                <span class="badge bg-primary">@Localizer[UIResources.AsPost]</span>
                             }
                         </td>
                         <td class="py-3">
                             @if (item.IsPublished && item.PublishedAtUtc.HasValue)
                             {
                                 <span class="text-success small fw-medium">
-                                    @string.Format(Localizer[UIResourceKeys.PublishedOnDate].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                    @string.Format(Localizer[UIResources.PublishedOnDate].Value, item.PublishedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
                                 </span>
                             }
                             else if (item.IsPublished)
                             {
                                 <span class="text-success small fw-medium">
-                                    @Localizer[UIResourceKeys.Published]
+                                    @Localizer[UIResources.Published]
                                 </span>
                             }
                             else
                             {
                                 <span class="text-warning small fw-medium">
-                                    @Localizer[UIResourceKeys.Draft]
+                                    @Localizer[UIResources.Draft]
                                 </span>
                             }
                             <div class="text-muted small mt-2">
@@ -170,15 +170,15 @@
                             <div class="d-inline-flex flex-column gap-2">
                                 <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
-                                    @Localizer[UIResourceKeys.Edit]
+                                    @Localizer[UIResources.Edit]
                                 </a>
                                 <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
-                                    @Localizer[UIResourceKeys.Details]
+                                    @Localizer[UIResources.Details]
                                 </a>
                                 <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer[UIResourceKeys.Delete]
+                                    @Localizer[UIResources.Delete]
                                 </button>
                             </div>
                         </td>

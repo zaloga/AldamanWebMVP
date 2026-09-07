@@ -1,4 +1,4 @@
-using Aldaman.Services.Dtos.ContactMessage;
+﻿using Aldaman.Services.Dtos.ContactMessage;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -55,11 +55,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.DeleteMessageAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -70,11 +70,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.RestoreMessageAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -85,11 +85,11 @@ public class ContactMessagesController : BaseAdminController
         try
         {
             await ContactService.HardDeleteMessageAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResources.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

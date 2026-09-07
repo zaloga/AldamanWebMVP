@@ -1,19 +1,19 @@
-@using Aldaman.Services.Dtos.Media
+﻿@using Aldaman.Services.Dtos.Media
 @using Aldaman.Services.Constants
 @model PagedResultDto<MediaAssetDto>
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.MediaLibrary]);
+    ViewData.SetPageTitle(Localizer[UIResources.MediaLibrary]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex gap-2">
         <a asp-action="Upload" class="btn btn-success">
             <i class="bi bi-upload"></i>
-            @Localizer[UIResourceKeys.UploadMedia]
+            @Localizer[UIResources.UploadMedia]
         </a>
         <a asp-action="Deleted" class="btn btn-outline-danger">
             <i class="bi bi-trash"></i>
-            @Localizer[UIResourceKeys.DeletedAssets]
+            @Localizer[UIResources.DeletedAssets]
         </a>
     </div>
 </div>
@@ -25,25 +25,25 @@
                 <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
                 </span>
-                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResourceKeys.Search]..." value="@Context.Request.Query["SearchTerm"]">
+                <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResources.Search]..." value="@Context.Request.Query["SearchTerm"]">
             </div>
         </div>
         <div class="col-md-4">
             <select name="@SortByConstants.SortBy" class="form-select">
-                <option value="@SortByConstants.UploadedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.UploadedAt)">@Localizer[UIResourceKeys.SortByUploadDate]</option>
-                <option value="@SortByConstants.FileName" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.FileName)">@Localizer[UIResourceKeys.SortByFilename]</option>
-                <option value="@SortByConstants.Size" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Size)">@Localizer[UIResourceKeys.SortBySize]</option>
+                <option value="@SortByConstants.UploadedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.UploadedAt)">@Localizer[UIResources.SortByUploadDate]</option>
+                <option value="@SortByConstants.FileName" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.FileName)">@Localizer[UIResources.SortByFilename]</option>
+                <option value="@SortByConstants.Size" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Size)">@Localizer[UIResources.SortBySize]</option>
             </select>
         </div>
         <div class="col-md-3">
             <select name="@SortByConstants.SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResourceKeys.Descending]</option>
-                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResourceKeys.Ascending]</option>
+                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResources.Descending]</option>
+                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResources.Ascending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResourceKeys.Filter]</button>
-            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.UploadedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResourceKeys.Clear]</button>
+            <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResources.Filter]</button>
+            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.UploadedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
         </div>
     </form>
 </div>
@@ -53,19 +53,19 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 120px">@Localizer[UIResourceKeys.Preview]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.FileName]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Title] / @Localizer[UIResourceKeys.AltText]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Dimensions] / @Localizer[UIResourceKeys.Size]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.State]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted" style="width: 120px">@Localizer[UIResources.Preview]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.FileName]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Title] / @Localizer[UIResources.AltText]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Dimensions] / @Localizer[UIResources.Size]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">@Localizer[UIResourceKeys.NoItemsFound]</td>
+                        <td colspan="6" class="text-center py-5 text-muted">@Localizer[UIResources.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -113,21 +113,21 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer[UIResourceKeys.Edit]">
+                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer[UIResources.Edit]">
                                     <i class="bi bi-pencil-square"></i>
-                                    @Localizer[UIResourceKeys.Edit]
+                                    @Localizer[UIResources.Edit]
                                 </a>
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResourceKeys.Details]">
+                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResources.Details]">
                                     <i class="bi bi-info-circle"></i>
-                                    @Localizer[UIResourceKeys.Details]
+                                    @Localizer[UIResources.Details]
                                 </a>
-                                <a class="btn btn-outline-secondary btn-sm d-inline align-items-center gap-1" href="@item.RelativePath" target="_blank" title="@Localizer[UIResourceKeys.View]">
+                                <a class="btn btn-outline-secondary btn-sm d-inline align-items-center gap-1" href="@item.RelativePath" target="_blank" title="@Localizer[UIResources.View]">
                                     <i class="bi bi-box-arrow-up-right"></i>
-                                    @Localizer[UIResourceKeys.View]
+                                    @Localizer[UIResources.View]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("Delete")" title="@Localizer[UIResourceKeys.Delete]">
+                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("Delete")" title="@Localizer[UIResources.Delete]">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer[UIResourceKeys.Delete]
+                                    @Localizer[UIResources.Delete]
                                 </button>
                             </div>
                         </td>

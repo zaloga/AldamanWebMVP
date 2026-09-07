@@ -1,4 +1,4 @@
-using Aldaman.Services.Dtos.General;
+﻿using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -56,7 +56,7 @@ public class MediaController : BaseAdminController
     {
         if (file == null || file.Length == 0)
         {
-            ModelState.AddModelError("file", Localizer[UIResourceKeys.PleaseSelectFile].Value);
+            ModelState.AddModelError("file", Localizer[UIResources.PleaseSelectFile].Value);
             return View();
         }
 
@@ -67,12 +67,12 @@ public class MediaController : BaseAdminController
                 await MediaService.UploadAsync(stream, file.FileName, file.ContentType, cancellationToken);
             }
 
-            TempData.SetSuccessMessage(Localizer[UIResourceKeys.FileUploadedSuccessfully].Value);
+            TempData.SetSuccessMessage(Localizer[UIResources.FileUploadedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorUploadingFile, ex.Message].Value);
+            ModelState.AddModelError("", Localizer[UIResources.ErrorUploadingFile, ex.Message].Value);
             return View();
         }
     }
@@ -83,7 +83,7 @@ public class MediaController : BaseAdminController
     {
         if (file == null || file.Length == 0)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.PleaseSelectFile].Value });
+            return Json(new { success = false, message = Localizer[UIResources.PleaseSelectFile].Value });
         }
 
         try
@@ -106,12 +106,12 @@ public class MediaController : BaseAdminController
     {
         if (request.File == null || request.File.Length == 0)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.PleaseSelectFile].Value });
+            return Json(new { success = false, message = Localizer[UIResources.PleaseSelectFile].Value });
         }
 
         if (!ModelState.IsValid)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.InvalidRequestPayload].Value });
+            return Json(new { success = false, message = Localizer[UIResources.InvalidRequestPayload].Value });
         }
 
         await using Stream inputStream = request.File.OpenReadStream();
@@ -130,7 +130,7 @@ public class MediaController : BaseAdminController
     {
         if (request.File == null || request.File.Length == 0)
         {
-            ModelState.AddModelError("File", Localizer[UIResourceKeys.PleaseSelectFile].Value);
+            ModelState.AddModelError("File", Localizer[UIResources.PleaseSelectFile].Value);
             return View("Upload");
         }
 
@@ -146,7 +146,7 @@ public class MediaController : BaseAdminController
         string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
         await MediaService.UploadAsync(processedStream, newFileName, "image/webp", cancellationToken);
 
-        TempData.SetSuccessMessage(Localizer[UIResourceKeys.FileUploadedSuccessfully].Value);
+        TempData.SetSuccessMessage(Localizer[UIResources.FileUploadedSuccessfully].Value);
         return RedirectToAction(nameof(Index));
     }
 
@@ -184,7 +184,7 @@ public class MediaController : BaseAdminController
         if (!ModelState.IsValid) return View(model);
 
         await MediaService.UpdateAssetAsync(model, cancellationToken);
-        TempData.SetSuccessMessage(Localizer[UIResourceKeys.MediaMetadataUpdated].Value);
+        TempData.SetSuccessMessage(Localizer[UIResources.MediaMetadataUpdated].Value);
         return RedirectToAction(nameof(Index));
     }
 
@@ -195,11 +195,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.DeleteAssetAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -210,11 +210,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.RestoreAssetAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -225,11 +225,11 @@ public class MediaController : BaseAdminController
         try
         {
             await MediaService.HardDeleteAssetAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResources.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }

@@ -1,18 +1,18 @@
-@model Aldaman.Services.Dtos.StyleSettings.UpdateStyleSettingDto
+﻿@model Aldaman.Services.Dtos.StyleSettings.UpdateStyleSettingDto
 @using Aldaman.Persistence.Enums
 
 @{
     bool isEdit = Model.Id.HasValue && Model.Id != Guid.Empty;
-    ViewData.SetPageTitle(isEdit ? Localizer[UIResourceKeys.UpdateStyleSetting] : Localizer[UIResourceKeys.CreateStyleSetting]);
+    ViewData.SetPageTitle(isEdit ? Localizer[UIResources.UpdateStyleSetting] : Localizer[UIResources.CreateStyleSetting]);
 }
 
 <div class="mb-4">
-    <h2 class="h3 mb-0 text-gray-800">@(isEdit ? Localizer[UIResourceKeys.UpdateStyleSetting] : Localizer[UIResourceKeys.CreateStyleSetting])</h2>
+    <h2 class="h3 mb-0 text-gray-800">@(isEdit ? Localizer[UIResources.UpdateStyleSetting] : Localizer[UIResources.CreateStyleSetting])</h2>
 </div>
 
 <div class="card shadow-sm">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">@(isEdit ? Localizer[UIResourceKeys.EditCssVariable] : Localizer[UIResourceKeys.NewCssVariable])</h6>
+        <h6 class="m-0 font-weight-bold text-primary">@(isEdit ? Localizer[UIResources.EditCssVariable] : Localizer[UIResources.NewCssVariable])</h6>
     </div>
     <div class="card-body">
         <form asp-action="Update" method="post">
@@ -22,23 +22,23 @@
             }
 
             <div class="mb-3">
-                <label asp-for="Key" class="form-label">@Localizer[UIResourceKeys.KeyInfo]</label>
+                <label asp-for="Key" class="form-label">@Localizer[UIResources.KeyInfo]</label>
                 <input asp-for="Key" class="form-control" placeholder="--my-variable" required />
                 <span asp-validation-for="Key" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Type" class="form-label">@Localizer[UIResourceKeys.Type]</label>
+                <label asp-for="Type" class="form-label">@Localizer[UIResources.Type]</label>
                 <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<CssType>()" required></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Value" class="form-label">@Localizer[UIResourceKeys.ValueInfo]</label>
+                <label asp-for="Value" class="form-label">@Localizer[UIResources.ValueInfo]</label>
                 @if (Model.Type == CssType.Color)
                 {
                     <div class="d-flex gap-2">
-                        <input type="color" asp-for="Value" class="form-control form-control-color" title="@Localizer[UIResourceKeys.ChooseColor]">
+                        <input type="color" asp-for="Value" class="form-control form-control-color" title="@Localizer[UIResources.ChooseColor]">
                         <input type="text" asp-for="Value" class="form-control" placeholder="#000000" required />
                     </div>
                 }
@@ -50,8 +50,8 @@
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-success">@(isEdit ? Localizer[UIResourceKeys.UpdateSetting] : Localizer[UIResourceKeys.CreateSetting])</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">@Localizer[UIResourceKeys.Cancel]</a>
+                <button type="submit" class="btn btn-success">@(isEdit ? Localizer[UIResources.UpdateSetting] : Localizer[UIResources.CreateSetting])</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@Localizer[UIResources.Cancel]</a>
             </div>
         </form>
     </div>

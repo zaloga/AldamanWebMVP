@@ -1,8 +1,8 @@
-@model List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>
+﻿@model List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>
 @using Aldaman.Persistence.Enums
 
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.StyleSettings]);
+    ViewData.SetPageTitle(Localizer[UIResources.StyleSettings]);
     var deletedItems = ViewBag.DeletedItems as List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>;
 }
 
@@ -10,22 +10,22 @@
     <div class="mb-4">
     <a asp-action="Update" class="btn btn-success">
         <i class="bi bi-plus-lg me-1"></i>
-        @Localizer[UIResourceKeys.Create]
+        @Localizer[UIResources.Create]
     </a>
 </div> *@
 
 <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
     <div class="p-3 border-bottom bg-light">
-        <h6 class="m-0 fw-bold text-primary">@Localizer[UIResourceKeys.CustomizeThemeVariables]</h6>
+        <h6 class="m-0 fw-bold text-primary">@Localizer[UIResources.CustomizeThemeVariables]</h6>
     </div>
     <div class="table-responsive">
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Key]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Type]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Value]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
+                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Key]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Type]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Value]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                                 
                                 @if (setting.Type == CssType.Color)
                                 {
-                                    <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="@Localizer[UIResourceKeys.ChooseColor]">
+                                    <input type="color" name="value" class="form-control form-control-color" value="@setting.Value" title="@Localizer[UIResources.ChooseColor]">
                                     <input type="text" class="form-control" value="@setting.Value" disabled style="width: 100px;" />
                                 }
                                 else
@@ -49,8 +49,8 @@
                                 }
                                 
                                 <div class="btn-group btn-group-sm">
-                                    <button type="submit" class="btn btn-success">@Localizer[UIResourceKeys.Save]</button>
-                                    <button type="button" class="btn btn-outline-secondary" data-action="reset-style-default" data-id="@setting.Id" data-key="@setting.Key" data-default-value="@setting.DefaultValue" data-url="@Url.Action("ResetToDefault")" data-success-msg="@Localizer[UIResourceKeys.UpdatedSuccessfully]" title="@Localizer[UIResourceKeys.ResetToDefault]">
+                                    <button type="submit" class="btn btn-success">@Localizer[UIResources.Save]</button>
+                                    <button type="button" class="btn btn-outline-secondary" data-action="reset-style-default" data-id="@setting.Id" data-key="@setting.Key" data-default-value="@setting.DefaultValue" data-url="@Url.Action("ResetToDefault")" data-success-msg="@Localizer[UIResources.UpdatedSuccessfully]" title="@Localizer[UIResources.ResetToDefault]">
                                         <i class="bi bi-arrow-counterclockwise" style="font-size: 14px;"></i>
                                     </button>
                                 </div>
@@ -58,14 +58,14 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex gap-1">
-                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" title="@Localizer[UIResourceKeys.Edit]">
+                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" title="@Localizer[UIResources.Edit]">
                                     <i class="bi bi-pencil-square"></i>
-                                    @Localizer[UIResourceKeys.Edit]
+                                    @Localizer[UIResources.Edit]
                                 </a>
                                 @* commented out for now - TODO do as optionally visible by switch in appsettings.json
-                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@setting.Id" data-title="@setting.Key" data-url="@Url.Action("Delete")" title="@Localizer[UIResourceKeys.Delete]">
+                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@setting.Id" data-title="@setting.Key" data-url="@Url.Action("Delete")" title="@Localizer[UIResources.Delete]">
                                     <i class="bi bi-trash"></i>
-                                    @Localizer[UIResourceKeys.Delete]
+                                    @Localizer[UIResources.Delete]
                                 </button> *@
                             </div>
                         </td>
@@ -81,7 +81,7 @@
     <div class="mt-5 mb-4">
         <h3 class="h5 text-danger d-flex align-items-center gap-2">
             <i class="bi bi-trash fs-5"></i>
-            @Localizer[UIResourceKeys.DeletedSettings]
+            @Localizer[UIResources.DeletedSettings]
         </h3>
     </div>
 
@@ -90,10 +90,10 @@
             <table class="table table-light table-hover align-middle mb-0">
                 <thead>
                     <tr>
-                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Key]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Type]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResourceKeys.Value]</th>
-                        <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResourceKeys.Actions]</th>
+                        <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Key]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Type]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.Value]</th>
+                        <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,11 +107,11 @@
                                 <div class="d-inline-flex gap-2">
                                     <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" data-action="restore" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("Restore")">
                                         <i class="bi bi-arrow-counterclockwise"></i>
-                                        @Localizer[UIResourceKeys.Restore]
+                                        @Localizer[UIResources.Restore]
                                     </button>
                                     <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="hard-delete" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("HardDelete")">
                                         <i class="bi bi-trash"></i>
-                                        @Localizer[UIResourceKeys.DeletePermanently]
+                                        @Localizer[UIResources.DeletePermanently]
                                     </button>
                                 </div>
                             </td>

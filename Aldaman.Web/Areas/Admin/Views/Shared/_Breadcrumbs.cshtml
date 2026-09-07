@@ -1,4 +1,4 @@
-@{
+﻿@{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var isIndex = action?.Equals("Index", StringComparison.OrdinalIgnoreCase) ?? false;
@@ -20,10 +20,10 @@
     {
         listTitle = controller switch
         {
-            "Contents" => Localizer[UIResourceKeys.Contents].Value,
-            "ContentGroups" => Localizer[UIResourceKeys.ContentGroups].Value,
-            "ContactMessages" => Localizer[UIResourceKeys.ContactMessages].Value,
-            "Media" => Localizer[UIResourceKeys.MediaLibrary].Value,
+            "Contents" => Localizer[UIResources.Contents].Value,
+            "ContentGroups" => Localizer[UIResources.ContentGroups].Value,
+            "ContactMessages" => Localizer[UIResources.ContactMessages].Value,
+            "Media" => Localizer[UIResources.MediaLibrary].Value,
             _ => controller
         };
     }
@@ -33,11 +33,11 @@
     {
         deletedListTitle = controller switch
         {
-            "Contents" => Localizer[UIResourceKeys.DeletedContents].Value,
-            "ContentGroups" => Localizer[UIResourceKeys.DeletedContentGroups].Value,
-            "ContactMessages" => Localizer[UIResourceKeys.DeletedMessages].Value,
-            "Media" => Localizer[UIResourceKeys.DeletedAssets].Value,
-            _ => Localizer[UIResourceKeys.Deleted].Value
+            "Contents" => Localizer[UIResources.DeletedContents].Value,
+            "ContentGroups" => Localizer[UIResources.DeletedContentGroups].Value,
+            "ContactMessages" => Localizer[UIResources.DeletedMessages].Value,
+            "Media" => Localizer[UIResources.DeletedAssets].Value,
+            _ => Localizer[UIResources.Deleted].Value
         };
     }
 
@@ -49,7 +49,7 @@
         <li class="breadcrumb-item">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-inline-flex align-items-center">
                 <i class="bi bi-house-door-fill me-1"></i>
-                @Localizer[UIResourceKeys.Dashboard]
+                @Localizer[UIResources.Dashboard]
             </a>
         </li>
         @if (!isHome)
@@ -86,7 +86,7 @@
                         </a>
                     </li>
                 }
-                @if (!string.IsNullOrEmpty(pageTitle) && pageTitle != "Dashboard" && pageTitle != Localizer[UIResourceKeys.Dashboard].Value)
+                @if (!string.IsNullOrEmpty(pageTitle) && pageTitle != "Dashboard" && pageTitle != Localizer[UIResources.Dashboard].Value)
                 {
                     <li class="breadcrumb-item active" aria-current="page">
                         @pageTitle

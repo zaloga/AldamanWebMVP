@@ -1,9 +1,9 @@
-@using Aldaman.Persistence.Enums
+﻿@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.Content.ContentEditDto
 
 @{
     var isCreate = Model.Id == null || Model.Id == Guid.Empty;
-    ViewData.SetPageTitle(isCreate ? Localizer[UIResourceKeys.CreateContent] : Localizer[UIResourceKeys.UpdateContent]);
+    ViewData.SetPageTitle(isCreate ? Localizer[UIResources.CreateContent] : Localizer[UIResources.UpdateContent]);
 }
 
 @section Styles {
@@ -22,7 +22,7 @@
             <div class="col-lg-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Translations]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.Translations]</h6>
                     </div>
                     <div class="card-body">
                         <partial name="_TranslationTabs" model="Model.Translations.Select(t => t.CultureCode)" />
@@ -42,20 +42,20 @@
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResources.Title] (@culture.ToUpper())</label>
                                         <input asp-for="Translations[i].Title" class="form-control" />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                         <div class="form-check mt-2">
                                             <input asp-for="Translations[i].DisplayTitle" class="form-check-input" type="checkbox" />
-                                            <label asp-for="Translations[i].DisplayTitle" class="form-check-label">@Localizer[UIResourceKeys.DisplayTitle]</label>
+                                            <label asp-for="Translations[i].DisplayTitle" class="form-check-label">@Localizer[UIResources.DisplayTitle]</label>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer[UIResourceKeys.Slug] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer[UIResources.Slug] (@culture.ToUpper())</label>
                                         <div class="input-group">
                                             <input asp-for="Translations[i].Slug" class="form-control" placeholder="my-content" />
-                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer[UIResourceKeys.GenerateSlug]">
+                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer[UIResources.GenerateSlug]">
                                                 <i class="bi bi-lightning-charge"></i>
                                             </button>
                                         </div>
@@ -63,18 +63,18 @@
                                     </div>
 
                                     <div class="mb-3 conditional-post-field" data-type-conditional="post">
-                                        <label asp-for="Translations[i].Perex" class="form-label fw-medium">@Localizer[UIResourceKeys.Perex] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Perex" class="form-label fw-medium">@Localizer[UIResources.Perex] (@culture.ToUpper())</label>
                                         <textarea asp-for="Translations[i].Perex" class="form-control" rows="3"></textarea>
                                         <span asp-validation-for="Translations[i].Perex" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-check mb-3 conditional-post-field" data-type-conditional="post">
                                         <input asp-for="Translations[i].DisplayExpanded" class="form-check-input" type="checkbox" />
-                                        <label asp-for="Translations[i].DisplayExpanded" class="form-check-label">@Localizer[UIResourceKeys.DisplayExpanded]</label>
+                                        <label asp-for="Translations[i].DisplayExpanded" class="form-check-label">@Localizer[UIResources.DisplayExpanded]</label>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer[UIResourceKeys.Content] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].BodyHtml" class="form-label fw-medium">@Localizer[UIResources.Content] (@culture.ToUpper())</label>
                                         <div class="quill-editor-container bg-white" data-culture="@culture" data-index="@i" style="height: 400px;"></div>
                                         <input type="hidden" asp-for="Translations[i].BodyHtml" />
                                         <span asp-validation-for="Translations[i].BodyHtml" class="text-danger"></span>
@@ -92,37 +92,37 @@
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.ContentSettings]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.ContentSettings]</h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResourceKeys.Type]</label>
+                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResources.Type]</label>
                             <div class="btn-group w-100" role="group" aria-label="Content Type Selector">
                                 <input type="radio" class="btn-check" name="ContentType" id="contentTypePost" value="@ContentTypeEnum.Post" @(Model.ContentType == ContentTypeEnum.Post ? "checked" : "") autocomplete="off">
                                 <label class="btn btn-outline-primary" for="contentTypePost">
                                     <i class="bi bi-file-earmark-text me-1"></i>
-                                    @Localizer[UIResourceKeys.AsPost]
+                                    @Localizer[UIResources.AsPost]
                                 </label>
 
                                 <input type="radio" class="btn-check" name="ContentType" id="contentTypePage" value="@ContentTypeEnum.Page" @(Model.ContentType == ContentTypeEnum.Page ? "checked" : "") autocomplete="off">
                                 <label class="btn btn-outline-primary" for="contentTypePage">
                                     <i class="bi bi-file-earmark me-1"></i>
-                                    @Localizer[UIResourceKeys.AsPage]
+                                    @Localizer[UIResources.AsPage]
                                 </label>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResourceKeys.Locations]</label>
+                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResources.Locations]</label>
                             <div class="p-3 border rounded bg-light">
                                 @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
                                 {
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
                                         <label class="form-check-label fw-medium" for="loc-@value">
-                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResourceKeys.HomePage]</text> }
-                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResourceKeys.TopNavigation]</text> }
-                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResourceKeys.Footer]</text> }
+                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResources.HomePage]</text> }
+                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResources.TopNavigation]</text> }
+                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResources.Footer]</text> }
                                             else { @value }
                                         </label>
                                     </div>
@@ -131,26 +131,26 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Order" class="form-label fw-bold text-dark">@Localizer[UIResourceKeys.Order]</label>
+                            <label asp-for="Order" class="form-label fw-bold text-dark">@Localizer[UIResources.Order]</label>
                             <input asp-for="Order" class="form-control" type="number" />
                             <span asp-validation-for="Order" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
                             <div class="conditional-post-field" data-type-conditional="post">
-                                <label asp-for="PublishedAtUtc" class="form-label fw-medium">@Localizer[UIResourceKeys.PublicationDate]</label>
+                                <label asp-for="PublishedAtUtc" class="form-label fw-medium">@Localizer[UIResources.PublicationDate]</label>
                                 <input asp-for="PublishedAtUtc" class="form-control" type="datetime-local" />
                                 <span asp-validation-for="PublishedAtUtc" class="text-danger"></span>
-                                <small class="text-muted">@Localizer[UIResourceKeys.PublishDateInfo]</small>
+                                <small class="text-muted">@Localizer[UIResources.PublishDateInfo]</small>
                             </div>
                             <div class="form-check form-switch mt-2">
                                 <input asp-for="IsPublished" class="form-check-input" type="checkbox" role="switch">
-                                <label asp-for="IsPublished" class="form-check-label">@Localizer[UIResourceKeys.IsPublished]</label>
+                                <label asp-for="IsPublished" class="form-check-label">@Localizer[UIResources.IsPublished]</label>
                             </div>
                         </div>
 
                         <div class="mb-3 conditional-post-field" data-type-conditional="post">
-                            <label asp-for="CoverImageFile" class="form-label fw-medium">@Localizer[UIResourceKeys.CoverImage]</label>
+                            <label asp-for="CoverImageFile" class="form-label fw-medium">@Localizer[UIResources.CoverImage]</label>
                             @if (!string.IsNullOrEmpty(Model.CoverImageRelativePath))
                             {
                                 <div class="mb-2 position-relative d-inline-block">
@@ -158,7 +158,7 @@
                                     <div class="form-check mt-2">
                                         <input asp-for="RemoveCoverImage" class="form-check-input" type="checkbox">
                                         <label asp-for="RemoveCoverImage" class="form-check-label text-danger small">
-                                            @Localizer[UIResourceKeys.RemoveImage]
+                                            @Localizer[UIResources.RemoveImage]
                                         </label>
                                     </div>
                                 </div>
@@ -166,21 +166,21 @@
                             <div class="input-group">
                                 <label class="input-group-text cursor-pointer" for="CoverImageFile">
                                     <i class="bi bi-upload me-1"></i>
-                                    @Localizer[UIResourceKeys.ChooseFile]
+                                    @Localizer[UIResources.ChooseFile]
                                 </label>
-                                <input asp-for="CoverImageFile" class="form-control d-none" type="file" accept="image/*" data-action="cover-file-input" data-display-target="coverFileNameDisplay" data-no-file-text="@Localizer[UIResourceKeys.NoFileChosen]" />
-                                <span class="form-control bg-light text-muted" id="coverFileNameDisplay">@Localizer[UIResourceKeys.NoFileChosen]</span>
+                                <input asp-for="CoverImageFile" class="form-control d-none" type="file" accept="image/*" data-action="cover-file-input" data-display-target="coverFileNameDisplay" data-no-file-text="@Localizer[UIResources.NoFileChosen]" />
+                                <span class="form-control bg-light text-muted" id="coverFileNameDisplay">@Localizer[UIResources.NoFileChosen]</span>
                             </div>
                             <input type="hidden" asp-for="CoverMediaAssetId" />
                             <span asp-validation-for="CoverImageFile" class="text-danger"></span>
-                            <small class="text-muted">@Localizer[UIResourceKeys.CoverImageInfo]</small>
+                            <small class="text-muted">@Localizer[UIResources.CoverImageInfo]</small>
                         </div>
 
                         <hr />
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer[UIResourceKeys.Create] : Localizer[UIResourceKeys.Save])</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
+                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer[UIResources.Create] : Localizer[UIResources.Save])</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResources.Back]</a>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-@{
+﻿@{
     var successMessage = TempData.GetSuccessMessage();
     var errorMessage = TempData.GetErrorMessage();
     var infoMessage = TempData.GetInfoMessage();
@@ -7,26 +7,26 @@
 @if (!string.IsNullOrEmpty(successMessage))
 {
     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">@Localizer[UIResourceKeys.Success]</strong>
+        <strong class="d-block">@Localizer[UIResources.Success]</strong>
         @successMessage
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResourceKeys.Close]"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResources.Close]"></button>
     </div>
 }
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
     <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">@Localizer[UIResourceKeys.Error]</strong>
+        <strong class="d-block">@Localizer[UIResources.Error]</strong>
         @errorMessage
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResourceKeys.Close]"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResources.Close]"></button>
     </div>
 }
 
 @if (!string.IsNullOrEmpty(infoMessage))
 {
     <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
-        <strong class="d-block">@Localizer[UIResourceKeys.Information]</strong>
+        <strong class="d-block">@Localizer[UIResources.Information]</strong>
         @infoMessage
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResourceKeys.Close]"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer[UIResources.Close]"></button>
     </div>
 }

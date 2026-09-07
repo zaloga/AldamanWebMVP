@@ -1,4 +1,4 @@
-@using Aldaman.Services.Dtos.Navigation
+﻿@using Aldaman.Services.Dtos.Navigation
 @model IEnumerable<NavigationDto>
 
 <div class="relative">
@@ -20,7 +20,7 @@
                    class="block px-4 py-3 text-sm font-bold text-brand-primary dark:text-brand-accent hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors border-b border-slate-100 dark:border-white/5">
                     <div class="flex items-center gap-2">
                         <i class="bi bi-house-door text-sm"></i>
-                        @Localizer[UIResourceKeys.Home]
+                        @Localizer[UIResources.Home]
                     </div>
                 </a>
                 @foreach (var hpPage in Model)

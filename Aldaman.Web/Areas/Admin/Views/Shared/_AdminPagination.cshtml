@@ -1,18 +1,18 @@
-@using Aldaman.Web.Extensions
+﻿@using Aldaman.Web.Extensions
 @model Aldaman.Services.Dtos.General.PagedResultBase
 
 <nav aria-label="Pagination" class="d-flex justify-content-between align-items-center mt-4">
     <div class="text-muted small">
-        @Localizer[UIResourceKeys.Showing] <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> @Localizer[UIResourceKeys.To]
-        <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> @Localizer[UIResourceKeys.Of]
-        <span class="fw-semibold">@Model.TotalCount</span> @Localizer[UIResourceKeys.Results]
+        @Localizer[UIResources.Showing] <span class="fw-semibold">@((Model.Page - 1) * Model.PageSize + 1)</span> @Localizer[UIResources.To]
+        <span class="fw-semibold">@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))</span> @Localizer[UIResources.Of]
+        <span class="fw-semibold">@Model.TotalCount</span> @Localizer[UIResources.Results]
     </div>
 
     @if (Model.TotalPages > 1)
     {
         <ul class="pagination pagination-sm mb-0">
             <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
-                <a class="page-link" href="@Context.Request.GetPageUrl(Model.Page - 1)" tabindex="-1">@Localizer[UIResourceKeys.Previous]</a>
+                <a class="page-link" href="@Context.Request.GetPageUrl(Model.Page - 1)" tabindex="-1">@Localizer[UIResources.Previous]</a>
             </li>
 
             @for (int i = 1; i <= Model.TotalPages; i++)
@@ -30,7 +30,7 @@
             }
 
             <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
-                <a class="page-link" href="@Context.Request.GetPageUrl(Model.Page + 1)">@Localizer[UIResourceKeys.Next]</a>
+                <a class="page-link" href="@Context.Request.GetPageUrl(Model.Page + 1)">@Localizer[UIResources.Next]</a>
             </li>
         </ul>
     }

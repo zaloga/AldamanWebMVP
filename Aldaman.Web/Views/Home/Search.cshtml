@@ -1,18 +1,18 @@
-@{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.SearchApiTitle]);
+﻿@{
+    ViewData.SetPageTitle(Localizer[UIResources.SearchApiTitle]);
 }
 
 <div class="py-12 md:py-20 max-w-5xl mx-auto px-4">
     <!-- Header -->
     <header class="mb-16">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-brand-primary/10 text-brand-primary text-[10px] font-bold uppercase tracking-wider mb-4 border border-brand-primary/20">
-            @Localizer[UIResourceKeys.RestApi]
+            @Localizer[UIResources.RestApi]
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
-            @Localizer[UIResourceKeys.SearchApiHeading]
+            @Localizer[UIResources.SearchApiHeading]
         </h1>
         <p class="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-            @Localizer[UIResourceKeys.SearchApiDescription]
+            @Localizer[UIResources.SearchApiDescription]
         </p>
     </header>
 
@@ -22,7 +22,7 @@
         <section>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-brand-primary rounded-full"></span>
-                @Localizer[UIResourceKeys.Endpoint]
+                @Localizer[UIResources.Endpoint]
             </h2>
             <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-white/10">
                 <span class="flex-shrink-0 px-3 py-1 bg-green-500 text-white rounded-md text-xs font-bold">GET</span>
@@ -35,33 +35,33 @@
         <section>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-brand-accent rounded-full"></span>
-                @Localizer[UIResourceKeys.QueryParameters]
+                @Localizer[UIResources.QueryParameters]
             </h2>
             <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm bg-white dark:bg-slate-900/20">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold border-b border-slate-200 dark:border-white/10">
                         <tr>
-                            <th class="px-6 py-4">@Localizer[UIResourceKeys.Parameter]</th>
-                            <th class="px-6 py-4">@Localizer[UIResourceKeys.Type]</th>
-                            <th class="px-6 py-4">@Localizer[UIResourceKeys.Content]</th>
-                            <th class="px-6 py-4 text-right">@Localizer[UIResourceKeys.Required]</th>
+                            <th class="px-6 py-4">@Localizer[UIResources.Parameter]</th>
+                            <th class="px-6 py-4">@Localizer[UIResources.Type]</th>
+                            <th class="px-6 py-4">@Localizer[UIResources.Content]</th>
+                            <th class="px-6 py-4 text-right">@Localizer[UIResources.Required]</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 dark:divide-white/5">
                         <tr>
                             <td class="px-6 py-4 font-mono text-brand-primary font-semibold">query</td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">string</td>
-                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.SearchTermDescription]</td>
+                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">@Localizer[UIResources.SearchTermDescription]</td>
                             <td class="px-6 py-4 text-right">
-                                <span class="px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-[10px] font-bold uppercase">@Localizer[UIResourceKeys.Yes]</span>
+                                <span class="px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-[10px] font-bold uppercase">@Localizer[UIResources.Yes]</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 font-mono text-brand-primary font-semibold">culture</td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">string</td>
-                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.TargetCultureDescription]</td>
+                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">@Localizer[UIResources.TargetCultureDescription]</td>
                             <td class="px-6 py-4 text-right">
-                                <span class="text-slate-400 dark:text-slate-600 italic">@Localizer[UIResourceKeys.NoDefaultCs]</span>
+                                <span class="text-slate-400 dark:text-slate-600 italic">@Localizer[UIResources.NoDefaultCs]</span>
                             </td>
                         </tr>
                     </tbody>
@@ -73,7 +73,7 @@
         <section>
             <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-slate-400 rounded-full"></span>
-                @Localizer[UIResourceKeys.SampleResponse]
+                @Localizer[UIResources.SampleResponse]
             </h2>
             <div class="relative group">
                 <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-primary/20 to-brand-accent/20 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
@@ -108,9 +108,9 @@
                     <i class="bi bi-info-circle text-xl"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1">@Localizer[UIResourceKeys.DeveloperGuidelines]</h4>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-1">@Localizer[UIResources.DeveloperGuidelines]</h4>
                     <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        @Localizer[UIResourceKeys.SearchApiGuidelines]
+                        @Localizer[UIResources.SearchApiGuidelines]
                     </p>
                 </div>
             </div>

@@ -1,9 +1,9 @@
-@using Aldaman.Persistence.Enums
+﻿@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContentGroup.ContentGroupEditDto
 
 @{
     var isCreate = Model.Id == null || Model.Id == Guid.Empty;
-    ViewData.SetPageTitle(isCreate ? Localizer[UIResourceKeys.CreateContentGroup] : Localizer[UIResourceKeys.EditContentGroup]);
+    ViewData.SetPageTitle(isCreate ? Localizer[UIResources.CreateContentGroup] : Localizer[UIResources.EditContentGroup]);
 }
 
 <div class="container-fluid">
@@ -18,7 +18,7 @@
             <div class="col-lg-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Translations]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.Translations]</h6>
                     </div>
                     <div class="card-body">
                         <partial name="_TranslationTabs" model="Model.Translations.Select(t => t.CultureCode)" />
@@ -38,16 +38,16 @@
                                     <input type="hidden" asp-for="Translations[i].CultureCode" />
                                     
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResourceKeys.Title] (@culture.ToUpper())</label>
-                                        <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer[UIResourceKeys.Title] (@culture.ToUpper())..." />
+                                        <label asp-for="Translations[i].Title" class="form-label fw-medium">@Localizer[UIResources.Title] (@culture.ToUpper())</label>
+                                        <input asp-for="Translations[i].Title" class="form-control" placeholder="@Localizer[UIResources.Title] (@culture.ToUpper())..." />
                                         <span asp-validation-for="Translations[i].Title" class="text-danger"></span>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer[UIResourceKeys.Slug] (@culture.ToUpper())</label>
+                                        <label asp-for="Translations[i].Slug" class="form-label fw-medium">@Localizer[UIResources.Slug] (@culture.ToUpper())</label>
                                         <div class="input-group">
                                             <input asp-for="Translations[i].Slug" class="form-control" placeholder="group-abc" />
-                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer[UIResourceKeys.GenerateSlug]">
+                                            <button type="button" class="btn btn-outline-secondary btn-generate-slug" title="@Localizer[UIResources.GenerateSlug]">
                                                 <i class="bi bi-lightning-charge"></i>
                                             </button>
                                         </div>
@@ -62,13 +62,13 @@
                 <!-- Unified Content Items Selector -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedContents]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.AssociatedContents]</h6>
                     </div>
                     <div class="card-body">
                         <div class="row g-2 mb-3 align-items-center">
                             <div class="col-md-9">
                                 <select id="contentsSelect" class="form-select">
-                                    <option value="">-- @Localizer[UIResourceKeys.SelectContent] --</option>
+                                    <option value="">-- @Localizer[UIResources.SelectContent] --</option>
                                     @foreach (var contentItem in Model.AvailableContents)
                                     {
                                         <option value="@contentItem.Id" data-title="@contentItem.Title" data-slug="@contentItem.Slug">
@@ -80,14 +80,14 @@
                             <div class="col-md-3">
                                 <button type="button" id="btnAddItem" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-1">
                                     <i class="bi bi-plus-lg"></i>
-                                    @Localizer[UIResourceKeys.AddItem]
+                                    @Localizer[UIResources.AddItem]
                                 </button>
                             </div>
                         </div>
 
                         <div id="selectedItemsContainer" class="list-group">
                             <div class="empty-items-message text-muted text-center py-3 bg-light rounded border @(Model.SelectedItems.Any() ? "d-none" : "")">
-                                @Localizer[UIResourceKeys.NoContentsSelected]
+                                @Localizer[UIResources.NoContentsSelected]
                             </div>
                             @for (int i = 0; i < Model.SelectedItems.Count; i++)
                             {
@@ -103,13 +103,13 @@
                                         <input type="hidden" class="item-title-input" name="SelectedItems[@i].Title" value="@item.Title" />
                                         <input type="hidden" class="item-slug-input" name="SelectedItems[@i].Slug" value="@item.Slug" />
                                         <input type="hidden" class="item-order-input" name="SelectedItems[@i].Order" value="@i" />
-                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="@Localizer[UIResourceKeys.MoveUp]" @(i == 0 ? "disabled" : "")>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="@Localizer[UIResources.MoveUp]" @(i == 0 ? "disabled" : "")>
                                             <i class="bi bi-arrow-up"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="@Localizer[UIResourceKeys.MoveDown]" @(i == Model.SelectedItems.Count - 1 ? "disabled" : "")>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="@Localizer[UIResources.MoveDown]" @(i == Model.SelectedItems.Count - 1 ? "disabled" : "")>
                                             <i class="bi bi-arrow-down"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="@Localizer[UIResourceKeys.Remove]">
+                                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="@Localizer[UIResources.Remove]">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
@@ -124,20 +124,20 @@
             <div class="col-lg-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Settings]</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.Settings]</h6>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResourceKeys.Locations]</label>
+                            <label class="form-label d-block text-dark fw-bold">@Localizer[UIResources.Locations]</label>
                             <div class="p-3 border rounded bg-light">
                                 @foreach (var value in Enum.GetValues<PlaceToShowEnum>().Where(v => v != PlaceToShowEnum.None))
                                 {
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" name="PlaceToShow" value="@value" id="loc-@value" @(Model.PlaceToShow.HasFlag(value) ? "checked" : "")>
                                         <label class="form-check-label fw-medium" for="loc-@value">
-                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResourceKeys.HomePage]</text> }
-                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResourceKeys.TopNavigation]</text> }
-                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResourceKeys.Footer]</text> }
+                                            @if (value == PlaceToShowEnum.HomePage) { <text>@Localizer[UIResources.HomePage]</text> }
+                                            else if (value == PlaceToShowEnum.TopNavigation) { <text>@Localizer[UIResources.TopNavigation]</text> }
+                                            else if (value == PlaceToShowEnum.Footer) { <text>@Localizer[UIResources.Footer]</text> }
                                             else { @value }
                                         </label>
                                     </div>
@@ -146,7 +146,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="GroupOrder" class="form-label fw-bold text-dark">@Localizer[UIResourceKeys.GroupOrder]</label>
+                            <label asp-for="GroupOrder" class="form-label fw-bold text-dark">@Localizer[UIResources.GroupOrder]</label>
                             <input asp-for="GroupOrder" class="form-control" type="number" />
                             <span asp-validation-for="GroupOrder" class="text-danger"></span>
                         </div>
@@ -154,8 +154,8 @@
                         <hr />
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer[UIResourceKeys.Create] : Localizer[UIResourceKeys.Save])</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
+                            <button type="submit" class="btn btn-success btn-block mb-2">@(isCreate ? Localizer[UIResources.Create] : Localizer[UIResources.Save])</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-block">@Localizer[UIResources.Back]</a>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-@inject Aldaman.Services.Interfaces.IStyleService StyleService
+﻿@inject Aldaman.Services.Interfaces.IStyleService StyleService
 @using Aldaman.Web.Extensions
 <!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-full">
@@ -38,7 +38,7 @@
                 @{
                     var isContactActive = ViewContext.IsNavActive("Contact");
                 }
-                <a class="@(isContactActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-800 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResourceKeys.Contact]</a>
+                <a class="@(isContactActive ? "text-sm font-semibold text-brand-primary dark:text-brand-accent border-b-2 border-brand-primary dark:border-brand-accent pb-0.5 transition-all" : "text-sm font-medium text-slate-800 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-accent transition-colors")" asp-area="" asp-controller="Contact" asp-action="Index">@Localizer[UIResources.Contact]</a>
             </div>
 
 
@@ -46,7 +46,7 @@
                 <div class="relative group w-full max-w-[200px] lg:max-w-none">
                     <input type="text" id="site-search"
                            class="block w-full lg:w-40 xl:w-48 p-2.5 pl-4 pr-10 text-sm text-slate-900 border border-slate-200 rounded-full shadow-sm dark:border-slate-700 dark:placeholder-slate-400 dark:text-white transition-all focus:lg:w-48 xl:focus:w-56 outline-none"
-                           placeholder="@Localizer[UIResourceKeys.Search]..."
+                           placeholder="@Localizer[UIResources.Search]..."
                            autocomplete="off"
                            data-culture="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
                     <div id="search-results" class="absolute left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl hidden overflow-hidden z-[60]">
@@ -86,14 +86,14 @@
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="footer-link">@Localizer[UIResourceKeys.Admin]</a>
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="footer-link">@Localizer[UIResources.Admin]</a>
                         <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="inline leading-4">
-                            <button type="submit" class="footer-link">@Localizer[UIResourceKeys.Logout]</button>
+                            <button type="submit" class="footer-link">@Localizer[UIResources.Logout]</button>
                         </form>
                     }
                     else
                     {
-                        <a asp-area="" asp-controller="Account" asp-action="Login" class="footer-link">@Localizer[UIResourceKeys.Login]</a>
+                        <a asp-area="" asp-controller="Account" asp-action="Login" class="footer-link">@Localizer[UIResources.Login]</a>
                     }
                 </div>
             </div>
@@ -108,7 +108,7 @@
                     <i class="bi bi-info-circle text-2xl"></i>
                 </div>
                 <div class="flex-1 text-sm font-medium text-slate-800 dark:text-slate-200 pr-2">
-                    @Localizer[UIResourceKeys.TranslationMissing]
+                    @Localizer[UIResources.TranslationMissing]
                 </div>
                 <button id="close-toast-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                     <i class="bi bi-x text-lg"></i>

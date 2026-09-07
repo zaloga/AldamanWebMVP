@@ -1,9 +1,9 @@
-@if (!ViewData.ModelState.IsValid)
+﻿@if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger shadow-sm border-0 bg-danger bg-opacity-10 text-danger" role="alert">
         <div class="fw-bold d-flex align-items-center mb-2">
             <i class="bi bi-exclamation-circle-fill me-2"></i>
-            @Localizer[UIResourceKeys.PleaseCorrectErrors]
+            @Localizer[UIResources.PleaseCorrectErrors]
         </div>
         <div asp-validation-summary="All" class="small"></div>
     </div>

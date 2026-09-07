@@ -1,4 +1,4 @@
-using Aldaman.Persistence.Entities;
+﻿using Aldaman.Persistence.Entities;
 using Aldaman.Services.Resources;
 using Aldaman.Web.ViewModels;
 using FluentValidation;
@@ -11,11 +11,11 @@ public class ContactFormViewModelValidator : AbstractValidator<ContactFormViewMo
     public ContactFormViewModelValidator(IStringLocalizer<ValidationResources> localizer)
     {
         RuleFor(x => x.EmailOrPhone)
-            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.EmailOrPhoneRequired])
-            .MaximumLength(ContactMessageEntity.EmailOrPhoneMaxLength).WithMessage(localizer[ValidationResourceKeys.EmailOrPhoneMaxLength, ContactMessageEntity.EmailOrPhoneMaxLength]);
+            .NotEmpty().WithMessage(localizer[ValidationResources.EmailOrPhoneRequired])
+            .MaximumLength(ContactMessageEntity.EmailOrPhoneMaxLength).WithMessage(localizer[ValidationResources.EmailOrPhoneMaxLength, ContactMessageEntity.EmailOrPhoneMaxLength]);
 
         RuleFor(x => x.Message)
-            .NotEmpty().WithMessage(localizer[ValidationResourceKeys.MessageRequired])
-            .MaximumLength(ContactMessageEntity.MessageMaxLength).WithMessage(localizer[ValidationResourceKeys.MessageMaxLength, ContactMessageEntity.MessageMaxLength]);
+            .NotEmpty().WithMessage(localizer[ValidationResources.MessageRequired])
+            .MaximumLength(ContactMessageEntity.MessageMaxLength).WithMessage(localizer[ValidationResources.MessageMaxLength, ContactMessageEntity.MessageMaxLength]);
     }
 }

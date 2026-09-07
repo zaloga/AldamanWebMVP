@@ -1,4 +1,4 @@
-using Aldaman.Services.Constants;
+﻿using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.ContentGroup;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
@@ -40,11 +40,11 @@ public class ContentGroupsController : BaseAdminController
         try
         {
             await ContentGroupService.SoftDeleteContentGroupAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -55,11 +55,11 @@ public class ContentGroupsController : BaseAdminController
         try
         {
             await ContentGroupService.RestoreContentGroupAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -70,11 +70,11 @@ public class ContentGroupsController : BaseAdminController
         try
         {
             await ContentGroupService.HardDeleteContentGroupAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResources.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 
@@ -100,12 +100,12 @@ public class ContentGroupsController : BaseAdminController
         try
         {
             await ContentGroupService.CreateContentGroupAsync(model, cancellationToken);
-            TempData.SetSuccessMessage(Localizer[UIResourceKeys.ContentGroupCreatedSuccessfully].Value);
+            TempData.SetSuccessMessage(Localizer[UIResources.ContentGroupCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError(string.Empty, Localizer[UIResourceKeys.ErrorCreatingContentGroup, ex.Message].Value);
+            ModelState.AddModelError(string.Empty, Localizer[UIResources.ErrorCreatingContentGroup, ex.Message].Value);
             await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View("Update", model);
         }
@@ -156,7 +156,7 @@ public class ContentGroupsController : BaseAdminController
         try
         {
             await ContentGroupService.UpdateContentGroupAsync(id, model, cancellationToken);
-            TempData.SetSuccessMessage(Localizer[UIResourceKeys.ContentGroupUpdatedSuccessfully].Value);
+            TempData.SetSuccessMessage(Localizer[UIResources.ContentGroupUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)
@@ -165,7 +165,7 @@ public class ContentGroupsController : BaseAdminController
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError(string.Empty, Localizer[UIResourceKeys.ErrorUpdatingContentGroup, ex.Message].Value);
+            ModelState.AddModelError(string.Empty, Localizer[UIResources.ErrorUpdatingContentGroup, ex.Message].Value);
             await ContentGroupService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View(model);
         }

@@ -1,8 +1,8 @@
-@using Aldaman.Persistence.Enums
+﻿@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContentGroup.ContentGroupEditDto
 
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.ContentGroupDetails]);
+    ViewData.SetPageTitle(Localizer[UIResources.ContentGroupDetails]);
 }
 
 <div class="container-fluid">
@@ -11,7 +11,7 @@
         <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Translations]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.Translations]</h6>
                 </div>
                 <div class="card-body">
                     @{
@@ -40,11 +40,11 @@
                             var isActive = culture == activeCulture;
                             <div class="tab-pane fade @(isActive ? "show active" : "")" id="content-@culture" role="tabpanel" aria-labelledby="tab-@culture">
                                 <dl class="row">
-                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Title]</dt>
+                                    <dt class="col-sm-2 text-muted small text-uppercase fw-bold">@Localizer[UIResources.Title]</dt>
                                     <dd class="col-sm-10">
                                         @if (string.IsNullOrWhiteSpace(translation.Title))
                                         {
-                                            <span class="text-muted">@Localizer[UIResourceKeys.None]</span>
+                                            <span class="text-muted">@Localizer[UIResources.None]</span>
                                         }
                                         else
                                         {
@@ -56,7 +56,7 @@
                                     <dd class="col-sm-10 font-monospace">
                                         @if (string.IsNullOrWhiteSpace(translation.Slug))
                                         {
-                                            <span class="text-muted">@Localizer[UIResourceKeys.None]</span>
+                                            <span class="text-muted">@Localizer[UIResources.None]</span>
                                         }
                                         else
                                         {
@@ -74,12 +74,12 @@
             <!-- Associated Content Items Details -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.AssociatedContents]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.AssociatedContents]</h6>
                 </div>
                 <div class="card-body">
                     @if (!Model.SelectedItems.Any())
                     {
-                        <p class="text-muted mb-0">@Localizer[UIResourceKeys.NoContentsSelected]</p>
+                        <p class="text-muted mb-0">@Localizer[UIResources.NoContentsSelected]</p>
                     }
                     else
                     {
@@ -87,9 +87,9 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 80px;">@Localizer[UIResourceKeys.Order]</th>
-                                        <th>@Localizer[UIResourceKeys.Title]</th>
-                                        <th>@Localizer[UIResourceKeys.Slug]</th>
+                                        <th style="width: 80px;">@Localizer[UIResources.Order]</th>
+                                        <th>@Localizer[UIResources.Title]</th>
+                                        <th>@Localizer[UIResources.Slug]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,51 +113,51 @@
         <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResourceKeys.Settings]</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.Settings]</h6>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.State]</dt>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResources.State]</dt>
                         <dd class="col-sm-6">
                             @if (Model.IsDeleted)
                             {
-                                <span class="badge bg-danger">@Localizer[UIResourceKeys.Deleted]</span>
+                                <span class="badge bg-danger">@Localizer[UIResources.Deleted]</span>
                             }
                             else
                             {
-                                <span class="badge bg-success">@Localizer[UIResourceKeys.Active]</span>
+                                <span class="badge bg-success">@Localizer[UIResources.Active]</span>
                             }
                         </dd>
 
                         @if (Model.IsDeleted)
                         {
-                            <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.DeletionDate]</dt>
+                            <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResources.DeletionDate]</dt>
                             <dd class="col-sm-6 text-danger">@Model.DeletedAtUtc?.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
                         }
 
-                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.Locations]</dt>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResources.Locations]</dt>
                         <dd class="col-sm-6">
                             <div class="d-flex flex-wrap gap-1">
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
-                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.HomePage]"></i>
+                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResources.HomePage]"></i>
                                 }
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
                                 {
-                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.TopNavigation]"></i>
+                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResources.TopNavigation]"></i>
                                 }
                                 @if (Model.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
-                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResourceKeys.Footer]"></i>
+                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResources.Footer]"></i>
                                 }
                                 @if (Model.PlaceToShow == PlaceToShowEnum.None)
                                 {
-                                    <span class="text-muted">@Localizer[UIResourceKeys.None]</span>
+                                    <span class="text-muted">@Localizer[UIResources.None]</span>
                                 }
                             </div>
                         </dd>
 
-                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResourceKeys.GroupOrder]</dt>
+                        <dt class="col-sm-6 text-muted small text-uppercase fw-bold">@Localizer[UIResources.GroupOrder]</dt>
                         <dd class="col-sm-6 text-secondary fw-medium">@Model.GroupOrder</dd>
                     </dl>
 
@@ -166,9 +166,9 @@
                     <div class="d-grid">
                         @if (!Model.IsDeleted)
                         {
-                            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer[UIResourceKeys.Edit]</a>
+                            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer[UIResources.Edit]</a>
                         }
-                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer[UIResourceKeys.Back]</a>
+                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer[UIResources.Back]</a>
                     </div>
                 </div>
             </div>

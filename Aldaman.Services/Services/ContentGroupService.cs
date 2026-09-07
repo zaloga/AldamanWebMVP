@@ -1,4 +1,4 @@
-using Aldaman.Persistence.Context;
+﻿using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
@@ -213,7 +213,7 @@ public sealed class ContentGroupService : IContentGroupService
 
             if (hasOtherHomePageGroup)
             {
-                throw new InvalidOperationException(Localizer[ValidationResourceKeys.OnlyOneContentGroupAllowedOnHomePage].Value);
+                throw new InvalidOperationException(Localizer[ValidationResources.OnlyOneContentGroupAllowedOnHomePage].Value);
             }
         }
 
@@ -282,7 +282,7 @@ public sealed class ContentGroupService : IContentGroupService
 
             if (hasOtherHomePageGroup)
             {
-                throw new InvalidOperationException(Localizer[ValidationResourceKeys.OnlyOneContentGroupAllowedOnHomePage].Value);
+                throw new InvalidOperationException(Localizer[ValidationResources.OnlyOneContentGroupAllowedOnHomePage].Value);
             }
         }
 

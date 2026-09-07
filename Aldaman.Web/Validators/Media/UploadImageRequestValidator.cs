@@ -1,4 +1,4 @@
-using Aldaman.Services.Resources;
+﻿using Aldaman.Services.Resources;
 using Aldaman.Web.Models.Media;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
@@ -13,16 +13,16 @@ public class UploadImageRequestValidator : AbstractValidator<UploadImageRequest>
     public UploadImageRequestValidator(IStringLocalizer<ValidationResources> localizer)
     {
         RuleFor(x => x.File)
-            .NotNull().WithMessage(localizer[ValidationResourceKeys.ImageFileRequired])
-            .Must(file => file != null && file.Length > 0).WithMessage(localizer[ValidationResourceKeys.ImageFileEmpty]);
+            .NotNull().WithMessage(localizer[ValidationResources.ImageFileRequired])
+            .Must(file => file != null && file.Length > 0).WithMessage(localizer[ValidationResources.ImageFileEmpty]);
 
         RuleFor(x => x.TargetWidth)
-            .GreaterThan(0).WithMessage(localizer[ValidationResourceKeys.TargetWidthGreaterThanZero]);
+            .GreaterThan(0).WithMessage(localizer[ValidationResources.TargetWidthGreaterThanZero]);
 
         When(x => x.TargetHeight.HasValue, () =>
         {
             RuleFor(x => x.TargetHeight!.Value)
-                .GreaterThan(0).WithMessage(localizer[ValidationResourceKeys.TargetHeightGreaterThanZero]);
+                .GreaterThan(0).WithMessage(localizer[ValidationResources.TargetHeightGreaterThanZero]);
         });
     }
 }

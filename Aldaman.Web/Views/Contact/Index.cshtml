@@ -1,17 +1,17 @@
-@model Aldaman.Web.ViewModels.ContactFormViewModel
+﻿@model Aldaman.Web.ViewModels.ContactFormViewModel
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.Contact]);
+    ViewData.SetPageTitle(Localizer[UIResources.Contact]);
 }
 
 <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">@Localizer[UIResourceKeys.ContactMe]</h2>
+    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">@Localizer[UIResources.ContactMe]</h2>
     <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
-        @Localizer[UIResourceKeys.ContactSubtitle]
+        @Localizer[UIResources.ContactSubtitle]
     </p>
 
     <form asp-controller="Contact" asp-action="Submit" method="post" class="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
         <div class="sm:col-span-2">
-            <label asp-for="EmailOrPhone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.EmailOrPhone]</label>
+            <label asp-for="EmailOrPhone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResources.EmailOrPhone]</label>
             <div class="mt-1">
                 <input asp-for="EmailOrPhone" type="text" class="contact-input py-3 px-4 block w-full shadow-sm border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-md outline-none transition-all">
                 <span asp-validation-for="EmailOrPhone" class="text-sm text-red-600"></span>
@@ -19,7 +19,7 @@
         </div>
          
         <div class="sm:col-span-2">
-            <label asp-for="Message" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResourceKeys.Message]</label>
+            <label asp-for="Message" class="block text-sm font-medium text-slate-700 dark:text-slate-300">@Localizer[UIResources.Message]</label>
             <div class="mt-1">
                 <textarea asp-for="Message" rows="4" class="contact-input py-3 px-4 block w-full shadow-sm border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-md outline-none transition-all"></textarea>
                 <span asp-validation-for="Message" class="text-sm text-red-600"></span>
@@ -28,7 +28,7 @@
 
         <div class="sm:col-span-2">
             <button type="submit" class="btn-primary w-full justify-center py-3 text-base">
-                @Localizer[UIResourceKeys.SendMessage]
+                @Localizer[UIResources.SendMessage]
             </button>
         </div>
     </form>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-100">
 <head>
     <meta charset="utf-8" />
@@ -16,11 +16,11 @@
 
             <div class="d-flex align-items-center gap-4">
                 <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-flex align-items-center">
-                    <span class="h4 mb-0 fw-bold text-primary">@Localizer[UIResourceKeys.Admin]</span>
+                    <span class="h4 mb-0 fw-bold text-primary">@Localizer[UIResources.Admin]</span>
                 </a>
 
                 <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-outline-primary btn-md d-flex align-items-center gap-2">
-                    <i class="bi bi-box-arrow-up-right"></i> @Localizer[UIResourceKeys.GoToWeb]
+                    <i class="bi bi-box-arrow-up-right"></i> @Localizer[UIResources.GoToWeb]
                 </a>
             </div>
 
@@ -33,7 +33,7 @@
                         <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 32px; height: 32px; font-size: 14px;">
                             A
                         </div>
-                        <span class="fw-medium">@Localizer[UIResourceKeys.AdminUser]</span>
+                        <span class="fw-medium">@Localizer[UIResources.AdminUser]</span>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown">
@@ -41,7 +41,7 @@
                         <li>
                             <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@ViewContext.RouteData.Values["culture"]" method="post" class="m-0">
                                 <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                    <i class="bi bi-box-arrow-right"></i> @Localizer[UIResourceKeys.SignOut]
+                                    <i class="bi bi-box-arrow-right"></i> @Localizer[UIResources.SignOut]
                                 </button>
                             </form>
                         </li>
@@ -66,83 +66,83 @@
     <script id="admin-i18n-data" type="application/json">
         @Html.Raw(Json.Serialize(new
         {
-            areYouSure = Localizer[UIResourceKeys.AreYouSure].Value,
-            confirmDeleteText = Localizer[UIResourceKeys.ConfirmDeleteText].Value,
-            confirmDeletePermanentlyText = Localizer[UIResourceKeys.ConfirmDeletePermanentlyText].Value,
-            confirmRestoreText = Localizer[UIResourceKeys.ConfirmRestoreText].Value,
-            yesDeleteIt = Localizer[UIResourceKeys.YesDeleteIt].Value,
-            deletePermanentlyButton = Localizer[UIResourceKeys.DeletePermanentlyButton].Value,
-            cancel = Localizer[UIResourceKeys.Cancel].Value,
-            save = Localizer[UIResourceKeys.Save].Value,
-            deletedSuccessfully = Localizer[UIResourceKeys.DeletedSuccessfully].Value,
-            restoredSuccessfully = Localizer[UIResourceKeys.RestoredSuccessfully].Value,
-            yes = Localizer[UIResourceKeys.Yes].Value,
-            fileSizeExceedsLimit = Localizer[UIResourceKeys.FileSizeExceedsLimit].Value,
-            imageUploadFailed = Localizer[UIResourceKeys.ImageUploadFailed].Value,
-            errorUploadingImage = Localizer[UIResourceKeys.ErrorUploadingImage].Value,
-            invalidRequestPayload = Localizer[UIResourceKeys.InvalidRequestPayload].Value,
-            error = Localizer[UIResourceKeys.Error].Value,
-            errorOccurred = Localizer[UIResourceKeys.ErrorOccurred].Value,
+            areYouSure = Localizer[UIResources.AreYouSure].Value,
+            confirmDeleteText = Localizer[UIResources.ConfirmDeleteText].Value,
+            confirmDeletePermanentlyText = Localizer[UIResources.ConfirmDeletePermanentlyText].Value,
+            confirmRestoreText = Localizer[UIResources.ConfirmRestoreText].Value,
+            yesDeleteIt = Localizer[UIResources.YesDeleteIt].Value,
+            deletePermanentlyButton = Localizer[UIResources.DeletePermanentlyButton].Value,
+            cancel = Localizer[UIResources.Cancel].Value,
+            save = Localizer[UIResources.Save].Value,
+            deletedSuccessfully = Localizer[UIResources.DeletedSuccessfully].Value,
+            restoredSuccessfully = Localizer[UIResources.RestoredSuccessfully].Value,
+            yes = Localizer[UIResources.Yes].Value,
+            fileSizeExceedsLimit = Localizer[UIResources.FileSizeExceedsLimit].Value,
+            imageUploadFailed = Localizer[UIResources.ImageUploadFailed].Value,
+            errorUploadingImage = Localizer[UIResources.ErrorUploadingImage].Value,
+            invalidRequestPayload = Localizer[UIResources.InvalidRequestPayload].Value,
+            error = Localizer[UIResources.Error].Value,
+            errorOccurred = Localizer[UIResources.ErrorOccurred].Value,
             quillTooltips = new Dictionary<string, string>
             {
-                ["bold"] = Localizer[UIResourceKeys.RteBold].Value,
-                ["italic"] = Localizer[UIResourceKeys.RteItalic].Value,
-                ["underline"] = Localizer[UIResourceKeys.RteUnderline].Value,
-                ["strike"] = Localizer[UIResourceKeys.RteStrikethrough].Value,
-                ["color"] = Localizer[UIResourceKeys.RteTextColor].Value,
-                ["background"] = Localizer[UIResourceKeys.RteBackgroundColor].Value,
-                ["script[value=\"sub\"]"] = Localizer[UIResourceKeys.RteSubscript].Value,
-                ["script[value=\"super\"]"] = Localizer[UIResourceKeys.RteSuperscript].Value,
-                ["header[value=\"1\"]"] = Localizer[UIResourceKeys.RteHeader1].Value,
-                ["header[value=\"2\"]"] = Localizer[UIResourceKeys.RteHeader2].Value,
-                ["header[value=\"3\"]"] = Localizer[UIResourceKeys.RteHeader3].Value,
-                ["header[value=\"4\"]"] = Localizer[UIResourceKeys.RteHeader4].Value,
-                ["blockquote"] = Localizer[UIResourceKeys.RteBlockquote].Value,
-                ["code-block"] = Localizer[UIResourceKeys.RteCodeBlock].Value,
-                ["list[value=\"ordered\"]"] = Localizer[UIResourceKeys.RteListOrdered].Value,
-                ["list[value=\"bullet\"]"] = Localizer[UIResourceKeys.RteListBullet].Value,
-                ["indent[value=\"-1\"]"] = Localizer[UIResourceKeys.RteIndentDecrease].Value,
-                ["indent[value=\"+1\"]"] = Localizer[UIResourceKeys.RteIndentIncrease].Value,
-                ["direction"] = Localizer[UIResourceKeys.RteDirection].Value,
-                ["align"] = Localizer[UIResourceKeys.RteAlign].Value,
-                ["link"] = Localizer[UIResourceKeys.RteLink].Value,
-                ["image"] = Localizer[UIResourceKeys.RteImage].Value,
-                ["video"] = Localizer[UIResourceKeys.RteVideo].Value,
-                ["formula"] = Localizer[UIResourceKeys.RteFormula].Value,
-                ["table"] = Localizer[UIResourceKeys.RteTable].Value,
-                ["tableRows"] = Localizer[UIResourceKeys.RteRows].Value,
-                ["tableColumns"] = Localizer[UIResourceKeys.RteColumns].Value,
-                ["tableInsert"] = Localizer[UIResourceKeys.RteInsert].Value,
-                ["clean"] = Localizer[UIResourceKeys.RteClean].Value,
-                ["font"] = Localizer[UIResourceKeys.RteFont].Value,
-                ["size"] = Localizer[UIResourceKeys.RteSize].Value,
-                ["customColor"] = Localizer[UIResourceKeys.RteCustomColor].Value,
-                ["imageProperties"] = Localizer[UIResourceKeys.RteImageProperties].Value,
-                ["alignLeft"] = Localizer[UIResourceKeys.RteAlignLeft].Value,
-                ["alignCenter"] = Localizer[UIResourceKeys.RteAlignCenter].Value,
-                ["alignRight"] = Localizer[UIResourceKeys.RteAlignRight].Value,
-                ["alignInline"] = Localizer[UIResourceKeys.RteAlignInline].Value,
-                ["width"] = Localizer[UIResourceKeys.RteImageWidth].Value,
-                ["height"] = Localizer[UIResourceKeys.RteImageHeight].Value,
-                ["altText"] = Localizer[UIResourceKeys.RteImageAltText].Value,
-                ["imageTitle"] = Localizer[UIResourceKeys.RteImageTitle].Value,
-                ["resetSize"] = Localizer[UIResourceKeys.RteResetSize].Value,
-                ["maintainAspectRatio"] = Localizer[UIResourceKeys.RteMaintainAspectRatio].Value,
-                ["gallery"] = Localizer[UIResourceKeys.RteGallery].Value,
-                ["insertGallery"] = Localizer[UIResourceKeys.InsertGallery].Value,
-                ["editGallery"] = Localizer[UIResourceKeys.EditGallery].Value,
-                ["columns"] = Localizer[UIResourceKeys.Columns].Value,
-                ["columnsAuto"] = Localizer[UIResourceKeys.ColumnsAuto].Value,
-                ["selectImages"] = Localizer[UIResourceKeys.SelectImages].Value,
-                ["selectedImagesCount"] = Localizer[UIResourceKeys.SelectedImagesCount].Value,
-                ["gap"] = Localizer[UIResourceKeys.Gap].Value,
-                ["gapSmall"] = Localizer[UIResourceKeys.GapSmall].Value,
-                ["gapMedium"] = Localizer[UIResourceKeys.GapMedium].Value,
-                ["gapLarge"] = Localizer[UIResourceKeys.GapLarge].Value,
-                ["enableLightbox"] = Localizer[UIResourceKeys.EnableLightbox].Value,
-                ["deleteGallery"] = Localizer[UIResourceKeys.DeleteGallery].Value,
-                ["noImagesSelected"] = Localizer[UIResourceKeys.NoImagesSelected].Value,
-                ["selected"] = Localizer[UIResourceKeys.Selected].Value
+                ["bold"] = Localizer[UIResources.RteBold].Value,
+                ["italic"] = Localizer[UIResources.RteItalic].Value,
+                ["underline"] = Localizer[UIResources.RteUnderline].Value,
+                ["strike"] = Localizer[UIResources.RteStrikethrough].Value,
+                ["color"] = Localizer[UIResources.RteTextColor].Value,
+                ["background"] = Localizer[UIResources.RteBackgroundColor].Value,
+                ["script[value=\"sub\"]"] = Localizer[UIResources.RteSubscript].Value,
+                ["script[value=\"super\"]"] = Localizer[UIResources.RteSuperscript].Value,
+                ["header[value=\"1\"]"] = Localizer[UIResources.RteHeader1].Value,
+                ["header[value=\"2\"]"] = Localizer[UIResources.RteHeader2].Value,
+                ["header[value=\"3\"]"] = Localizer[UIResources.RteHeader3].Value,
+                ["header[value=\"4\"]"] = Localizer[UIResources.RteHeader4].Value,
+                ["blockquote"] = Localizer[UIResources.RteBlockquote].Value,
+                ["code-block"] = Localizer[UIResources.RteCodeBlock].Value,
+                ["list[value=\"ordered\"]"] = Localizer[UIResources.RteListOrdered].Value,
+                ["list[value=\"bullet\"]"] = Localizer[UIResources.RteListBullet].Value,
+                ["indent[value=\"-1\"]"] = Localizer[UIResources.RteIndentDecrease].Value,
+                ["indent[value=\"+1\"]"] = Localizer[UIResources.RteIndentIncrease].Value,
+                ["direction"] = Localizer[UIResources.RteDirection].Value,
+                ["align"] = Localizer[UIResources.RteAlign].Value,
+                ["link"] = Localizer[UIResources.RteLink].Value,
+                ["image"] = Localizer[UIResources.RteImage].Value,
+                ["video"] = Localizer[UIResources.RteVideo].Value,
+                ["formula"] = Localizer[UIResources.RteFormula].Value,
+                ["table"] = Localizer[UIResources.RteTable].Value,
+                ["tableRows"] = Localizer[UIResources.RteRows].Value,
+                ["tableColumns"] = Localizer[UIResources.RteColumns].Value,
+                ["tableInsert"] = Localizer[UIResources.RteInsert].Value,
+                ["clean"] = Localizer[UIResources.RteClean].Value,
+                ["font"] = Localizer[UIResources.RteFont].Value,
+                ["size"] = Localizer[UIResources.RteSize].Value,
+                ["customColor"] = Localizer[UIResources.RteCustomColor].Value,
+                ["imageProperties"] = Localizer[UIResources.RteImageProperties].Value,
+                ["alignLeft"] = Localizer[UIResources.RteAlignLeft].Value,
+                ["alignCenter"] = Localizer[UIResources.RteAlignCenter].Value,
+                ["alignRight"] = Localizer[UIResources.RteAlignRight].Value,
+                ["alignInline"] = Localizer[UIResources.RteAlignInline].Value,
+                ["width"] = Localizer[UIResources.RteImageWidth].Value,
+                ["height"] = Localizer[UIResources.RteImageHeight].Value,
+                ["altText"] = Localizer[UIResources.RteImageAltText].Value,
+                ["imageTitle"] = Localizer[UIResources.RteImageTitle].Value,
+                ["resetSize"] = Localizer[UIResources.RteResetSize].Value,
+                ["maintainAspectRatio"] = Localizer[UIResources.RteMaintainAspectRatio].Value,
+                ["gallery"] = Localizer[UIResources.RteGallery].Value,
+                ["insertGallery"] = Localizer[UIResources.InsertGallery].Value,
+                ["editGallery"] = Localizer[UIResources.EditGallery].Value,
+                ["columns"] = Localizer[UIResources.Columns].Value,
+                ["columnsAuto"] = Localizer[UIResources.ColumnsAuto].Value,
+                ["selectImages"] = Localizer[UIResources.SelectImages].Value,
+                ["selectedImagesCount"] = Localizer[UIResources.SelectedImagesCount].Value,
+                ["gap"] = Localizer[UIResources.Gap].Value,
+                ["gapSmall"] = Localizer[UIResources.GapSmall].Value,
+                ["gapMedium"] = Localizer[UIResources.GapMedium].Value,
+                ["gapLarge"] = Localizer[UIResources.GapLarge].Value,
+                ["enableLightbox"] = Localizer[UIResources.EnableLightbox].Value,
+                ["deleteGallery"] = Localizer[UIResources.DeleteGallery].Value,
+                ["noImagesSelected"] = Localizer[UIResources.NoImagesSelected].Value,
+                ["selected"] = Localizer[UIResources.Selected].Value
             }
         }))
     </script>

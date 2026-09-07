@@ -1,4 +1,4 @@
-@using Aldaman.Persistence.Enums
+﻿@using Aldaman.Persistence.Enums
 @model Aldaman.Web.ViewModels.ContentGroupViewModel
 @{
     ViewData.SetPageTitle(Model.Group.Title);
@@ -22,9 +22,9 @@
         {
             <a asp-area="Admin" asp-controller="ContentGroups" asp-action="Update" asp-route-id="@Model.Group.Id"
                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
-               title="@Localizer[UIResourceKeys.Edit]">
+               title="@Localizer[UIResources.Edit]">
                 <i class="bi bi-pencil-square"></i>
-                <span>@Localizer[UIResourceKeys.Edit]</span>
+                <span>@Localizer[UIResources.Edit]</span>
             </a>
         }
     </div>
@@ -80,7 +80,7 @@
                                         <button type="button"
                                                 class="js-show-more-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(content.DisplayExpanded ? "hidden" : "")"
                                                 data-slug="@content.Slug">
-                                            <span>@Localizer[UIResourceKeys.ShowMore]</span>
+                                            <span>@Localizer[UIResources.ShowMore]</span>
                                             <svg class="w-4 h-4 js-spinner-icon hidden animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -89,7 +89,7 @@
                                         <button type="button"
                                                 class="js-show-less-btn inline-flex items-center gap-1.5 font-semibold text-brand-primary dark:text-brand-accent hover:underline focus:outline-none cursor-pointer text-sm @(content.DisplayExpanded ? "" : "hidden")"
                                                 data-slug="@content.Slug">
-                                            <span>@Localizer[UIResourceKeys.ShowLess]</span>
+                                            <span>@Localizer[UIResources.ShowLess]</span>
                                         </button>
                                     </div>
 
@@ -98,14 +98,14 @@
                                         {
                                             <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@content.Id"
                                                class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline"
-                                               title="@Localizer[UIResourceKeys.EditContent]">
+                                               title="@Localizer[UIResources.EditContent]">
                                                 <i class="bi bi-pencil-square"></i>
-                                                <span>@Localizer[UIResourceKeys.EditContent]</span>
+                                                <span>@Localizer[UIResources.EditContent]</span>
                                             </a>
                                         }
 
                                         <a asp-controller="Content" asp-action="Detail" asp-route-slug="@content.Slug" class="inline-flex items-center gap-1 text-sm font-semibold text-brand-primary dark:text-brand-accent hover:underline">
-                                            <span>@Localizer[UIResourceKeys.ViewDetail]</span>
+                                            <span>@Localizer[UIResources.ViewDetail]</span>
                                             <i class="bi bi-arrow-right"></i>
                                         </a>
                                     </div>
@@ -137,9 +137,9 @@
                                 {
                                     <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@content.Id"
                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-900 dark:bg-slate-800 dark:text-amber-400 border border-amber-500/30 dark:border-slate-700 hover:bg-amber-500/20 dark:hover:bg-slate-700 transition-colors shrink-0 shadow-sm"
-                                       title="@Localizer[UIResourceKeys.EditContent]">
+                                       title="@Localizer[UIResources.EditContent]">
                                         <i class="bi bi-pencil-square"></i>
-                                        <span>@Localizer[UIResourceKeys.EditContent]</span>
+                                        <span>@Localizer[UIResources.EditContent]</span>
                                     </a>
                                 }
                             </div>
@@ -159,7 +159,7 @@
                                     {
                                         <h3 class="text-xl font-bold text-amber-950/70 dark:text-slate-500">@content.Title</h3>
                                     }
-                                    <p class="mt-2 text-amber-950/60 dark:text-slate-600">@Localizer[UIResourceKeys.SectionNoContent]</p>
+                                    <p class="mt-2 text-amber-950/60 dark:text-slate-600">@Localizer[UIResources.SectionNoContent]</p>
                                 </div>
                             }
                         </div>
@@ -171,7 +171,7 @@
     else
     {
         <div class="text-center py-12 bg-amber-500/10 dark:bg-slate-800/50 rounded-2xl border border-dashed border-amber-900/20 dark:border-slate-700 mt-6">
-            <p class="text-amber-950/60 dark:text-slate-600">@Localizer[UIResourceKeys.SectionNoContent]</p>
+            <p class="text-amber-950/60 dark:text-slate-600">@Localizer[UIResources.SectionNoContent]</p>
         </div>
     }
 </div>

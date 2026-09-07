@@ -1,4 +1,4 @@
-using Aldaman.Persistence.Entities;
+﻿using Aldaman.Persistence.Entities;
 using Aldaman.Services.Dtos.ContentGroup;
 using Aldaman.Services.Resources;
 using FluentValidation;
@@ -12,21 +12,21 @@ public class ContentGroupTranslationDtoValidator : AbstractValidator<ContentGrou
     {
         RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage(localizer[ValidationResourceKeys.TitleRequiredIfTranslationNotEmpty])
+            .WithMessage(localizer[ValidationResources.TitleRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage(localizer[ValidationResourceKeys.SlugRequiredIfTranslationNotEmpty])
+            .WithMessage(localizer[ValidationResources.SlugRequiredIfTranslationNotEmpty])
             .When(x => !IsTranslationEmpty(x));
 
         RuleFor(x => x.Title)
             .MaximumLength(ContentGroupTranslationEntity.TitleMaxLength)
-            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, ContentGroupTranslationEntity.TitleMaxLength]);
+            .WithMessage(localizer[ValidationResources.GenericMaxLength, ContentGroupTranslationEntity.TitleMaxLength]);
 
         RuleFor(x => x.Slug)
             .MaximumLength(ContentGroupTranslationEntity.SlugMaxLength)
-            .WithMessage(localizer[ValidationResourceKeys.GenericMaxLength, ContentGroupTranslationEntity.SlugMaxLength]);
+            .WithMessage(localizer[ValidationResources.GenericMaxLength, ContentGroupTranslationEntity.SlugMaxLength]);
     }
 
     private static bool IsTranslationEmpty(ContentGroupTranslationDto dto)

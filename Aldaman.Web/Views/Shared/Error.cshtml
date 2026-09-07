@@ -1,14 +1,14 @@
-@model ErrorViewModel
+﻿@model ErrorViewModel
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.Error]);
+    ViewData.SetPageTitle(Localizer[UIResources.Error]);
 }
 
-<h1 class="text-red-600 dark:text-red-400 font-bold text-3xl mb-2">@Localizer[UIResourceKeys.Error].</h1>
-<h2 class="text-red-600 dark:text-red-400 text-xl mb-4">@Localizer[UIResourceKeys.ErrorOccurred]</h2>
+<h1 class="text-red-600 dark:text-red-400 font-bold text-3xl mb-2">@Localizer[UIResources.Error].</h1>
+<h2 class="text-red-600 dark:text-red-400 text-xl mb-4">@Localizer[UIResources.ErrorOccurred]</h2>
 
 @if (Model.ShowRequestId)
 {
     <p>
-        <strong>@Localizer[UIResourceKeys.RequestId]</strong> <code>@Model.RequestId</code>
+        <strong>@Localizer[UIResources.RequestId]</strong> <code>@Model.RequestId</code>
     </p>
 }

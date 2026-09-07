@@ -1,13 +1,13 @@
-@model Aldaman.Web.Models.Account.LoginRequest
+﻿@model Aldaman.Web.Models.Account.LoginRequest
 @{
-    ViewData.SetPageTitle(Localizer[UIResourceKeys.Login]);
+    ViewData.SetPageTitle(Localizer[UIResources.Login]);
 }
 
 <div class="h-[70vh] flex flex-col items-center justify-center p-6 text-slate-900 dark:text-slate-100 font-sans">
     <div class="w-full max-w-[340px] space-y-10">
         <div class="text-center">
             <h1 class="text-3xl font-light tracking-tight">Aldaman</h1>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">@Localizer[UIResourceKeys.WelcomeToAdmin]</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">@Localizer[UIResources.WelcomeToAdmin]</p>
         </div>
 
         <form asp-action="Login" method="post" class="space-y-6">
@@ -17,13 +17,13 @@
 
             <div class="space-y-4">
                 <div class="space-y-1">
-                    <input asp-for="Email" required placeholder="@Localizer[UIResourceKeys.Email]" autocomplete="username"
+                    <input asp-for="Email" required placeholder="@Localizer[UIResources.Email]" autocomplete="username"
                            class="w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                     <span asp-validation-for="Email" class="text-red-500 text-xs px-1"></span>
                 </div>
 
                 <div class="space-y-1">
-                    <input asp-for="Password" type="password" required placeholder="@Localizer[UIResourceKeys.Password]" autocomplete="current-password"
+                    <input asp-for="Password" type="password" required placeholder="@Localizer[UIResources.Password]" autocomplete="current-password"
                            class="w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                     <span asp-validation-for="Password" class="text-red-500 text-xs px-1"></span>
                 </div>
@@ -32,12 +32,12 @@
             <div class="flex items-center justify-between text-xs px-1">
                 <label class="flex items-center gap-2 cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
                     <input asp-for="RememberMe" class="rounded-md border-slate-300 text-indigo-600 focus:ring-indigo-500/30" />
-                    @Localizer[UIResourceKeys.RememberMe]
+                    @Localizer[UIResources.RememberMe]
                 </label>
             </div>
 
             <button type="submit" class="w-full rounded-xl bg-indigo-600 px-5 py-3 text-white font-medium shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition-all active:scale-[0.98] transform">
-                @Localizer[UIResourceKeys.SignInButton]
+                @Localizer[UIResources.SignInButton]
             </button>
         </form>
 

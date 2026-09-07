@@ -1,4 +1,4 @@
-using Aldaman.Services.Dtos.Content;
+﻿using Aldaman.Services.Dtos.Content;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -63,12 +63,12 @@ public class ContentsController : BaseAdminController
             }
 
             await ContentService.CreateContentAsync(model, cancellationToken);
-            TempData.SetSuccessMessage(Localizer[UIResourceKeys.ContentCreatedSuccessfully].Value);
+            TempData.SetSuccessMessage(Localizer[UIResources.ContentCreatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorCreatingContent, ex.Message]);
+            ModelState.AddModelError("", Localizer[UIResources.ErrorCreatingContent, ex.Message]);
             return View("Update", model);
         }
     }
@@ -121,7 +121,7 @@ public class ContentsController : BaseAdminController
             }
 
             await ContentService.UpdateContentAsync(id, model, cancellationToken);
-            TempData.SetSuccessMessage(Localizer[UIResourceKeys.ContentUpdatedSuccessfully].Value);
+            TempData.SetSuccessMessage(Localizer[UIResources.ContentUpdatedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
         }
         catch (KeyNotFoundException)
@@ -130,7 +130,7 @@ public class ContentsController : BaseAdminController
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", Localizer[UIResourceKeys.ErrorUpdatingContent, ex.Message]);
+            ModelState.AddModelError("", Localizer[UIResources.ErrorUpdatingContent, ex.Message]);
             return View(model);
         }
     }
@@ -142,11 +142,11 @@ public class ContentsController : BaseAdminController
         try
         {
             await ContentService.SoftDeleteContentAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.DeletedSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.DeletedSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorDeleting, ex.Message].Value });
         }
     }
 
@@ -157,11 +157,11 @@ public class ContentsController : BaseAdminController
         try
         {
             await ContentService.RestoreContentAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.RestoredSuccessfully].Value });
+            return Json(new { success = true, message = Localizer[UIResources.RestoredSuccessfully].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorRestoring, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorRestoring, ex.Message].Value });
         }
     }
 
@@ -172,11 +172,11 @@ public class ContentsController : BaseAdminController
         try
         {
             await ContentService.HardDeleteContentAsync(id, cancellationToken);
-            return Json(new { success = true, message = Localizer[UIResourceKeys.PermanentlyDeleted].Value });
+            return Json(new { success = true, message = Localizer[UIResources.PermanentlyDeleted].Value });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = Localizer[UIResourceKeys.ErrorPermanentlyDeleting, ex.Message].Value });
+            return Json(new { success = false, message = Localizer[UIResources.ErrorPermanentlyDeleting, ex.Message].Value });
         }
     }
 }
