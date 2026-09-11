@@ -79,13 +79,12 @@
                             }
                             <div class="text-muted small mt-2">
                                 @{
-                                    var culture = (string?)ViewContext.RouteData.Values["culture"] ?? System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                                    var deletedContentUrl = item.ContentType == ContentTypeEnum.Page
-                                        ? Url.RouteUrl("page_detail", new { culture = culture, slug = item.Slug }, Context.Request.Scheme)
-                                        : Url.RouteUrl("blog_detail", new { culture = culture, slug = item.Slug }, Context.Request.Scheme);
-                                    deletedContentUrl ??= Url.Action("Detail", "Content", new { area = "", culture = culture, slug = item.Slug }, Context.Request.Scheme);
+                                    var contentUrl = item.ContentType == ContentTypeEnum.Page
+                                        ? Url.RouteUrl(RouteConstants.PageDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme)
+                                        : Url.RouteUrl(RouteConstants.BlogDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
+                                    contentUrl ??= Url.RouteUrl(RouteConstants.ContentDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                                 }
-                                <a href="@deletedContentUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@deletedContentUrl</a>
+                                <a href="@contentUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@contentUrl</a>
                             </div>
                         </td>
                         <td class="py-3">

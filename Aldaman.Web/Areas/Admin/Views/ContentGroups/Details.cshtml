@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContentGroup.ContentGroupEditDto
 
 @{
@@ -60,7 +60,7 @@
                                         }
                                         else
                                         {
-                                            var url = Url.Action("Detail", "ContentGroup", new { area = "", culture = translation.CultureCode, slug = translation.Slug });
+                                            var url = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { culture = translation.CultureCode, slug = translation.Slug });
                                             <a href="@url" target="_blank">@url</a>
                                         }
                                     </dd>

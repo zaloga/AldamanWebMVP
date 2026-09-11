@@ -1,4 +1,4 @@
-﻿@using Aldaman.Services.Dtos.ContentGroup
+@using Aldaman.Services.Dtos.ContentGroup
 @using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
 @model PagedResultDto<ContentGroupListItemDto>
@@ -72,7 +72,7 @@
                             <div class="fw-semibold text-muted">@item.Title</div>
                             <div class="text-muted small mt-2">
                                 @{
-                                    var deletedGroupUrl = Url.RouteUrl("content_group_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                    var deletedGroupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { area = "", culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                                 }
                                 <a href="@deletedGroupUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@deletedGroupUrl</a>
                             </div>

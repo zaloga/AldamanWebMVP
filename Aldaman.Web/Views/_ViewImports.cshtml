@@ -1,8 +1,13 @@
 @using Aldaman.Web
+@using Aldaman.Web.Constants
 @using Aldaman.Web.Extensions
+@using Aldaman.Web.Infrastructure
 @using Aldaman.Web.ViewModels
 @using Aldaman.Services.Resources
 @using Microsoft.Extensions.Localization
 @using Aldaman.Services.Constants
+@inherits Aldaman.Web.Infrastructure.BaseViewPage<TModel>
 @inject IStringLocalizer<UIResources> Localizer
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+

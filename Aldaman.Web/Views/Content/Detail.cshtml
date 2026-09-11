@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Web.ViewModels.ContentViewModel
 @{
     ViewData.SetPageTitle(Model.Content.Title);
@@ -95,7 +95,7 @@
                         <div>
                             @if (Model.PreviousContent != null)
                             {
-                                <a asp-action="Detail" asp-route-slug="@Model.PreviousContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                                <a asp-route="@RouteConstants.ContentDetail" asp-route-culture="@CurrentCulture" asp-route-slug="@Model.PreviousContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
                                     <i class="bi bi-arrow-left mr-2"></i>
                                     @Localizer[UIResources.PreviousPost]
                                 </a>
@@ -104,7 +104,7 @@
                         <div>
                             @if (Model.NextContent != null)
                             {
-                                <a asp-action="Detail" asp-route-slug="@Model.NextContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
+                                <a asp-route="@RouteConstants.ContentDetail" asp-route-culture="@CurrentCulture" asp-route-slug="@Model.NextContent.Slug" class="inline-flex items-center text-sm font-medium text-amber-950/80 dark:text-slate-400 hover:text-brand-primary dark:hover:text-white transition-all">
                                     @Localizer[UIResources.NextPost]
                                     <i class="bi bi-arrow-right ml-2"></i>
                                 </a>

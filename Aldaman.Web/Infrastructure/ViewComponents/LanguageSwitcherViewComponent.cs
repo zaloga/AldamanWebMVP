@@ -1,9 +1,9 @@
+using System.Globalization;
 using Aldaman.Services.Configuration;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 
 namespace Aldaman.Web.Infrastructure.ViewComponents;
 
@@ -22,7 +22,7 @@ public sealed class LanguageSwitcherViewComponent : ViewComponent
         var supportedLanguages = new List<LanguageInfo>();
 
         // Check for manual overrides from controllers (e.g., translated slugs)
-        var alternatives = ViewContext.ViewData.GetLanguageAlternatives() 
+        var alternatives = ViewContext.ViewData.GetLanguageAlternatives()
                            ?? new Dictionary<string, string>();
 
         foreach (var culture in _settings.SupportedCultures)
@@ -37,7 +37,7 @@ public sealed class LanguageSwitcherViewComponent : ViewComponent
             {
                 // Fallback: Swap culture in current route
                 var routeValues = new RouteValueDictionary(ViewContext.RouteData.Values);
-                routeValues["culture"] = culture;
+                routeValues["culture"] = culture; // TODO from CultureInfo.CurrentUICulture.TwoLetterISOLanguageName?
 
                 // Keep query string if any
                 foreach (var query in ViewContext.HttpContext.Request.Query)

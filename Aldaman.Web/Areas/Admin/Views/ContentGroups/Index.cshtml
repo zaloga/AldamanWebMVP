@@ -1,4 +1,4 @@
-﻿@using Aldaman.Services.Dtos.ContentGroup
+@using Aldaman.Services.Dtos.ContentGroup
 @using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.General
 @model PagedResultDto<ContentGroupListItemDto>
@@ -74,7 +74,7 @@
                             <div class="fw-semibold text-dark">@item.Title</div>
                             <div class="text-muted small mt-2">
                                 @{
-                                    var groupUrl = Url.RouteUrl("content_group_detail", new { area = "", culture = ViewContext.RouteData.Values["culture"], slug = item.Slug }, Context.Request.Scheme);
+                                    var groupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                                 }
                                 <a href="@groupUrl" target="_blank" class="text-decoration-none text-primary">@groupUrl</a>
                             </div>

@@ -2,7 +2,7 @@
 @inject Aldaman.Services.Interfaces.IContentService ContentService
 @using Aldaman.Web.Extensions
 <!DOCTYPE html>
-<html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-full">
+<html lang="@CurrentCulture" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,7 +49,7 @@
                            class="block w-full lg:w-40 xl:w-48 p-2.5 pl-4 pr-10 text-sm text-slate-900 border border-slate-200 rounded-full shadow-sm dark:border-slate-700 dark:placeholder-slate-400 dark:text-white transition-all focus:lg:w-48 xl:focus:w-56 outline-none"
                            placeholder="@Localizer[UIResources.Search]..."
                            autocomplete="off"
-                           data-culture="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+                           data-culture="@CurrentCulture">
                     <div id="search-results" class="absolute left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl hidden overflow-hidden z-[60]">
                     </div>
                 </div>
@@ -69,8 +69,7 @@
     <main role="main" class="flex-grow bg-gradient-to-b from-orange-500/30 via-amber-500/25 to-orange-500/30 dark:bg-brand-bg-dark py-6 sm:py-8">
         <div class="container">
             @{
-                var cultureCode = System.Globalization.CultureInfo.CurrentUICulture.Name;
-                var sidebarBanners = await ContentService.GetSidebarBannersCachedAsync(cultureCode);
+                var sidebarBanners = await ContentService.GetSidebarBannersCachedAsync(CurrentCulture);
                 var hasSidebar = sidebarBanners.Any();
             }
             @if (hasSidebar)

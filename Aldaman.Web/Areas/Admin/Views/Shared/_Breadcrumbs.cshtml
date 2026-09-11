@@ -1,4 +1,4 @@
-﻿@{
+@{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var isIndex = action?.Equals("Index", StringComparison.OrdinalIgnoreCase) ?? false;
@@ -47,7 +47,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb h4 p-2">
         <li class="breadcrumb-item">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-inline-flex align-items-center">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@CurrentCulture" class="text-decoration-none d-inline-flex align-items-center">
                 <i class="bi bi-house-door-fill me-1"></i>
                 @Localizer[UIResources.Dashboard]
             </a>
@@ -63,7 +63,7 @@
             else if (isDeletedAction)
             {
                 <li class="breadcrumb-item">
-                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@CurrentCulture" class="text-decoration-none">
                         @listTitle
                     </a>
                 </li>
@@ -74,14 +74,14 @@
             else
             {
                 <li class="breadcrumb-item">
-                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                    <a asp-action="Index" asp-controller="@controller" asp-route-culture="@CurrentCulture" class="text-decoration-none">
                         @listTitle
                     </a>
                 </li>
                 @if (isItemDeleted)
                 {
                     <li class="breadcrumb-item">
-                        <a asp-action="Deleted" asp-controller="@controller" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none">
+                        <a asp-action="Deleted" asp-controller="@controller" asp-route-culture="@CurrentCulture" class="text-decoration-none">
                             @deletedListTitle
                         </a>
                     </li>

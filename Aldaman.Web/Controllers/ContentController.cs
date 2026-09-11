@@ -2,6 +2,7 @@ using System.Globalization;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Content;
 using Aldaman.Services.Interfaces;
+using Aldaman.Web.Constants;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ public sealed class ContentController : Controller
                 if (fallbackSlug != null)
                 {
                     TempData.SetShowTranslationMissingToast(true);
-                    return RedirectToAction("Detail", "Content", new { culture = defaultCulture, slug = fallbackSlug });
+                    return RedirectToRoute(RouteConstants.ContentDetail, new { culture = defaultCulture, slug = fallbackSlug });
                 }
             }
             return NotFound();
@@ -61,7 +62,7 @@ public sealed class ContentController : Controller
         var alternatives = new Dictionary<string, string>();
         foreach (var slugEntry in alternativeSlugs)
         {
-            alternatives[slugEntry.Key] = Url.Action("Detail", "Content", new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
+            alternatives[slugEntry.Key] = Url.RouteUrl(RouteConstants.ContentDetail, new { culture = slugEntry.Key, slug = slugEntry.Value }) ?? $"/{slugEntry.Key}";
         }
         ViewData.SetLanguageAlternatives(alternatives);
 

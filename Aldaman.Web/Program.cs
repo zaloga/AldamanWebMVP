@@ -5,6 +5,7 @@ using Aldaman.Persistence.Migrator;
 using Aldaman.Persistence.Seed;
 using Aldaman.Services;
 using Aldaman.Services.Configuration;
+using Aldaman.Web.Constants;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using FluentValidation;
@@ -126,77 +127,77 @@ public class Program
 
         // Admin and Areas
         app.MapControllerRoute(
-            name: "admin_media_upload_quill",
+            name: RouteConstants.AdminMediaUploadQuill,
             pattern: "Admin/Media/UploadQuill",
             defaults: new { area = "Admin", controller = "Media", action = "UploadQuill" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "areas_localized",
+            name: RouteConstants.AreasLocalized,
             pattern: $"{culturePattern}/{{area:exists}}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 
         // Content (Unified)
         app.MapControllerRoute(
-            name: "content_detail",
+            name: RouteConstants.ContentDetail,
             pattern: $"{culturePattern}/content/{{slug}}",
             defaults: new { controller = "Content", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "content_data",
+            name: RouteConstants.ContentData,
             pattern: $"{culturePattern}/content/data/{{slug}}",
             defaults: new { controller = "Content", action = "GetContentBySlug" })
             .WithStaticAssets();
 
         // Content Groups
         app.MapControllerRoute(
-            name: "content_group_detail",
+            name: RouteConstants.ContentGroupDetail,
             pattern: $"{culturePattern}/group/{{slug}}",
             defaults: new { controller = "ContentGroup", action = "Detail" })
             .WithStaticAssets();
 
         // Backward compatibility routes for old page and blog URLs
         app.MapControllerRoute(
-            name: "page_detail",
+            name: RouteConstants.PageDetail,
             pattern: $"{culturePattern}/page/{{slug}}",
             defaults: new { controller = "Content", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "blog_detail",
+            name: RouteConstants.BlogDetail,
             pattern: $"{culturePattern}/blog/{{slug}}",
             defaults: new { controller = "Content", action = "Detail" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "blog_content",
+            name: RouteConstants.BlogContent,
             pattern: $"{culturePattern}/blog/content/{{slug}}",
             defaults: new { controller = "Content", action = "GetContentBySlug" })
             .WithStaticAssets();
 
         // Contact
         app.MapControllerRoute(
-            name: "contact_index",
+            name: RouteConstants.ContactIndex,
             pattern: $"{culturePattern}/contact",
             defaults: new { controller = "Contact", action = "Index" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "contact_submit",
+            name: RouteConstants.ContactSubmit,
             pattern: $"{culturePattern}/contact/send",
             defaults: new { controller = "Contact", action = "Submit" })
             .WithStaticAssets();
 
         app.MapControllerRoute(
-            name: "contact_success",
+            name: RouteConstants.ContactSuccess,
             pattern: $"{culturePattern}/contact/success",
             defaults: new { controller = "Contact", action = "Success" })
             .WithStaticAssets();
 
         // Default Route
         app.MapControllerRoute(
-            name: "default",
+            name: RouteConstants.Default,
             pattern: $"{culturePattern}/{{controller=Home}}/{{action=Index}}/{{id?}}")
             .WithStaticAssets();
 

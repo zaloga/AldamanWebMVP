@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" class="h-100">
 <head>
     <meta charset="utf-8" />
@@ -15,11 +15,11 @@
         <div class="container-fluid py-3 px-4 d-flex justify-content-between align-items-center">
 
             <div class="d-flex align-items-center gap-4">
-                <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="text-decoration-none d-flex align-items-center">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-culture="@CurrentCulture" class="text-decoration-none d-flex align-items-center">
                     <span class="h4 mb-0 fw-bold text-primary">@Localizer[UIResources.Admin]</span>
                 </a>
 
-                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@ViewContext.RouteData.Values["culture"]" class="btn btn-outline-primary btn-md d-flex align-items-center gap-2">
+                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-culture="@CurrentCulture" class="btn btn-outline-primary btn-md d-flex align-items-center gap-2">
                     <i class="bi bi-box-arrow-up-right"></i> @Localizer[UIResources.GoToWeb]
                 </a>
             </div>
@@ -39,7 +39,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown">
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@ViewContext.RouteData.Values["culture"]" method="post" class="m-0">
+                            <form asp-area="" asp-controller="Account" asp-action="Logout" asp-route-culture="@CurrentCulture" method="post" class="m-0">
                                 <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
                                     <i class="bi bi-box-arrow-right"></i> @Localizer[UIResources.SignOut]
                                 </button>

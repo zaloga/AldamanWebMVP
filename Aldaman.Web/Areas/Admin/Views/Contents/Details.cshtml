@@ -73,9 +73,9 @@
                                         else
                                         {
                                             var publicUrl = Model.ContentType == ContentTypeEnum.Page
-                                                ? Url.RouteUrl("page_detail", new { culture = culture, slug = translation.Slug }, Context.Request.Scheme)
-                                                : Url.RouteUrl("blog_detail", new { culture = culture, slug = translation.Slug }, Context.Request.Scheme);
-                                            publicUrl ??= Url.Action("Detail", "Content", new { area = "", culture = culture, slug = translation.Slug }, Context.Request.Scheme);
+                                                ? Url.RouteUrl(RouteConstants.PageDetail, new { culture = culture, slug = translation.Slug }, Context.Request.Scheme)
+                                                : Url.RouteUrl(RouteConstants.BlogDetail, new { culture = culture, slug = translation.Slug }, Context.Request.Scheme);
+                                            publicUrl ??= Url.RouteUrl(RouteConstants.ContentDetail, new { culture = culture, slug = translation.Slug }, Context.Request.Scheme);
                                             <a href="@publicUrl" target="_blank" class="text-decoration-none">@publicUrl</a>
                                         }
                                     </dd>
