@@ -48,6 +48,10 @@
     @apply bg-[#fce9d8]/85 dark:bg-[#1c1815]/85 backdrop-blur-md border border-amber-900/10 dark:border-amber-500/15 shadow-xs;
   }
 
+  .header-glass {
+    @apply bg-[#fceae8]/90 dark:bg-[#1c1414]/90 backdrop-blur-md border-b border-red-900/10 dark:border-red-500/15 shadow-xs;
+  }
+
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }

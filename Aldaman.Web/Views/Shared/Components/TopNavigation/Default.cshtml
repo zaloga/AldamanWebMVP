@@ -7,7 +7,7 @@
     var targetController = navigation.IsGroup ? "ContentGroup" : "Content";
     var routeName = navigation.IsGroup ? RouteConstants.ContentGroupDetail : RouteConstants.ContentDetail;
     var isActive = ViewContext.IsNavActive(targetController, "Detail", navigation.Slug);
-    <a class="@(isActive ? "px-3.5 py-1.5 rounded-full text-sm font-semibold bg-amber-700/10 text-amber-900 dark:bg-amber-400/10 dark:text-amber-300 shadow-2xs transition-all" : "px-3.5 py-1.5 rounded-full text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-900/5 dark:hover:bg-white/5 transition-all")" 
+    <a class="@(isActive ? "px-3.5 py-1.5 rounded-full text-sm font-semibold bg-red-700/10 text-red-900 dark:bg-red-500/15 dark:text-red-300 shadow-2xs transition-all" : "px-3.5 py-1.5 rounded-full text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-900/5 dark:hover:bg-white/5 transition-all")" 
        asp-route="@routeName" 
        asp-route-culture="@CurrentCulture" 
        asp-route-slug="@navigation.Slug">
