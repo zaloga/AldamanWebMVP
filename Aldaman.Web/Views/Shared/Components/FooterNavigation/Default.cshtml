@@ -4,10 +4,10 @@
 
 @foreach (var navigation in Model)
 {
-    var targetController = navigation.IsGroup ? "ContentGroup" : "Content"; @* TODO from constants? *@
+    var targetController = navigation.IsGroup ? "ContentGroup" : "Content";
     var routeName = navigation.IsGroup ? RouteConstants.ContentGroupDetail : RouteConstants.ContentDetail;
     var isActive = ViewContext.IsNavActive(targetController, "Detail", navigation.Slug);
-    <a class="@(isActive ? "text-md font-semibold text-brand-primary dark:text-brand-accent underline decoration-2 underline-offset-4 transition-colors" : "text-md text-amber-950/80 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition-colors")" 
+    <a class="@(isActive ? "text-sm font-semibold text-amber-700 dark:text-amber-400 transition-colors" : "text-sm text-stone-600 dark:text-stone-400 hover:text-amber-800 dark:hover:text-stone-200 transition-colors")" 
        asp-route="@routeName" 
        asp-route-culture="@CurrentCulture" 
        asp-route-slug="@navigation.Slug">
