@@ -1,16 +1,9 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.ContactMessage
 @model PagedResultDto<ContactMessageDto>
 @{
     ViewData.SetPageTitle(Localizer[UIResources.ContactMessages]);
 }
-
-<div class="d-flex justify-content-end mb-4">
-    <a asp-action="Deleted" class="btn btn-outline-danger">
-        <i class="bi bi-trash"></i>
-        @Localizer[UIResources.DeletedMessages]
-    </a>
-</div>
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
@@ -119,6 +112,13 @@
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
+</div>
+
+<div class="d-flex justify-content-end mb-4">
+    <a asp-action="Deleted" class="btn btn-outline-danger">
+        <i class="bi bi-trash"></i>
+        @Localizer[UIResources.DeletedMessages]
+    </a>
 </div>
 
 @Html.AntiForgeryToken()

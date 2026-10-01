@@ -6,19 +6,6 @@
     ViewData.SetPageTitle(Localizer[UIResources.ContentGroups]);
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="d-flex gap-2">
-        <a asp-action="Create" class="btn btn-success">
-            <i class="bi bi-plus-lg me-1"></i>
-            @Localizer[UIResources.Create]
-        </a>
-    </div>
-    <a asp-action="Deleted" class="btn btn-outline-danger">
-        <i class="bi bi-trash"></i>
-        @Localizer[UIResources.DeletedContentGroups]
-    </a>
-</div>
-
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
         <div class="col-md-3">
@@ -47,6 +34,13 @@
             <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.CreatedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
         </div>
     </form>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mb-4">
+    <a asp-action="Create" class="btn btn-success btn-lg px-4">
+        <i class="bi bi-plus-lg me-1"></i>
+        @Localizer[UIResources.Create]
+    </a>
 </div>
 
 <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
@@ -138,6 +132,13 @@
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
+</div>
+
+<div class="d-flex justify-content-end mb-4">
+    <a asp-action="Deleted" class="btn btn-outline-danger">
+        <i class="bi bi-trash"></i>
+        @Localizer[UIResources.DeletedContentGroups]
+    </a>
 </div>
 
 @Html.AntiForgeryToken()
