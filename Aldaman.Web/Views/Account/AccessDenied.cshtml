@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData.SetPageTitle(Localizer[UIResources.AccessDenied]);
 }
 
@@ -16,8 +16,8 @@
             </p>
         </div>
         <div class="pt-6">
-            <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
-                @Localizer[UIResources.BackToHome]
+            <a asp-controller="Home" asp-action="Index" class="btn-primary">
+                <span>@Localizer[UIResources.BackToHome]</span>
             </a>
         </div>
     </div>

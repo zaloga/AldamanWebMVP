@@ -15,22 +15,17 @@
     <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8">
         <div class="flex flex-col">
             <div class="mb-6">
-                <div class="flex items-center justify-between gap-4 mb-5">
-                    <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                        <i class="bi bi-arrow-left"></i>
-                        @Localizer[UIResources.AllArticles]
-                    </a>
-
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="flex justify-end mb-5">
                         <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@Model.Content.Id"
                            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500/10 text-amber-900 dark:bg-stone-800 dark:text-amber-400 border border-amber-500/20 dark:border-stone-700 hover:bg-amber-500/20 dark:hover:bg-stone-700 transition-colors shrink-0 shadow-xs"
                            title="@Localizer[UIResources.EditContent]">
                             <i class="bi bi-pencil-square"></i>
                             <span>@Localizer[UIResources.EditContent]</span>
                         </a>
-                    }
-                </div>
+                    </div>
+                }
 
                 @if (Model.Content.DisplayTitle && !string.IsNullOrWhiteSpace(Model.Content.Title))
                 {
@@ -135,22 +130,17 @@ else
     @* --- CONTENT PAGE LAYOUT --- *@
     <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8">
         <div class="flex flex-col">
-            <div class="flex items-center justify-between gap-4 mb-5">
-                <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors">
-                    <i class="bi bi-arrow-left"></i>
-                    @Localizer[UIResources.Home]
-                </a>
-
-                @if (User.Identity?.IsAuthenticated == true)
-                {
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="flex justify-end mb-5">
                     <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@Model.Content.Id"
                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500/10 text-amber-900 dark:bg-stone-800 dark:text-amber-400 border border-amber-500/20 dark:border-stone-700 hover:bg-amber-500/20 dark:hover:bg-stone-700 transition-colors shrink-0 shadow-xs"
                        title="@Localizer[UIResources.EditContent]">
                         <i class="bi bi-pencil-square"></i>
                         <span>@Localizer[UIResources.EditContent]</span>
                     </a>
-                }
-            </div>
+                </div>
+            }
 
             @if (Model.Content.DisplayTitle && !string.IsNullOrWhiteSpace(Model.Content.Title))
             {
