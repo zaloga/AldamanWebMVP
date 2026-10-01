@@ -33,7 +33,7 @@
 
                 @if (isPost)
                 {
-                    <article class="relative flex flex-col md:flex-row gap-6 p-6 sm:p-7 bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 shadow-xs"
+                    <article class="relative flex flex-col md:flex-row gap-6 p-6 sm:p-7 bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 shadow-xs card-motif-a"
                              data-slug="@content.Slug"
                              data-loaded-content="@(content.DisplayExpanded ? "true" : "false")">
                         @if (!string.IsNullOrWhiteSpace(content.CoverImageRelativePath))
@@ -115,7 +115,7 @@
                 }
                 else
                 {
-                    <section id="@content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/80 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-8 shadow-xs">
+                    <section id="@content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/80 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-8 shadow-xs card-motif-a">
                         <div class="flex flex-col">
                             <div class="flex items-start justify-between gap-4 mb-4">
                                 @if (content.DisplayTitle)

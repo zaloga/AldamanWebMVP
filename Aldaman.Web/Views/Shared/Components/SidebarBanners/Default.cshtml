@@ -6,7 +6,7 @@
     <aside class="flex flex-col gap-6" aria-label="@Localizer[UIResources.Sidebar]">
         @foreach (var banner in Model.Banners)
         {
-            <div class="rounded-2xl border border-amber-900/10 dark:border-amber-500/15 bg-[#fffaf5] dark:bg-[#1e1a17]/80 p-5 shadow-xs hover:shadow-md transition-all">
+            <div class="rounded-2xl border border-amber-900/10 dark:border-amber-500/15 bg-[#fffaf5] dark:bg-[#1e1a17]/80 p-5 shadow-xs hover:shadow-md transition-all card-motif-b">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
                     <div class="flex justify-end mb-2">

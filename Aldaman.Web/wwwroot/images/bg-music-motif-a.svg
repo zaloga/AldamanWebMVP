@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" fill="currentColor">
+  <!-- Musical Staff Wave Flow -->
+  <g opacity="0.65">
+    <path d="M 60 270 C 220 220, 360 360, 520 280 C 680 200, 800 240, 940 180" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 75 285 C 235 235, 375 375, 535 295 C 695 215, 815 255, 955 195" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 90 300 C 250 250, 390 390, 550 310 C 710 230, 830 270, 970 210" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 105 315 C 265 265, 405 405, 565 325 C 725 245, 845 285, 985 225" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 120 330 C 280 280, 420 420, 580 340 C 740 260, 860 300, 1000 240" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Left Secondary Treble Clef and flourishes (scale ~0.55) -->
+  <g transform="translate(70, 140) scale(0.55)">
+    <!-- Treble Clef main body -->
+    <path d="M 140 370 C 120 370 100 355 100 335 C 100 310 120 295 140 295 C 158 295 172 308 172 325 C 172 348 152 365 130 365 C 102 365 75 338 75 298 C 75 242 120 188 155 132 C 175 100 190 60 190 20 C 190 10 186 0 178 0 C 168 0 160 15 152 42 C 138 92 122 170 122 235 C 100 248 80 272 80 305 C 80 348 112 385 158 385 C 168 385 178 382 188 377 L 188 415 C 188 450 175 480 152 480 C 138 480 128 470 128 458 C 128 448 136 440 146 440 C 150 440 155 442 158 445 C 158 435 150 428 140 428 C 120 428 105 444 105 464 C 105 490 130 505 160 505 C 198 505 215 470 215 415 L 215 285 C 228 270 236 250 236 228 C 236 185 198 155 155 155 C 148 155 142 156 135 158 C 142 118 156 70 172 35 C 176 27 180 20 182 16 C 184 28 182 45 178 68 C 166 135 148 215 148 280 C 158 275 170 272 182 272 C 218 272 245 295 245 330 C 245 368 215 398 175 398 C 162 398 150 392 140 385 Z" />
+    <!-- Botanical leaf accents left -->
+    <path d="M 65 260 C 45 250 35 225 45 205 C 55 215 65 240 65 260 Z" />
+    <path d="M 50 285 C 30 285 15 270 20 250 C 32 260 45 272 50 285 Z" />
+    <path d="M 85 180 C 70 160 70 135 85 120 C 95 138 95 162 85 180 Z" />
+    <path d="M 125 100 C 115 80 120 55 138 45 C 140 65 135 88 125 100 Z" />
+    <path d="M 215 95 C 235 80 260 85 270 102 C 252 110 230 108 215 95 Z" />
+    <path d="M 220 150 C 245 145 268 158 272 178 C 255 180 232 170 220 150 Z" />
+  </g>
+
+  <!-- Flowing Notes along the wave -->
+  <!-- Note 1 -->
+  <g transform="translate(320, 240)">
+    <ellipse cx="18" cy="20" rx="14" ry="10" transform="rotate(-25 18 20)" />
+    <line x1="28" y1="16" x2="28" y2="-45" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+    <path d="M 28 -45 C 42 -40 50 -25 52 -10 C 46 -22 38 -30 28 -32" />
+    <!-- Leaf on note stem -->
+    <path d="M 28 -15 C 38 -22 48 -20 52 -12 C 45 -10 36 -10 28 -15 Z" />
+  </g>
+
+  <!-- Note 2 (Beamed pair) -->
+  <g transform="translate(430, 260)">
+    <ellipse cx="14" cy="20" rx="12" ry="9" transform="rotate(-25 14 20)" />
+    <ellipse cx="64" cy="12" rx="12" ry="9" transform="rotate(-25 64 12)" />
+    <line x1="23" y1="17" x2="23" y2="-40" stroke="currentColor" stroke-width="3" />
+    <line x1="73" y1="9" x2="73" y2="-48" stroke="currentColor" stroke-width="3" />
+    <polygon points="22,-40 74,-48 74,-39 22,-31" />
+    <!-- Small swirl -->
+    <path d="M 73 -48 C 85 -55 95 -50 96 -40 C 97 -32 90 -28 85 -30" fill="none" stroke="currentColor" stroke-width="2" />
+  </g>
+
+  <!-- Note 3 (Sixteenth beamed group) -->
+  <g transform="translate(580, 210)">
+    <ellipse cx="12" cy="20" rx="11" ry="8" transform="rotate(-25 12 20)" />
+    <ellipse cx="48" cy="15" rx="11" ry="8" transform="rotate(-25 48 15)" />
+    <ellipse cx="84" cy="10" rx="11" ry="8" transform="rotate(-25 84 10)" />
+    <line x1="20" y1="17" x2="20" y2="-38" stroke="currentColor" stroke-width="2.5" />
+    <line x1="56" y1="12" x2="56" y2="-43" stroke="currentColor" stroke-width="2.5" />
+    <line x1="92" y1="7" x2="92" y2="-48" stroke="currentColor" stroke-width="2.5" />
+    <polygon points="19,-38 93,-48 93,-42 19,-32" />
+    <polygon points="19,-29 93,-39 93,-34 19,-24" />
+  </g>
+
+  <!-- Right Primary Treble Clef and flourishes (scale ~0.95) -->
+  <g transform="translate(740, 20) scale(0.92)">
+    <!-- Treble Clef Main Curve -->
+    <path d="M 140 370 C 120 370 100 355 100 335 C 100 310 120 295 140 295 C 158 295 172 308 172 325 C 172 348 152 365 130 365 C 102 365 75 338 75 298 C 75 242 120 188 155 132 C 175 100 190 60 190 20 C 190 10 186 0 178 0 C 168 0 160 15 152 42 C 138 92 122 170 122 235 C 100 248 80 272 80 305 C 80 348 112 385 158 385 C 168 385 178 382 188 377 L 188 415 C 188 450 175 480 152 480 C 138 480 128 470 128 458 C 128 448 136 440 146 440 C 150 440 155 442 158 445 C 158 435 150 428 140 428 C 120 428 105 444 105 464 C 105 490 130 505 160 505 C 198 505 215 470 215 415 L 215 285 C 228 270 236 250 236 228 C 236 185 198 155 155 155 C 148 155 142 156 135 158 C 142 118 156 70 172 35 C 176 27 180 20 182 16 C 184 28 182 45 178 68 C 166 135 148 215 148 280 C 158 275 170 272 182 272 C 218 272 245 295 245 330 C 245 368 215 398 175 398 C 162 398 150 392 140 385 Z" />
+    
+    <!-- Ornate leaf vines & curls surrounding right clef -->
+    <!-- Head crown curl & leaves -->
+    <path d="M 180 10 C 205 -15 235 -10 248 10 C 255 22 250 38 238 40 C 225 42 216 30 220 18 C 212 12 195 15 185 24 Z" />
+    <path d="M 230 -2 C 250 -18 272 -12 278 5 C 265 8 250 5 238 0 Z" />
+    <path d="M 252 25 C 275 22 290 35 292 50 C 278 48 265 40 252 25 Z" />
+
+    <!-- Right wing flourishes -->
+    <path d="M 215 230 C 248 210 275 225 285 248 C 272 255 250 250 235 240 Z" />
+    <path d="M 220 280 C 255 270 282 288 290 315 C 275 318 252 308 235 295 Z" />
+    <path d="M 205 340 C 235 345 258 370 255 398 C 242 392 230 375 220 360 Z" />
+
+    <!-- Left side flourishes on main clef -->
+    <path d="M 125 150 C 100 135 85 110 90 85 C 102 105 118 128 128 145 Z" />
+    <path d="M 90 220 C 65 210 50 185 55 160 C 68 180 82 202 92 218 Z" />
+    <path d="M 68 310 C 45 305 30 285 35 260 C 48 278 60 295 70 308 Z" />
+
+    <!-- Bottom swirl flourishes -->
+    <path d="M 160 505 C 130 530 90 520 75 490 C 85 480 102 485 112 500 C 128 510 148 505 160 495 Z" />
+    <path d="M 195 470 C 220 488 238 520 225 545 C 215 530 210 505 195 485 Z" />
+  </g>
+
+  <!-- Ambient decorative floating dots / berries -->
+  <circle cx="210" cy="180" r="4.5" />
+  <circle cx="230" cy="165" r="3" />
+  <circle cx="390" cy="340" r="4" />
+  <circle cx="410" cy="355" r="2.5" />
+  <circle cx="530" cy="360" r="5" />
+  <circle cx="550" cy="375" r="3" />
+  <circle cx="700" cy="170" r="4.5" />
+  <circle cx="718" cy="155" r="3" />
+</svg>

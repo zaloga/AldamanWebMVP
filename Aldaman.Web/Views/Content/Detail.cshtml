@@ -12,7 +12,7 @@
 @if (isPost)
 {
     @* --- BLOG POST LAYOUT --- *@
-    <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8">
+    <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8 card-motif-a">
         <div class="flex flex-col">
             <div class="mb-6">
                 @if (User.Identity?.IsAuthenticated == true)
@@ -128,7 +128,7 @@
 else
 {
     @* --- CONTENT PAGE LAYOUT --- *@
-    <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8">
+    <article id="@Model.Content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/90 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-10 shadow-xs mb-8 card-motif-a">
         <div class="flex flex-col">
             @if (User.Identity?.IsAuthenticated == true)
             {
