@@ -52,6 +52,20 @@
     @apply bg-[#fceae8]/90 dark:bg-[#1c1414]/90 backdrop-blur-md border-b border-red-900/10 dark:border-red-500/15 shadow-xs;
   }
 
+  .header-motif {
+    background-image: url('../images/bg-header-motif.svg');
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: auto 80px;
+    opacity: 0.055;
+    transition: opacity 0.3s ease;
+  }
+
+  .dark .header-motif {
+    opacity: 0.035;
+    filter: invert(1) brightness(1.2);
+  }
+
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
@@ -116,8 +130,20 @@
     filter: invert(1) brightness(1.2);
   }
 
+  .site-footer {
+    @apply mt-auto bg-[#fce9d8]/85 dark:bg-[#1c1815]/85 backdrop-blur-md border-t border-amber-900/10 dark:border-amber-500/15 py-10 relative overflow-hidden;
+  }
+
+  .footer-brand-badge {
+    @apply flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/15 dark:bg-amber-400/10 text-amber-700 dark:text-amber-400;
+  }
+
   .footer-link {
     @apply text-xs text-stone-600 dark:text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium;
+  }
+
+  .footer-link-active {
+    @apply text-amber-700 dark:text-amber-400 font-semibold underline;
   }
 
   .contact-input {

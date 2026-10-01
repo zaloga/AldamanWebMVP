@@ -21,8 +21,9 @@
     <script src="~/js/theme-init.js" asp-append-version="true"></script>
 </head>
 <body class="min-w-[300px] flex flex-col min-h-full bg-[#fce9d8] dark:bg-[#151210] text-stone-800 dark:text-stone-200 transition-colors duration-300">
-    <header class="sticky top-0 z-50 header-glass transition-colors duration-300">
-        <nav class="container flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-3.5 lg:py-0 lg:h-18">
+    <header class="sticky top-0 z-50 header-glass transition-colors duration-300 relative">
+        <div class="header-motif absolute inset-0 pointer-events-none select-none" aria-hidden="true"></div>
+        <nav class="container relative flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4.5 lg:py-0 lg:h-[5.625rem]">
             <div class="flex items-center justify-between w-full lg:w-auto">
                 <a id="brand-nav-link"
                    class="text-xl font-bold tracking-tight text-stone-900 dark:text-white cursor-pointer select-none flex items-center gap-2 group"
@@ -93,11 +94,12 @@
         </div>
     </main>
 
-    <footer class="mt-auto glass border-t border-amber-900/10 dark:border-amber-500/15 py-8">
-        <div class="container flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+    <footer class="site-footer">
+        <div class="header-motif absolute inset-0 pointer-events-none select-none" aria-hidden="true"></div>
+        <div class="container relative flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div class="flex flex-col items-center md:items-start gap-1">
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/15 dark:bg-amber-400/10 text-amber-700 dark:text-amber-400">
+                    <span class="footer-brand-badge">
                         <i class="bi bi-soundwave text-sm"></i>
                     </span>
                     <span class="font-bold text-stone-900 dark:text-stone-100 text-base">Aldaman</span>
@@ -112,8 +114,8 @@
             </div>
 
             <div class="flex flex-wrap items-center justify-center md:justify-end gap-4 text-xs text-stone-500">
-                <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link @(ViewContext.IsNavActive("Home", "Mcp") ? "text-amber-700 dark:text-amber-400 font-semibold underline" : "")">MCP API</a>
-                <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "text-amber-700 dark:text-amber-400 font-semibold underline" : "")">Search API</a>
+                <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link @(ViewContext.IsNavActive("Home", "Mcp") ? "footer-link-active" : "")">MCP API</a>
+                <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "footer-link-active" : "")">Search API</a>
 
                 @if (User.Identity?.IsAuthenticated == true)
                 {
