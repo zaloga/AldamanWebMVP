@@ -3,7 +3,6 @@ using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
-using Aldaman.Services.Services.Images;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Models.Media;
 using Aldaman.Web.ViewModels.Media;
@@ -16,18 +15,15 @@ namespace Aldaman.Web.Areas.Admin.Controllers;
 public class MediaController : BaseAdminController
 {
     private IMediaService MediaService { get; }
-    private IImageProcessingService ImageProcessingService { get; }
     private IOptions<MediaStorageSettings> StorageOptions { get; }
 
     public MediaController(
         IMediaService mediaService,
-        IImageProcessingService imageProcessingService,
         IOptions<MediaStorageSettings> storageOptions,
         IStringLocalizer<UIResources> localizer)
         : base(localizer)
     {
         MediaService = mediaService;
-        ImageProcessingService = imageProcessingService;
         StorageOptions = storageOptions;
     }
 
@@ -73,10 +69,8 @@ public class MediaController : BaseAdminController
 
         try
         {
-            using (var stream = file.OpenReadStream())
-            {
-                await MediaService.UploadAsync(stream, file.FileName, file.ContentType, cancellationToken);
-            }
+            await using Stream stream = file.OpenReadStream();
+            await MediaService.UploadAsync(stream, file.FileName, file.ContentType, ct: cancellationToken);
 
             TempData.SetSuccessMessage(Localizer[UIResources.FileUploadedSuccessfully].Value);
             return RedirectToAction(nameof(Index));
@@ -99,40 +93,14 @@ public class MediaController : BaseAdminController
 
         try
         {
-            using (var stream = file.OpenReadStream())
-            {
-                var asset = await MediaService.UploadAsync(stream, file.FileName, file.ContentType, cancellationToken);
-                return Json(new { success = true, url = asset.RelativePath, alt = asset.AltTextDefault, title = asset.TitleDefault });
-            }
+            await using Stream stream = file.OpenReadStream();
+            MediaAssetDto asset = await MediaService.UploadAsync(stream, file.FileName, file.ContentType, ct: cancellationToken);
+            return Json(new { success = true, url = asset.RelativePath, alt = asset.AltTextDefault, title = asset.TitleDefault });
         }
         catch (Exception ex)
         {
             return Json(new { success = false, message = ex.Message });
         }
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UploadQuillSkia([FromForm] UploadImageRequest request, CancellationToken cancellationToken = default)
-    {
-        if (request.File == null || request.File.Length == 0)
-        {
-            return Json(new { success = false, message = Localizer[UIResources.PleaseSelectFile].Value });
-        }
-
-        if (!ModelState.IsValid)
-        {
-            return Json(new { success = false, message = Localizer[UIResources.InvalidRequestPayload].Value });
-        }
-
-        await using Stream inputStream = request.File.OpenReadStream();
-        byte[] processedBytes = await ImageProcessingService.ProcessImageAsync(inputStream, request.TargetWidth, request.TargetHeight, cancellationToken);
-
-        using MemoryStream processedStream = new(processedBytes);
-        string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
-        MediaAssetDto asset = await MediaService.UploadAsync(processedStream, newFileName, "image/webp", cancellationToken);
-
-        return Json(new { success = true, url = asset.RelativePath, alt = asset.AltTextDefault, title = asset.TitleDefault });
     }
 
     [HttpPost]
@@ -150,16 +118,27 @@ public class MediaController : BaseAdminController
             return View("Upload", CreateUploadViewModel());
         }
 
-        await using Stream inputStream = request.File.OpenReadStream();
-        byte[] processedBytes = await ImageProcessingService.ProcessImageAsync(inputStream, request.TargetWidth, request.TargetHeight, cancellationToken);
+        try
+        {
+            await using Stream stream = request.File.OpenReadStream();
+            await MediaService.UploadAsync(
+                stream,
+                request.File.FileName,
+                request.File.ContentType,
+                request.TargetWidth,
+                request.TargetHeight,
+                cancellationToken);
 
-        using MemoryStream processedStream = new(processedBytes);
-        string newFileName = Path.ChangeExtension(request.File.FileName, ".webp");
-        await MediaService.UploadAsync(processedStream, newFileName, "image/webp", cancellationToken);
-
-        TempData.SetSuccessMessage(Localizer[UIResources.FileUploadedSuccessfully].Value);
-        return RedirectToAction(nameof(Index));
+            TempData.SetSuccessMessage(Localizer[UIResources.FileUploadedSuccessfully].Value);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", Localizer[UIResources.ErrorUploadingFile, ex.Message].Value);
+            return View("Upload", CreateUploadViewModel());
+        }
     }
+
 
     [HttpGet]
     public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)

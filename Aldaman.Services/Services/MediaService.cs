@@ -5,10 +5,10 @@ using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
+using Aldaman.Services.Services.Images;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SkiaSharp;
 
 namespace Aldaman.Services.Services;
 
@@ -16,17 +16,20 @@ public sealed class MediaService : IMediaService
 {
     private AppDbContext Context { get; }
     private IFileStorageService StorageService { get; }
+    private IImageProcessingService ImageProcessingService { get; }
     private IServiceProvider ServiceProvider { get; }
     private ILogger<MediaService> Logger { get; }
 
     public MediaService(
         AppDbContext context,
         IFileStorageService storageService,
+        IImageProcessingService imageProcessingService,
         IServiceProvider serviceProvider,
         ILogger<MediaService> logger)
     {
         Context = context;
         StorageService = storageService;
+        ImageProcessingService = imageProcessingService;
         ServiceProvider = serviceProvider;
         Logger = logger;
     }
@@ -77,7 +80,22 @@ public sealed class MediaService : IMediaService
         };
     }
 
-    public async Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType, CancellationToken ct = default)
+    public Task<MediaAssetDto> UploadAsync(
+        Stream fileStream,
+        string fileName,
+        string contentType,
+        CancellationToken ct = default)
+    {
+        return UploadAsync(fileStream, fileName, contentType, null, null, ct);
+    }
+
+    public async Task<MediaAssetDto> UploadAsync(
+        Stream fileStream,
+        string fileName,
+        string contentType,
+        int? targetWidth,
+        int? targetHeight = null,
+        CancellationToken ct = default)
     {
         if (fileStream.CanSeek && fileStream.Length > 1 * 1024 * 1024)
         {
@@ -101,64 +119,61 @@ public sealed class MediaService : IMediaService
         bool isImage = contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase);
         int? width = null;
         int? height = null;
+        Stream uploadStream = bufferStream;
+        string finalFileName = fileName;
+        string finalContentType = contentType;
 
         if (isImage)
         {
             try
             {
-                byte[] fileBytes = bufferStream.ToArray();
-                using SKData data = SKData.CreateCopy(fileBytes);
-                using SKCodec codec = SKCodec.Create(data);
-                if (codec != null)
-                {
-                    width = codec.Info.Width;
-                    height = codec.Info.Height;
-                }
-                else
-                {
-                    using SKBitmap bitmap = SKBitmap.Decode(data);
-                    if (bitmap != null)
-                    {
-                        width = bitmap.Width;
-                        height = bitmap.Height;
-                    }
-                    else
-                    {
-                        Logger.LogWarning("Failed to decode image file {FileName} using SkiaSharp. Treating as non-image.", fileName);
-                        isImage = false;
-                    }
-                }
+                ProcessedImageResultDto processedResult = await ImageProcessingService.ProcessImageAsync(bufferStream, targetWidth, targetHeight, ct);
+                uploadStream = new MemoryStream(processedResult.Data);
+                width = processedResult.Width;
+                height = processedResult.Height;
+                finalFileName = Path.ChangeExtension(fileName, ".webp");
+                finalContentType = "image/webp";
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Error reading image dimensions for file {FileName}.", fileName);
+                Logger.LogWarning(ex, "Failed to process image {FileName} to WebP. Treating as raw upload.", fileName);
+                bufferStream.Position = 0;
+                uploadStream = bufferStream;
                 isImage = false;
             }
-
-            bufferStream.Position = 0;
         }
 
-        long fileSize = bufferStream.Length;
-        FileStorageResultDto storageResult = await StorageService.SaveAsync(bufferStream, fileName, contentType, ct);
-
-        MediaAssetEntity asset = new()
+        try
         {
-            OriginalFileName = fileName,
-            StoredFileName = storageResult.StoredFileName,
-            RelativePath = storageResult.RelativePath,
-            ContentType = contentType,
-            FileSize = fileSize,
-            IsImage = isImage,
-            IsVideo = contentType.StartsWith("video/", StringComparison.OrdinalIgnoreCase),
-            Width = width,
-            Height = height,
-            StorageProvider = storageResult.StorageProvider
-        };
+            long fileSize = uploadStream.Length;
+            FileStorageResultDto storageResult = await StorageService.SaveAsync(uploadStream, finalFileName, finalContentType, ct);
 
-        Context.MediaAssets.Add(asset);
-        await Context.SaveChangesAsync(ct);
+            MediaAssetEntity asset = new()
+            {
+                OriginalFileName = finalFileName,
+                StoredFileName = storageResult.StoredFileName,
+                RelativePath = storageResult.RelativePath,
+                ContentType = finalContentType,
+                FileSize = fileSize,
+                IsImage = isImage,
+                IsVideo = finalContentType.StartsWith("video/", StringComparison.OrdinalIgnoreCase),
+                Width = width,
+                Height = height,
+                StorageProvider = storageResult.StorageProvider
+            };
 
-        return Map(asset);
+            Context.MediaAssets.Add(asset);
+            await Context.SaveChangesAsync(ct);
+
+            return Map(asset);
+        }
+        finally
+        {
+            if (uploadStream != bufferStream)
+            {
+                await uploadStream.DisposeAsync();
+            }
+        }
     }
 
     public async Task<MediaAssetDto?> GetAssetAsync(Guid id, CancellationToken ct = default)

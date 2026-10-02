@@ -9,9 +9,24 @@ namespace Aldaman.Services.Interfaces;
 public interface IMediaService
 {
     /// <summary>
-    /// Uploads a file and returns its metadata.
+    /// Uploads a file, optimizes images to WebP format, and returns its metadata.
     /// </summary>
-    Task<MediaAssetDto> UploadAsync(Stream fileStream, string fileName, string contentType, CancellationToken ct = default);
+    Task<MediaAssetDto> UploadAsync(
+        Stream fileStream,
+        string fileName,
+        string contentType,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Uploads a file with custom resize dimensions, optimizes images to WebP format, and returns its metadata.
+    /// </summary>
+    Task<MediaAssetDto> UploadAsync(
+        Stream fileStream,
+        string fileName,
+        string contentType,
+        int? targetWidth,
+        int? targetHeight = null,
+        CancellationToken ct = default);
 
     /// <summary>
     /// Lists all media assets with pagination and filtering.
