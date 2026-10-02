@@ -35,8 +35,7 @@ public class Program
         builder.Services.ConfigureApplicationCookie();
         builder.Services.AddApplicationAuthorization();
 
-        builder.Services.AddApplicationServices(
-            builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
+        builder.Services.AddApplicationServices();
 
         // MCP Services
         builder.Services.Configure<Aldaman.Services.Configuration.McpSettings>(builder.Configuration.GetSection(Aldaman.Services.Configuration.McpSettings.SectionName));

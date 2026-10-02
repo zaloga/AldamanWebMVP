@@ -10,7 +10,7 @@ namespace Aldaman.Services;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, string webRootPath)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IContentService, ContentService>();
@@ -20,11 +20,7 @@ public static class DependencyInjection
         // Media Storage configuration and keyed services
         services.AddOptions<MediaStorageSettings>().BindConfiguration(MediaStorageSettings.SectionName);
 
-        services.AddKeyedScoped<IFileStorageService, FileSystemStorageService>(
-            StorageProviderType.FileSystem,
-            (sp, _) => new FileSystemStorageService(
-                webRootPath,
-                sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<FileSystemStorageService>>()));
+        services.AddKeyedScoped<IFileStorageService, FileSystemStorageService>(StorageProviderType.FileSystem);
 
         services.AddKeyedScoped<IFileStorageService, CloudflareR2StorageService>(
             StorageProviderType.CloudflareR2);
