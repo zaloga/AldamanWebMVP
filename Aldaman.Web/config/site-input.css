@@ -95,19 +95,19 @@
   }
 
   .site-footer {
-    @apply mt-auto bg-[#fce9d8]/85 dark:bg-[#1c1815]/85 backdrop-blur-md border-t border-amber-900/10 dark:border-amber-500/15 py-10 relative overflow-hidden;
+    @apply mt-auto bg-[#fceae8]/90 dark:bg-[#1c1414]/90 backdrop-blur-md border-t border-red-900/10 dark:border-red-500/15 py-8 sm:py-10 relative;
   }
 
   .footer-brand-badge {
-    @apply flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/15 dark:bg-amber-400/10 text-amber-700 dark:text-amber-400;
+    @apply flex items-center justify-center w-8 h-8 rounded-lg bg-red-600/10 dark:bg-red-500/15 text-red-700 dark:text-red-400;
   }
 
   .footer-link {
-    @apply text-xs text-stone-600 dark:text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium;
+    @apply px-3.5 py-1.5 rounded-full text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-900/5 dark:hover:bg-white/5 transition-all inline-flex items-center;
   }
 
   .footer-link-active {
-    @apply text-amber-700 dark:text-amber-400 font-semibold underline;
+    @apply px-3.5 py-1.5 rounded-full text-sm font-semibold bg-red-700/10 text-red-900 dark:bg-red-500/15 dark:text-red-300 shadow-2xs transition-all inline-flex items-center;
   }
 
   .contact-input {

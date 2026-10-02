@@ -98,30 +98,30 @@
     <footer class="site-footer">
         <div class="header-motif absolute inset-0 pointer-events-none select-none" aria-hidden="true"></div>
         <div class="container relative flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-            <div class="flex flex-col items-center md:items-start gap-1">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="footer-brand-badge">
-                        <i class="bi bi-soundwave text-sm"></i>
+            <div class="flex flex-col items-center md:items-start gap-1.5">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center gap-2 group cursor-pointer select-none">
+                    <span class="footer-brand-badge group-hover:bg-red-600/20 transition-colors">
+                        <i class="bi bi-soundwave text-lg"></i>
                     </span>
-                    <span class="font-bold text-stone-900 dark:text-stone-100 text-base">Aldaman</span>
-                </div>
-                <p class="text-xs text-stone-600 dark:text-stone-400">
+                    <span class="font-extrabold text-stone-900 dark:text-stone-100 text-lg tracking-tight">Aldaman</span>
+                </a>
+                <p class="text-xs font-medium text-stone-700 dark:text-stone-400">
                     &copy; @DateTime.Today.Year Aldaman.
                 </p>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
+            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
                 @await Component.InvokeAsync("FooterNavigation")
             </div>
 
-            <div class="flex flex-wrap items-center justify-center md:justify-end gap-4 text-xs text-stone-500">
+            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
                 <a asp-area="" asp-controller="Home" asp-action="Mcp" class="footer-link @(ViewContext.IsNavActive("Home", "Mcp") ? "footer-link-active" : "")">MCP API</a>
                 <a asp-area="" asp-controller="Home" asp-action="Search" class="footer-link @(ViewContext.IsNavActive("Home", "Search") ? "footer-link-active" : "")">Search API</a>
 
                 @if (User.Identity?.IsAuthenticated == true)
                 {
                     <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="footer-link">@Localizer[UIResources.Admin]</a>
-                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="inline leading-4">
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="inline-flex">
                         <button type="submit" class="footer-link cursor-pointer">@Localizer[UIResources.Logout]</button>
                     </form>
                 }
