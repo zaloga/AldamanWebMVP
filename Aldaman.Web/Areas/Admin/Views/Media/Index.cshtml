@@ -99,11 +99,21 @@
                             </div>
                             @if (item.UpdatedAtUtc.HasValue)
                             {
-                                <div class="text-secondary text-opacity-75 mt-2">
+                                <div class="text-secondary text-opacity-75 mt-1">
                                     <i class="bi bi-pencil"></i>
                                     @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
                                 </div>
                             }
+                            <div class="mt-2">
+                                @if (item.StorageProvider == Aldaman.Persistence.Enums.StorageProviderType.CloudflareR2)
+                                {
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-cloud me-1"></i>@Localizer[UIResources.StorageCloudflareR2]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary"><i class="bi bi-hdd me-1"></i>@Localizer[UIResources.StorageFileSystem]</span>
+                                }
+                            </div>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column gap-2">

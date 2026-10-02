@@ -1116,4 +1116,16 @@
   <data name="MessageDetails" xml:space="preserve">
     <value>Message Details</value>
   </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="StorageTarget" xml:space="preserve">
+    <value>Target Storage</value>
+  </data>
+  <data name="StorageFileSystem" xml:space="preserve">
+    <value>Local FS</value>
+  </data>
+  <data name="StorageCloudflareR2" xml:space="preserve">
+    <value>Cloudflare R2</value>
+  </data>
 </root>

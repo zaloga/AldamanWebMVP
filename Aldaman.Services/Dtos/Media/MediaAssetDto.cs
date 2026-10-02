@@ -1,3 +1,5 @@
+using Aldaman.Persistence.Enums;
+
 namespace Aldaman.Services.Dtos.Media;
 
 /// <summary>
@@ -14,6 +16,7 @@ public class MediaAssetDto
     public long FileSize { get; set; }
     public int? Width { get; set; }
     public int? Height { get; set; }
+    public StorageProviderType StorageProvider { get; set; } = StorageProviderType.FileSystem;
     
     // Admin specific
     public DateTime UploadedAtUtc { get; set; }

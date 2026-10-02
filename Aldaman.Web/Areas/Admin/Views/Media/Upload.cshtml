@@ -1,10 +1,21 @@
-﻿@{
+@using Aldaman.Web.ViewModels.Media
+@using Aldaman.Persistence.Enums
+@model UploadMediaViewModel
+@{
     ViewData.SetPageTitle(Localizer[UIResources.UploadMedia]);
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
+    <div class="d-flex align-items-center gap-3">
         <h2 class="h4 mb-0">@Localizer[UIResources.UploadMedia]</h2>
+        @if (Model.ActiveStorageProvider == StorageProviderType.CloudflareR2)
+        {
+            <span class="badge bg-warning text-dark"><i class="bi bi-cloud me-1"></i>@Localizer[UIResources.StorageTarget]: @Localizer[UIResources.StorageCloudflareR2]</span>
+        }
+        else
+        {
+            <span class="badge bg-secondary"><i class="bi bi-hdd me-1"></i>@Localizer[UIResources.StorageTarget]: @Localizer[UIResources.StorageFileSystem]</span>
+        }
     </div>
     <a asp-action="Index" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 shadow-sm bg-white p-2 rounded">
         <i class="bi bi-arrow-left"></i>

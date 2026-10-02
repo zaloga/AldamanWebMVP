@@ -1,12 +1,15 @@
-﻿using Aldaman.Services.Dtos.General;
+using Aldaman.Services.Configuration;
+using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Dtos.Media;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
 using Aldaman.Services.Services.Images;
 using Aldaman.Web.Extensions;
 using Aldaman.Web.Models.Media;
+using Aldaman.Web.ViewModels.Media;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Web.Areas.Admin.Controllers;
 
@@ -14,16 +17,24 @@ public class MediaController : BaseAdminController
 {
     private IMediaService MediaService { get; }
     private IImageProcessingService ImageProcessingService { get; }
+    private IOptions<MediaStorageSettings> StorageOptions { get; }
 
     public MediaController(
         IMediaService mediaService,
         IImageProcessingService imageProcessingService,
+        IOptions<MediaStorageSettings> storageOptions,
         IStringLocalizer<UIResources> localizer)
         : base(localizer)
     {
         MediaService = mediaService;
         ImageProcessingService = imageProcessingService;
+        StorageOptions = storageOptions;
     }
+
+    private UploadMediaViewModel CreateUploadViewModel() => new()
+    {
+        ActiveStorageProvider = StorageOptions.Value.Provider
+    };
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
@@ -47,7 +58,7 @@ public class MediaController : BaseAdminController
     [HttpGet]
     public IActionResult Upload()
     {
-        return View();
+        return View(CreateUploadViewModel());
     }
 
     [HttpPost]
@@ -57,7 +68,7 @@ public class MediaController : BaseAdminController
         if (file == null || file.Length == 0)
         {
             ModelState.AddModelError("file", Localizer[UIResources.PleaseSelectFile].Value);
-            return View();
+            return View(CreateUploadViewModel());
         }
 
         try
@@ -73,7 +84,7 @@ public class MediaController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError("", Localizer[UIResources.ErrorUploadingFile, ex.Message].Value);
-            return View();
+            return View(CreateUploadViewModel());
         }
     }
 
@@ -131,12 +142,12 @@ public class MediaController : BaseAdminController
         if (request.File == null || request.File.Length == 0)
         {
             ModelState.AddModelError("File", Localizer[UIResources.PleaseSelectFile].Value);
-            return View("Upload");
+            return View("Upload", CreateUploadViewModel());
         }
 
         if (!ModelState.IsValid)
         {
-            return View("Upload");
+            return View("Upload", CreateUploadViewModel());
         }
 
         await using Stream inputStream = request.File.OpenReadStream();
@@ -154,7 +165,8 @@ public class MediaController : BaseAdminController
     public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
         var asset = await MediaService.GetAssetAsync(id, cancellationToken);
-        if (asset == null) return NotFound();
+        if (asset == null)
+            return NotFound();
 
         return View(asset);
     }
@@ -163,7 +175,8 @@ public class MediaController : BaseAdminController
     public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken = default)
     {
         var asset = await MediaService.GetAssetAsync(id, cancellationToken);
-        if (asset == null) return NotFound();
+        if (asset == null)
+            return NotFound();
 
         var model = new UpdateMediaAssetDto
         {
@@ -181,7 +194,8 @@ public class MediaController : BaseAdminController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UpdateMediaAssetDto model, CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         await MediaService.UpdateAssetAsync(model, cancellationToken);
         TempData.SetSuccessMessage(Localizer[UIResources.MediaMetadataUpdated].Value);

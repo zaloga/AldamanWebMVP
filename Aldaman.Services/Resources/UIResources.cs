@@ -277,6 +277,10 @@ public sealed class UIResources
     public const string TargetDimensions = nameof(TargetDimensions);
     public const string OriginalSize = nameof(OriginalSize);
     public const string Presets = nameof(Presets);
+    public const string Storage = nameof(Storage);
+    public const string StorageTarget = nameof(StorageTarget);
+    public const string StorageFileSystem = nameof(StorageFileSystem);
+    public const string StorageCloudflareR2 = nameof(StorageCloudflareR2);
 
     // Quill RTE Tooltips
     public const string RteBold = nameof(RteBold);

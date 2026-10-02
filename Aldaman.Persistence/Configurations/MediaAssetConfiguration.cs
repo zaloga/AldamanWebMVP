@@ -1,4 +1,5 @@
 using Aldaman.Persistence.Entities;
+using Aldaman.Persistence.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -42,6 +43,10 @@ public class MediaAssetConfiguration : BaseEntityAuditableSoftDelConfiguration<M
         builder.Property(x => x.IsVideo)
             .IsRequired()
             .HasDefaultValue(false);
+
+        builder.Property(x => x.StorageProvider)
+            .IsRequired()
+            .HasDefaultValue(StorageProviderType.FileSystem);
 
         // Indexes
         builder.HasIndex(x => x.StoredFileName).IsUnique();

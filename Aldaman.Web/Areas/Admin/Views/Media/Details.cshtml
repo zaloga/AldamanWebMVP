@@ -1,4 +1,4 @@
-﻿@using Aldaman.Services.Dtos.Media
+@using Aldaman.Services.Dtos.Media
 @model MediaAssetDto
 @{
     ViewData.SetPageTitle(Localizer[UIResources.MediaDetails]);
@@ -61,6 +61,18 @@
 
                         <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResources.Uploaded]</dt>
                         <dd class="col-sm-7">@Model.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.ShortDateTime)</dd>
+
+                        <dt class="col-sm-5 text-muted small text-uppercase fw-bold">@Localizer[UIResources.Storage]</dt>
+                        <dd class="col-sm-7">
+                            @if (Model.StorageProvider == Aldaman.Persistence.Enums.StorageProviderType.CloudflareR2)
+                            {
+                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud me-1"></i>@Localizer[UIResources.StorageCloudflareR2]</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary"><i class="bi bi-hdd me-1"></i>@Localizer[UIResources.StorageFileSystem]</span>
+                            }
+                        </dd>
 
                         @if (Model.IsDeleted)
                         {

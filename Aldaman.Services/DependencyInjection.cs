@@ -2,7 +2,9 @@ using Aldaman.Services.Configuration;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Services;
 using Aldaman.Services.Services.Images;
+using Aldaman.Persistence.Enums;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Aldaman.Services;
 
@@ -14,10 +16,29 @@ public static class DependencyInjection
         services.AddScoped<IContentService, ContentService>();
         services.AddScoped<IContentGroupService, ContentGroupService>();
         services.AddScoped<INavigationService, NavigationService>();
-        services.AddScoped<IMediaService>(sp => new MediaService(
-            sp.GetRequiredService<Aldaman.Persistence.Context.AppDbContext>(),
-            webRootPath,
-            sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<MediaService>>()));
+
+        // Media Storage configuration and keyed services
+        services.AddOptions<MediaStorageSettings>().BindConfiguration(MediaStorageSettings.SectionName);
+
+        services.AddKeyedScoped<IFileStorageService, FileSystemStorageService>(
+            StorageProviderType.FileSystem,
+            (sp, _) => new FileSystemStorageService(
+                webRootPath,
+                sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<FileSystemStorageService>>()));
+
+        services.AddKeyedScoped<IFileStorageService, CloudflareR2StorageService>(
+            StorageProviderType.CloudflareR2);
+
+        // Default storage service based on MediaStorageSettings.Provider
+        services.AddScoped<IFileStorageService>(sp =>
+        {
+            MediaStorageSettings settings = sp.GetRequiredService<IOptions<MediaStorageSettings>>().Value;
+            return sp.GetKeyedService<IFileStorageService>(settings.Provider)
+                ?? sp.GetRequiredKeyedService<IFileStorageService>(StorageProviderType.FileSystem);
+        });
+
+        services.AddScoped<IMediaService, MediaService>();
+
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
         services.AddScoped<IStyleService, StyleService>();

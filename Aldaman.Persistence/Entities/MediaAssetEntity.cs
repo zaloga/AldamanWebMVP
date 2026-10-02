@@ -1,3 +1,5 @@
+using Aldaman.Persistence.Enums;
+
 namespace Aldaman.Persistence.Entities;
 
 public class MediaAssetEntity : BaseEntityAuditableSoftDel
@@ -32,4 +34,6 @@ public class MediaAssetEntity : BaseEntityAuditableSoftDel
     public bool IsImage { get; set; }
 
     public bool IsVideo { get; set; }
+
+    public StorageProviderType StorageProvider { get; set; } = StorageProviderType.FileSystem;
 }
