@@ -70,8 +70,9 @@
         </nav>
     </header>
 
-    <main role="main" class="flex-grow py-6 sm:py-10">
-        <div class="container">
+    <main role="main" class="flex-grow py-6 sm:py-10 relative">
+        <div class="content-backdrop-motif absolute inset-0 -z-10" aria-hidden="true"></div>
+        <div class="container relative">
             @{
                 var sidebarBanners = await ContentService.GetSidebarBannersCachedAsync(CurrentCulture);
                 var hasSidebar = sidebarBanners.Any();

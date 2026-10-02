@@ -70,64 +70,28 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  .card-motif-a {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card-motif-a > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-motif-a::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    user-select: none;
+  .content-backdrop-motif {
     background-image: url('../images/bg-music-motif-a.svg');
     background-repeat: repeat;
-    background-position: top left;
-    background-size: 380px auto;
+    background-position: top center;
+    background-size: 580px auto;
     opacity: 0.045;
+    pointer-events: none;
+    user-select: none;
     transition: opacity 0.3s ease;
-    z-index: 0;
   }
 
-  .dark .card-motif-a::before {
+  .dark .content-backdrop-motif {
     opacity: 0.035;
     filter: invert(1) brightness(1.2);
+  }
+
+  .card-motif-a {
+    position: relative;
   }
 
   .card-motif-b {
     position: relative;
-    overflow: hidden;
-  }
-
-  .card-motif-b > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-motif-b::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    user-select: none;
-    background-image: url('../images/bg-music-motif-b.svg');
-    background-repeat: repeat;
-    background-position: top left;
-    background-size: 160px auto;
-    opacity: 0.045;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-  }
-
-  .dark .card-motif-b::before {
-    opacity: 0.035;
-    filter: invert(1) brightness(1.2);
   }
 
   .site-footer {
