@@ -1,174 +1,166 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 180" fill="currentColor">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 360" fill="currentColor">
   <!-- Tribal camp and music repeating tile (Artwork by Madeleine style, without text) -->
+  <defs>
+    <g id="motif-pattern">
+      <!-- ==================== GROUP 1: DIDGERIDOO PLAYER & DANCERS ==================== -->
+      <!-- Sitting Didgeridoo Player -->
+      <g transform="translate(18, 22) scale(0.85)">
+        <!-- Player head -->
+        <ellipse cx="62" cy="22" rx="10" ry="11" transform="rotate(-12 62 22)" />
+        <!-- Torso -->
+        <path d="M 57 32 C 50 38 46 48 45 62 C 45 74 50 82 56 86 C 64 88 74 86 78 80 C 82 72 81 60 76 46 C 73 38 68 32 57 32 Z" />
+        <!-- Crossed legs -->
+        <path d="M 45 68 C 35 68 25 74 24 82 C 23 90 31 96 42 96 C 54 96 60 90 62 84 Z" />
+        <path d="M 64 74 C 74 74 85 78 87 86 C 88 94 80 98 70 98 C 58 98 52 92 50 86 Z" />
+        <!-- Arms -->
+        <path d="M 52 42 C 60 48 68 55 76 65 C 80 70 76 74 71 70 C 64 64 56 56 50 48 Z" />
+        <path d="M 64 42 C 72 48 82 56 90 64 C 94 68 89 72 85 68 C 78 62 70 54 62 46 Z" />
+        <!-- Didgeridoo -->
+        <path d="M 69 28 L 158 126 C 160 128 158 131 155 133 L 143 135 C 140 135 138 132 136 130 L 64 30 Z" />
+      </g>
 
-  <!-- ==================== GROUP 1: DIDGERIDOO PLAYER & DANCERS (from first motif) ==================== -->
-  <!-- Sitting Didgeridoo Player -->
-  <g transform="translate(18, 22) scale(0.85)">
-    <!-- Player head -->
-    <ellipse cx="62" cy="22" rx="10" ry="11" transform="rotate(-12 62 22)" />
-    <!-- Torso -->
-    <path d="M 57 32 C 50 38 46 48 45 62 C 45 74 50 82 56 86 C 64 88 74 86 78 80 C 82 72 81 60 76 46 C 73 38 68 32 57 32 Z" />
-    <!-- Crossed legs -->
-    <path d="M 45 68 C 35 68 25 74 24 82 C 23 90 31 96 42 96 C 54 96 60 90 62 84 Z" />
-    <path d="M 64 74 C 74 74 85 78 87 86 C 88 94 80 98 70 98 C 58 98 52 92 50 86 Z" />
-    <!-- Arms -->
-    <path d="M 52 42 C 60 48 68 55 76 65 C 80 70 76 74 71 70 C 64 64 56 56 50 48 Z" />
-    <path d="M 64 42 C 72 48 82 56 90 64 C 94 68 89 72 85 68 C 78 62 70 54 62 46 Z" />
-    <!-- Didgeridoo -->
-    <path d="M 69 28 L 158 126 C 160 128 158 131 155 133 L 143 135 C 140 135 138 132 136 130 L 64 30 Z" />
+      <!-- Group of 3 dancers in motion -->
+      <g transform="translate(145, 18) scale(0.76)">
+        <!-- Dancer 1 (left) -->
+        <g transform="translate(0, 8) rotate(-10)">
+          <ellipse cx="28" cy="10" rx="7" ry="8" />
+          <path d="M 23 17 C 15 22 8 29 11 34 C 14 38 21 32 25 26 L 27 46 C 21 54 13 62 16 66 C 19 69 27 60 31 52 L 35 52 C 40 61 49 68 52 64 C 54 60 46 51 40 44 L 39 25 C 44 29 52 35 55 31 C 57 27 49 20 41 16 Z" />
+        </g>
+        <!-- Dancer 2 (right) -->
+        <g transform="translate(86, 4) rotate(14)">
+          <ellipse cx="26" cy="10" rx="7.5" ry="8.5" />
+          <path d="M 20 18 C 12 18 2 21 4 27 C 6 32 15 28 22 24 L 23 44 C 16 52 8 60 11 65 C 14 69 22 61 27 52 L 31 52 C 34 62 41 71 45 68 C 48 64 42 54 37 45 L 37 23 C 44 26 53 28 55 23 C 56 18 47 16 39 17 Z" />
+        </g>
+        <!-- Dancer 3 (bottom center) -->
+        <g transform="translate(42, 70) rotate(-4)">
+          <ellipse cx="24" cy="9" rx="7" ry="8" />
+          <path d="M 18 16 C 11 18 3 24 6 29 C 9 33 16 28 21 23 L 23 42 C 17 50 10 58 13 62 C 16 65 24 57 28 49 L 32 49 C 36 58 44 65 48 61 C 51 57 44 48 38 41 L 37 22 C 43 25 51 29 53 25 C 55 21 47 16 38 15 Z" />
+        </g>
+      </g>
+
+      <!-- ==================== GROUP 2: CAMPFIRE & TRIBAL GATHERING ==================== -->
+      <g transform="translate(295, 10)">
+        <!-- Campfire & Smoke Flames -->
+        <!-- Log base / embers -->
+        <g stroke="currentColor" stroke-linecap="round">
+          <line x1="165" y1="130" x2="205" y2="108" stroke-width="5" />
+          <line x1="205" y1="130" x2="165" y2="108" stroke-width="5" />
+          <line x1="185" y1="135" x2="185" y2="102" stroke-width="4.5" />
+          <line x1="158" y1="120" x2="212" y2="120" stroke-width="4" />
+          <line x1="172" y1="132" x2="198" y2="104" stroke-width="4" />
+          <line x1="198" y1="132" x2="172" y2="104" stroke-width="4" />
+        </g>
+
+        <!-- Rising flames and smoke plume -->
+        <path d="M 185 106 C 176 96 172 82 178 72 C 182 66 189 68 185 58 C 181 48 185 36 182 24 C 180 16 186 8 184 2 C 182 8 188 18 187 28 C 186 38 192 46 189 56 C 187 64 195 72 192 84 C 190 94 194 102 185 106 Z" />
+        <!-- Secondary smoke wisps -->
+        <ellipse cx="178" cy="42" rx="4" ry="7" transform="rotate(-15 178 42)" opacity="0.85" />
+        <ellipse cx="193" cy="30" rx="3.5" ry="6" transform="rotate(18 193 30)" opacity="0.85" />
+        <ellipse cx="182" cy="14" rx="2.5" ry="5" opacity="0.8" />
+
+        <!-- Left side of fire: Tall standing tribal figure -->
+        <g transform="translate(68, 14)">
+          <ellipse cx="20" cy="12" rx="6" ry="7" />
+          <path d="M 23 8 C 28 6 29 10 26 14 C 28 17 26 20 22 18" />
+          <path d="M 19 19 L 19 55" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M 19 28 L 8 40 L 4 45" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          <path d="M 19 28 L 32 38 L 38 42" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          <circle cx="3" cy="46" r="2" />
+          <circle cx="39" cy="43" r="2" />
+          <path d="M 19 55 L 12 78 L 14 84" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M 19 55 L 26 78 L 29 84" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+        </g>
+
+        <!-- Dancing smaller figure (left, middle) -->
+        <g transform="translate(18, 54)">
+          <circle cx="16" cy="10" r="6" />
+          <line x1="16" y1="16" x2="16" y2="44" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+          <path d="M 16 23 L 6 22 L 2 16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          <path d="M 16 23 L 26 20 L 30 14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          <path d="M 16 44 L 8 58 L 10 65" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M 16 44 L 24 54 L 20 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+        </g>
+
+        <!-- Seated / crouching figure (bottom left near fire) -->
+        <g transform="translate(48, 92)">
+          <circle cx="12" cy="10" r="5.5" />
+          <path d="M 12 15 C 10 24 10 32 14 38 C 18 42 24 44 26 48 L 28 54" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M 12 24 L 24 32 L 32 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        </g>
+
+        <!-- Sitting musician playing horizontal pipe / didgeridoo (right of fire) -->
+        <g transform="translate(210, 48)">
+          <circle cx="38" cy="14" r="6.5" />
+          <path d="M 42 9 C 48 8 47 13 44 16" />
+          <path d="M 36 20 C 34 32 32 46 28 58 C 26 66 32 72 38 72 C 44 72 48 64 46 56 Z" />
+          <path d="M 34 26 L 18 30 L 10 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+          <line x1="32" y1="21" x2="-22" y2="30" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+          <line x1="32" y1="25" x2="-22" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M 28 58 L 12 62 L 6 70 L 12 74" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </g>
+
+        <!-- Sitting storyteller / listener with clapping sticks (bottom right) -->
+        <g transform="translate(222, 102)">
+          <circle cx="34" cy="10" r="6" />
+          <path d="M 32 16 C 30 24 26 34 22 42 C 18 48 24 52 30 52 C 36 52 40 44 38 36 Z" />
+          <path d="M 28 24 L 14 30 L 12 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" />
+          <line x1="12" y1="22" x2="11" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M 22 42 L 8 44 L 2 52" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+        </g>
+
+        <!-- Fauna around campfire -->
+        <!-- Small dingo / dog near standing dancers -->
+        <g transform="translate(108, 92) scale(0.9)">
+          <ellipse cx="14" cy="14" rx="8" ry="5" />
+          <ellipse cx="22" cy="9" rx="4" ry="3.5" />
+          <polygon points="20,6 23,2 25,6" />
+          <line x1="9" y1="17" x2="6" y2="25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          <line x1="18" y1="17" x2="20" y2="25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          <path d="M 6 13 C 2 11 0 7 2 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </g>
+
+        <!-- Platypus / bird / echidna near fire -->
+        <g transform="translate(142, 108) scale(0.85)">
+          <ellipse cx="12" cy="12" rx="7" ry="4.5" />
+          <ellipse cx="18" cy="8" rx="4" ry="3" />
+          <path d="M 21 8 L 27 9 L 26 11 Z" />
+        </g>
+
+        <!-- Wavy Snake -->
+        <path d="M 166 126 Q 163 133 167 140 Q 171 147 167 154 Q 163 161 166 166" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+        <circle cx="166" cy="125" r="2.2" />
+
+        <!-- Swimming Fish -->
+        <g transform="translate(178, 126) scale(0.75)">
+          <ellipse cx="12" cy="7" rx="8" ry="4" />
+          <polygon points="4,7 -2,3 -2,11" />
+        </g>
+        <g transform="translate(204, 118) scale(0.70) rotate(-15)">
+          <ellipse cx="12" cy="7" rx="8" ry="4" />
+          <polygon points="4,7 -2,3 -2,11" />
+        </g>
+        <g transform="translate(190, 140) scale(0.75) rotate(10)">
+          <ellipse cx="12" cy="7" rx="8" ry="4" />
+          <polygon points="4,7 -2,3 -2,11" />
+        </g>
+      </g>
+
+      <!-- Ethnic dot accents -->
+      <circle cx="8" cy="24" r="2.5" opacity="0.6" />
+      <circle cx="6" cy="120" r="2.8" opacity="0.6" />
+      <circle cx="150" cy="16" r="2.4" opacity="0.6" />
+      <circle cx="288" cy="40" r="2.6" opacity="0.6" />
+      <circle cx="286" cy="140" r="2.8" opacity="0.6" />
+      <circle cx="605" cy="30" r="2.5" opacity="0.6" />
+      <circle cx="612" cy="125" r="2.8" opacity="0.6" />
+    </g>
+  </defs>
+
+  <!-- Top half: Original motif (height 0..180) -->
+  <use href="#motif-pattern" x="0" y="0" />
+
+  <!-- Bottom half: Horizontally flipped (stranově prohozené) motif (height 180..360) -->
+  <g transform="translate(620, 180) scale(-1, 1)">
+    <use href="#motif-pattern" x="0" y="0" />
   </g>
-
-  <!-- Group of 3 dancers in motion (with comfortable spacing) -->
-  <g transform="translate(145, 18) scale(0.76)">
-    <!-- Dancer 1 (left) -->
-    <g transform="translate(0, 8) rotate(-10)">
-      <ellipse cx="28" cy="10" rx="7" ry="8" />
-      <path d="M 23 17 C 15 22 8 29 11 34 C 14 38 21 32 25 26 L 27 46 C 21 54 13 62 16 66 C 19 69 27 60 31 52 L 35 52 C 40 61 49 68 52 64 C 54 60 46 51 40 44 L 39 25 C 44 29 52 35 55 31 C 57 27 49 20 41 16 Z" />
-    </g>
-    <!-- Dancer 2 (right, moved further right for clear gap) -->
-    <g transform="translate(86, 4) rotate(14)">
-      <ellipse cx="26" cy="10" rx="7.5" ry="8.5" />
-      <path d="M 20 18 C 12 18 2 21 4 27 C 6 32 15 28 22 24 L 23 44 C 16 52 8 60 11 65 C 14 69 22 61 27 52 L 31 52 C 34 62 41 71 45 68 C 48 64 42 54 37 45 L 37 23 C 44 26 53 28 55 23 C 56 18 47 16 39 17 Z" />
-    </g>
-    <!-- Dancer 3 (bottom center, moved down and spaced out) -->
-    <g transform="translate(42, 70) rotate(-4)">
-      <ellipse cx="24" cy="9" rx="7" ry="8" />
-      <path d="M 18 16 C 11 18 3 24 6 29 C 9 33 16 28 21 23 L 23 42 C 17 50 10 58 13 62 C 16 65 24 57 28 49 L 32 49 C 36 58 44 65 48 61 C 51 57 44 48 38 41 L 37 22 C 43 25 51 29 53 25 C 55 21 47 16 38 15 Z" />
-    </g>
-  </g>
-
-  <!-- ==================== GROUP 2: CAMPFIRE & TRIBAL GATHERING (from new attachment) ==================== -->
-  <g transform="translate(295, 10)">
-    <!-- Campfire & Smoke Flames -->
-    <!-- Log base / embers -->
-    <g stroke="currentColor" stroke-linecap="round">
-      <line x1="165" y1="130" x2="205" y2="108" stroke-width="5" />
-      <line x1="205" y1="130" x2="165" y2="108" stroke-width="5" />
-      <line x1="185" y1="135" x2="185" y2="102" stroke-width="4.5" />
-      <line x1="158" y1="120" x2="212" y2="120" stroke-width="4" />
-      <line x1="172" y1="132" x2="198" y2="104" stroke-width="4" />
-      <line x1="198" y1="132" x2="172" y2="104" stroke-width="4" />
-    </g>
-
-    <!-- Rising flames and smoke plume -->
-    <path d="M 185 106 C 176 96 172 82 178 72 C 182 66 189 68 185 58 C 181 48 185 36 182 24 C 180 16 186 8 184 2 C 182 8 188 18 187 28 C 186 38 192 46 189 56 C 187 64 195 72 192 84 C 190 94 194 102 185 106 Z" />
-    <!-- Secondary smoke wisps -->
-    <ellipse cx="178" cy="42" rx="4" ry="7" transform="rotate(-15 178 42)" opacity="0.85" />
-    <ellipse cx="193" cy="30" rx="3.5" ry="6" transform="rotate(18 193 30)" opacity="0.85" />
-    <ellipse cx="182" cy="14" rx="2.5" ry="5" opacity="0.8" />
-
-    <!-- Left side of fire: Tall standing tribal figure -->
-    <g transform="translate(68, 14)">
-      <!-- Head with tribal hair silhouette -->
-      <ellipse cx="20" cy="12" rx="6" ry="7" />
-      <path d="M 23 8 C 28 6 29 10 26 14 C 28 17 26 20 22 18" />
-      <!-- Long thin torso -->
-      <path d="M 19 19 L 19 55" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
-      <!-- Arms spread -->
-      <path d="M 19 28 L 8 40 L 4 45" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-      <path d="M 19 28 L 32 38 L 38 42" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-      <!-- Hands fingers -->
-      <circle cx="3" cy="46" r="2" />
-      <circle cx="39" cy="43" r="2" />
-      <!-- Legs walking/standing -->
-      <path d="M 19 55 L 12 78 L 14 84" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-      <path d="M 19 55 L 26 78 L 29 84" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-    </g>
-
-    <!-- Dancing smaller figure (left, middle) -->
-    <g transform="translate(18, 54)">
-      <!-- Head -->
-      <circle cx="16" cy="10" r="6" />
-      <!-- Torso -->
-      <line x1="16" y1="16" x2="16" y2="44" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
-      <!-- Arms dancing up -->
-      <path d="M 16 23 L 6 22 L 2 16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-      <path d="M 16 23 L 26 20 L 30 14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-      <!-- Dancing bent legs -->
-      <path d="M 16 44 L 8 58 L 10 65" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-      <path d="M 16 44 L 24 54 L 20 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-    </g>
-
-    <!-- Seated / crouching figure (bottom left near fire) -->
-    <g transform="translate(48, 92)">
-      <circle cx="12" cy="10" r="5.5" />
-      <path d="M 12 15 C 10 24 10 32 14 38 C 18 42 24 44 26 48 L 28 54" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-      <path d="M 12 24 L 24 32 L 32 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-    </g>
-
-    <!-- Sitting musician playing horizontal pipe / didgeridoo (right of fire) -->
-    <g transform="translate(210, 48)">
-      <!-- Head -->
-      <circle cx="38" cy="14" r="6.5" />
-      <!-- Hair detail -->
-      <path d="M 42 9 C 48 8 47 13 44 16" />
-      <!-- Body leaning back seated -->
-      <path d="M 36 20 C 34 32 32 46 28 58 C 26 66 32 72 38 72 C 44 72 48 64 46 56 Z" />
-      <!-- Arms holding pipe to mouth -->
-      <path d="M 34 26 L 18 30 L 10 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-      <!-- Horizontal pipe / didgeridoo -->
-      <line x1="32" y1="21" x2="-22" y2="30" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
-      <line x1="32" y1="25" x2="-22" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-      <!-- Crossed / folded leg -->
-      <path d="M 28 58 L 12 62 L 6 70 L 12 74" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
-    </g>
-
-    <!-- Sitting storyteller / listener with clapping sticks (bottom right) -->
-    <g transform="translate(222, 102)">
-      <circle cx="34" cy="10" r="6" />
-      <path d="M 32 16 C 30 24 26 34 22 42 C 18 48 24 52 30 52 C 36 52 40 44 38 36 Z" />
-      <path d="M 28 24 L 14 30 L 12 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" />
-      <line x1="12" y1="22" x2="11" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-      <!-- Legs sitting -->
-      <path d="M 22 42 L 8 44 L 2 52" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
-    </g>
-
-    <!-- Fauna around campfire (kangaroo, dingo, snake, platypus/duck, fish) -->
-    <!-- Small dingo / dog near standing dancers -->
-    <g transform="translate(108, 92) scale(0.9)">
-      <ellipse cx="14" cy="14" rx="8" ry="5" />
-      <ellipse cx="22" cy="9" rx="4" ry="3.5" />
-      <polygon points="20,6 23,2 25,6" />
-      <line x1="9" y1="17" x2="6" y2="25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
-      <line x1="18" y1="17" x2="20" y2="25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
-      <path d="M 6 13 C 2 11 0 7 2 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-    </g>
-
-    <!-- Platypus / bird / echidna near fire -->
-    <g transform="translate(142, 108) scale(0.85)">
-      <ellipse cx="12" cy="12" rx="7" ry="4.5" />
-      <ellipse cx="18" cy="8" rx="4" ry="3" />
-      <path d="M 21 8 L 27 9 L 26 11 Z" />
-    </g>
-
-    <!-- Wavy Snake -->
-    <path d="M 166 126 Q 163 133 167 140 Q 171 147 167 154 Q 163 161 166 166" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-    <circle cx="166" cy="125" r="2.2" />
-
-    <!-- Swimming Fish -->
-    <!-- Fish 1 -->
-    <g transform="translate(178, 126) scale(0.75)">
-      <ellipse cx="12" cy="7" rx="8" ry="4" />
-      <polygon points="4,7 -2,3 -2,11" />
-    </g>
-    <!-- Fish 2 -->
-    <g transform="translate(204, 118) scale(0.70) rotate(-15)">
-      <ellipse cx="12" cy="7" rx="8" ry="4" />
-      <polygon points="4,7 -2,3 -2,11" />
-    </g>
-    <!-- Fish 3 -->
-    <g transform="translate(190, 140) scale(0.75) rotate(10)">
-      <ellipse cx="12" cy="7" rx="8" ry="4" />
-      <polygon points="4,7 -2,3 -2,11" />
-    </g>
-  </g>
-
-  <!-- ==================== ETHNIC DOT PATTERNS & SEAMLESS TRANSITIONS ==================== -->
-  <circle cx="8" cy="24" r="2.5" opacity="0.6" />
-  <circle cx="6" cy="120" r="2.8" opacity="0.6" />
-  <circle cx="150" cy="16" r="2.4" opacity="0.6" />
-  <circle cx="288" cy="40" r="2.6" opacity="0.6" />
-  <circle cx="286" cy="140" r="2.8" opacity="0.6" />
-  <circle cx="605" cy="30" r="2.5" opacity="0.6" />
-  <circle cx="612" cy="125" r="2.8" opacity="0.6" />
 </svg>

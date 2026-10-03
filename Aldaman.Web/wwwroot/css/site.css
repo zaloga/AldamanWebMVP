@@ -2376,7 +2376,7 @@
     background-image: url('../images/bg-header-motif.svg');
     background-repeat: repeat;
     background-position: top left;
-    background-size: auto 80px;
+    background-size: auto 160px;
     opacity: 0.055;
     transition: opacity 0.3s ease;
   }
