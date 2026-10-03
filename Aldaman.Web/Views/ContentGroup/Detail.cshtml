@@ -9,23 +9,23 @@
 }
 
 <div class="content-group-container">
-    @* Group Header *@
-    <div class="flex items-center justify-between gap-4 mb-6">
-        <div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-red-700 dark:text-stone-100">
-                @Model.Group.Title
-            </h1>
-        </div>
-
-        @if (User.Identity?.IsAuthenticated == true)
-        {
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="flex justify-end mb-5">
             <a asp-area="Admin" asp-controller="ContentGroups" asp-action="Update" asp-route-id="@Model.Group.Id"
-               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500/10 text-amber-900 dark:bg-stone-800 dark:text-amber-400 border border-amber-500/20 dark:border-stone-700 hover:bg-amber-500/20 dark:hover:bg-stone-700 transition-colors shrink-0 shadow-xs"
-               title="@Localizer[UIResources.Edit]">
+               class="inline-flex items-center gap-1 text-xs font-semibold text-stone-500 hover:text-amber-700 dark:hover:text-amber-400"
+               title="@Localizer[UIResources.EditContentGroup]">
                 <i class="bi bi-pencil-square"></i>
-                <span>@Localizer[UIResources.Edit]</span>
+                <span>@Localizer[UIResources.EditContentGroup]</span>
             </a>
-        }
+        </div>
+    }
+
+    @* Group Header *@
+    <div class="mb-6">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-red-700 dark:text-stone-100">
+            @Model.Group.Title
+        </h1>
     </div>
 
     @* Group Items in configured order *@
@@ -125,28 +125,14 @@
                 {
                     <section id="@content.Slug" class="bg-[#fffaf5] dark:bg-[#1e1a17]/80 rounded-2xl border border-amber-900/10 dark:border-amber-500/15 p-6 sm:p-8 shadow-xs card-motif-a">
                         <div class="flex flex-col">
-                            <div class="flex items-start justify-between gap-4 mb-4">
-                                @if (content.DisplayTitle)
-                                {
+                            @if (content.DisplayTitle)
+                            {
+                                <div class="mb-4">
                                     <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-red-700 dark:text-stone-100">
                                         @content.Title
                                     </h2>
-                                }
-                                else
-                                {
-                                    <div></div>
-                                }
-
-                                @if (User.Identity?.IsAuthenticated == true)
-                                {
-                                    <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@content.Id"
-                                       class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500/10 text-amber-900 dark:bg-stone-800 dark:text-amber-400 border border-amber-500/20 dark:border-stone-700 hover:bg-amber-500/20 dark:hover:bg-stone-700 transition-colors shrink-0 shadow-xs"
-                                       title="@Localizer[UIResources.EditContent]">
-                                        <i class="bi bi-pencil-square"></i>
-                                        <span>@Localizer[UIResources.EditContent]</span>
-                                    </a>
-                                }
-                            </div>
+                                </div>
+                            }
 
                             @if (!string.IsNullOrEmpty(content.BodyHtml))
                             {
@@ -164,6 +150,18 @@
                                         <h3 class="text-lg font-bold text-stone-700 dark:text-stone-300">@content.Title</h3>
                                     }
                                     <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">@Localizer[UIResources.SectionNoContent]</p>
+                                </div>
+                            }
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <div class="mt-4 flex justify-end">
+                                    <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@content.Id"
+                                       class="inline-flex items-center gap-1 text-xs font-semibold text-stone-500 hover:text-amber-700 dark:hover:text-amber-400"
+                                       title="@Localizer[UIResources.EditContent]">
+                                        <i class="bi bi-pencil-square"></i>
+                                        <span>@Localizer[UIResources.EditContent]</span>
+                                    </a>
                                 </div>
                             }
                         </div>

@@ -7,18 +7,6 @@
         @foreach (var banner in Model.Banners)
         {
             <div class="rounded-2xl border border-amber-900/10 dark:border-amber-500/15 bg-[#fffaf5] dark:bg-[#1e1a17]/80 p-5 shadow-xs hover:shadow-md transition-all card-motif-b">
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <div class="flex justify-end mb-2">
-                        <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@banner.Id"
-                           class="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
-                           title="@Localizer[UIResources.EditContent]">
-                            <i class="bi bi-pencil-square"></i>
-                            <span>@Localizer[UIResources.EditContent]</span>
-                        </a>
-                    </div>
-                }
-
                 @if (!string.IsNullOrWhiteSpace(banner.CoverImageRelativePath))
                 {
                     <div class="mb-3.5 overflow-hidden rounded-xl bg-stone-100 dark:bg-stone-800">
@@ -48,6 +36,18 @@
                         <div class="ql-editor !p-0 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
                             @Html.Raw(banner.BodyHtml)
                         </div>
+                    </div>
+                }
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="flex justify-end">
+                        <a asp-area="Admin" asp-controller="Contents" asp-action="Update" asp-route-id="@banner.Id"
+                           class="inline-flex items-center gap-1 text-xs font-semibold text-stone-500 hover:text-amber-700 dark:hover:text-amber-400"
+                           title="@Localizer[UIResources.EditContent]">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>@Localizer[UIResources.EditContent]</span>
+                        </a>
                     </div>
                 }
             </div>
