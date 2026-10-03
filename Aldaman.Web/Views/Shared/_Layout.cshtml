@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData.GetPageTitle() - Aldaman</title>
+    <link rel="icon" type="image/svg+xml" href="~/images/logo-icon.svg" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
@@ -26,10 +27,10 @@
         <nav class="container relative flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4.5 lg:py-0 lg:h-[5.625rem]">
             <div class="flex items-center justify-between w-full lg:w-auto">
                 <a id="brand-nav-link"
-                   class="text-xl font-bold tracking-tight text-stone-900 dark:text-white cursor-pointer select-none flex items-center gap-2 group"
+                   class="text-xl font-bold tracking-tight text-stone-900 dark:text-white cursor-pointer select-none flex items-center gap-2.5 group"
                    asp-area="" asp-controller="Home" asp-action="Index">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-600/10 dark:bg-red-500/15 text-red-700 dark:text-red-400 group-hover:bg-red-600/20 transition-colors">
-                        <i class="bi bi-soundwave text-xl"></i>
+                    <span class="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden shadow-xs transition-transform duration-200 group-hover:scale-105">
+                        <img src="~/images/logo-icon.svg" asp-append-version="true" alt="Aldaman" class="w-full h-full object-contain" />
                     </span>
                     <span class="font-extrabold text-stone-900 dark:text-white text-lg tracking-tight">Aldaman</span>
                 </a>
@@ -99,9 +100,9 @@
         <div class="header-motif absolute inset-0 pointer-events-none select-none" aria-hidden="true"></div>
         <div class="container relative flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
             <div class="flex flex-col items-center md:items-start gap-1.5">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center gap-2 group cursor-pointer select-none">
-                    <span class="footer-brand-badge group-hover:bg-red-600/20 transition-colors">
-                        <i class="bi bi-soundwave text-lg"></i>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center gap-2.5 group cursor-pointer select-none">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden shadow-xs transition-transform duration-200 group-hover:scale-105">
+                        <img src="~/images/logo-icon.svg" asp-append-version="true" alt="Aldaman" class="w-full h-full object-contain" />
                     </span>
                     <span class="font-extrabold text-stone-900 dark:text-stone-100 text-lg tracking-tight">Aldaman</span>
                 </a>
