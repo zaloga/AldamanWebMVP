@@ -2803,6 +2803,23 @@
 .quill-gallery .quill-gallery-item:hover img {
   transform: scale(1.04) !important;
 }
+.quill-gallery .quill-gallery-item a {
+  cursor: zoom-in !important;
+}
+.glightbox-container .gslide-description {
+  background: rgba(28, 25, 23, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 0.75rem !important;
+}
+.glightbox-container .gslide-title {
+  color: #fafaf9 !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+}
+.glightbox-container .gslide-desc {
+  color: #d6d3d1 !important;
+  font-size: 0.85rem !important;
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;

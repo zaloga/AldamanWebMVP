@@ -184,4 +184,54 @@ document.addEventListener('DOMContentLoaded', function () {
             if (e.key === 'Escape') closeBrandDropdown();
         });
     }
+
+    // Lightbox Initialization (GLightbox)
+    if (typeof GLightbox !== 'undefined') {
+        initLightbox();
+    }
+
+    function initLightbox() {
+        // Group images in each distinct .quill-gallery block separately
+        const galleries = document.querySelectorAll('.quill-gallery');
+        galleries.forEach((gallery, galleryIndex) => {
+            const galleryLinks = gallery.querySelectorAll('a');
+            galleryLinks.forEach(link => {
+                link.setAttribute('data-gallery', `quill-gallery-${galleryIndex}`);
+                const img = link.querySelector('img');
+                if (img) {
+                    const caption = img.getAttribute('title') || img.getAttribute('alt');
+                    if (caption && !link.getAttribute('title') && !link.getAttribute('data-title')) {
+                        link.setAttribute('data-title', caption);
+                    }
+                }
+            });
+        });
+
+        // Handle standalone linked images in content (.ql-editor and article)
+        const contentLinks = document.querySelectorAll('.ql-editor a, article a');
+        contentLinks.forEach(link => {
+            const href = (link.getAttribute('href') || '').toLowerCase();
+            const isImage = /\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(href);
+            if (isImage && !link.closest('.quill-gallery')) {
+                if (!link.hasAttribute('data-gallery')) {
+                    link.setAttribute('data-gallery', 'single-image-' + Math.random().toString(36).substring(2, 7));
+                }
+                const img = link.querySelector('img');
+                if (img) {
+                    const caption = img.getAttribute('title') || img.getAttribute('alt');
+                    if (caption && !link.getAttribute('title') && !link.getAttribute('data-title')) {
+                        link.setAttribute('data-title', caption);
+                    }
+                }
+            }
+        });
+
+        GLightbox({
+            selector: '.quill-gallery a, a[data-gallery], .ql-editor a[href$=".jpg" i], .ql-editor a[href$=".jpeg" i], .ql-editor a[href$=".png" i], .ql-editor a[href$=".webp" i], .ql-editor a[href$=".gif" i], .ql-editor a[href$=".svg" i]',
+            touchNavigation: true,
+            loop: true,
+            zoomable: true,
+            autoplayVideos: true
+        });
+    }
 });
