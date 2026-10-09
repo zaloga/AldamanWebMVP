@@ -44,8 +44,15 @@
 
                 @if (!string.IsNullOrWhiteSpace(Model.Content.CoverImageRelativePath))
                 {
-                    <div class="mb-8 overflow-hidden rounded-2xl max-h-[480px] bg-stone-100 dark:bg-stone-800 shadow-xs">
-                        <img src="@Model.Content.CoverImageRelativePath" alt="@Model.Content.Title" class="w-full h-full object-cover" />
+                    <div class="mb-8 overflow-hidden rounded-2xl max-h-[480px] bg-stone-100 dark:bg-stone-800 shadow-xs group">
+                        <a href="@Model.Content.CoverImageRelativePath"
+                           class="block w-full h-full cursor-zoom-in"
+                           data-gallery="cover-image"
+                           title="@Model.Content.Title">
+                            <img src="@Model.Content.CoverImageRelativePath"
+                                 alt="@Model.Content.Title"
+                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
+                        </a>
                     </div>
                 }
 

@@ -186,11 +186,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Lightbox Initialization (GLightbox)
-    if (typeof GLightbox !== 'undefined') {
-        initLightbox();
-    }
+    let currentLightboxInstance = null;
 
-    function initLightbox() {
+    window.initLightbox = function () {
+        if (typeof GLightbox === 'undefined') return;
+
         // Group images in each distinct .quill-gallery block separately
         const galleries = document.querySelectorAll('.quill-gallery');
         galleries.forEach((gallery, galleryIndex) => {
@@ -209,15 +209,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Handle standalone linked images in content (.ql-editor and article)
         const contentLinks = document.querySelectorAll('.ql-editor a, article a');
+        let singleImageCounter = 0;
         contentLinks.forEach(link => {
             const href = (link.getAttribute('href') || '').toLowerCase();
             const isImage = /\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(href);
             if (isImage && !link.closest('.quill-gallery')) {
-                if (!link.hasAttribute('data-gallery')) {
-                    link.setAttribute('data-gallery', 'single-image-' + Math.random().toString(36).substring(2, 7));
+                const existingGallery = link.getAttribute('data-gallery');
+                if (!existingGallery || existingGallery === 'image' || existingGallery === 'gallery') {
+                    link.setAttribute('data-gallery', `single-image-${singleImageCounter++}`);
                 }
                 const img = link.querySelector('img');
                 if (img) {
+                    link.classList.add('cursor-zoom-in');
                     const caption = img.getAttribute('title') || img.getAttribute('alt');
                     if (caption && !link.getAttribute('title') && !link.getAttribute('data-title')) {
                         link.setAttribute('data-title', caption);
@@ -226,12 +229,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        GLightbox({
+        if (currentLightboxInstance) {
+            currentLightboxInstance.destroy();
+        }
+
+        currentLightboxInstance = GLightbox({
             selector: '.quill-gallery a, a[data-gallery], .ql-editor a[href$=".jpg" i], .ql-editor a[href$=".jpeg" i], .ql-editor a[href$=".png" i], .ql-editor a[href$=".webp" i], .ql-editor a[href$=".gif" i], .ql-editor a[href$=".svg" i]',
             touchNavigation: true,
             loop: true,
             zoomable: true,
             autoplayVideos: true
         });
+    };
+
+    if (typeof GLightbox !== 'undefined') {
+        window.initLightbox();
     }
 });

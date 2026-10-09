@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         fullContentContainer.classList.remove('opacity-0');
                     });
                     if (showLessBtn) showLessBtn.classList.remove('hidden');
+                    if (typeof window.initLightbox === 'function') {
+                        window.initLightbox();
+                    }
                 }
             } catch (err) {
                 console.error('Error fetching blog content:', err);

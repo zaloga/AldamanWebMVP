@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             alt: result.alt || '',
                             title: result.title || ''
                         });
+                        quill.formatText(range.index, 1, 'link', result.url);
                         quill.setSelection(range.index + 1);
                     } else {
                         alert(result.message || i18n.imageUploadFailed);
@@ -258,21 +259,48 @@ document.addEventListener('DOMContentLoaded', function () {
             quill.root.innerHTML = htmlInput.value;
         }
 
-        // Sync content on change
-        quill.on('text-change', function () {
-            const html = quill.root.innerHTML;
-            const delta = JSON.stringify(quill.getContents());
-            const text = quill.getText();
+        // Sync content on change (and ensure all loose images are wrapped in links)
+        let isSyncing = false;
+        function syncInputs() {
+            if (isSyncing) return;
+            isSyncing = true;
+            try {
+                // Wrap any loose images (not inside galleries or links) with an anchor link to their src
+                const images = quill.root.querySelectorAll('img');
+                images.forEach(img => {
+                    if (img.closest('.quill-gallery') || img.closest('a')) return;
+                    const src = img.getAttribute('src');
+                    if (!src) return;
+                    const blot = Quill.find(img);
+                    if (blot) {
+                        const index = quill.getIndex(blot);
+                        quill.formatText(index, 1, 'link', src);
+                    }
+                });
 
-            // Only sync if content is not just a single newline (default empty state of Quill)
-            const isEmpty = quill.getText().trim().length === 0 && quill.root.innerHTML === '<p><br></p>';
+                const html = quill.root.innerHTML;
+                const delta = JSON.stringify(quill.getContents());
+                const text = quill.getText();
 
-            htmlInput.value = isEmpty ? '' : html;
-            deltaInput.value = isEmpty ? '' : delta;
-            if (plainTextInput) {
-                plainTextInput.value = isEmpty ? '' : text.trim();
+                // Only sync if content is not just a single newline (default empty state of Quill)
+                const isEmpty = quill.getText().trim().length === 0 && quill.root.innerHTML === '<p><br></p>';
+
+                htmlInput.value = isEmpty ? '' : html;
+                deltaInput.value = isEmpty ? '' : delta;
+                if (plainTextInput) {
+                    plainTextInput.value = isEmpty ? '' : text.trim();
+                }
+            } finally {
+                isSyncing = false;
             }
-        });
+        }
+
+        quill.on('text-change', syncInputs);
+
+        const form = container.closest('form');
+        if (form) {
+            form.addEventListener('submit', syncInputs);
+        }
     });
 });
 
@@ -777,10 +805,13 @@ function initQuillImageResizer(quill) {
             openImagePropertiesModal(img, quillInstance, repositionOverlay);
             return;
         } else if (action === 'delete') {
-            const blot = Quill.find(img);
+            const parentLink = img.closest('a');
+            const blot = Quill.find(img) || (parentLink ? Quill.find(parentLink) : null);
             hideOverlay();
             if (blot) {
                 blot.deleteAt(0);
+            } else if (parentLink) {
+                parentLink.remove();
             } else {
                 img.remove();
             }
@@ -846,8 +877,12 @@ function initQuillImageResizer(quill) {
     // Click on image inside editor
     editorRoot.addEventListener('click', (e) => {
         if (e.target && e.target.tagName === 'IMG') {
+            e.preventDefault();
             e.stopPropagation();
             showOverlay(e.target);
+        } else if (e.target && e.target.closest('a') && e.target.closest('a').querySelector('img')) {
+            e.preventDefault();
+            hideOverlay();
         } else {
             hideOverlay();
         }
@@ -856,6 +891,7 @@ function initQuillImageResizer(quill) {
     // Double click to open property modal
     editorRoot.addEventListener('dblclick', (e) => {
         if (e.target && e.target.tagName === 'IMG') {
+            e.preventDefault();
             e.stopPropagation();
             showOverlay(e.target);
             openImagePropertiesModal(e.target, quill, repositionOverlay);
@@ -1027,6 +1063,13 @@ function openImagePropertiesModal(img, quill, onUpdate) {
 
                 if (vals.title) img.setAttribute('title', vals.title);
                 else img.removeAttribute('title');
+
+                // Synchronize title on parent anchor link if present
+                const parentLink = img.closest('a');
+                if (parentLink) {
+                    if (vals.title || vals.alt) parentLink.setAttribute('title', vals.title || vals.alt);
+                    else parentLink.removeAttribute('title');
+                }
 
                 if (typeof onUpdate === 'function') onUpdate();
                 quill.emitter.emit('text-change');
