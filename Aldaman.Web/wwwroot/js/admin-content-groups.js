@@ -2,10 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handler for Unified Content selector in Content Groups
 
     const container = document.getElementById('selectedItemsContainer');
-    const contentsSelect = document.getElementById('contentsSelect');
-    const btnAddItem = document.getElementById('btnAddItem');
+    const modalEl = document.getElementById('addExistingContentModal');
+    const modalContentSelect = document.getElementById('modalContentSelect');
+    const modalBtnConfirmAdd = document.getElementById('modalBtnConfirmAdd');
 
-    if (!container || !btnAddItem || !contentsSelect) return;
+    if (!container) return;
+
+    function getSelectedIds() {
+        return Array.from(container.querySelectorAll('.content-group-item-row'))
+            .map(r => r.querySelector('.item-id-input')?.value?.toLowerCase())
+            .filter(Boolean);
+    }
 
     function updateIndicesAndOrders() {
         const rows = container.querySelectorAll('.content-group-item-row');
@@ -46,63 +53,89 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    btnAddItem.addEventListener('click', function () {
-        const selectedOption = contentsSelect.options[contentsSelect.selectedIndex];
-        if (!selectedOption || !selectedOption.value) return;
-
-        const itemId = selectedOption.value;
-        const itemTitle = selectedOption.getAttribute('data-title') || selectedOption.text;
-        const itemSlug = selectedOption.getAttribute('data-slug') || '';
-
-        // Check if already in list
-        const existing = Array.from(container.querySelectorAll('.content-group-item-row')).find(r => {
-            const id = r.querySelector('.item-id-input')?.value;
-            return id === itemId;
+    // Reset select state when modal opens
+    if (modalEl && modalContentSelect) {
+        modalEl.addEventListener('show.bs.modal', function () {
+            modalContentSelect.value = '';
+            modalContentSelect.classList.remove('is-invalid');
         });
 
-        if (existing) {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: 'info',
-                    title: itemTitle,
-                    text: 'Item is already added.',
-                    confirmButtonColor: '#3085d6'
-                });
-            } else {
-                alert('Item is already added.');
+        modalContentSelect.addEventListener('change', function () {
+            if (modalContentSelect.value) {
+                modalContentSelect.classList.remove('is-invalid');
             }
-            return;
-        }
+        });
+    }
 
-        const row = document.createElement('div');
-        row.className = 'list-group-item d-flex justify-content-between align-items-center content-group-item-row p-2 mb-1 bg-white border rounded';
-        row.innerHTML = `
-            <div class="d-flex align-items-center gap-2 text-truncate me-2">
-                <span class="badge bg-secondary order-badge">1</span>
-                <span class="fw-medium text-dark text-truncate">${itemTitle}</span>
-                <span class="text-muted small font-monospace d-none d-md-inline">/${itemSlug}</span>
-            </div>
-            <div class="d-flex align-items-center gap-1 flex-shrink-0">
-                <input type="hidden" class="item-id-input" value="${itemId}" />
-                <input type="hidden" class="item-title-input" value="${itemTitle}" />
-                <input type="hidden" class="item-slug-input" value="${itemSlug}" />
-                <input type="hidden" class="item-order-input" value="0" />
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="Move Up">
-                    <i class="bi bi-arrow-up"></i>
-                </button>
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="Move Down">
-                    <i class="bi bi-arrow-down"></i>
-                </button>
-                <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="Remove">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
+    // Confirm adding item from modal
+    if (modalBtnConfirmAdd && modalContentSelect) {
+        modalBtnConfirmAdd.addEventListener('click', function () {
+            const selectedOption = modalContentSelect.options[modalContentSelect.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                modalContentSelect.classList.add('is-invalid');
+                modalContentSelect.focus();
+                return;
+            }
 
-        container.appendChild(row);
-        updateIndicesAndOrders();
-    });
+            modalContentSelect.classList.remove('is-invalid');
 
+            const itemId = selectedOption.value;
+            const itemTitle = selectedOption.getAttribute('data-title') || selectedOption.text.trim();
+            const itemSlug = selectedOption.getAttribute('data-slug') || '';
+
+            // Check if already in list
+            const selectedIds = new Set(getSelectedIds());
+            if (selectedIds.has(itemId.toLowerCase())) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: itemTitle,
+                        text: 'Položka je již přidána.',
+                        confirmButtonColor: '#3085d6'
+                    });
+                } else {
+                    alert('Položka je již přidána.');
+                }
+                return;
+            }
+
+            const row = document.createElement('div');
+            row.className = 'list-group-item d-flex justify-content-between align-items-center content-group-item-row p-2 mb-1 bg-white border rounded';
+            row.innerHTML = `
+                <div class="d-flex align-items-center gap-2 text-truncate me-2">
+                    <span class="badge bg-secondary order-badge">1</span>
+                    <span class="fw-medium text-dark text-truncate">${itemTitle}</span>
+                    <span class="text-muted small font-monospace d-none d-md-inline">/${itemSlug}</span>
+                </div>
+                <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                    <input type="hidden" class="item-id-input" value="${itemId}" />
+                    <input type="hidden" class="item-title-input" value="${itemTitle}" />
+                    <input type="hidden" class="item-slug-input" value="${itemSlug}" />
+                    <input type="hidden" class="item-order-input" value="0" />
+                    <button type="button" class="btn btn-outline-secondary btn-sm btn-move-up" title="Move Up">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm btn-move-down" title="Move Down">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-remove-item" title="Remove">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(row);
+            updateIndicesAndOrders();
+
+            // Close modal
+            if (modalEl && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modalInstance.hide();
+            }
+        });
+    }
+
+    // Event delegation for list item buttons (remove, up, down)
     container.addEventListener('click', function (e) {
         const btnRemove = e.target.closest('.btn-remove-item');
         if (btnRemove) {

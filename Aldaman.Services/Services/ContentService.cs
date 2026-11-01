@@ -5,6 +5,7 @@ using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.Content;
+using Aldaman.Services.Dtos.ContentGroup;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Helpers;
 using Aldaman.Services.Interfaces;
@@ -148,17 +149,18 @@ public sealed class ContentService : IContentService
         };
     }
 
-    public async Task<ContentEditDto?> GetContentForEditAsync(Guid id, CancellationToken ct = default)
+    public async Task<ContentEditDto?> GetContentForEditAsync(Guid id, string? culture = null, CancellationToken ct = default)
     {
         var entity = await Context.Contents
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
+            .Include(p => p.ContentGroups)
             .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (entity == null) return null;
 
-        return new ContentEditDto
+        var dto = new ContentEditDto
         {
             Id = entity.Id,
             ContentType = entity.ContentType,
@@ -170,12 +172,13 @@ public sealed class ContentService : IContentService
             CoverImageRelativePath = entity.CoverMediaAsset?.RelativePath,
             IsPublished = entity.IsPublished,
             PublishedAtUtc = entity.PublishedAtUtc,
-            Translations = Localization.SupportedCultures.Select(culture =>
+            ContentGroupId = entity.ContentGroups.FirstOrDefault()?.ContentGroupId,
+            Translations = Localization.SupportedCultures.Select(c =>
             {
-                var translation = entity.Translations.FirstOrDefault(t => t.CultureCode == culture);
+                var translation = entity.Translations.FirstOrDefault(t => t.CultureCode == c);
                 return new ContentTranslationDto
                 {
-                    CultureCode = culture,
+                    CultureCode = c,
                     Title = translation?.Title ?? string.Empty,
                     DisplayTitle = translation?.DisplayTitle ?? true,
                     Slug = translation?.Slug ?? string.Empty,
@@ -187,6 +190,9 @@ public sealed class ContentService : IContentService
                 };
             }).ToList()
         };
+
+        await PopulateAvailableOptionsAsync(dto, culture, ct);
+        return dto;
     }
 
     public ContentEditDto GetContentForCreate()
@@ -199,6 +205,40 @@ public sealed class ContentService : IContentService
                 DisplayTitle = true
             }).ToList()
         };
+    }
+
+    public async Task<ContentEditDto> GetContentForCreateAsync(Guid? contentGroupId = null, string? culture = null, CancellationToken ct = default)
+    {
+        var dto = new ContentEditDto
+        {
+            ContentGroupId = contentGroupId,
+            Translations = Localization.SupportedCultures.Select(c => new ContentTranslationDto
+            {
+                CultureCode = c,
+                DisplayTitle = true
+            }).ToList()
+        };
+
+        await PopulateAvailableOptionsAsync(dto, culture, ct);
+        return dto;
+    }
+
+    public async Task PopulateAvailableOptionsAsync(ContentEditDto dto, string? culture = null, CancellationToken ct = default)
+    {
+        dto.AvailableContentGroups = await Context.ContentGroups
+            .Include(g => g.Translations)
+            .OrderBy(g => g.GroupOrder)
+            .Select(g => new ContentGroupItemOptionDto
+            {
+                Id = g.Id,
+                Title = g.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Title
+                        ?? g.Translations.FirstOrDefault()!.Title
+                        ?? string.Empty,
+                Slug = g.Translations.FirstOrDefault(t => culture == null || t.CultureCode == culture)!.Slug
+                        ?? g.Translations.FirstOrDefault()!.Slug
+                        ?? string.Empty
+            })
+            .ToListAsync(ct);
     }
 
     public async Task CreateContentAsync(ContentEditDto dto, CancellationToken ct = default)
@@ -240,8 +280,26 @@ public sealed class ContentService : IContentService
         }
 
         Context.Contents.Add(entity);
+
+        if (dto.ContentGroupId.HasValue && dto.ContentGroupId.Value != Guid.Empty)
+        {
+            var maxOrder = await Context.ContentGroupContents
+                .Where(c => c.ContentGroupId == dto.ContentGroupId.Value)
+                .Select(c => (int?)c.Order)
+                .MaxAsync(ct) ?? -1;
+
+            var groupContent = new ContentGroupContentEntity
+            {
+                ContentGroupId = dto.ContentGroupId.Value,
+                ContentId = entity.Id,
+                Order = maxOrder + 1
+            };
+            Context.ContentGroupContents.Add(groupContent);
+        }
+
         await Context.SaveChangesAsync(ct);
         InvalidateCache();
+        ContentGroupService.InvalidateCache();
     }
 
     public async Task UpdateContentAsync(Guid id, ContentEditDto dto, CancellationToken ct = default)
@@ -250,6 +308,7 @@ public sealed class ContentService : IContentService
             .IgnoreQueryFilters()
             .Include(p => p.Translations)
             .Include(p => p.CoverMediaAsset)
+            .Include(p => p.ContentGroups)
             .FirstOrDefaultAsync(p => p.Id == id, ct);
 
         if (entity == null)
@@ -367,10 +426,50 @@ public sealed class ContentService : IContentService
             }
         }
 
+        // 4. Update ContentGroup association
+        var currentGroup = entity.ContentGroups.FirstOrDefault();
+        if (dto.ContentGroupId.HasValue && dto.ContentGroupId.Value != Guid.Empty)
+        {
+            if (currentGroup == null)
+            {
+                var maxOrder = await Context.ContentGroupContents
+                    .Where(c => c.ContentGroupId == dto.ContentGroupId.Value)
+                    .Select(c => (int?)c.Order)
+                    .MaxAsync(ct) ?? -1;
+
+                Context.ContentGroupContents.Add(new ContentGroupContentEntity
+                {
+                    ContentGroupId = dto.ContentGroupId.Value,
+                    ContentId = entity.Id,
+                    Order = maxOrder + 1
+                });
+            }
+            else if (currentGroup.ContentGroupId != dto.ContentGroupId.Value)
+            {
+                Context.ContentGroupContents.Remove(currentGroup);
+                var maxOrder = await Context.ContentGroupContents
+                    .Where(c => c.ContentGroupId == dto.ContentGroupId.Value)
+                    .Select(c => (int?)c.Order)
+                    .MaxAsync(ct) ?? -1;
+
+                Context.ContentGroupContents.Add(new ContentGroupContentEntity
+                {
+                    ContentGroupId = dto.ContentGroupId.Value,
+                    ContentId = entity.Id,
+                    Order = maxOrder + 1
+                });
+            }
+        }
+        else if (currentGroup != null)
+        {
+            Context.ContentGroupContents.Remove(currentGroup);
+        }
+
         await Context.SaveChangesAsync(ct);
         InvalidateCache();
+        ContentGroupService.InvalidateCache();
 
-        // 4. Cleanup orphaned media files
+        // 5. Cleanup orphaned media files
         if (mediaToDelete.Any())
         {
             await MediaService.DeleteMediaAsync(mediaToDelete.ToList(), ct);

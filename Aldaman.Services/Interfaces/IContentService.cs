@@ -18,12 +18,22 @@ public interface IContentService
     /// <summary>
     /// Gets a content item for editing in admin.
     /// </summary>
-    Task<ContentEditDto?> GetContentForEditAsync(Guid id, CancellationToken ct = default);
+    Task<ContentEditDto?> GetContentForEditAsync(Guid id, string? culture = null, CancellationToken ct = default);
 
     /// <summary>
     /// Gets a new content item template for creation in admin.
     /// </summary>
     ContentEditDto GetContentForCreate();
+
+    /// <summary>
+    /// Gets a new content item template for creation in admin with available content groups.
+    /// </summary>
+    Task<ContentEditDto> GetContentForCreateAsync(Guid? contentGroupId = null, string? culture = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Populates available content group options for content editing.
+    /// </summary>
+    Task PopulateAvailableOptionsAsync(ContentEditDto dto, string? culture = null, CancellationToken ct = default);
 
     /// <summary>
     /// Creates a new content item.

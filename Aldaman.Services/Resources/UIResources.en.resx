@@ -1044,6 +1044,18 @@
   <data name="AddItem" xml:space="preserve">
     <value>Add Item</value>
   </data>
+  <data name="CreateNewContent" xml:space="preserve">
+    <value>Create New Content</value>
+  </data>
+  <data name="AddExistingContent" xml:space="preserve">
+    <value>Add Existing Content</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="SelectContentGroup" xml:space="preserve">
+    <value>-- Select page --</value>
+  </data>
   <data name="Contents" xml:space="preserve">
     <value>Contents</value>
   </data>

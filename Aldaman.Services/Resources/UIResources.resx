@@ -1044,6 +1044,18 @@
   <data name="AddItem" xml:space="preserve">
     <value>Přidat položku</value>
   </data>
+  <data name="CreateNewContent" xml:space="preserve">
+    <value>Vytvořit nový obsah</value>
+  </data>
+  <data name="AddExistingContent" xml:space="preserve">
+    <value>Přidat existující obsah</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="SelectContentGroup" xml:space="preserve">
+    <value>-- Vyberte stránku --</value>
+  </data>
   <data name="Contents" xml:space="preserve">
     <value>Obsah</value>
   </data>

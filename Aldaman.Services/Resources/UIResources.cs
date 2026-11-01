@@ -240,6 +240,10 @@ public sealed class UIResources
     public const string ContentGroupUpdatedSuccessfully = nameof(ContentGroupUpdatedSuccessfully);
     public const string ErrorUpdatingContentGroup = nameof(ErrorUpdatingContentGroup);
     public const string AddItem = nameof(AddItem);
+    public const string CreateNewContent = nameof(CreateNewContent);
+    public const string AddExistingContent = nameof(AddExistingContent);
+    public const string Add = nameof(Add);
+    public const string SelectContentGroup = nameof(SelectContentGroup);
     public const string MoveUp = nameof(MoveUp);
     public const string MoveDown = nameof(MoveDown);
     public const string Remove = nameof(Remove);

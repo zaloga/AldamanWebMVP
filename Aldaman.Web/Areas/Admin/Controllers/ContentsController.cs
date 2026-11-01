@@ -1,4 +1,4 @@
-﻿using Aldaman.Services.Dtos.Content;
+using Aldaman.Services.Dtos.Content;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -38,9 +38,10 @@ public class ContentsController : BaseAdminController
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create([FromQuery] Guid? contentGroupId, CancellationToken cancellationToken = default)
     {
-        var model = ContentService.GetContentForCreate();
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var model = await ContentService.GetContentForCreateAsync(contentGroupId, culture, cancellationToken);
         return View("Update", model);
     }
 
@@ -48,8 +49,10 @@ public class ContentsController : BaseAdminController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ContentEditDto model, CancellationToken cancellationToken = default)
     {
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         if (!ModelState.IsValid)
         {
+            await ContentService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View("Update", model);
         }
 
@@ -64,11 +67,18 @@ public class ContentsController : BaseAdminController
 
             await ContentService.CreateContentAsync(model, cancellationToken);
             TempData.SetSuccessMessage(Localizer[UIResources.ContentCreatedSuccessfully].Value);
+
+            if (model.ContentGroupId.HasValue && model.ContentGroupId.Value != Guid.Empty)
+            {
+                return RedirectToAction("Update", "ContentGroups", new { id = model.ContentGroupId.Value });
+            }
+
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
             ModelState.AddModelError("", Localizer[UIResources.ErrorCreatingContent, ex.Message]);
+            await ContentService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View("Update", model);
         }
     }
@@ -76,7 +86,8 @@ public class ContentsController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken = default)
     {
-        var content = await ContentService.GetContentForEditAsync(id, cancellationToken);
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var content = await ContentService.GetContentForEditAsync(id, culture, cancellationToken);
         if (content == null)
         {
             return NotFound();
@@ -88,7 +99,8 @@ public class ContentsController : BaseAdminController
     [HttpGet]
     public async Task<IActionResult> Update(Guid id, CancellationToken cancellationToken = default)
     {
-        var content = await ContentService.GetContentForEditAsync(id, cancellationToken);
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        var content = await ContentService.GetContentForEditAsync(id, culture, cancellationToken);
         if (content == null)
         {
             return NotFound();
@@ -106,8 +118,10 @@ public class ContentsController : BaseAdminController
             return BadRequest();
         }
 
+        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         if (!ModelState.IsValid)
         {
+            await ContentService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View(model);
         }
 
@@ -131,6 +145,7 @@ public class ContentsController : BaseAdminController
         catch (Exception ex)
         {
             ModelState.AddModelError("", Localizer[UIResources.ErrorUpdatingContent, ex.Message]);
+            await ContentService.PopulateAvailableOptionsAsync(model, culture, cancellationToken);
             return View(model);
         }
     }

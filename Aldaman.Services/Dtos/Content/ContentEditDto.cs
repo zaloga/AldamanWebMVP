@@ -22,4 +22,14 @@ public class ContentEditDto
     public DateTime? DeletedAtUtc { get; set; }
 
     public List<ContentTranslationDto> Translations { get; set; } = new();
+
+    /// <summary>
+    /// Content group (page) to which this content belongs when created or edited.
+    /// </summary>
+    public Guid? ContentGroupId { get; set; }
+
+    /// <summary>
+    /// List of available content groups (pages) for selection.
+    /// </summary>
+    public List<Aldaman.Services.Dtos.ContentGroup.ContentGroupItemOptionDto> AvailableContentGroups { get; set; } = new();
 }

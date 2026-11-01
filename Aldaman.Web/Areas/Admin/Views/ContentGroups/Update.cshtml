@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContentGroup.ContentGroupEditDto
 
 @{
@@ -65,24 +65,25 @@
                         <h6 class="m-0 font-weight-bold text-primary">@Localizer[UIResources.AssociatedContents]</h6>
                     </div>
                     <div class="card-body">
-                        <div class="row g-2 mb-3 align-items-center">
-                            <div class="col-md-9">
-                                <select id="contentsSelect" class="form-select">
-                                    <option value="">-- @Localizer[UIResources.SelectContent] --</option>
-                                    @foreach (var contentItem in Model.AvailableContents)
-                                    {
-                                        <option value="@contentItem.Id" data-title="@contentItem.Title" data-slug="@contentItem.Slug">
-                                            @contentItem.Title (@contentItem.Slug)
-                                        </option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" id="btnAddItem" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-1">
-                                    <i class="bi bi-plus-lg"></i>
-                                    @Localizer[UIResources.AddItem]
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @if (!isCreate)
+                            {
+                                <a asp-controller="Contents" asp-action="Create" asp-route-contentGroupId="@Model.Id" class="btn btn-primary d-flex align-items-center gap-1">
+                                    <i class="bi bi-plus-circle"></i>
+                                    @Localizer[UIResources.CreateNewContent]
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary d-flex align-items-center gap-1" disabled>
+                                    <i class="bi bi-plus-circle"></i>
+                                    @Localizer[UIResources.CreateNewContent]
                                 </button>
-                            </div>
+                            }
+                            <button type="button" class="btn btn-outline-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addExistingContentModal">
+                                <i class="bi bi-link-45deg"></i>
+                                @Localizer[UIResources.AddExistingContent]
+                            </button>
                         </div>
 
                         <div id="selectedItemsContainer" class="list-group">
@@ -162,6 +163,42 @@
             </div>
         </div>
     </form>
+
+    <!-- Modal for selecting existing content -->
+    <div class="modal fade" id="addExistingContentModal" tabindex="-1" data-bs-focus="false" aria-labelledby="addExistingContentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExistingContentModalLabel">@Localizer[UIResources.AddExistingContent]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer[UIResources.Cancel]"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="modalContentSelect" class="form-label fw-medium">@Localizer[UIResources.Content]</label>
+                        <select id="modalContentSelect" class="form-select">
+                            <option value="">-- @Localizer[UIResources.SelectContent] --</option>
+                            @foreach (var contentItem in Model.AvailableContents)
+                            {
+                                <option value="@contentItem.Id" data-title="@contentItem.Title" data-slug="@contentItem.Slug">
+                                    @contentItem.Title (@contentItem.Slug)
+                                </option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">
+                            @Localizer[UIResources.SelectContent]
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer[UIResources.Cancel]</button>
+                    <button type="button" id="modalBtnConfirmAdd" class="btn btn-primary d-flex align-items-center gap-1">
+                        <i class="bi bi-plus-lg"></i>
+                        @Localizer[UIResources.Add]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
