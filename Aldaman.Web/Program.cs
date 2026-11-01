@@ -10,6 +10,7 @@ using Aldaman.Web.Extensions;
 using Aldaman.Web.Middleware;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Serilog;
@@ -91,6 +92,29 @@ public class Program
             options.HeaderName = "RequestVerificationToken";
         });
 
+        // Forwarded headers for reverse proxy / IIS hosting
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
+
+        // Configure HTTPS redirection behavior
+        builder.Services.AddHttpsRedirection(options =>
+        {
+            if (builder.Environment.IsDevelopment())
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 7095;
+            }
+            else
+            {
+                options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                options.HttpsPort = 443;
+            }
+        });
+
         WebApplication app = builder.Build();
 
         // Database migrations and seeding
@@ -98,6 +122,8 @@ public class Program
         await DbSeeder.SeedAsync(app.Services);
 
         // Configure the HTTP request pipeline.
+        app.UseForwardedHeaders();
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
