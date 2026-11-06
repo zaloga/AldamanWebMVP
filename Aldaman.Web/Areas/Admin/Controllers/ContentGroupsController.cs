@@ -1,4 +1,4 @@
-﻿using Aldaman.Services.Constants;
+using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.ContentGroup;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
@@ -21,6 +21,12 @@ public class ContentGroupsController : BaseAdminController
 
     public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
     {
+        if (!Request.Query.ContainsKey(SortByConstants.SortBy))
+        {
+            query.SortBy = SortByConstants.GroupOrder;
+            query.SortDescending = false;
+        }
+
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
         PagedResultDto<ContentGroupListItemDto> result = await ContentGroupService.GetPagedContentGroupsAsync(query, culture, filterDeleted: false, ct: cancellationToken);
         return View(result);

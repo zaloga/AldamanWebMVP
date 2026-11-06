@@ -1,4 +1,4 @@
-﻿using Aldaman.Persistence.Context;
+using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
 using Aldaman.Services.Configuration;
@@ -75,18 +75,48 @@ public sealed class ContentGroupService : IContentGroupService
         }
 
         // Sorting
-        dbQuery = query.SortBy switch
+        IOrderedQueryable<ContentGroupEntity> orderedQuery = query.SortBy switch
         {
             SortByConstants.Title => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
-            SortByConstants.CreatedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
-            SortByConstants.GroupOrder or SortByConstants.PageOrder => query.SortDescending ? dbQuery.OrderByDescending(p => p.GroupOrder) : dbQuery.OrderBy(p => p.GroupOrder),
-            SortByConstants.DeletedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.DeletedAtUtc) : dbQuery.OrderBy(p => p.DeletedAtUtc),
+            SortByConstants.CreatedAt => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+                : dbQuery.OrderBy(p => p.CreatedAtUtc),
+            SortByConstants.GroupOrder or SortByConstants.PageOrder => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.GroupOrder)
+                : dbQuery.OrderBy(p => p.GroupOrder),
+            SortByConstants.DeletedAt => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
+                : dbQuery.OrderBy(p => p.DeletedAtUtc),
             _ => filterDeleted
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
-                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+                : (query.SortDescending ? dbQuery.OrderByDescending(p => p.GroupOrder) : dbQuery.OrderBy(p => p.GroupOrder))
         };
+
+        // Secondary sort: GroupOrder asc (if not already primary)
+        if (query.SortBy != SortByConstants.GroupOrder && query.SortBy != SortByConstants.PageOrder)
+        {
+            orderedQuery = orderedQuery.ThenBy(p => p.GroupOrder);
+        }
+
+        // Date fallback desc
+        if (filterDeleted)
+        {
+            if (query.SortBy != SortByConstants.DeletedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.DeletedAtUtc);
+            }
+        }
+        else
+        {
+            if (query.SortBy != SortByConstants.CreatedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.CreatedAtUtc);
+            }
+        }
+
+        dbQuery = orderedQuery;
 
         var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery

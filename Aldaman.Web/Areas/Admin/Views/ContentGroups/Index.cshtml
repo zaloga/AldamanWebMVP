@@ -18,20 +18,20 @@
         </div>
         <div class="col-md-4">
             <select name="@SortByConstants.SortBy" class="form-select">
+                <option value="@SortByConstants.GroupOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.GroupOrder || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortBy]))">@Localizer[UIResources.SortByOrder]</option>
                 <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResources.SortByCreatedDate]</option>
                 <option value="@SortByConstants.Title" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Title)">@Localizer[UIResources.SortByTitle]</option>
-                <option value="@SortByConstants.GroupOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.GroupOrder)">@Localizer[UIResources.SortByOrder]</option>
             </select>
         </div>
         <div class="col-md-3">
             <select name="@SortByConstants.SortDescending" class="form-select">
-                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResources.Descending]</option>
-                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false")">@Localizer[UIResources.Ascending]</option>
+                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResources.Ascending]</option>
+                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true")">@Localizer[UIResources.Descending]</option>
             </select>
         </div>
         <div class="col-md-2 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResources.Filter]</button>
-            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.CreatedAt" data-default-sort-desc="true" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
+            <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.GroupOrder" data-default-sort-desc="false" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
         </div>
     </form>
 </div>

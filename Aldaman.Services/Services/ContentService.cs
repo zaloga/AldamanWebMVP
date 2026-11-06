@@ -86,7 +86,7 @@ public sealed class ContentService : IContentService
         }
 
         // Sorting
-        dbQuery = query.SortBy switch
+        IOrderedQueryable<ContentEntity> orderedQuery = query.SortBy switch
         {
             SortByConstants.Title => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
@@ -100,13 +100,51 @@ public sealed class ContentService : IContentService
             SortByConstants.PageOrder or nameof(ContentEntity.Order) => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Order)
                 : dbQuery.OrderBy(p => p.Order),
+            SortByConstants.GroupOrder => query.SortDescending
+                ? dbQuery.OrderByDescending(p => p.ContentGroups.Select(cg => (int?)cg.ContentGroup.GroupOrder).FirstOrDefault() ?? int.MaxValue)
+                : dbQuery.OrderBy(p => p.ContentGroups.Select(cg => (int?)cg.ContentGroup.GroupOrder).FirstOrDefault() ?? int.MaxValue),
             SortByConstants.DeletedAt => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderBy(p => p.DeletedAtUtc),
             _ => filterDeleted
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
-                : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
+                : (query.SortDescending ? dbQuery.OrderByDescending(p => p.Order) : dbQuery.OrderBy(p => p.Order))
         };
+
+        // Secondary sort: GroupOrder asc (if not already primary)
+        if (query.SortBy != SortByConstants.GroupOrder)
+        {
+            orderedQuery = orderedQuery.ThenBy(p => p.ContentGroups.Select(cg => (int?)cg.ContentGroup.GroupOrder).FirstOrDefault() ?? int.MaxValue);
+        }
+
+        // Tertiary sort: PageOrder (Order) asc (if not already primary)
+        if (query.SortBy != SortByConstants.PageOrder && query.SortBy != nameof(ContentEntity.Order))
+        {
+            orderedQuery = orderedQuery.ThenBy(p => p.Order);
+        }
+
+        // Date fallback desc
+        if (filterDeleted)
+        {
+            if (query.SortBy != SortByConstants.DeletedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.DeletedAtUtc);
+            }
+        }
+        else
+        {
+            if (query.SortBy != SortByConstants.PublishedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.PublishedAtUtc);
+            }
+
+            if (query.SortBy != SortByConstants.CreatedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.CreatedAtUtc);
+            }
+        }
+
+        dbQuery = orderedQuery;
 
         var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery
