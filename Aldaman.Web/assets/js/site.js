@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!themeToggleBtn) return;
 
     // Change the icons inside the button based on previous settings
-    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (localStorage.getItem('theme') === 'dark') {
         themeToggleLightIcon.classList.remove('hidden');
     } else {
         themeToggleDarkIcon.classList.remove('hidden');
@@ -17,25 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
         themeToggleDarkIcon.classList.toggle('hidden');
         themeToggleLightIcon.classList.toggle('hidden');
 
-        // if set via local storage previously
-        if (localStorage.getItem('theme')) {
-            if (localStorage.getItem('theme') === 'light') {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            }
-
-            // if NOT set via local storage previously
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
         } else {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
         }
     });
 
