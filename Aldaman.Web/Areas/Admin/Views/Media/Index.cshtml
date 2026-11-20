@@ -1,12 +1,25 @@
 @using Aldaman.Services.Dtos.Media
 @using Aldaman.Services.Constants
+@using Aldaman.Services.Dtos.General
 @model PagedResultDto<MediaAssetDto>
 @{
-    ViewData.SetPageTitle(Localizer[UIResources.MediaLibrary]);
+    ViewData.SetPageTitle(Model.IsDeleted ? Localizer[UIResources.DeletedAssets] : Localizer[UIResources.MediaLibrary]);
 }
+
+@await Html.PartialAsync("_AdminNavTabs", new AdminNavTabsViewModel
+{
+    IsDeleted = Model.IsDeleted,
+    ActiveTitle = Localizer[UIResources.MediaLibrary].Value,
+    DeletedTitle = Localizer[UIResources.DeletedAssets].Value,
+    ActiveIcon = "bi-images"
+})
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
+        @if (Model.IsDeleted)
+        {
+            <input type="hidden" name="deleted" value="true" />
+        }
         <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text border-end-0">
@@ -17,7 +30,7 @@
         </div>
         <div class="col-md-4">
             <select name="@SortByConstants.SortBy" class="form-select">
-                <option value="@SortByConstants.UploadedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.UploadedAt)">@Localizer[UIResources.SortByUploadDate]</option>
+                <option value="@SortByConstants.UploadedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.UploadedAt || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortBy]))">@Localizer[UIResources.SortByUploadDate]</option>
                 <option value="@SortByConstants.FileName" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.FileName)">@Localizer[UIResources.SortByFilename]</option>
                 <option value="@SortByConstants.Size" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Size)">@Localizer[UIResources.SortBySize]</option>
             </select>
@@ -35,12 +48,15 @@
     </form>
 </div>
 
-<div class="d-flex justify-content-center align-items-center mb-4">
-    <a asp-action="Upload" class="btn btn-success btn-lg px-4">
-        <i class="bi bi-upload"></i>
-        @Localizer[UIResources.UploadMedia]
-    </a>
-</div>
+@if (!Model.IsDeleted)
+{
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <a asp-action="Upload" class="btn btn-success btn-lg px-4">
+            <i class="bi bi-upload"></i>
+            @Localizer[UIResources.UploadMedia]
+        </a>
+    </div>
+}
 
 <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
     <div class="table-responsive">
@@ -66,10 +82,10 @@
                 {
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="bg-light rounded border d-flex align-items-center justify-content-center overflow-hidden shadow-sm" style="width: 64px; height: 64px;">
+                            <div class="bg-light rounded border d-flex align-items-center justify-content-center overflow-hidden shadow-sm @(Model.IsDeleted ? "opacity-50" : "")" style="width: 64px; height: 64px;">
                                 @if (item.IsImage)
                                 {
-                                    <img src="@item.RelativePath" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;" alt="@item.AltTextDefault">
+                                    <img src="@item.RelativePath" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; @(Model.IsDeleted ? "filter: grayscale(100%);" : "")" alt="@item.AltTextDefault">
                                 }
                                 else
                                 {
@@ -78,61 +94,94 @@
                             </div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-semibold text-dark text-truncate" style="max-width: 250px;">@item.OriginalFileName</div>
+                            <div class="fw-semibold @(Model.IsDeleted ? "text-muted" : "text-dark") text-truncate" style="max-width: 250px;">@item.OriginalFileName</div>
                             <div class="small text-muted">@item.ContentType</div>
                         </td>
                         <td class="py-3">
-                            <div class="small fw-medium text-dark text-truncate" style="max-width: 200px;">@item.TitleDefault</div>
+                            <div class="small fw-medium @(Model.IsDeleted ? "text-muted" : "text-dark") text-truncate" style="max-width: 200px;">@item.TitleDefault</div>
                             <div class="small text-muted text-truncate" style="max-width: 200px;">@item.AltTextDefault</div>
                         </td>
                         <td class="py-3">
                             @if (item.IsImage && item.Width.HasValue && item.Height.HasValue)
                             {
-                                <div class="small fw-medium">@item.Width x @item.Height px</div>
+                                <div class="small @(Model.IsDeleted ? "text-muted" : "fw-medium")">@item.Width x @item.Height px</div>
                             }
                             <div class="small text-muted">@((item.FileSize / 1024.0).ToString(FormatConstants.FileSizeDecimal)) KB</div>
                         </td>
                         <td class="py-3 text-muted small">
-                            <div>
-                                <i class="bi bi-asterisk"></i>
-                                @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                            </div>
-                            @if (item.UpdatedAtUtc.HasValue)
+                            @if (Model.IsDeleted)
                             {
-                                <div class="text-secondary text-opacity-75 mt-1">
-                                    <i class="bi bi-pencil"></i>
-                                    @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                                </div>
-                            }
-                            <div class="mt-2">
-                                @if (item.StorageProvider == Aldaman.Persistence.Enums.StorageProviderType.CloudflareR2)
+                                if (item.DeletedAtUtc.HasValue)
                                 {
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-cloud me-1"></i>@Localizer[UIResources.StorageCloudflareR2]</span>
+                                    <span class="text-danger small fw-medium">
+                                        @string.Format(Localizer[UIResources.DeletedOnDate].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                    </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary"><i class="bi bi-hdd me-1"></i>@Localizer[UIResources.StorageFileSystem]</span>
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer[UIResources.Deleted]</span>
                                 }
+                            }
+                            <div class="@(Model.IsDeleted ? "mt-2" : "")">
+                                <div>
+                                    <i class="bi bi-asterisk"></i>
+                                    @item.UploadedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                </div>
+                                @if (item.UpdatedAtUtc.HasValue)
+                                {
+                                    <div class="text-secondary text-opacity-75 mt-1">
+                                        <i class="bi bi-pencil"></i>
+                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                                }
+                                <div class="mt-2">
+                                    @if (item.StorageProvider == Aldaman.Persistence.Enums.StorageProviderType.CloudflareR2)
+                                    {
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-cloud me-1"></i>@Localizer[UIResources.StorageCloudflareR2]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary"><i class="bi bi-hdd me-1"></i>@Localizer[UIResources.StorageFileSystem]</span>
+                                    }
+                                </div>
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column flex-xl-row gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer[UIResources.Edit]">
-                                    <i class="bi bi-pencil-square"></i>
-                                    @Localizer[UIResources.Edit]
-                                </a>
-                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResources.Details]">
-                                    <i class="bi bi-info-circle"></i>
-                                    @Localizer[UIResources.Details]
-                                </a>
-                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@item.RelativePath" target="_blank" title="@Localizer[UIResources.View]">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                    @Localizer[UIResources.View]
-                                </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("Delete")" title="@Localizer[UIResources.Delete]">
-                                    <i class="bi bi-trash"></i>
-                                    @Localizer[UIResources.Delete]
-                                </button>
+                                @if (Model.IsDeleted)
+                                {
+                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="restore" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("Restore")">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        @Localizer[UIResources.Restore]
+                                    </button>
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResources.Details]">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("HardDelete")">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.DeletePermanently]
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Edit" asp-route-id="@item.Id" title="@Localizer[UIResources.Edit]">
+                                        <i class="bi bi-pencil-square"></i>
+                                        @Localizer[UIResources.Edit]
+                                    </a>
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResources.Details]">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@item.RelativePath" target="_blank" title="@Localizer[UIResources.View]">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                        @Localizer[UIResources.View]
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.OriginalFileName" data-url="@Url.Action("Delete")" title="@Localizer[UIResources.Delete]">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.Delete]
+                                    </button>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -144,13 +193,6 @@
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
-</div>
-
-<div class="d-flex justify-content-center align-items-center mb-4">
-    <a asp-action="Deleted" class="btn btn-outline-danger btn-lg px-4">
-        <i class="bi bi-trash"></i>
-        @Localizer[UIResources.DeletedAssets]
-    </a>
 </div>
 
 @Html.AntiForgeryToken()

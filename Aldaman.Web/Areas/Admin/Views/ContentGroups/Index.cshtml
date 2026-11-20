@@ -3,11 +3,23 @@
 @using Aldaman.Services.Dtos.General
 @model PagedResultDto<ContentGroupListItemDto>
 @{
-    ViewData.SetPageTitle(Localizer[UIResources.ContentGroups]);
+    ViewData.SetPageTitle(Model.IsDeleted ? Localizer[UIResources.DeletedContentGroups] : Localizer[UIResources.ContentGroups]);
 }
+
+@await Html.PartialAsync("_AdminNavTabs", new AdminNavTabsViewModel
+{
+    IsDeleted = Model.IsDeleted,
+    ActiveTitle = Localizer[UIResources.ContentGroups].Value,
+    DeletedTitle = Localizer[UIResources.DeletedContentGroups].Value,
+    ActiveIcon = "bi-collection"
+})
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
+        @if (Model.IsDeleted)
+        {
+            <input type="hidden" name="deleted" value="true" />
+        }
         <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text border-end-0">
@@ -36,12 +48,15 @@
     </form>
 </div>
 
-<div class="d-flex justify-content-center align-items-center mb-4">
-    <a asp-action="Create" class="btn btn-success btn-lg px-4">
-        <i class="bi bi-plus-lg me-1"></i>
-        @Localizer[UIResources.Create]
-    </a>
-</div>
+@if (!Model.IsDeleted)
+{
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-success btn-lg px-4">
+            <i class="bi bi-plus-lg me-1"></i>
+            @Localizer[UIResources.Create]
+        </a>
+    </div>
+}
 
 <div class="bg-light border shadow rounded-4 overflow-hidden mb-4">
     <div class="table-responsive">
@@ -63,10 +78,10 @@
                 }
                 @foreach (var item in Model.Items)
                 {
-                    var groupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
+                    var groupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { area = "", culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="fw-semibold text-dark">@item.Title</div>
+                            <div class="fw-semibold @(Model.IsDeleted ? "text-muted" : "text-dark")">@item.Title</div>
                             <div class="text-muted small mt-2 text-break">
                                 @groupUrl
                             </div>
@@ -92,37 +107,74 @@
                             </div>
                             <div class="fw-medium text-secondary pt-1">@item.GroupOrder</div>
                         </td>
-                        <td class="py-3 text-muted small">
-                            <div>
-                                <i class="bi bi-asterisk"></i>
-                                @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                            </div>
-                            @if (item.UpdatedAtUtc.HasValue)
+                        <td class="py-3">
+                            @if (Model.IsDeleted)
                             {
-                                <div class="text-secondary text-opacity-75 mt-2">
-                                    <i class="bi bi-pencil"></i>
-                                    @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
-                                </div>
+                                if (item.DeletedAtUtc.HasValue)
+                                {
+                                    <span class="text-danger small fw-medium">
+                                        @string.Format(Localizer[UIResources.DeletedOnDate].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer[UIResources.Deleted]</span>
+                                }
                             }
+                            <div class="text-muted small @(Model.IsDeleted ? "mt-2" : "")">
+                                <div>
+                                    <i class="bi bi-asterisk"></i>
+                                    @item.CreatedAtUtc.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                </div>
+                                @if (item.UpdatedAtUtc.HasValue)
+                                {
+                                    <div class="text-secondary text-opacity-75 mt-2">
+                                        <i class="bi bi-pencil"></i>
+                                        @item.UpdatedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateTimeDot)
+                                    </div>
+                                }
+                            </div>
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column flex-xl-row gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Update" asp-route-id="@item.Id">
-                                    <i class="bi bi-pencil-square"></i>
-                                    @Localizer[UIResources.Edit]
-                                </a>
-                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-info-circle"></i>
-                                    @Localizer[UIResources.Details]
-                                </a>
-                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@groupUrl" target="_blank">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                    @Localizer[UIResources.Preview]
-                                </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
-                                    <i class="bi bi-trash"></i>
-                                    @Localizer[UIResources.Delete]
-                                </button>
+                                @if (Model.IsDeleted)
+                                {
+                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="restore" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Restore")">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        @Localizer[UIResources.Restore]
+                                    </button>
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@groupUrl" target="_blank">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                        @Localizer[UIResources.Preview]
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("HardDelete")">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.DeletePermanently]
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Update" asp-route-id="@item.Id">
+                                        <i class="bi bi-pencil-square"></i>
+                                        @Localizer[UIResources.Edit]
+                                    </a>
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@groupUrl" target="_blank">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                        @Localizer[UIResources.Preview]
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.Delete]
+                                    </button>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -134,13 +186,6 @@
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
-</div>
-
-<div class="d-flex justify-content-center align-items-center mb-4">
-    <a asp-action="Deleted" class="btn btn-outline-danger btn-lg px-4">
-        <i class="bi bi-trash"></i>
-        @Localizer[UIResources.DeletedContentGroups]
-    </a>
 </div>
 
 @Html.AntiForgeryToken()

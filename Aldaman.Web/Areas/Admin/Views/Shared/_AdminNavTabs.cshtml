@@ -1,0 +1,22 @@
+@model Aldaman.Web.ViewModels.Admin.AdminNavTabsViewModel
+
+<ul class="nav nav-pills mb-4">
+    <li class="nav-item">
+        <a class="nav-link @(!Model.IsDeleted ? "active" : "")" asp-action="Index" asp-route-deleted="false">
+            <i class="bi @Model.ActiveIcon me-1"></i> @Model.ActiveTitle
+            @if (Model.ActiveCount.HasValue)
+            {
+                <span class="badge bg-secondary ms-1">@Model.ActiveCount.Value</span>
+            }
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-danger @(Model.IsDeleted ? "active bg-danger text-white" : "")" asp-action="Index" asp-route-deleted="true">
+            <i class="bi @Model.DeletedIcon me-1"></i> @Model.DeletedTitle
+            @if (Model.DeletedCount.HasValue)
+            {
+                <span class="badge bg-danger ms-1">@Model.DeletedCount.Value</span>
+            }
+        </a>
+    </li>
+</ul>

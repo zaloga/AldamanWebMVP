@@ -32,15 +32,9 @@ public class MediaController : BaseAdminController
         ActiveStorageProvider = StorageOptions.Value.Provider
     };
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, [FromQuery] bool deleted = false, CancellationToken cancellationToken = default)
     {
-        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: false, ct: cancellationToken);
-        return View(result);
-    }
-
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
-    {
-        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: true, ct: cancellationToken);
+        PagedResultDto<MediaAssetDto> result = await MediaService.ListAssetsAsync(query, filterDeleted: deleted, ct: cancellationToken);
         return View(result);
     }
 

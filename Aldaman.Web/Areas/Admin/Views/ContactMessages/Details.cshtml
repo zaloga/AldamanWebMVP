@@ -1,4 +1,4 @@
-﻿@using Aldaman.Persistence.Enums
+@using Aldaman.Persistence.Enums
 @model Aldaman.Services.Dtos.ContactMessage.ContactMessageDto
 @{
     ViewData.SetPageTitle(Localizer[UIResources.ContactMessageDetails]);
@@ -135,7 +135,7 @@
                             </button>
                         }
 
-                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center gap-2">
+                        <a asp-action="Index" asp-route-deleted="@(Model.IsDeleted ? "true" : null)" class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center gap-2">
                             @Localizer[UIResources.Back]
                         </a>
                     </div>

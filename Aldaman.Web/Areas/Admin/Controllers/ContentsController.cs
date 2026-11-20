@@ -24,23 +24,16 @@ public class ContentsController : BaseAdminController
         MediaService = mediaService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, [FromQuery] bool deleted = false, CancellationToken cancellationToken = default)
     {
         if (!Request.Query.ContainsKey(SortByConstants.SortBy))
         {
-            query.SortBy = SortByConstants.PageOrder;
-            query.SortDescending = false;
+            query.SortBy = deleted ? SortByConstants.CreatedAt : SortByConstants.PageOrder;
+            query.SortDescending = deleted;
         }
 
         string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<ContentListItemDto> result = await ContentService.GetPagedContentsAdminAsync(query, culture, ct: cancellationToken);
-        return View(result);
-    }
-
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
-    {
-        string culture = System.Globalization.CultureInfo.CurrentUICulture.Name;
-        PagedResultDto<ContentListItemDto> result = await ContentService.GetPagedContentsAdminAsync(query, culture, filterDeleted: true, ct: cancellationToken);
+        PagedResultDto<ContentListItemDto> result = await ContentService.GetPagedContentsAdminAsync(query, culture, filterDeleted: deleted, ct: cancellationToken);
         return View(result);
     }
 

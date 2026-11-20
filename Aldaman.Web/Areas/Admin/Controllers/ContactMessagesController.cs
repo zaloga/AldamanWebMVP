@@ -1,4 +1,4 @@
-﻿using Aldaman.Services.Dtos.ContactMessage;
+using Aldaman.Services.Dtos.ContactMessage;
 using Aldaman.Services.Dtos.General;
 using Aldaman.Services.Interfaces;
 using Aldaman.Services.Resources;
@@ -17,15 +17,9 @@ public class ContactMessagesController : BaseAdminController
         ContactService = contactService;
     }
 
-    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index([FromQuery] PaginationQuery query, [FromQuery] bool deleted = false, CancellationToken cancellationToken = default)
     {
-        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: false, ct: cancellationToken);
-        return View(result);
-    }
-
-    public async Task<IActionResult> Deleted([FromQuery] PaginationQuery query, CancellationToken cancellationToken = default)
-    {
-        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: true, ct: cancellationToken);
+        PagedResultDto<ContactMessageDto> result = await ContactService.GetPagedMessagesAsync(query, filterDeleted: deleted, ct: cancellationToken);
         return View(result);
     }
 

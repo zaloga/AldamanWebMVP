@@ -1,12 +1,25 @@
 @using Aldaman.Persistence.Enums
 @using Aldaman.Services.Dtos.ContactMessage
+@using Aldaman.Services.Dtos.General
 @model PagedResultDto<ContactMessageDto>
 @{
-    ViewData.SetPageTitle(Localizer[UIResources.ContactMessages]);
+    ViewData.SetPageTitle(Model.IsDeleted ? Localizer[UIResources.DeletedMessages] : Localizer[UIResources.ContactMessages]);
 }
+
+@await Html.PartialAsync("_AdminNavTabs", new AdminNavTabsViewModel
+{
+    IsDeleted = Model.IsDeleted,
+    ActiveTitle = Localizer[UIResources.ContactMessages].Value,
+    DeletedTitle = Localizer[UIResources.DeletedMessages].Value,
+    ActiveIcon = "bi-envelope"
+})
 
 <div class="mb-4 p-3 bg-light border shadow rounded-4">
     <form method="get" class="row g-3">
+        @if (Model.IsDeleted)
+        {
+            <input type="hidden" name="deleted" value="true" />
+        }
         <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text border-end-0">
@@ -17,7 +30,7 @@
         </div>
         <div class="col-md-4">
             <select name="@SortByConstants.SortBy" class="form-select">
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResources.SortByDate]</option>
+                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortBy]))">@Localizer[UIResources.SortByDate]</option>
                 <option value="@SortByConstants.State" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.State)">@Localizer[UIResources.SortByStatus]</option>
             </select>
         </div>
@@ -56,24 +69,40 @@
                 {
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
-                            <div class="fw-semibold text-dark">@item.EmailOrPhone</div>
+                            <div class="fw-semibold @(Model.IsDeleted ? "text-muted" : "text-dark")">@item.EmailOrPhone</div>
                         </td>
                         <td class="py-3">
-                            <div class="fw-medium text-dark text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer[UIResources.NoSubject].Value : item.Subject)</div>
+                            <div class="fw-medium @(Model.IsDeleted ? "text-muted" : "text-dark") text-truncate" style="max-width: 300px;">@(string.IsNullOrEmpty(item.Subject) ? Localizer[UIResources.NoSubject].Value : item.Subject)</div>
                             <div class="small text-muted text-truncate" style="max-width: 300px;">@item.Message</div>
                         </td>
                         <td class="py-3">
-                            @switch (item.State)
+                            @if (Model.IsDeleted)
                             {
-                                case ContactMessageState.Pending:
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer[UIResources.Pending]</span>
-                                    break;
-                                case ContactMessageState.Sent:
-                                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer[UIResources.Handled]</span>
-                                    break;
-                                case ContactMessageState.Failed:
-                                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer[UIResources.Failed]</span>
-                                    break;
+                                if (item.DeletedAtUtc.HasValue)
+                                {
+                                    <span class="text-danger small fw-medium">
+                                        @string.Format(Localizer[UIResources.DeletedOnDate].Value, item.DeletedAtUtc.Value.ToLocalTime().ToString(FormatConstants.DateDot))
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle">@Localizer[UIResources.Deleted]</span>
+                                }
+                            }
+                            else
+                            {
+                                @switch (item.State)
+                                {
+                                    case ContactMessageState.Pending:
+                                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">@Localizer[UIResources.Pending]</span>
+                                        break;
+                                    case ContactMessageState.Sent:
+                                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">@Localizer[UIResources.Handled]</span>
+                                        break;
+                                    case ContactMessageState.Failed:
+                                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">@Localizer[UIResources.Failed]</span>
+                                        break;
+                                }
                             }
                             <div class="text-muted small mt-2">
                                 <div>
@@ -84,23 +113,41 @@
                         </td>
                         <td class="py-3 text-end pe-4">
                             <div class="d-inline-flex flex-column flex-xl-row gap-2">
-                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-info-circle"></i>
-                                    @Localizer[UIResources.Details]
-                                </a>
-                                @if (item.State == ContactMessageState.Pending)
+                                @if (Model.IsDeleted)
                                 {
-                                    <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-inline-flex m-0 w-100 w-xl-auto">
-                                        <button type="submit" class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 w-100 w-xl-auto text-nowrap">
-                                            <i class="bi bi-check-lg"></i>
-                                            @Localizer[UIResources.Handle]
-                                        </button>
-                                    </form>
+                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="restore" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Restore")">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        @Localizer[UIResources.Restore]
+                                    </button>
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id" title="@Localizer[UIResources.View]">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("HardDelete")" data-confirm-text="@Localizer[UIResources.ConfirmDeletePermanentlyMessageText].Value">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.DeletePermanently]
+                                    </button>
                                 }
-                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResources.ConfirmDeleteMessageText].Value">
-                                    <i class="bi bi-trash"></i>
-                                    @Localizer[UIResources.Delete]
-                                </button>
+                                else
+                                {
+                                    <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-info-circle"></i>
+                                        @Localizer[UIResources.Details]
+                                    </a>
+                                    @if (item.State == ContactMessageState.Pending)
+                                    {
+                                        <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-inline-flex m-0 w-100 w-xl-auto">
+                                            <button type="submit" class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 w-100 w-xl-auto text-nowrap">
+                                                <i class="bi bi-check-lg"></i>
+                                                @Localizer[UIResources.Handle]
+                                            </button>
+                                        </form>
+                                    }
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResources.ConfirmDeleteMessageText].Value">
+                                        <i class="bi bi-trash"></i>
+                                        @Localizer[UIResources.Delete]
+                                    </button>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -112,13 +159,6 @@
     <div class="px-4 pb-4">
         @await Html.PartialAsync("_AdminPagination", Model)
     </div>
-</div>
-
-<div class="d-flex justify-content-center align-items-center mb-4">
-    <a asp-action="Deleted" class="btn btn-outline-danger btn-lg px-4">
-        <i class="bi bi-trash"></i>
-        @Localizer[UIResources.DeletedMessages]
-    </a>
 </div>
 
 @Html.AntiForgeryToken()

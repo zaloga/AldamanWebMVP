@@ -88,7 +88,7 @@
                         {
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-block mb-2">@Localizer[UIResources.Edit]</a>
                         }
-                        <a asp-action="@(Model.IsDeleted ? "Deleted" : "Index")" class="btn btn-outline-secondary btn-block">@Localizer[UIResources.Back]</a>
+                        <a asp-action="Index" asp-route-deleted="@(Model.IsDeleted ? "true" : null)" class="btn btn-outline-secondary btn-block">@Localizer[UIResources.Back]</a>
                     </div>
                 </div>
             </div>

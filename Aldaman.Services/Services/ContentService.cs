@@ -183,7 +183,8 @@ public sealed class ContentService : IContentService
             Items = items,
             TotalCount = totalCount,
             Page = query.Page,
-            PageSize = query.PageSize
+            PageSize = query.PageSize,
+            IsDeleted = filterDeleted
         };
     }
 

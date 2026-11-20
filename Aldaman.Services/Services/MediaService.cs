@@ -76,7 +76,8 @@ public sealed class MediaService : IMediaService
             Items = items,
             TotalCount = totalCount,
             Page = query.Page,
-            PageSize = query.PageSize
+            PageSize = query.PageSize,
+            IsDeleted = filterDeleted
         };
     }
 

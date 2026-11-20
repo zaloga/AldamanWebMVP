@@ -56,9 +56,23 @@
         {
             @if (isIndex)
             {
-                <li class="breadcrumb-item active" aria-current="page">
-                    @listTitle
-                </li>
+                if (isItemDeleted)
+                {
+                    <li class="breadcrumb-item">
+                        <a asp-action="Index" asp-controller="@controller" asp-route-culture="@CurrentCulture" class="text-decoration-none">
+                            @listTitle
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        @deletedListTitle
+                    </li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item active" aria-current="page">
+                        @listTitle
+                    </li>
+                }
             }
             else if (isDeletedAction)
             {
@@ -81,7 +95,7 @@
                 @if (isItemDeleted)
                 {
                     <li class="breadcrumb-item">
-                        <a asp-action="Deleted" asp-controller="@controller" asp-route-culture="@CurrentCulture" class="text-decoration-none">
+                        <a asp-action="Index" asp-controller="@controller" asp-route-deleted="true" asp-route-culture="@CurrentCulture" class="text-decoration-none">
                             @deletedListTitle
                         </a>
                     </li>
