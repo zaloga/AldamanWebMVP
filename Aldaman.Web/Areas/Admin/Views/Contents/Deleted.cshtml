@@ -70,6 +70,10 @@
                 }
                 @foreach (var item in Model.Items)
                 {
+                    var contentUrl = item.ContentType == ContentTypeEnum.Page
+                        ? Url.RouteUrl(RouteConstants.PageDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme)
+                        : Url.RouteUrl(RouteConstants.BlogDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
+                    contentUrl ??= Url.RouteUrl(RouteConstants.ContentDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                     <tr id="row-deleted-@item.Id">
                         <td class="ps-4 py-3">
                             <div class="fw-semibold text-dark">@item.Title</div>
@@ -77,14 +81,8 @@
                             {
                                 <div class="small text-muted text-truncate mt-2" style="max-width: 300px;">@item.Perex</div>
                             }
-                            <div class="text-muted small mt-2">
-                                @{
-                                    var contentUrl = item.ContentType == ContentTypeEnum.Page
-                                        ? Url.RouteUrl(RouteConstants.PageDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme)
-                                        : Url.RouteUrl(RouteConstants.BlogDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
-                                    contentUrl ??= Url.RouteUrl(RouteConstants.ContentDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
-                                }
-                                <a href="@contentUrl" target="_blank" class="text-decoration-none text-primary opacity-50">@contentUrl</a>
+                            <div class="text-muted small mt-2 text-break">
+                                @contentUrl
                             </div>
                         </td>
                         <td class="py-3">
@@ -161,6 +159,10 @@
                                 <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer[UIResources.Details]
+                                </a>
+                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@contentUrl" target="_blank">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                    @Localizer[UIResources.Preview]
                                 </a>
                                 <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("HardDelete")">
                                     <i class="bi bi-trash"></i>

@@ -1,6 +1,7 @@
 using Aldaman.Persistence.Context;
 using Aldaman.Persistence.Entities;
 using Aldaman.Persistence.Enums;
+using Aldaman.Persistence.Interfaces;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Constants;
 using Aldaman.Services.Dtos.Content;
@@ -26,18 +27,21 @@ public sealed class ContentGroupService : IContentGroupService
     private IMemoryCache Cache { get; }
     private MemoryCacheEntryOptions CacheOptions { get; }
     private IStringLocalizer<ValidationResources> Localizer { get; }
+    private IUserContext UserContext { get; }
 
     public ContentGroupService(
         AppDbContext context,
         IOptions<LocalizationSettings> localizationOptions,
         IOptions<CacheSettings> cacheOptions,
         IMemoryCache cache,
-        IStringLocalizer<ValidationResources> localizer)
+        IStringLocalizer<ValidationResources> localizer,
+        IUserContext userContext)
     {
         Context = context;
         Localization = localizationOptions.Value;
         Cache = cache;
         Localizer = localizer;
+        UserContext = userContext;
         CacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromHours(cacheOptions.Value.ContentExpirationHours))
             .AddExpirationToken(new CancellationChangeToken(_contentGroupCacheTokenSource.Token));
@@ -447,11 +451,16 @@ public sealed class ContentGroupService : IContentGroupService
 
     public async Task<ContentGroupDetailDto?> GetContentGroupBySlugCachedAsync(string slug, string culture, CancellationToken ct = default)
     {
-        string cacheKey = $"ContentGroup:Detail:{slug.ToLowerInvariant()}:{culture}";
+        bool isAdmin = UserContext.IsAdminOrSuperAdmin;
+        string cacheKey = $"ContentGroup:Detail:{slug.ToLowerInvariant()}:{culture}:{isAdmin}";
 
         if (!Cache.TryGetValue(cacheKey, out ContentGroupDetailDto? result))
         {
-            var group = await Context.ContentGroups
+            var query = isAdmin
+                ? Context.ContentGroups.IgnoreQueryFilters()
+                : Context.ContentGroups;
+
+            var group = await query
                 .Include(p => p.Translations)
                 .Include(p => p.Contents)
                     .ThenInclude(c => c.Content)
@@ -476,7 +485,11 @@ public sealed class ContentGroupService : IContentGroupService
                 {
                     var items = new List<ContentGroupDetailItemDto>();
 
-                    foreach (var c in group.Contents.Where(c => !c.Content.IsDeleted && c.Content.IsPublished))
+                    var contentsQuery = isAdmin
+                        ? group.Contents.AsEnumerable()
+                        : group.Contents.Where(c => !c.Content.IsDeleted && c.Content.IsPublished);
+
+                    foreach (var c in contentsQuery)
                     {
                         var contentTranslation = c.Content.Translations.FirstOrDefault(t => t.CultureCode == culture)
                                                  ?? c.Content.Translations.FirstOrDefault();
