@@ -20,7 +20,9 @@
         {
             <input type="hidden" name="deleted" value="true" />
         }
-        <div class="col-md-3">
+        <input type="hidden" name="@SortByConstants.SortBy" value="@(Context.Request.Query[SortByConstants.SortBy].ToString() is { Length: > 0 } sb ? sb : SortByConstants.GroupOrder)" />
+        <input type="hidden" name="@SortByConstants.SortDescending" value="@(Context.Request.Query[SortByConstants.SortDescending].ToString() is { Length: > 0 } sd ? sd : "false")" />
+        <div class="col-md-9 col-lg-10">
             <div class="input-group">
                 <span class="input-group-text border-end-0">
                     <i class="bi bi-search" style="font-size: 18px;"></i>
@@ -28,20 +30,7 @@
                 <input type="text" name="SearchTerm" class="form-control border-start-0" placeholder="@Localizer[UIResources.Search]..." value="@Context.Request.Query["SearchTerm"]">
             </div>
         </div>
-        <div class="col-md-4">
-            <select name="@SortByConstants.SortBy" class="form-select">
-                <option value="@SortByConstants.GroupOrder" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.GroupOrder || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortBy]))">@Localizer[UIResources.SortByOrder]</option>
-                <option value="@SortByConstants.CreatedAt" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.CreatedAt)">@Localizer[UIResources.SortByCreatedDate]</option>
-                <option value="@SortByConstants.Title" selected="@(Context.Request.Query[SortByConstants.SortBy] == SortByConstants.Title)">@Localizer[UIResources.SortByTitle]</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="@SortByConstants.SortDescending" class="form-select">
-                <option value="false" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "false" || string.IsNullOrEmpty(Context.Request.Query[SortByConstants.SortDescending]))">@Localizer[UIResources.Ascending]</option>
-                <option value="true" selected="@(Context.Request.Query[SortByConstants.SortDescending] == "true")">@Localizer[UIResources.Descending]</option>
-            </select>
-        </div>
-        <div class="col-md-2 d-flex gap-2">
+        <div class="col-md-3 col-lg-2 d-flex gap-2">
             <button type="submit" class="btn btn-outline-primary flex-grow-1">@Localizer[UIResources.Filter]</button>
             <button type="button" data-action="clear-filter" data-default-sort-by="@SortByConstants.GroupOrder" data-default-sort-desc="false" class="btn btn-outline-secondary flex-grow-1">@Localizer[UIResources.Clear]</button>
         </div>
@@ -63,10 +52,10 @@
         <table class="table table-light table-hover align-middle mb-0">
             <thead>
                 <tr>
-                    <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.ContentGroup]</th>
+                    <th sort-by="@SortByConstants.Title" default-descending="false" class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.ContentGroup]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Order]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
+                    <th sort-by="@SortByConstants.GroupOrder" default-descending="false" class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Order]</th>
+                    <th sort-by="@(Model.IsDeleted ? SortByConstants.DeletedAt : SortByConstants.CreatedAt)" default-descending="true" class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                 </tr>
             </thead>

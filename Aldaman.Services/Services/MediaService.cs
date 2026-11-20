@@ -52,7 +52,7 @@ public sealed class MediaService : IMediaService
         }
 
         // Sorting
-        dbQuery = query.SortBy switch
+        IOrderedQueryable<MediaAssetEntity> orderedQuery = query.SortBy switch
         {
             SortByConstants.FileName => query.SortDescending ? dbQuery.OrderByDescending(p => p.OriginalFileName) : dbQuery.OrderBy(p => p.OriginalFileName),
             SortByConstants.UploadedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
@@ -63,6 +63,27 @@ public sealed class MediaService : IMediaService
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
+
+        // Secondary fallback sorting
+        if (filterDeleted)
+        {
+            if (query.SortBy != SortByConstants.DeletedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.DeletedAtUtc);
+            }
+        }
+        else
+        {
+            if (query.SortBy != SortByConstants.UploadedAt && query.SortBy != SortByConstants.CreatedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.CreatedAtUtc);
+            }
+        }
+
+        // Deterministic tie-breaker
+        orderedQuery = orderedQuery.ThenBy(p => p.Id);
+
+        dbQuery = orderedQuery;
 
         int totalCount = await dbQuery.CountAsync(ct);
         List<MediaAssetDto> items = await dbQuery

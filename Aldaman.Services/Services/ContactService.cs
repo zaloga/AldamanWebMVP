@@ -41,7 +41,7 @@ public sealed class ContactService : IContactService
         }
 
         // Sorting
-        dbQuery = query.SortBy switch
+        IOrderedQueryable<ContactMessageEntity> orderedQuery = query.SortBy switch
         {
             SortByConstants.CreatedAt => query.SortDescending ? dbQuery.OrderByDescending(p => p.CreatedAtUtc) : dbQuery.OrderBy(p => p.CreatedAtUtc),
             SortByConstants.State => query.SortDescending ? dbQuery.OrderByDescending(p => p.State) : dbQuery.OrderBy(p => p.State),
@@ -50,6 +50,27 @@ public sealed class ContactService : IContactService
                 ? dbQuery.OrderByDescending(p => p.DeletedAtUtc)
                 : dbQuery.OrderByDescending(p => p.CreatedAtUtc)
         };
+
+        // Secondary fallback sorting
+        if (filterDeleted)
+        {
+            if (query.SortBy != SortByConstants.DeletedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.DeletedAtUtc);
+            }
+        }
+        else
+        {
+            if (query.SortBy != SortByConstants.CreatedAt)
+            {
+                orderedQuery = orderedQuery.ThenByDescending(p => p.CreatedAtUtc);
+            }
+        }
+
+        // Deterministic tie-breaker
+        orderedQuery = orderedQuery.ThenBy(p => p.Id);
+
+        dbQuery = orderedQuery;
 
         var totalCount = await dbQuery.CountAsync(ct);
         var items = await dbQuery

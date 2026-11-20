@@ -120,6 +120,9 @@ public sealed class ContentGroupService : IContentGroupService
             }
         }
 
+        // Deterministic tie-breaker
+        orderedQuery = orderedQuery.ThenBy(p => p.Id);
+
         dbQuery = orderedQuery;
 
         var totalCount = await dbQuery.CountAsync(ct);
