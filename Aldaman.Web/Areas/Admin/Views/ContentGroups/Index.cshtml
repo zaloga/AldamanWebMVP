@@ -64,7 +64,8 @@
             <thead>
                 <tr>
                     <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.ContentGroup]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations] / @Localizer[UIResources.Order]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations]</th>
+                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Order]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>
                 </tr>
@@ -73,7 +74,7 @@
                 @if (!Model.Items.Any())
                 {
                     <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">@Localizer[UIResources.NoItemsFound]</td>
+                        <td colspan="5" class="text-center py-5 text-muted">@Localizer[UIResources.NoItemsFound]</td>
                     </tr>
                 }
                 @foreach (var item in Model.Items)
@@ -87,25 +88,39 @@
                             </div>
                         </td>
                         <td class="py-3 text-center">
-                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                            <div class="d-flex flex-wrap gap-2 justify-content-center small">
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.HomePage))
                                 {
-                                    <i class="bi bi-house-door" data-bs-toggle="tooltip" title="@Localizer[UIResources.HomePage]"></i>
+                                    <span class="d-inline-flex align-items-center text-nowrap">
+                                        <i class="bi bi-house-door fs-6 me-1"></i>@Localizer[UIResources.HomePage]
+                                    </span>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.TopNavigation))
                                 {
-                                    <i class="bi bi-window-fullscreen" data-bs-toggle="tooltip" title="@Localizer[UIResources.TopNavigation]"></i>
+                                    <span class="d-inline-flex align-items-center text-nowrap">
+                                        <i class="bi bi-window-fullscreen fs-6 me-1"></i>@Localizer[UIResources.TopNavigation]
+                                    </span>
                                 }
                                 @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Footer))
                                 {
-                                    <i class="bi bi-window-fullscreen flip-y" data-bs-toggle="tooltip" title="@Localizer[UIResources.Footer]"></i>
+                                    <span class="d-inline-flex align-items-center text-nowrap">
+                                        <i class="bi bi-window-fullscreen flip-y fs-6 me-1"></i>@Localizer[UIResources.Footer]
+                                    </span>
+                                }
+                                @if (item.PlaceToShow.HasFlag(PlaceToShowEnum.Sidebar))
+                                {
+                                    <span class="d-inline-flex align-items-center text-nowrap">
+                                        <i class="bi bi-layout-sidebar-inset-reverse fs-6 me-1"></i>@Localizer[UIResources.Sidebar]
+                                    </span>
                                 }
                                 @if (item.PlaceToShow == PlaceToShowEnum.None)
                                 {
-                                    @* nothing... *@
+                                    <span class="text-muted">@Localizer[UIResources.NotSet]</span>
                                 }
                             </div>
-                            <div class="fw-medium text-secondary pt-1">@item.GroupOrder</div>
+                        </td>
+                        <td class="py-3 text-center">
+                            <div class="fw-medium text-secondary">@item.GroupOrder</div>
                         </td>
                         <td class="py-3">
                             @if (Model.IsDeleted)
