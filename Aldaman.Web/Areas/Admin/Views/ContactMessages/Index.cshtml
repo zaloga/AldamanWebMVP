@@ -83,21 +83,21 @@
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                            <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer[UIResources.Details]
                                 </a>
                                 @if (item.State == ContactMessageState.Pending)
                                 {
-                                    <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-flex w-100 m-0">
-                                        <button type="submit" class="btn btn-outline-success btn-sm d-inline align-items-center gap-1 w-100">
+                                    <form asp-action="MarkHandled" asp-route-id="@item.Id" method="post" class="d-inline-flex m-0 w-100 w-xl-auto">
+                                        <button type="submit" class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 w-100 w-xl-auto text-nowrap">
                                             <i class="bi bi-check-lg"></i>
                                             @Localizer[UIResources.Handle]
                                         </button>
                                     </form>
                                 }
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResources.ConfirmDeleteMessageText].Value">
+                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.EmailOrPhone" data-url="@Url.Action("Delete")" data-confirm-text="@Localizer[UIResources.ConfirmDeleteMessageText].Value">
                                     <i class="bi bi-trash"></i>
                                     @Localizer[UIResources.Delete]
                                 </button>

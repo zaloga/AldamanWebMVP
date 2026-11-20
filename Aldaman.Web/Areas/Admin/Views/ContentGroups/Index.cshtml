@@ -63,14 +63,12 @@
                 }
                 @foreach (var item in Model.Items)
                 {
+                    var groupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
                     <tr id="row-@item.Id">
                         <td class="ps-4 py-3">
                             <div class="fw-semibold text-dark">@item.Title</div>
-                            <div class="text-muted small mt-2">
-                                @{
-                                    var groupUrl = Url.RouteUrl(RouteConstants.ContentGroupDetail, new { culture = CurrentCulture, slug = item.Slug }, Context.Request.Scheme);
-                                }
-                                <a href="@groupUrl" target="_blank" class="text-decoration-none text-primary">@groupUrl</a>
+                            <div class="text-muted small mt-2 text-break">
+                                @groupUrl
                             </div>
                         </td>
                         <td class="py-3 text-center">
@@ -108,16 +106,20 @@
                             }
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
+                            <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer[UIResources.Edit]
                                 </a>
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer[UIResources.Details]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
+                                <a class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" href="@groupUrl" target="_blank">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                    @Localizer[UIResources.Preview]
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
                                     <i class="bi bi-trash"></i>
                                     @Localizer[UIResources.Delete]
                                 </button>

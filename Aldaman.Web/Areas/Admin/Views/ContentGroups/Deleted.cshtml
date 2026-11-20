@@ -124,16 +124,16 @@
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-inline-flex flex-column gap-2">
-                                <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" data-action="restore" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Restore")">
+                            <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="restore" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Restore")">
                                     <i class="bi bi-arrow-counterclockwise"></i>
                                     @Localizer[UIResources.Restore]
                                 </button>
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer[UIResources.Details]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="hard-delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("HardDelete")">
+                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("HardDelete")">
                                     <i class="bi bi-trash"></i>
                                     @Localizer[UIResources.DeletePermanently]
                                 </button>

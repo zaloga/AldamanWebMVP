@@ -1,4 +1,4 @@
-﻿@model List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>
+@model List<Aldaman.Services.Dtos.StyleSettings.StyleSettingDto>
 @using Aldaman.Persistence.Enums
 
 @{
@@ -57,8 +57,8 @@
                             </form>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-inline-flex gap-1">
-                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" title="@Localizer[UIResources.Edit]">
+                            <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                <a asp-action="UpdatePage" asp-route-id="@setting.Id" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" title="@Localizer[UIResources.Edit]">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer[UIResources.Edit]
                                 </a>
@@ -104,12 +104,12 @@
                             <td class="py-3">@item.Type</td>
                             <td class="py-3"><span class="text-muted">@item.Value</span></td>
                             <td class="py-3 text-end pe-4">
-                                <div class="d-inline-flex gap-2">
-                                    <button class="btn btn-outline-success btn-sm d-inline align-items-center gap-1" data-action="restore" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("Restore")">
+                                <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                    <button class="btn btn-outline-success btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="restore" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("Restore")">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         @Localizer[UIResources.Restore]
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="hard-delete" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("HardDelete")">
+                                    <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="hard-delete" data-id="@item.Id" data-title="@item.Key" data-url="@Url.Action("HardDelete")">
                                         <i class="bi bi-trash"></i>
                                         @Localizer[UIResources.DeletePermanently]
                                     </button>

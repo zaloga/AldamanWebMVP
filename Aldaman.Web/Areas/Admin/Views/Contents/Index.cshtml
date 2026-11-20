@@ -164,16 +164,16 @@
                             </div>
                         </td>
                         <td class="py-3 text-end pe-4">
-                            <div class="d-inline-flex flex-column gap-2">
-                                <a class="btn btn-outline-primary btn-sm d-inline align-items-center gap-1" asp-action="Update" asp-route-id="@item.Id">
+                            <div class="d-inline-flex flex-column flex-xl-row gap-2">
+                                <a class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Update" asp-route-id="@item.Id">
                                     <i class="bi bi-pencil-square"></i>
                                     @Localizer[UIResources.Edit]
                                 </a>
-                                <a class="btn btn-outline-info btn-sm d-inline align-items-center gap-1" asp-action="Details" asp-route-id="@item.Id">
+                                <a class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-info-circle"></i>
                                     @Localizer[UIResources.Details]
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm d-inline align-items-center gap-1" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
+                                <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center justify-content-center gap-1 text-nowrap" data-action="delete" data-id="@item.Id" data-title="@item.Title" data-url="@Url.Action("Delete")">
                                     <i class="bi bi-trash"></i>
                                     @Localizer[UIResources.Delete]
                                 </button>
