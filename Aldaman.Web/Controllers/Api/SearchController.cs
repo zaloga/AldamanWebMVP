@@ -1,3 +1,4 @@
+using Aldaman.Persistence.Constants;
 using Aldaman.Services.Dtos.Search;
 using Aldaman.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ public sealed class SearchController : ControllerBase
     /// <param name="culture">Culture code (e.g., "cs", "en"). Defaults to "cs".</param>
     /// <returns>Search results.</returns>
     [HttpGet]
-    public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] string culture = "cs", CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] string culture = CultureConstants.Czech, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -62,7 +63,7 @@ public sealed class SearchController : ControllerBase
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Autocomplete results.</returns>
     [HttpGet("autocomplete")]
-    public async Task<IActionResult> Autocomplete([FromQuery] string query, [FromQuery] string culture = "cs", CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Autocomplete([FromQuery] string query, [FromQuery] string culture = CultureConstants.Czech, CancellationToken cancellationToken = default)
     {
         try
         {

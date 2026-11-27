@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Aldaman.Persistence.Constants;
 using Aldaman.Services.Configuration;
 using Aldaman.Services.Dtos.Mcp.LifecycleModels;
 using Aldaman.Services.Dtos.Mcp.RpcModels;
@@ -26,7 +27,7 @@ public class McpMessageHandlerTests
         _loggerMock = new Mock<ILogger<McpMessageHandlerService>>();
 
         var options = Options.Create(new McpSettings());
-        var locOptions = Options.Create(new LocalizationSettings { DefaultCulture = "cs", SupportedCultures = new[] { "cs", "en" } });
+        var locOptions = Options.Create(new LocalizationSettings { DefaultCulture = CultureConstants.Default, SupportedCultures = CultureConstants.Supported });
         _handler = new McpMessageHandlerService(_searchServiceMock.Object, options, locOptions, _loggerMock.Object);
     }
 
@@ -92,7 +93,7 @@ public class McpMessageHandlerTests
             Params = jsonElement
         };
 
-        _searchServiceMock.Setup(s => s.SearchCachedAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()))
+        _searchServiceMock.Setup(s => s.SearchCachedAsync("test", CultureConstants.Czech, "http://localhost", It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Aldaman.Services.Dtos.Search.SearchResultDto>
             {
                 new() { Title = "Result 1", Content = "Content", Url = "/url", Type = "Content" }
@@ -106,6 +107,6 @@ public class McpMessageHandlerTests
         var result = Assert.IsType<McpCallToolResult>(response.Result);
         Assert.Single(result.Content);
         Assert.Contains("Result 1", result.Content[0].Text);
-        _searchServiceMock.Verify(s => s.SearchCachedAsync("test", "cs", "http://localhost", It.IsAny<CancellationToken>()), Times.Once);
+        _searchServiceMock.Verify(s => s.SearchCachedAsync("test", CultureConstants.Czech, "http://localhost", It.IsAny<CancellationToken>()), Times.Once);
     }
 }

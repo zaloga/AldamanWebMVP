@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /Aldaman.Web/wwwroot/uploads
 /delete_unused.py
 /find_unused.py
+/.agents/skills/generate-commit-message

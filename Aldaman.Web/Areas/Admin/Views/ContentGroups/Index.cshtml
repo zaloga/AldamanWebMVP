@@ -53,7 +53,7 @@
             <thead>
                 <tr>
                     <th sort-by="@SortByConstants.Title" default-descending="false" class="ps-4 py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.ContentGroup]</th>
-                    <th class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations]</th>
+                    <th sort-by="@SortByConstants.Locations" default-descending="false" class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Locations]</th>
                     <th sort-by="@SortByConstants.GroupOrder" default-descending="false" class="py-3 text-uppercase small fw-bold text-muted text-center">@Localizer[UIResources.Order]</th>
                     <th sort-by="@(Model.IsDeleted ? SortByConstants.DeletedAt : SortByConstants.CreatedAt)" default-descending="true" class="py-3 text-uppercase small fw-bold text-muted">@Localizer[UIResources.State]</th>
                     <th class="py-3 text-uppercase small fw-bold text-muted text-end pe-4">@Localizer[UIResources.Actions]</th>

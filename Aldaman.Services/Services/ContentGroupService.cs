@@ -84,6 +84,9 @@ public sealed class ContentGroupService : IContentGroupService
             SortByConstants.Title => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault())
                 : dbQuery.OrderBy(p => p.Translations.Where(t => culture == null || t.CultureCode == culture).Select(t => t.Title).FirstOrDefault()),
+            SortByConstants.Locations => query.SortDescending
+                ? dbQuery.OrderByDescending(PlacementSortHelper.GetOrCreatePlacementSortExpression(culture))
+                : dbQuery.OrderBy(PlacementSortHelper.GetOrCreatePlacementSortExpression(culture)),
             SortByConstants.CreatedAt => query.SortDescending
                 ? dbQuery.OrderByDescending(p => p.CreatedAtUtc)
                 : dbQuery.OrderBy(p => p.CreatedAtUtc),
@@ -170,7 +173,8 @@ public sealed class ContentGroupService : IContentGroupService
                     .ThenInclude(c => c.Translations)
             .FirstOrDefaultAsync(p => p.Id == id, ct);
 
-        if (group == null) return null;
+        if (group == null)
+            return null;
 
         var dto = new ContentGroupEditDto
         {
